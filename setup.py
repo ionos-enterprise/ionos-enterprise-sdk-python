@@ -25,6 +25,8 @@ def find_version(*file_paths):
 
 if os.path.isfile("README.md"):
   long_desc = read('README.md')
+else:
+  long_desc = "ProfitBricks API Client Library for Python"
 
 class PyTest(TestCommand):
     def finalize_options(self):
@@ -45,6 +47,7 @@ setup(name='profitbricks',
       author='Matt Baldwin (stackpointcloud.com)',
       author_email='baldwin@stackpointcloud.com',
       url='https://github.com/profitbricks/profitbricks-sdk-python',
+      download_url='https://github.com/profitbricks/profitbricks-sdk-python/tarball/1.0',
       install_requires=['requests'],
       packages=['profitbricks'],
       platforms='any',
@@ -52,7 +55,7 @@ setup(name='profitbricks',
       cmdclass={'test': PyTest},
       tests_require=['pytest'],
       license='Apache 2.0',
-      keywords='profitbricks api client',
+      keywords='profitbricks api client cloud',
       classifiers=['Development Status :: 5 - Production/Stable',
                    'Natural Language :: English',
                    'Environment :: Web Environment',
