@@ -1992,10 +1992,7 @@ class ProfitBricksService(object):
 
         if len(server.create_volumes) > 0:
             for volume in server.create_volumes:
-                volume_properties = {
-                    "properties": volume.__dict__
-                }
-                volume_items.append(volume_properties)
+                volume_items.append(self._create_volume_dict(volume))
 
             volumes = {
                 "items": volume_items
@@ -2066,10 +2063,13 @@ class ProfitBricksService(object):
         if volume.disk_type:
             properties['type'] = volume.disk_type
 
-        if volume.licence_type:
+        if volume.image is None:
             properties['licenceType'] = volume.licence_type
 
-        if volume.licence_type:
+        # if volume.licence_type:
+        #     properties['licenceType'] = volume.licence_type
+
+        if volume.image_password:
             properties['imagePassword'] = volume.image_password
 
         raw = {
