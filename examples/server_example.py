@@ -109,12 +109,13 @@ from profitbricks.client import ProfitBricksService
 from profitbricks.client import Server, NIC, Volume
 
 server_id = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
-datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 volume_id = '700e1cab-99b2-4c30-ba8c-1d273ddba044'
-image_id = '226ed8c0-a2fe-11e4-b187-5f1f641608c8'
+
+datacenter_id = 'c4fd1f8a-65e0-42cb-b8fa-ff7e87c3071b'
+image_id = '27500669-d81b-11e4-aea4-52540066fee9'
 
 client = ProfitBricksService(
-    username='username', password='password')
+    username='vendors@stackpointcloud.com', password='0XrKxoHTlwvS')
 
 volume1 = Volume(
     name='volume11',
