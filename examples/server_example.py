@@ -115,7 +115,7 @@ datacenter_id = 'c4fd1f8a-65e0-42cb-b8fa-ff7e87c3071b'
 image_id = '27500669-d81b-11e4-aea4-52540066fee9'
 
 client = ProfitBricksService(
-    username='vendors@stackpointcloud.com', password='0XrKxoHTlwvS')
+    username='username', password='password')
 
 volume1 = Volume(
     name='volume11',
