@@ -5,7 +5,7 @@ client = ProfitBricksService(
 
 client = ProfitBricksService(
     username='vendors@stackpointcloud.com',
-    password='UvzSJJXMFU4k2EJC2WtKAZHTEUdd9GgeLkeKbxHGOgU=',
+    password='*******',
     host_base='https://api.profitbricks.com/rest')
 
 for res in client.list_servers('b0ac144e-e294-415f-ba39-6737d5a9d419')['items']: print res['properties']['name'],res['properties']['vmState']
