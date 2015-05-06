@@ -2362,8 +2362,7 @@ class Server(ProfitBricksService):
             'availability_zone=%s, boot_volume_id=%s, '
             'boot_cdrom=%s> ...>')
             % (self.name, self.cores, self.ram,
-                self.availability_zone, self.boot_volume_id,
-                self.boot_volume_id, self.boot_cdrom))
+                self.availability_zone, self.boot_volume_id, self.boot_cdrom))
 
 
 class Volume(ProfitBricksService):
