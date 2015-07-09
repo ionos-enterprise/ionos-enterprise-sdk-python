@@ -1692,8 +1692,6 @@ class ProfitBricksService(object):
     def _perform_get(self, url, params=dict(), headers=dict()):
         headers.update({'Content-Type':
                        'application/vnd.profitbricks.resource+json'})
-        # headers.update({'X-ProfitBricks-REST':
-        #                 'ra3ge3uY6cha'})
         return requests.get(url=url, params=params, headers=headers)
 
     def _perform_delete(self, url, params=dict(), headers=dict()):
@@ -1720,15 +1718,11 @@ class ProfitBricksService(object):
     def _perform_post_action(self, url, data=None, headers=dict()):
         headers.update({'Content-Type':
                         'application/x-www-form-urlencoded; charset=UTF-8'})
-        # headers.update({'X-ProfitBricks-REST':
-        #                 'ra3ge3uY6cha'})
         return requests.post(url=url, data=data, headers=headers)
 
     def _perform_post_action_json(self, url, data=None, headers=dict()):
         headers.update({'Content-Type':
                         'application/x-www-form-urlencoded; charset=UTF-8'})
-        # headers.update({'X-ProfitBricks-REST':
-        #                 'ra3ge3uY6cha'})
         return requests.post(url=url, data=data, headers=headers)
 
     def _perform_request(self, url, type='GET',
