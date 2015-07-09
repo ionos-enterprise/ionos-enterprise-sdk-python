@@ -172,7 +172,7 @@ class ProfitBricksService(object):
         resp = response.json()
 
         resp.update(
-            { 'requestId' : re.split(
+            {'requestId': re.split(
                 "/", response.headers['location'])[5]})
 
         return resp
@@ -199,7 +199,7 @@ class ProfitBricksService(object):
         resp = response.json()
 
         resp.update(
-            { 'requestId' : re.split(
+            {'requestId': re.split(
                 "/", response.headers['location'])[5]})
 
         return resp
@@ -345,7 +345,7 @@ class ProfitBricksService(object):
         resp = response.json()
 
         resp.update(
-            { 'requestId' : re.split(
+            {'requestId': re.split(
                 "/", response.headers['location'])[5]})
 
         return resp
@@ -373,7 +373,7 @@ class ProfitBricksService(object):
         for attr in kwargs.keys():
             data[self._underscore_to_camelcase(attr)] = kwargs[attr]
 
-            if attr == 'source_mac':                
+            if attr == 'source_mac':
                 data['sourceMac'] = kwargs[attr]
             elif attr == 'source_ip':
                 data['sourceIp'] = kwargs[attr]
@@ -402,7 +402,7 @@ class ProfitBricksService(object):
         resp = response.json()
 
         resp.update(
-            { 'requestId' : re.split(
+            {'requestId': re.split(
                 "/", response.headers['location'])[5]})
 
         return resp
@@ -425,7 +425,7 @@ class ProfitBricksService(object):
         """
         Retrieves a list of images available in the datacenter.
 
-        :param      depth: The depth of the response data. 
+        :param      depth: The depth of the response data.
         :type       depth: ``int``
 
         """
@@ -463,7 +463,7 @@ class ProfitBricksService(object):
         resp = response.json()
 
         resp.update(
-            { 'requestId' : re.split(
+            {'requestId': re.split(
                 "/", response.headers['location'])[5]})
 
         return resp
@@ -528,7 +528,7 @@ class ProfitBricksService(object):
         resp = response.json()
 
         resp.update(
-            { 'requestId' : re.split(
+            {'requestId': re.split(
                 "/", response.headers['location'])[5]})
 
         return resp
@@ -611,7 +611,7 @@ class ProfitBricksService(object):
         resp = response.json()
 
         resp.update(
-            { 'requestId' : re.split(
+            {'requestId': re.split(
                 "/", response.headers['location'])[5]})
 
         return resp
@@ -640,7 +640,7 @@ class ProfitBricksService(object):
         resp = response.json()
 
         resp.update(
-            { 'requestId' : re.split(
+            {'requestId': re.split(
                 "/", response.headers['location'])[5]})
 
         return resp
@@ -736,11 +736,10 @@ class ProfitBricksService(object):
             type='POST',
             data=data)
 
-
         resp = response.json()
 
         resp.update(
-            { 'requestId' : re.split(
+            {'requestId': re.split(
                 "/", response.headers['location'])[5]})
 
         return resp
@@ -771,7 +770,7 @@ class ProfitBricksService(object):
         resp = response.json()
 
         resp.update(
-            { 'requestId' : re.split(
+            {'requestId': re.split(
                 "/", response.headers['location'])[5]})
 
         return resp
@@ -821,7 +820,7 @@ class ProfitBricksService(object):
         resp = response.json()
 
         resp.update(
-            { 'requestId' : re.split(
+            {'requestId': re.split(
                 "/", response.headers['location'])[5]})
 
         return resp
@@ -851,7 +850,7 @@ class ProfitBricksService(object):
         # resp = response.json()
 
         # resp.update(
-        #     { 'requestId' : re.split(
+        #     {'requestId': re.split(
         #         "/", response.headers['location'])[5]})
 
         return response.json()
@@ -998,7 +997,7 @@ class ProfitBricksService(object):
         resp = response.json()
 
         resp.update(
-            { 'requestId' : re.split(
+            {'requestId': re.split(
                 "/", response.headers['location'])[5]})
 
         return resp
@@ -1034,7 +1033,7 @@ class ProfitBricksService(object):
         resp = response.json()
 
         resp.update(
-            { 'requestId' : re.split(
+            {'requestId': re.split(
                 "/", response.headers['location'])[5]})
 
         return resp
@@ -1148,7 +1147,7 @@ class ProfitBricksService(object):
         resp = response.json()
 
         resp.update(
-            { 'requestId' : re.split(
+            {'requestId': re.split(
                 "/", response.headers['location'])[5]})
 
         return resp
@@ -1188,7 +1187,7 @@ class ProfitBricksService(object):
         resp = response.json()
 
         resp.update(
-            { 'requestId' : re.split(
+            {'requestId': re.split(
                 "/", response.headers['location'])[5]})
 
         return resp
@@ -1260,7 +1259,7 @@ class ProfitBricksService(object):
         resp = response.json()
 
         resp.update(
-            { 'requestId' : re.split(
+            {'requestId': re.split(
                 "/", response.headers['location'])[5]})
 
         return resp
@@ -1289,7 +1288,7 @@ class ProfitBricksService(object):
         # resp = response.json()
 
         # resp.update(
-        #     { 'requestId' : re.split(
+        #     {'requestId': re.split(
         #         "/", response.headers['location'])[5]})
 
         return response
@@ -1361,7 +1360,7 @@ class ProfitBricksService(object):
         resp = response.json()
 
         resp.update(
-            { 'requestId' : re.split(
+            {'requestId': re.split(
                 "/", response.headers['location'])[5]})
 
         return resp
@@ -1390,7 +1389,7 @@ class ProfitBricksService(object):
         # resp = response.json()
 
         # resp.update(
-        #     { 'requestId' : re.split(
+        #     {'requestId': re.split(
         #         "/", response.headers['location'])[5]})
 
         return response
@@ -1507,7 +1506,7 @@ class ProfitBricksService(object):
         resp = response.json()
 
         resp.update(
-            { 'requestId' : re.split(
+            {'requestId': re.split(
                 "/", response.headers['location'])[5]})
 
         return resp
@@ -1525,7 +1524,7 @@ class ProfitBricksService(object):
 
         """
 
-        data = { 'name' : name, 'description' : description }
+        data = {'name': name, 'description': description}
 
         response = self._perform_request(
             '/datacenters/%s/volumes/%s/create-snapshot' % (
@@ -1536,7 +1535,7 @@ class ProfitBricksService(object):
         resp = response.json()
 
         resp.update(
-            { 'requestId' : re.split(
+            {'requestId': re.split(
                 "/", response.headers['location'])[5]})
 
         return resp
@@ -1555,7 +1554,7 @@ class ProfitBricksService(object):
         :type       snapshot_id: ``str``
 
         """
-        data = { 'snapshotId' : snapshot_id }
+        data = {'snapshotId': snapshot_id}
 
         response = self._perform_request(
             url='/datacenters/%s/volumes/%s/restore-snapshot' % (
@@ -1650,7 +1649,7 @@ class ProfitBricksService(object):
         resp = response.json()
 
         resp.update(
-            { 'requestId' : re.split(
+            {'requestId': re.split(
                 "/", response.headers['location'])[5]})
 
         return resp
@@ -1681,7 +1680,7 @@ class ProfitBricksService(object):
         resp = response.json()
 
         resp.update(
-            { 'requestId' : re.split(
+            {'requestId': re.split(
                 "/", response.headers['location'])[5]})
 
         return resp
@@ -1948,7 +1947,7 @@ class ProfitBricksService(object):
         if rule.port_range_end:
             properties['portRangeEnd'] = rule.port_range_end
 
-        if rule.icmp_type: 
+        if rule.icmp_type:
             properties['icmpType'] = rule.icmp_type
 
         if rule.icmp_code:
@@ -2381,7 +2380,7 @@ class Volume(ProfitBricksService):
         :param      disk_type: The type of storage. Def. HDD
         :type       disk_type: ``str``
 
-        :param      licence_type: The license type. 
+        :param      licence_type: The license type.
         :type       licence_type: ``str``
 
         """

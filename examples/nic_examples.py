@@ -1,6 +1,6 @@
 """List NICs
 """
-from profitbricks.client import ProfitBricksService, FirewallRule, NIC
+from profitbricks.client import ProfitBricksService
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 server_id = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
@@ -17,7 +17,7 @@ for n in nics['items']:
 
 """Create NIC
 """
-from profitbricks.client import ProfitBricksService, FirewallRule, NIC
+from profitbricks.client import ProfitBricksService, NIC
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 server_id = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
@@ -27,7 +27,7 @@ client = ProfitBricksService(
 
 i = NIC(
     name='nic1',
-    ips=['10.2.2.3','10.2.3.4'],
+    ips=['10.2.2.3', '10.2.3.4'],
     dhcp='true',
     lan=1,
     firewall_active=True
@@ -68,7 +68,7 @@ fw_rules = [fwrule1, fwrule2]
 
 i = NIC(
     name='nic1',
-    ips=['10.2.2.3','10.2.3.4'],
+    ips=['10.2.2.3', '10.2.3.4'],
     dhcp='true',
     lan=1,
     firewall_active=True,

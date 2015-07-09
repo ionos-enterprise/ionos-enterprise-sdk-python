@@ -1,13 +1,11 @@
-import os
-import re
 import unittest
-import responses
 
 from profitbricks.client import ProfitBricksService, Volume
 
 volume_id = '700e1cab-99b2-4c30-ba8c-1d273ddba025'
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 snapshot_id = '7df81087-5835-41c6-a10b-3e098593bba4'
+
 
 class TestVolume(unittest.TestCase):
     def setUp(self):
@@ -61,7 +59,7 @@ class TestVolume(unittest.TestCase):
         volume = self.volume.delete_volume(
             datacenter_id=datacenter_id,
             volume_id=volume_id)
-        
+
         self.assertTrue(volume)
 
     def test_update_volume(self):
@@ -144,7 +142,7 @@ class TestVolume(unittest.TestCase):
             volume['properties']['name'],
             'Snapshot of storage X on 12.12.12 12:12:12 - updated')
         self.assertEqual(volume['properties']['description'],
-                                'description of a snapshot - updated')
+                         'description of a snapshot - updated')
         self.assertEqual(volume['properties']['location'], 'de/fkb')
         self.assertEqual(volume['properties']['size'], 28)
         self.assertEqual(volume['properties']['licenceType'], 'WINDOWS')
@@ -169,7 +167,7 @@ class TestVolume(unittest.TestCase):
 
     def test_remove_snapshot(self):
         volume = self.volume.remove_snapshot(snapshot_id=snapshot_id)
-        
+
         self.assertTrue(volume)
 
 if __name__ == '__main__':
