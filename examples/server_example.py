@@ -225,7 +225,7 @@ i = Server(
     name='server14',
     ram=4096,
     cores=4,
-    boot_volume_id=boot_volume
+    boot_volume_id=boot_volume_id
     )
 
 response = client.create_server(

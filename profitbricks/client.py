@@ -1970,7 +1970,7 @@ class ProfitBricksService(object):
             properties['availabilityZone'] = server.availability_zone
 
         if server.boot_cdrom:
-            properties['bootCdrom'] = boot_cdrom
+            properties['bootCdrom'] = server.boot_cdrom
 
         if server.boot_volume_id:
             boot_volume = {
