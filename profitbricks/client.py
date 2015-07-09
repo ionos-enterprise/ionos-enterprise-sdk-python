@@ -508,9 +508,6 @@ class ProfitBricksService(object):
         Reserves an IPBlock within your account.
 
         """
-        items = []
-        entities = dict()
-
         properties = {
             "location": ipblock.location,
             "size": str(ipblock.size).lower()
@@ -1900,8 +1897,6 @@ class ProfitBricksService(object):
         if len(nic.firewall_rules) > 0:
             for rule in nic.firewall_rules:
                 items.append(self._create_firewallrules_dict(rule))
-
-        fwrule_properties = {}
 
         rules = {
             "items": items
