@@ -1,7 +1,4 @@
-import os
-import re
 import unittest
-import responses
 
 from profitbricks.client import ProfitBricksService
 from profitbricks.client import Datacenter, Volume, Server
@@ -42,7 +39,7 @@ class TestDatacenter(unittest.TestCase):
     def test_delete(self):
         datacenter = self.datacenter.delete_datacenter(
             datacenter_id=datacenter_id)
-        
+
         self.assertTrue(datacenter)
 
     def test_update(self):
@@ -73,7 +70,7 @@ class TestDatacenter(unittest.TestCase):
 
     def test_create_complex(self):
         """
-        Creates a complex Datacenter in a single request. 
+        Creates a complex Datacenter in a single request.
 
         """
         fwrule1 = FirewallRule(

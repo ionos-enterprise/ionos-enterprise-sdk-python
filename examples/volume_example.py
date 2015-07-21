@@ -20,7 +20,7 @@ response = client.create_volume(
 """Create snapshot
 """
 
-from profitbricks.client import ProfitBricksService, Volume
+from profitbricks.client import ProfitBricksService
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 volume_id = '700e1cab-99b2-4c30-ba8c-1d273ddba025'
@@ -36,7 +36,7 @@ volume = client.create_snapshot(
 
 """Restore Snapshot
 """
-from profitbricks.client import ProfitBricksService, Volume
+from profitbricks.client import ProfitBricksService
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 volume_id = '700e1cab-99b2-4c30-ba8c-1d273ddba025'
@@ -54,7 +54,7 @@ response = client.restore_snapshot(
 """Update Volume
 """
 
-from profitbricks.client import ProfitBricksService, Volume
+from profitbricks.client import ProfitBricksService
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 volume_id = '700e1cab-99b2-4c30-ba8c-1d273ddba025'

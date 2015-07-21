@@ -1,7 +1,4 @@
-import os
-import re
 import unittest
-import responses
 
 from profitbricks.client import ProfitBricksService
 
@@ -22,14 +19,14 @@ class TestServer(unittest.TestCase):
         self.assertEqual(
             snapshots['items'][0]['properties']['name'],
             'Snapshot of storage X on 12.12.12 12:12:12')
-        
+
         self.assertEqual(
             snapshots['items'][0]['properties']['description'],
             'description of a snapshot')
-        
+
         self.assertEqual(
             snapshots['items'][0]['properties']['location'], 'de/fkb')
-        
+
         self.assertEqual(
             snapshots['items'][0]['properties']['size'], 28)
 
@@ -41,21 +38,21 @@ class TestServer(unittest.TestCase):
         self.assertEqual(
             snapshot['properties']['name'],
             'Snapshot of storage X on 12.12.12 12:12:12')
-        
+
         self.assertEqual(
             snapshot['properties']['description'],
             'description of a snapshot')
-        
+
         self.assertEqual(
             snapshot['properties']['location'], 'de/fkb')
-        
+
         self.assertEqual(
             snapshot['properties']['size'], 28)
 
     def test_delete_snapshot(self):
         snapshot = self.snapshot.delete_snapshot(
             snapshot_id=snapshot_id)
-        
+
         self.assertTrue(snapshot)
 
     def test_update_snapshot(self):
@@ -65,14 +62,14 @@ class TestServer(unittest.TestCase):
 
         self.assertEqual(snapshot['id'], '7df81087-5835-41c6-a10b-3e098593bbd2')
         self.assertEqual(snapshot['properties']['name'], 'New name')
-        
+
         self.assertEqual(
             snapshot['properties']['description'],
             'description of a snapshot - updated')
-        
+
         self.assertEqual(
             snapshot['properties']['location'], 'de/fkb')
-        
+
         self.assertEqual(
             snapshot['properties']['size'], 28)
 

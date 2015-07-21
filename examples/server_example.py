@@ -2,7 +2,7 @@
 """
 
 from profitbricks.client import ProfitBricksService
-from profitbricks.client import Server, NIC, Volume
+from profitbricks.client import Server
 
 server_id = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
@@ -81,7 +81,7 @@ response = client.create_server(
 """
 
 from profitbricks.client import ProfitBricksService
-from profitbricks.client import Server, NIC, Volume
+from profitbricks.client import Server
 
 server_id = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
@@ -106,7 +106,7 @@ response = client.create_server(
 """
 
 from profitbricks.client import ProfitBricksService
-from profitbricks.client import Server, NIC, Volume
+from profitbricks.client import Server, Volume
 
 server_id = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
 volume_id = '700e1cab-99b2-4c30-ba8c-1d273ddba044'
@@ -147,7 +147,7 @@ response = client.create_server(
 """
 
 from profitbricks.client import ProfitBricksService
-from profitbricks.client import Server, NIC, Volume
+from profitbricks.client import Server, NIC
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 
@@ -185,7 +185,7 @@ response = client.create_server(
 """Create Server with Two Existing Volumes
 """
 from profitbricks.client import ProfitBricksService
-from profitbricks.client import Server, NIC, Volume
+from profitbricks.client import Server
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 volume_id1 = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
@@ -211,7 +211,7 @@ response = client.create_server(
 """
 
 from profitbricks.client import ProfitBricksService
-from profitbricks.client import Server, NIC, Volume
+from profitbricks.client import Server
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 volume_id1 = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
@@ -225,7 +225,7 @@ i = Server(
     name='server14',
     ram=4096,
     cores=4,
-    boot_volume_id=boot_volume
+    boot_volume_id=boot_volume_id
     )
 
 response = client.create_server(
@@ -236,7 +236,7 @@ response = client.create_server(
 """
 
 from profitbricks.client import ProfitBricksService
-from profitbricks.client import Server, NIC, Volume
+from profitbricks.client import Server, NIC
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 volume_id1 = '700e1cab-99b2-4c30-ba8c-1d273ddba023'

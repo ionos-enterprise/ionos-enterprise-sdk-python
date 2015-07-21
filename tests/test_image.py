@@ -1,9 +1,7 @@
-import os
-import re
 import unittest
-import responses
 
 from profitbricks.client import ProfitBricksService
+
 
 class TestImage(unittest.TestCase):
     def setUp(self):
@@ -25,7 +23,7 @@ class TestImage(unittest.TestCase):
 
     def test_delete_image(self):
         image_id = '7df81087-5835-41c6-a10b-3e098593bbd2'
-        
+
         image = self.image.delete_image(image_id)
         self.assertTrue(image)
 

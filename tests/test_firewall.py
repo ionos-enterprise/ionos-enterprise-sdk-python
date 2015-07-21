@@ -1,7 +1,4 @@
-import os
-import re
 import unittest
-import responses
 
 from profitbricks.client import ProfitBricksService, FirewallRule
 
@@ -9,6 +6,7 @@ server_id = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
 nic_id = '<NIC-ID>'
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 firewall_rule_id = '<RULE1-ID>'
+
 
 class TestFirewall(unittest.TestCase):
     def setUp(self):
@@ -42,7 +40,7 @@ class TestFirewall(unittest.TestCase):
             server_id=server_id,
             nic_id=nic_id,
             firewall_rule_id=firewall_rule_id)
-        
+
         self.assertTrue(firewall)
 
     def test_update(self):

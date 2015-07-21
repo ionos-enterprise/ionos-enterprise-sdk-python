@@ -1,6 +1,6 @@
 """List LANs
 """
-from profitbricks.client import ProfitBricksService, LAN
+from profitbricks.client import ProfitBricksService
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 
@@ -48,7 +48,7 @@ response = client.create_lan(datacenter_id=datacenter_id, lan=i)
 
 """Get LAN Members
 """
-from profitbricks.client import ProfitBricksService, LAN
+from profitbricks.client import ProfitBricksService
 
 lan_id = '4'
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
@@ -56,5 +56,5 @@ datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 client = ProfitBricksService(
     username='username', password='password')
 
-members = client.get_lan_members(datacenter_id=datacenter_id, 
-                                   lan_id=lan_id)
+members = client.get_lan_members(datacenter_id=datacenter_id,
+                                 lan_id=lan_id)
