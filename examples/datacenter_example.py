@@ -10,17 +10,13 @@ datacenters = client.list_datacenters()
 for d in datacenters['items']:
     vdc = client.get_datacenter(d['id'])
     name = vdc['properties']['name']
-    if name is 
+    if name is
 
 
 for d in datacenters['items']:
     vdc = client.get_datacenter(d['id'])
     vdc['properties']['name']
     if dc_name == vdc['properties']['name']:
-        
-
-
-
 
 
 """Get Datacenter

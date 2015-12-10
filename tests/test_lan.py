@@ -1,12 +1,10 @@
-import os
-import re
 import unittest
-import responses
 
 from profitbricks.client import ProfitBricksService, LAN
 
 lan_id = '4'
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
+
 
 class TestLan(unittest.TestCase):
     def setUp(self):
@@ -42,7 +40,7 @@ class TestLan(unittest.TestCase):
         i = LAN(
             name='public Lan 4',
             public=True)
-        
+
         response = self.lan.create_lan(datacenter_id=datacenter_id, lan=i)
 
         self.assertEqual(response['properties']['name'], 'public Lan 4')
@@ -62,7 +60,7 @@ class TestLan(unittest.TestCase):
         self.assertTrue(response['properties']['public'])
 
     def test_get_lan_members(self):
-        members = self.lan.get_lan_members(datacenter_id=datacenter_id, 
+        members = self.lan.get_lan_members(datacenter_id=datacenter_id,
                                            lan_id=lan_id)
 
         self.assertEqual(len(members), 4)
