@@ -1,7 +1,4 @@
-import os
-import re
 import unittest
-import responses
 
 from profitbricks.client import ProfitBricksService, FirewallRule, NIC
 
@@ -45,7 +42,7 @@ class TestNIC(unittest.TestCase):
             datacenter_id=datacenter_id,
             server_id=server_id,
             nic_id=nic_id)
-        
+
         self.assertTrue(nic)
 
     def test_update_nic(self):
@@ -53,7 +50,7 @@ class TestNIC(unittest.TestCase):
             datacenter_id=datacenter_id,
             server_id=server_id,
             nic_id=nic_id,
-            ips=['10.2.2.3','10.2.3.4'])
+            ips=['10.2.2.3', '10.2.3.4'])
 
         self.assertEqual(nic['id'], nic_id)
         self.assertEqual(nic['properties']['name'], 'nic1')
@@ -80,7 +77,7 @@ class TestNIC(unittest.TestCase):
 
         i = NIC(
             name='nic1',
-            ips=['10.2.2.3','10.2.3.4'],
+            ips=['10.2.2.3', '10.2.3.4'],
             dhcp='true',
             lan=1,
             firewall_active=True,
@@ -103,7 +100,7 @@ class TestNIC(unittest.TestCase):
     def test_create_simple(self):
         i = NIC(
             name='nic1',
-            ips=['10.2.2.3','10.2.3.4'],
+            ips=['10.2.2.3', '10.2.3.4'],
             dhcp='true',
             lan=1,
             firewall_active=True

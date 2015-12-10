@@ -1,13 +1,11 @@
-import os
-import re
 import unittest
-import responses
 
 from profitbricks.client import ProfitBricksService, LoadBalancer
 
 loadbalancer_id = '<LB-ID>'
 nic_id = '<NIC-ID>'
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
+
 
 class TestLoadBalancer(unittest.TestCase):
     def setUp(self):
@@ -34,7 +32,7 @@ class TestLoadBalancer(unittest.TestCase):
         loadbalancer = self.loadbalancer.delete_loadbalancer(
             datacenter_id=datacenter_id,
             loadbalancer_id=loadbalancer_id)
-        
+
         self.assertTrue(loadbalancer)
 
     def test_update_loadbalancer(self):
@@ -116,14 +114,14 @@ class TestLoadBalancer(unittest.TestCase):
 
         self.assertEqual(response['properties']['name'], 'nic1')
         self.assertEqual(response['properties']['mac'], 'AB:21:23:09:78:C2')
-        self.assertTrue(response['properties']['dhcp'])        
+        self.assertTrue(response['properties']['dhcp'])
 
     def test_remove_balanced_nic(self):
         loadbalancer = self.loadbalancer.remove_loadbalanced_nic(
             datacenter_id=datacenter_id,
             loadbalancer_id=loadbalancer_id,
             nic_id=nic_id)
-        
+
         self.assertTrue(loadbalancer)
 
 if __name__ == '__main__':

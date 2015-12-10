@@ -1,7 +1,4 @@
-import os
-import re
 import unittest
-import responses
 
 from profitbricks.client import ProfitBricksService
 from profitbricks.client import Server, NIC, Volume
@@ -46,7 +43,7 @@ class TestServer(unittest.TestCase):
         server = self.server.delete_server(
             datacenter_id=datacenter_id,
             server_id=server_id)
-        
+
         self.assertTrue(server)
 
     def test_update_server(self):
@@ -326,7 +323,7 @@ class TestServer(unittest.TestCase):
     def test_get_attached_volumes(self):
         servers = self.server.get_attached_volumes(
             datacenter_id=datacenter_id,
-            server_id=server_id)        
+            server_id=server_id)
 
         self.assertEqual(len(servers), 4)
         self.assertEqual(servers['items'][0]['id'], '700e1cab-99b2-4c30-ba8c-1d273ddba025')
@@ -354,7 +351,7 @@ class TestServer(unittest.TestCase):
         server = self.server.get_attached_volume(
             datacenter_id=datacenter_id,
             server_id=server_id,
-            volume_id=volume_id)        
+            volume_id=volume_id)
 
         self.assertEqual(server['id'], volume_id)
         self.assertEqual(server['properties']['name'], 'my boot volume for server 1')
@@ -382,7 +379,7 @@ class TestServer(unittest.TestCase):
             datacenter_id=datacenter_id,
             server_id=server_id,
             volume_id=volume_id)
-        
+
         self.assertTrue(server)
 
     def test_attach_volume(self):
@@ -415,13 +412,14 @@ class TestServer(unittest.TestCase):
     def test_get_attached_cdroms(self):
         servers = self.server.get_attached_cdroms(
             datacenter_id=datacenter_id,
-            server_id=server_id)        
+            server_id=server_id)
 
         self.assertEqual(len(servers), 4)
         self.assertEqual(servers['items'][0]['id'], '7df81087-5835-41c6-a10b-3e098593bbd2')
         self.assertEqual(servers['items'][0]['properties']['name'], 'Ubuntu 14.04')
         self.assertEqual(servers['items'][0]['properties']['size'], 28)
-        self.assertEqual(servers['items'][0]['properties']['description'], 'Ubuntu image description')
+        self.assertEqual(servers['items'][0]['properties']['description'],
+                         'Ubuntu image description')
         self.assertEqual(servers['items'][0]['properties']['location'], 'de/fkb')
         self.assertEqual(servers['items'][0]['properties']['imageType'], 'CDROM')
         self.assertEqual(servers['items'][0]['properties']['licenceType'], 'UNKNOWN')
@@ -443,7 +441,7 @@ class TestServer(unittest.TestCase):
         server = self.server.get_attached_cdrom(
             datacenter_id=datacenter_id,
             server_id=server_id,
-            cdrom_id=cdrom_id)        
+            cdrom_id=cdrom_id)
 
         self.assertEqual(server['id'], cdrom_id)
         self.assertEqual(server['properties']['name'], 'Ubuntu 14.04')
@@ -471,7 +469,7 @@ class TestServer(unittest.TestCase):
             datacenter_id=datacenter_id,
             server_id=server_id,
             cdrom_id=cdrom_id)
-        
+
         self.assertTrue(server)
 
     def test_attach_cdrom(self):
@@ -505,21 +503,21 @@ class TestServer(unittest.TestCase):
         server = self.server.start_server(
             datacenter_id=datacenter_id,
             server_id=server_id)
-        
+
         self.assertTrue(server)
 
     def test_stop_server(self):
         server = self.server.stop_server(
             datacenter_id=datacenter_id,
             server_id=server_id)
-        
+
         self.assertTrue(server)
 
     def test_reboot_server(self):
         server = self.server.reboot_server(
             datacenter_id=datacenter_id,
             server_id=server_id)
-        
+
         self.assertTrue(server)
 
 if __name__ == '__main__':
