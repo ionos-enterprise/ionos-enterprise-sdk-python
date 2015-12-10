@@ -2072,6 +2072,9 @@ class ProfitBricksService(object):
         if volume.image_password:
             properties['imagePassword'] = volume.image_password
 
+        if volume.ssh_keys:
+            properties['sshKeys'] = volume.ssh_keys
+
         raw = {
             "properties": properties
         }
@@ -2367,9 +2370,9 @@ class Server(ProfitBricksService):
 
 
 class Volume(ProfitBricksService):
-    def __init__(self, name=None, size=None,
-                 bus='VIRTIO', image=None, disk_type='HDD',
-                 licence_type='UNKNOWN', image_password=None, **kwargs):
+    def __init__(self, name=None, size=None, bus='VIRTIO', image=None,
+                 disk_type='HDD', licence_type='UNKNOWN', image_password=None,
+                 ssh_keys=[], **kwargs):
         """
         Volume class initializer.
 
@@ -2391,6 +2394,9 @@ class Volume(ProfitBricksService):
         :param      licence_type: The license type. 
         :type       licence_type: ``str``
 
+        :param      ssh_keys: A list of public SSH keys.
+        :type       ssh_keys ``list``
+
         """
         self.name = name
         self.size = size
@@ -2399,6 +2405,7 @@ class Volume(ProfitBricksService):
         self.disk_type = disk_type
         self.licence_type = licence_type
         self.image_password = image_password
+        self.ssh_keys = ssh_keys
 
     def __repr__(self):
         return ((
