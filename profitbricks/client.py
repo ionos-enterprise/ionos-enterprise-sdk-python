@@ -276,7 +276,7 @@ class ProfitBricksService(object):
     def create_firewall_rule(self, datacenter_id, server_id,
                              nic_id, firewall_rule):
         """
-        Creates a firewall rule on the specificed NIC and Server.
+        Creates a firewall rule on the specified NIC and Server.
 
         :param      datacenter_id: The unique ID of the Datacenter.
         :type       datacenter_id: ``str``
@@ -895,7 +895,7 @@ class ProfitBricksService(object):
 
     def create_nic(self, datacenter_id, server_id, nic):
         """
-        Creates a firewall rule on the specificed NIC and Server.
+        Creates a NIC on the specified NIC and Server.
 
         :param      datacenter_id: The unique ID of the Datacenter.
         :type       datacenter_id: ``str``
