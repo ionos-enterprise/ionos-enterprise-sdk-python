@@ -1619,8 +1619,14 @@ class ProfitBricksService(object):
         json_response = response.json()
 
         if 'location' in response.headers:
-            request_id = response.headers['location'].split('/')[-2]
-            json_response.update({'requestId': request_id})
+            # The request URL has currently the format {host_base}/requests/{request ID}/status
+            # Thus search for a UUID.
+            match = re.search('/requests/([-A-Fa-f0-9]+)/', response.headers['location'])
+            if match:
+                json_response['requestId'] = match.group(1)
+            else:
+                raise Exception("Failed to extract request ID from response header 'location': "
+                                "'{location}'".format(location=response.headers['location']))
 
         return json_response
 
