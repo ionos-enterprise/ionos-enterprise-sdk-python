@@ -1,8 +1,9 @@
-import requests
-import json
 import base64
-import urllib
+import json
 import re
+
+import requests
+from six.moves.urllib.parse import urlencode
 
 from profitbricks import (
     API_HOST,
@@ -1527,7 +1528,7 @@ class ProfitBricksService(object):
             '/datacenters/%s/volumes/%s/create-snapshot' % (
                 datacenter_id, volume_id),
             type='POST-ACTION-JSON',
-            data=urllib.urlencode(data))
+            data=urlencode(data))
 
         resp = response.json()
 
@@ -1558,7 +1559,7 @@ class ProfitBricksService(object):
                 datacenter_id,
                 volume_id),
             type='POST-ACTION',
-            data=urllib.urlencode(data))
+            data=urlencode(data))
 
         return response
 
