@@ -4,6 +4,7 @@ from helpers import configuration
 from helpers.resources import resource, wait_for_completion
 from profitbricks.client import Datacenter, Server, Volume, NIC, FirewallRule
 from profitbricks.client import ProfitBricksService
+from six import assertRegex
 
 
 class TestServer(unittest.TestCase):
@@ -61,7 +62,7 @@ class TestServer(unittest.TestCase):
 
         self.assertGreater(len(servers), 0)
         self.assertEqual(servers['items'][0]['type'], 'server')
-        self.assertRegexpMatches(servers['items'][0]['id'], self.resource['uuid_match'])
+        assertRegex(self, servers['items'][0]['id'], self.resource['uuid_match'])
 
     def test_get(self):
         server = self.client.get_server(
@@ -107,7 +108,7 @@ class TestServer(unittest.TestCase):
 
     def test_create_simple(self):
         # Use server created dring server test setup
-        self.assertRegexpMatches(self.server['id'], self.resource['uuid_match'])
+        assertRegex(self, self.server['id'], self.resource['uuid_match'])
         self.assertEqual(self.server['type'], 'server')
         self.assertEqual(self.server['properties']['name'], self.resource['server']['name'])
         self.assertEqual(self.server['properties']['cores'], self.resource['server']['cores'])
@@ -133,7 +134,7 @@ class TestServer(unittest.TestCase):
             datacenter_id=self.datacenter['id'],
             server_id=composite_server['id'])
 
-        self.assertRegexpMatches(composite_server['id'], self.resource['uuid_match'])
+        assertRegex(self, composite_server['id'], self.resource['uuid_match'])
         self.assertEqual(composite_server['properties']['name'], self.resource['server']['name'])
         self.assertEqual(composite_server['properties']['cores'], self.resource['server']['cores'])
         self.assertEqual(composite_server['properties']['ram'], self.resource['server']['ram'])

@@ -3,6 +3,7 @@ import unittest
 from helpers import configuration
 from helpers.resources import resource
 from profitbricks.client import ProfitBricksService
+from six import assertRegex
 
 
 class TestImage(unittest.TestCase):
@@ -24,7 +25,7 @@ class TestImage(unittest.TestCase):
 
         self.assertGreater(len(images), 0)
         self.assertEqual(images['items'][0]['type'], 'image')
-        self.assertRegexpMatches(images['items'][0]['id'], self.resource['uuid_match'])
+        assertRegex(self, images['items'][0]['id'], self.resource['uuid_match'])
 
     def test_get_image(self):
         image = self.client.get_image(self.image['id'])

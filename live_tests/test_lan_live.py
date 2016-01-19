@@ -4,6 +4,7 @@ from helpers import configuration
 from helpers.resources import resource, wait_for_completion
 from profitbricks.client import ProfitBricksService
 from profitbricks.client import Datacenter, Server, LAN, NIC
+from six import assertRegex
 
 
 class TestLan(unittest.TestCase):
@@ -133,10 +134,10 @@ class TestLan(unittest.TestCase):
             lan_id=self.lan['id'])
 
         self.assertGreater(len(members), 0)
-        self.assertRegexpMatches(members['items'][0]['id'], self.resource['uuid_match'])
+        assertRegex(self, members['items'][0]['id'], self.resource['uuid_match'])
         self.assertEqual(members['items'][0]['type'], 'nic')
         self.assertEqual(members['items'][0]['properties']['name'], self.resource['nic']['name'])
-        self.assertRegexpMatches(members['items'][0]['properties']['mac'], self.resource['mac_match'])
+        assertRegex(self, members['items'][0]['properties']['mac'], self.resource['mac_match'])
 
 if __name__ == '__main__':
     unittest.main()

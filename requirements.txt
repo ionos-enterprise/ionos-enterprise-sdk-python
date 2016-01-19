@@ -1,4 +1,5 @@
 requests>=2.0.0
+six
 
 # Testing requirements
 pytest

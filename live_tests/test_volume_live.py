@@ -4,6 +4,7 @@ from helpers import configuration
 from helpers.resources import resource, wait_for_completion
 from profitbricks.client import Datacenter, Volume
 from profitbricks.client import ProfitBricksService
+from six import assertRegex
 
 
 class TestVolume(unittest.TestCase):
@@ -52,7 +53,7 @@ class TestVolume(unittest.TestCase):
             datacenter_id=self.datacenter['id'])
 
         self.assertGreater(len(volumes), 0)
-        self.assertRegexpMatches(volumes['items'][0]['id'], self.resource['uuid_match'])
+        assertRegex(self, volumes['items'][0]['id'], self.resource['uuid_match'])
         self.assertEqual(volumes['items'][0]['type'], 'volume')
         self.assertEqual(volumes['items'][0]['properties']['name'], self.resource['volume']['name'])
         self.assertEqual(volumes['items'][0]['properties']['size'], self.resource['volume']['size'])
@@ -141,7 +142,7 @@ class TestVolume(unittest.TestCase):
 
     def test_create_snapshot(self):
         # Use snapshot created during volume test setup.
-        self.assertRegexpMatches(self.snapshot1['id'], self.resource['uuid_match'])
+        assertRegex(self, self.snapshot1['id'], self.resource['uuid_match'])
         self.assertEqual(self.snapshot1['type'], 'snapshot')
         self.assertEqual(self.snapshot1['properties']['name'], self.resource['snapshot']['name'])
         self.assertEqual(self.snapshot1['properties']['description'], self.resource['snapshot']['description'])
