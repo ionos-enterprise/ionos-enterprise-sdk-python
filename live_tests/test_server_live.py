@@ -11,7 +11,9 @@ class TestServer(unittest.TestCase):
     def setUpClass(self):
         self.resource = resource()
         self.client = ProfitBricksService(
-            username=configuration.USERNAME, password=configuration.PASSWORD)
+            username=configuration.USERNAME,
+            password=configuration.PASSWORD,
+            headers=configuration.HEADERS)
 
         # Create test datacenter.
         self.datacenter = self.client.create_datacenter(

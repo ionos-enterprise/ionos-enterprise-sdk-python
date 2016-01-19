@@ -10,7 +10,9 @@ class TestLocation(unittest.TestCase):
     def setUpClass(self):
         self.resource = resource()
         self.client = ProfitBricksService(
-            username=configuration.USERNAME, password=configuration.PASSWORD)
+            username=configuration.USERNAME,
+            password=configuration.PASSWORD,
+            headers=configuration.HEADERS)
 
     def test_list_locations(self):
         locations = self.client.list_locations()

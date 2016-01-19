@@ -18,13 +18,14 @@ class ProfitBricksService(object):
         ProfitBricksClient Base Class
     """
 
-    def __init__(self, username=None, password=None,
-                 host_base=API_HOST, host_cert=None, ssl_verify=True):
+    def __init__(self, username=None, password=None, host_base=API_HOST,
+                 host_cert=None, ssl_verify=True, headers=dict()):
         self.username = username
         self.password = password
         self.host_base = host_base
         self.host_cert = host_cert
         self.verify = ssl_verify
+        self.headers = headers
 
     """Datacenter Functions
     """
@@ -1556,10 +1557,13 @@ class ProfitBricksService(object):
                          hooks=None,
                          stream=None,
                          json=None):
+
+        headers.update(self.headers)
         session = requests.Session()
         return session.request(method, url, params, data, headers, cookies,
                                files, auth, timeout, allow_redirects, proxies,
-                               hooks, stream, self.verify, self.host_cert, json)
+                               hooks, stream, self.verify, self.host_cert,
+                               json)
 
     def _perform_request(self, url, type='GET', data=None, headers=dict()):
         headers.update({'Authorization': 'Basic %s' % (base64.b64encode(
@@ -1568,34 +1572,34 @@ class ProfitBricksService(object):
 
         url = self._build_url(url)
 
-        # print('########################################')
-        # print('URL: '+url)
-        # print('Data: ')
-        # print(data)
-        # print('Headers: '+str(headers))
-        # print('########################################')
-
         if type == 'POST' or type == 'PUT':
-            headers.update({'Content-Type':
-                        'application/vnd.profitbricks.resource+json'})
-            response = self._wrapped_request(type, url, data=data, headers=headers)
+            headers.update(
+                {'Content-Type':
+                 'application/vnd.profitbricks.resource+json'})
+            response = self._wrapped_request(type, url, data=data,
+                                             headers=headers)
         elif type == 'POST-ACTION-JSON' or type == 'POST-ACTION':
-            headers.update({'Content-Type':
-                        'application/x-www-form-urlencoded; charset=UTF-8'})
-            response = self._wrapped_request('POST', url, data=data, headers=headers)
+            headers.update(
+                {'Content-Type':
+                 'application/x-www-form-urlencoded; charset=UTF-8'})
+            response = self._wrapped_request('POST', url, data=data,
+                                             headers=headers)
             if response.status_code == 202 and type == 'POST-ACTION':
                 return True
             elif response.status_code == 401:
                 raise response.raise_for_status()
         elif type == 'PATCH':
-            headers.update({
-                'Content-Type':
-                'application/vnd.profitbricks.partial-properties+json'})
-            response = self._wrapped_request(type, url, data=data, headers=headers)
+            headers.update(
+                {'Content-Type':
+                 'application/vnd.profitbricks.partial-properties+json'})
+            response = self._wrapped_request(type, url, data=data,
+                                             headers=headers)
         else:
-            headers.update({'Content-Type':
-                        'application/vnd.profitbricks.resource+json'})
-            response = self._wrapped_request(type, url, params=data, headers=headers)
+            headers.update(
+                {'Content-Type':
+                 'application/vnd.profitbricks.resource+json'})
+            response = self._wrapped_request(type, url, params=data,
+                                             headers=headers)
             if type == 'DELETE':
                 if response.status_code == 202:
                     return True
@@ -1604,22 +1608,26 @@ class ProfitBricksService(object):
             err = response.json()
             code = err['httpStatus']
             msg = err['messages'][0]['message']
-
             raise Exception(code, msg)
 
         json_response = response.json()
 
         if 'location' in response.headers:
-            # The request URL has currently the format {host_base}/requests/{request ID}/status
-            # Thus search for a UUID.
-            match = re.search('/requests/([-A-Fa-f0-9]+)/', response.headers['location'])
-            if match:
-                json_response['requestId'] = match.group(1)
-            else:
-                raise Exception("Failed to extract request ID from response header 'location': "
-                                "'{location}'".format(location=response.headers['location']))
+            json_response['requestId'] = self._request_id(response.headers)
 
         return json_response
+
+    def _request_id(self, headers):
+        # The request URL has currently the format:
+        # {host_base}/requests/{request ID}/status
+        # Thus search for a UUID.
+        match = re.search('/requests/([-A-Fa-f0-9]+)/', headers['location'])
+        if match:
+            return match.group(1)
+        else:
+            raise Exception("Failed to extract request ID from response "
+                            "header 'location': '{location}'".format(
+                                location=headers['location']))
 
     def _build_url(self, uri):
         url = self.host_base + uri

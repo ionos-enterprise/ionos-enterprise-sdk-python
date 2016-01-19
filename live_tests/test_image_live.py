@@ -10,7 +10,9 @@ class TestImage(unittest.TestCase):
     def setUpClass(self):
         self.resource = resource()
         self.client = ProfitBricksService(
-            username=configuration.USERNAME, password=configuration.PASSWORD)
+            username=configuration.USERNAME,
+            password=configuration.PASSWORD,
+            headers=configuration.HEADERS)
 
         # Find an Ubuntu image for testing.
         for item in self.client.list_images()['items']:

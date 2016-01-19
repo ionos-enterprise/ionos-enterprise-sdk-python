@@ -11,7 +11,9 @@ class TestIPBlock(unittest.TestCase):
     def setUpClass(self):
         self.resource = resource()
         self.client = ProfitBricksService(
-            username=configuration.USERNAME, password=configuration.PASSWORD)
+            username=configuration.USERNAME,
+            password=configuration.PASSWORD,
+            headers=configuration.HEADERS)
 
         ipblock1 = IPBlock(**self.resource['ipblock'])
         self.ipblock1 = self.client.reserve_ipblock(ipblock1)
