@@ -18,13 +18,14 @@ class ProfitBricksService(object):
         ProfitBricksClient Base Class
     """
 
-    def __init__(self, username=None, password=None,
-                 host_base=API_HOST, host_cert=None, ssl_verify=True):
+    def __init__(self, username=None, password=None, host_base=API_HOST,
+                 host_cert=None, ssl_verify=True, headers=dict()):
         self.username = username
         self.password = password
         self.host_base = host_base
         self.host_cert = host_cert
         self.verify = ssl_verify
+        self.headers = headers
 
     """Datacenter Functions
     """
@@ -40,7 +41,7 @@ class ProfitBricksService(object):
         response = self._perform_request(
             '/datacenters/%s?depth=%s' % (datacenter_id, str(depth)))
 
-        return response.json()
+        return response
 
     def list_datacenters(self, depth=1):
         """
@@ -49,7 +50,7 @@ class ProfitBricksService(object):
         """
         response = self._perform_request('/datacenters?depth='+str(depth))
 
-        return response.json()
+        return response
 
     def delete_datacenter(self, datacenter_id):
         """
@@ -172,13 +173,7 @@ class ProfitBricksService(object):
             type='POST',
             data=data)
 
-        resp = response.json()
-
-        resp.update(
-            {'requestId': re.split(
-                "/", response.headers['location'])[5]})
-
-        return resp
+        return response
 
     def update_datacenter(self, datacenter_id, **kwargs):
         """
@@ -199,13 +194,7 @@ class ProfitBricksService(object):
             type='PATCH',
             data=json.dumps(data))
 
-        resp = response.json()
-
-        resp.update(
-            {'requestId': re.split(
-                "/", response.headers['location'])[5]})
-
-        return resp
+        return response
 
     """FirewallRule Functions
     """
@@ -235,7 +224,7 @@ class ProfitBricksService(object):
                 nic_id,
                 firewall_rule_id))
 
-        return response.json()
+        return response
 
     def get_firewall_rules(self, datacenter_id, server_id, nic_id, depth=1):
         """
@@ -258,7 +247,7 @@ class ProfitBricksService(object):
                 nic_id,
                 str(depth)))
 
-        return response.json()
+        return response
 
     def delete_firewall_rule(self, datacenter_id, server_id,
                              nic_id, firewall_rule_id):
@@ -291,7 +280,7 @@ class ProfitBricksService(object):
     def create_firewall_rule(self, datacenter_id, server_id,
                              nic_id, firewall_rule):
         """
-        Creates a firewall rule on the specificed NIC and Server.
+        Creates a firewall rule on the specified NIC and Server.
 
         :param      datacenter_id: The unique ID of the Datacenter.
         :type       datacenter_id: ``str``
@@ -345,13 +334,7 @@ class ProfitBricksService(object):
             type='POST',
             data=json.dumps(data))
 
-        resp = response.json()
-
-        resp.update(
-            {'requestId': re.split(
-                "/", response.headers['location'])[5]})
-
-        return resp
+        return response
 
     def update_firewall_rule(self, datacenter_id, server_id,
                              nic_id, firewall_rule_id, **kwargs):
@@ -402,13 +385,7 @@ class ProfitBricksService(object):
             type='PATCH',
             data=json.dumps(data))
 
-        resp = response.json()
-
-        resp.update(
-            {'requestId': re.split(
-                "/", response.headers['location'])[5]})
-
-        return resp
+        return response
 
     """Image Functions
     """
@@ -422,7 +399,7 @@ class ProfitBricksService(object):
 
         """
         response = self._perform_request('/images/%s' % image_id)
-        return response.json()
+        return response
 
     def list_images(self, depth=1):
         """
@@ -433,8 +410,7 @@ class ProfitBricksService(object):
 
         """
         response = self._perform_request('/images?depth='+str(depth))
-
-        return response.json()
+        return response
 
     def delete_image(self, image_id):
         """
@@ -444,9 +420,8 @@ class ProfitBricksService(object):
         :type       image_id: ``str``
 
         """
-        response = self._perform_request(
-            url='/images/'+image_id, type='DELETE')
-
+        response = self._perform_request(url='/images/'+image_id,
+                                         type='DELETE')
         return response
 
     def update_image(self, image_id, **kwargs):
@@ -462,14 +437,7 @@ class ProfitBricksService(object):
         response = self._perform_request(url='/images/'+image_id,
                                          type='PATCH',
                                          data=json.dumps(data))
-
-        resp = response.json()
-
-        resp.update(
-            {'requestId': re.split(
-                "/", response.headers['location'])[5]})
-
-        return resp
+        return response
 
     """IPBlock Functions
     """
@@ -482,7 +450,7 @@ class ProfitBricksService(object):
 
         """
         response = self._perform_request('/ipblocks/%s' % ipblock_id)
-        return response.json()
+        return response
 
     def list_ipblocks(self, depth=1):
         """
@@ -490,8 +458,7 @@ class ProfitBricksService(object):
 
         """
         response = self._perform_request('/ipblocks?depth=%s' % str(depth))
-
-        return response.json()
+        return response
 
     def delete_ipblock(self, ipblock_id):
         """
@@ -525,13 +492,7 @@ class ProfitBricksService(object):
         response = self._perform_request(
             url='/ipblocks', type='POST', data=data)
 
-        resp = response.json()
-
-        resp.update(
-            {'requestId': re.split(
-                "/", response.headers['location'])[5]})
-
-        return resp
+        return response
 
     """LAN Functions
     """
@@ -552,7 +513,8 @@ class ProfitBricksService(object):
                 datacenter_id,
                 lan_id,
                 str(depth)))
-        return response.json()
+
+        return response
 
     def list_lans(self, datacenter_id, depth=1):
         """
@@ -567,7 +529,7 @@ class ProfitBricksService(object):
                 datacenter_id,
                 str(depth)))
 
-        return response.json()
+        return response
 
     def delete_lan(self, datacenter_id, lan_id):
         """
@@ -608,13 +570,7 @@ class ProfitBricksService(object):
             type='POST',
             data=data)
 
-        resp = response.json()
-
-        resp.update(
-            {'requestId': re.split(
-                "/", response.headers['location'])[5]})
-
-        return resp
+        return response
 
     def update_lan(self, datacenter_id, lan_id, **kwargs):
         """
@@ -637,13 +593,7 @@ class ProfitBricksService(object):
             type='PATCH',
             data=json.dumps(data))
 
-        resp = response.json()
-
-        resp.update(
-            {'requestId': re.split(
-                "/", response.headers['location'])[5]})
-
-        return resp
+        return response
 
     def get_lan_members(self, datacenter_id, lan_id, depth=1):
         """
@@ -662,7 +612,7 @@ class ProfitBricksService(object):
                 lan_id,
                 str(depth)))
 
-        return response.json()
+        return response
 
     """LoadBalancer Functions
     """
@@ -681,7 +631,8 @@ class ProfitBricksService(object):
         response = self._perform_request(
             '/datacenters/%s/loadbalancers/%s' % (
                 datacenter_id, loadbalancer_id))
-        return response.json()
+
+        return response
 
     def list_loadbalancers(self, datacenter_id, depth=1):
         """
@@ -695,7 +646,7 @@ class ProfitBricksService(object):
             '/datacenters/%s/loadbalancers?depth=%s' % (
                 datacenter_id, str(depth)))
 
-        return response.json()
+        return response
 
     def delete_loadbalancer(self, datacenter_id, loadbalancer_id):
         """
@@ -736,13 +687,7 @@ class ProfitBricksService(object):
             type='POST',
             data=data)
 
-        resp = response.json()
-
-        resp.update(
-            {'requestId': re.split(
-                "/", response.headers['location'])[5]})
-
-        return resp
+        return response
 
     def update_loadbalancer(self, datacenter_id,
                             loadbalancer_id, **kwargs):
@@ -767,13 +712,7 @@ class ProfitBricksService(object):
             type='PATCH',
             data=json.dumps(data))
 
-        resp = response.json()
-
-        resp.update(
-            {'requestId': re.split(
-                "/", response.headers['location'])[5]})
-
-        return resp
+        return response
 
     def get_loadbalancer_members(self, datacenter_id, loadbalancer_id,
                                  depth=1):
@@ -791,7 +730,7 @@ class ProfitBricksService(object):
             '/datacenters/%s/loadbalancers/%s/balancednics?depth=%s' % (
                 datacenter_id, loadbalancer_id, str(depth)))
 
-        return response.json()
+        return response
 
     def add_loadbalanced_nics(self, datacenter_id,
                               loadbalancer_id, nic_id):
@@ -817,13 +756,7 @@ class ProfitBricksService(object):
             type='POST',
             data=data)
 
-        resp = response.json()
-
-        resp.update(
-            {'requestId': re.split(
-                "/", response.headers['location'])[5]})
-
-        return resp
+        return response
 
     def get_loadbalanced_nic(self, datacenter_id,
                              loadbalancer_id, nic_id, depth=1):
@@ -847,13 +780,7 @@ class ProfitBricksService(object):
                 nic_id,
                 str(depth)))
 
-        # resp = response.json()
-
-        # resp.update(
-        #     {'requestId': re.split(
-        #         "/", response.headers['location'])[5]})
-
-        return response.json()
+        return response
 
     def remove_loadbalanced_nic(self, datacenter_id,
                                 loadbalancer_id, nic_id):
@@ -891,7 +818,7 @@ class ProfitBricksService(object):
 
         """
         response = self._perform_request('/locations/'+location_id)
-        return response.json()
+        return response
 
     def list_locations(self):
         """
@@ -900,7 +827,7 @@ class ProfitBricksService(object):
         """
         response = self._perform_request('/locations')
 
-        return response.json()
+        return response
 
     """NIC Functions
     """
@@ -926,7 +853,7 @@ class ProfitBricksService(object):
                 nic_id,
                 str(depth)))
 
-        return response.json()
+        return response
 
     def list_nics(self, datacenter_id, server_id, depth=1):
         """
@@ -945,7 +872,7 @@ class ProfitBricksService(object):
                 server_id,
                 str(depth)))
 
-        return response.json()
+        return response
 
     def delete_nic(self, datacenter_id, server_id, nic_id):
         """
@@ -972,7 +899,7 @@ class ProfitBricksService(object):
 
     def create_nic(self, datacenter_id, server_id, nic):
         """
-        Creates a firewall rule on the specificed NIC and Server.
+        Creates a NIC on the specified NIC and Server.
 
         :param      datacenter_id: The unique ID of the Datacenter.
         :type       datacenter_id: ``str``
@@ -994,13 +921,7 @@ class ProfitBricksService(object):
             type='POST',
             data=data)
 
-        resp = response.json()
-
-        resp.update(
-            {'requestId': re.split(
-                "/", response.headers['location'])[5]})
-
-        return resp
+        return response
 
     def update_nic(self, datacenter_id, server_id,
                    nic_id, **kwargs):
@@ -1030,13 +951,7 @@ class ProfitBricksService(object):
             type='PATCH',
             data=json.dumps(data))
 
-        resp = response.json()
-
-        resp.update(
-            {'requestId': re.split(
-                "/", response.headers['location'])[5]})
-
-        return resp
+        return response
 
     """Request Functions
     """
@@ -1059,7 +974,7 @@ class ProfitBricksService(object):
             response = self._perform_request(
                 '/requests/%s' % request_id)
 
-        return response.json()
+        return response
 
     def list_requests(self, depth=1):
         """
@@ -1069,7 +984,7 @@ class ProfitBricksService(object):
         response = self._perform_request(
             '/requests?depth=%s' % str(depth))
 
-        return response.json()
+        return response
 
     """Server Functions
     """
@@ -1091,7 +1006,7 @@ class ProfitBricksService(object):
                 server_id,
                 str(depth)))
 
-        return response.json()
+        return response
 
     def list_servers(self, datacenter_id, depth=1):
         """
@@ -1104,7 +1019,7 @@ class ProfitBricksService(object):
         response = self._perform_request(
             '/datacenters/%s/servers?depth=%s' % (datacenter_id, str(depth)))
 
-        return response.json()
+        return response
 
     def delete_server(self, datacenter_id, server_id):
         """
@@ -1144,13 +1059,7 @@ class ProfitBricksService(object):
             type='POST',
             data=data)
 
-        resp = response.json()
-
-        resp.update(
-            {'requestId': re.split(
-                "/", response.headers['location'])[5]})
-
-        return resp
+        return response
 
     def update_server(self, datacenter_id, server_id, **kwargs):
         """
@@ -1184,13 +1093,7 @@ class ProfitBricksService(object):
             type='PATCH',
             data=json.dumps(data))
 
-        resp = response.json()
-
-        resp.update(
-            {'requestId': re.split(
-                "/", response.headers['location'])[5]})
-
-        return resp
+        return response
 
     def get_attached_volumes(self, datacenter_id, server_id, depth=1):
         """
@@ -1209,7 +1112,7 @@ class ProfitBricksService(object):
                 server_id,
                 str(depth)))
 
-        return response.json()
+        return response
 
     def get_attached_volume(self, datacenter_id, server_id, volume_id):
         """
@@ -1231,7 +1134,7 @@ class ProfitBricksService(object):
                 server_id,
                 volume_id))
 
-        return response.json()
+        return response
 
     def attach_volume(self, datacenter_id, server_id, volume_id):
         """
@@ -1256,13 +1159,7 @@ class ProfitBricksService(object):
             type='POST',
             data=data)
 
-        resp = response.json()
-
-        resp.update(
-            {'requestId': re.split(
-                "/", response.headers['location'])[5]})
-
-        return resp
+        return response
 
     def detach_volume(self, datacenter_id, server_id, volume_id):
         """
@@ -1285,12 +1182,6 @@ class ProfitBricksService(object):
                 volume_id),
             type='DELETE')
 
-        # resp = response.json()
-
-        # resp.update(
-        #     {'requestId': re.split(
-        #         "/", response.headers['location'])[5]})
-
         return response
 
     def get_attached_cdroms(self, datacenter_id, server_id, depth=1):
@@ -1310,7 +1201,7 @@ class ProfitBricksService(object):
                 server_id,
                 str(depth)))
 
-        return response.json()
+        return response
 
     def get_attached_cdrom(self, datacenter_id, server_id, cdrom_id):
         """
@@ -1332,7 +1223,7 @@ class ProfitBricksService(object):
                 server_id,
                 cdrom_id))
 
-        return response.json()
+        return response
 
     def attach_cdrom(self, datacenter_id, server_id, cdrom_id):
         """
@@ -1357,13 +1248,7 @@ class ProfitBricksService(object):
             type='POST',
             data=data)
 
-        resp = response.json()
-
-        resp.update(
-            {'requestId': re.split(
-                "/", response.headers['location'])[5]})
-
-        return resp
+        return response
 
     def detach_cdrom(self, datacenter_id, server_id, cdrom_id):
         """
@@ -1385,12 +1270,6 @@ class ProfitBricksService(object):
                 server_id,
                 cdrom_id),
             type='DELETE')
-
-        # resp = response.json()
-
-        # resp.update(
-        #     {'requestId': re.split(
-        #         "/", response.headers['location'])[5]})
 
         return response
 
@@ -1463,7 +1342,7 @@ class ProfitBricksService(object):
 
         """
         response = self._perform_request('/snapshots/%s' % snapshot_id)
-        return response.json()
+        return response
 
     def list_snapshots(self, depth=1):
         """
@@ -1473,7 +1352,7 @@ class ProfitBricksService(object):
         response = self._perform_request(
             '/snapshots?depth=%s' % str(depth))
 
-        return response.json()
+        return response
 
     def delete_snapshot(self, snapshot_id):
         """
@@ -1503,13 +1382,7 @@ class ProfitBricksService(object):
         response = self._perform_request(
             url='/snapshots/'+snapshot_id, type='PATCH', data=json.dumps(data))
 
-        resp = response.json()
-
-        resp.update(
-            {'requestId': re.split(
-                "/", response.headers['location'])[5]})
-
-        return resp
+        return response
 
     def create_snapshot(self, datacenter_id, volume_id,
                         name=None, description=None):
@@ -1532,13 +1405,7 @@ class ProfitBricksService(object):
             type='POST-ACTION-JSON',
             data=urlencode(data))
 
-        resp = response.json()
-
-        resp.update(
-            {'requestId': re.split(
-                "/", response.headers['location'])[5]})
-
-        return resp
+        return response
 
     def restore_snapshot(self, datacenter_id, volume_id, snapshot_id):
         """
@@ -1595,7 +1462,8 @@ class ProfitBricksService(object):
         """
         response = self._perform_request(
             '/datacenters/%s/volumes/%s' % (datacenter_id, volume_id))
-        return response.json()
+
+        return response
 
     def list_volumes(self, datacenter_id, depth=1):
         """
@@ -1608,7 +1476,7 @@ class ProfitBricksService(object):
         response = self._perform_request(
             '/datacenters/%s/volumes?depth=%s' % (datacenter_id, str(depth)))
 
-        return response.json()
+        return response
 
     def delete_volume(self, datacenter_id, volume_id):
         """
@@ -1646,13 +1514,7 @@ class ProfitBricksService(object):
             type='POST',
             data=data)
 
-        resp = response.json()
-
-        resp.update(
-            {'requestId': re.split(
-                "/", response.headers['location'])[5]})
-
-        return resp
+        return response
 
     def update_volume(self, datacenter_id, volume_id, **kwargs):
         """
@@ -1677,13 +1539,7 @@ class ProfitBricksService(object):
             type='PATCH',
             data=json.dumps(data))
 
-        resp = response.json()
-
-        resp.update(
-            {'requestId': re.split(
-                "/", response.headers['location'])[5]})
-
-        return resp
+        return response
 
     """Private Functions
     """
@@ -1701,10 +1557,13 @@ class ProfitBricksService(object):
                          hooks=None,
                          stream=None,
                          json=None):
+
+        headers.update(self.headers)
         session = requests.Session()
         return session.request(method, url, params, data, headers, cookies,
                                files, auth, timeout, allow_redirects, proxies,
-                               hooks, stream, self.verify, self.host_cert, json)
+                               hooks, stream, self.verify, self.host_cert,
+                               json)
 
     def _perform_request(self, url, type='GET', data=None, headers=dict()):
         headers.update({'Authorization': 'Basic %s' % (base64.b64encode(
@@ -1713,34 +1572,34 @@ class ProfitBricksService(object):
 
         url = self._build_url(url)
 
-        # print('########################################')
-        # print('URL: '+url)
-        # print('Data: ')
-        # print(data)
-        # print('Headers: '+str(headers))
-        # print('########################################')
-
         if type == 'POST' or type == 'PUT':
-            headers.update({'Content-Type':
-                        'application/vnd.profitbricks.resource+json'})
-            response = self._wrapped_request(type, url, data=data, headers=headers)
+            headers.update(
+                {'Content-Type':
+                 'application/vnd.profitbricks.resource+json'})
+            response = self._wrapped_request(type, url, data=data,
+                                             headers=headers)
         elif type == 'POST-ACTION-JSON' or type == 'POST-ACTION':
-            headers.update({'Content-Type':
-                        'application/x-www-form-urlencoded; charset=UTF-8'})
-            response = self._wrapped_request('POST', url, data=data, headers=headers)
-            if response.status_code == 202:
+            headers.update(
+                {'Content-Type':
+                 'application/x-www-form-urlencoded; charset=UTF-8'})
+            response = self._wrapped_request('POST', url, data=data,
+                                             headers=headers)
+            if response.status_code == 202 and type == 'POST-ACTION':
                 return True
             elif response.status_code == 401:
                 raise response.raise_for_status()
         elif type == 'PATCH':
-            headers.update({
-                'Content-Type':
-                'application/vnd.profitbricks.partial-properties+json'})
-            response = self._wrapped_request(type, url, data=data, headers=headers)
+            headers.update(
+                {'Content-Type':
+                 'application/vnd.profitbricks.partial-properties+json'})
+            response = self._wrapped_request(type, url, data=data,
+                                             headers=headers)
         else:
-            headers.update({'Content-Type':
-                        'application/vnd.profitbricks.resource+json'})
-            response = self._wrapped_request(type, url, params=data, headers=headers)
+            headers.update(
+                {'Content-Type':
+                 'application/vnd.profitbricks.resource+json'})
+            response = self._wrapped_request(type, url, params=data,
+                                             headers=headers)
             if type == 'DELETE':
                 if response.status_code == 202:
                     return True
@@ -1749,10 +1608,26 @@ class ProfitBricksService(object):
             err = response.json()
             code = err['httpStatus']
             msg = err['messages'][0]['message']
-
             raise Exception(code, msg)
 
-        return response
+        json_response = response.json()
+
+        if 'location' in response.headers:
+            json_response['requestId'] = self._request_id(response.headers)
+
+        return json_response
+
+    def _request_id(self, headers):
+        # The request URL has currently the format:
+        # {host_base}/requests/{request ID}/status
+        # Thus search for a UUID.
+        match = re.search('/requests/([-A-Fa-f0-9]+)/', headers['location'])
+        if match:
+            return match.group(1)
+        else:
+            raise Exception("Failed to extract request ID from response "
+                            "header 'location': '{location}'".format(
+                                location=headers['location']))
 
     def _build_url(self, uri):
         url = self.host_base + uri
@@ -2043,6 +1918,9 @@ class ProfitBricksService(object):
 
         if volume.image_password:
             properties['imagePassword'] = volume.image_password
+
+        if volume.ssh_keys:
+            properties['sshKeys'] = volume.ssh_keys
 
         raw = {
             "properties": properties
@@ -2338,9 +2216,9 @@ class Server(ProfitBricksService):
 
 
 class Volume(ProfitBricksService):
-    def __init__(self, name=None, size=None,
-                 bus='VIRTIO', image=None, disk_type='HDD',
-                 licence_type='UNKNOWN', image_password=None, **kwargs):
+    def __init__(self, name=None, size=None, bus='VIRTIO', image=None,
+                 disk_type='HDD', licence_type='UNKNOWN', image_password=None,
+                 ssh_keys=[], **kwargs):
         """
         Volume class initializer.
 
@@ -2362,6 +2240,9 @@ class Volume(ProfitBricksService):
         :param      licence_type: The license type.
         :type       licence_type: ``str``
 
+        :param      ssh_keys: A list of public SSH keys.
+        :type       ssh_keys ``list``
+
         """
         self.name = name
         self.size = size
@@ -2370,6 +2251,7 @@ class Volume(ProfitBricksService):
         self.disk_type = disk_type
         self.licence_type = licence_type
         self.image_password = image_password
+        self.ssh_keys = ssh_keys
 
     def __repr__(self):
         return ((
