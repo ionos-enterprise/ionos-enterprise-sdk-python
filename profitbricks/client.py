@@ -1,8 +1,9 @@
-import requests
-import json
 import base64
-import urllib
+import json
 import re
+
+import requests
+from six.moves.urllib.parse import urlencode
 
 from profitbricks import (
     API_HOST,
@@ -18,10 +19,12 @@ class ProfitBricksService(object):
     """
 
     def __init__(self, username=None, password=None,
-                 host_base=API_HOST):
+                 host_base=API_HOST, host_cert=None, ssl_verify=True):
         self.username = username
         self.password = password
         self.host_base = host_base
+        self.host_cert = host_cert
+        self.verify = ssl_verify
 
     """Datacenter Functions
     """
@@ -1399,7 +1402,7 @@ class ProfitBricksService(object):
             '/datacenters/%s/volumes/%s/create-snapshot' % (
                 datacenter_id, volume_id),
             type='POST-ACTION-JSON',
-            data=urllib.urlencode(data))
+            data=urlencode(data))
 
         return response
 
@@ -1424,7 +1427,7 @@ class ProfitBricksService(object):
                 datacenter_id,
                 volume_id),
             type='POST-ACTION',
-            data=urllib.urlencode(data))
+            data=urlencode(data))
 
         return response
 
@@ -1540,72 +1543,62 @@ class ProfitBricksService(object):
     """Private Functions
     """
 
-    def _perform_get(self, url, params=dict(), headers=dict()):
-        headers.update({'Content-Type':
-                       'application/vnd.profitbricks.resource+json'})
-        return requests.get(url=url, params=params, headers=headers)
+    def _wrapped_request(self, method, url,
+                         params=None,
+                         data=None,
+                         headers=None,
+                         cookies=None,
+                         files=None,
+                         auth=None,
+                         timeout=None,
+                         allow_redirects=True,
+                         proxies=None,
+                         hooks=None,
+                         stream=None,
+                         json=None):
+        session = requests.Session()
+        return session.request(method, url, params, data, headers, cookies,
+                               files, auth, timeout, allow_redirects, proxies,
+                               hooks, stream, self.verify, self.host_cert, json)
 
-    def _perform_delete(self, url, params=dict(), headers=dict()):
-        headers.update({'Content-Type':
-                        'application/vnd.profitbricks.resource+json'})
-        return requests.delete(url=url, params=params, headers=headers)
-
-    def _perform_post(self, url, data=None, headers=dict()):
-        headers.update({'Content-Type':
-                        'application/vnd.profitbricks.resource+json'})
-        return requests.post(url=url, data=data, headers=headers)
-
-    def _perform_put(self, url, data=None, headers=dict()):
-        headers.update({'Content-Type':
-                        'application/vnd.profitbricks.resource+json'})
-        return requests.put(url=url, data=data, headers=headers)
-
-    def _perform_patch(self, url, data=None, headers=dict()):
-        headers.update({
-            'Content-Type':
-            'application/vnd.profitbricks.partial-properties+json'})
-        return requests.patch(url=url, data=data, headers=headers)
-
-    def _perform_post_action(self, url, data=None, headers=dict()):
-        headers.update({'Content-Type':
-                        'application/x-www-form-urlencoded; charset=UTF-8'})
-        return requests.post(url=url, data=data, headers=headers)
-
-    def _perform_post_action_json(self, url, data=None, headers=dict()):
-        headers.update({'Content-Type':
-                        'application/x-www-form-urlencoded; charset=UTF-8'})
-        return requests.post(url=url, data=data, headers=headers)
-
-    def _perform_request(self, url, type='GET',
-                         data=None, params=dict(), headers=dict()):
+    def _perform_request(self, url, type='GET', data=None, headers=dict()):
         headers.update({'Authorization': 'Basic %s' % (base64.b64encode(
             self._b('%s:%s' % (self.username,
                                self.password))).decode('utf-8'))})
 
         url = self._build_url(url)
 
-        if type == 'POST':
-            response = self._perform_post(url, data, headers)
-        elif type == 'PUT':
-            response = self._perform_put(url, data, headers)
-        elif type == 'PATCH':
-            response = self._perform_patch(url, data, headers)
-        elif type == 'DELETE':
-            response = self._perform_delete(url, data, headers)
-            if response.status_code == 202:
-                return True
-        elif type == 'POST-ACTION-JSON':
-            response = self._perform_post_action_json(url, data, headers)
-            if response.status_code == 401:
-                raise response.raise_for_status()
-        elif type == 'POST-ACTION':
-            response = self._perform_post_action(url, data, headers)
-            if response.status_code == 202:
+        # print('########################################')
+        # print('URL: '+url)
+        # print('Data: ')
+        # print(data)
+        # print('Headers: '+str(headers))
+        # print('########################################')
+
+        if type == 'POST' or type == 'PUT':
+            headers.update({'Content-Type':
+                        'application/vnd.profitbricks.resource+json'})
+            response = self._wrapped_request(type, url, data=data, headers=headers)
+        elif type == 'POST-ACTION-JSON' or type == 'POST-ACTION':
+            headers.update({'Content-Type':
+                        'application/x-www-form-urlencoded; charset=UTF-8'})
+            response = self._wrapped_request('POST', url, data=data, headers=headers)
+            if response.status_code == 202 and type == 'POST-ACTION':
                 return True
             elif response.status_code == 401:
                 raise response.raise_for_status()
+        elif type == 'PATCH':
+            headers.update({
+                'Content-Type':
+                'application/vnd.profitbricks.partial-properties+json'})
+            response = self._wrapped_request(type, url, data=data, headers=headers)
         else:
-            response = self._perform_get(url, data, headers)
+            headers.update({'Content-Type':
+                        'application/vnd.profitbricks.resource+json'})
+            response = self._wrapped_request(type, url, params=data, headers=headers)
+            if type == 'DELETE':
+                if response.status_code == 202:
+                    return True
 
         if not response.ok:
             err = response.json()
@@ -1648,7 +1641,7 @@ class ProfitBricksService(object):
                 yield str.capitalize
 
         c = camelcase()
-        return "".join(c.next()(x) if x else '_' for x in value.split("_"))
+        return "".join(next(c)(x) if x else '_' for x in value.split("_"))
 
     def _create_lan_dict(self, lan):
         items = []

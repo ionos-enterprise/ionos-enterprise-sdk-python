@@ -1,8 +1,8 @@
 import unittest
 
-from profitbricks.client import ProfitBricksService
 from helpers import configuration
 from helpers.resources import resource
+from profitbricks.client import ProfitBricksService
 
 
 class TestImage(unittest.TestCase):
@@ -14,8 +14,7 @@ class TestImage(unittest.TestCase):
 
         # Find an Ubuntu image for testing.
         for item in self.client.list_images()['items']:
-            # if item['id'] == '2f98b678-6e7e-11e5-b680-52540066fee9': # Custom image used due to existing REST API public image bug
-            if 'Ubuntu-15' in item['properties']['name'] and item['properties']['location'] == self.resource['location']:
+            if 'Ubuntu-15' in item['properties']['name'] and item['properties']['location'] == configuration.LOCATION:
                 self.image = item
 
     def test_list_images(self):

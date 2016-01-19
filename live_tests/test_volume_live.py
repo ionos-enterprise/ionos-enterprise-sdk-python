@@ -24,12 +24,6 @@ class TestVolume(unittest.TestCase):
             volume=Volume(**self.resource['volume']))
         wait_for_completion(self.client, self.volume, 'create_volume')
 
-        # Create test volume
-        self.volume = self.client.create_volume(
-            datacenter_id=self.datacenter['id'],
-            volume=Volume(**self.resource['volume']))
-        wait_for_completion(self.client, self.volume, 'create_volume')
-
         # Create snapshot1
         self.snapshot1 = self.client.create_snapshot(
             datacenter_id=self.datacenter['id'],

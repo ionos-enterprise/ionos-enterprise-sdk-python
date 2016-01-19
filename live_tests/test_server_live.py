@@ -47,8 +47,7 @@ class TestServer(unittest.TestCase):
 
         # Find an Ubuntu image for testing.
         for item in self.client.list_images()['items']:
-            # if 'Ubuntu-15' in item['properties']['name'] and item['properties']['location'] == self.resource['location']:
-            if item['id'] == '2f98b678-6e7e-11e5-b680-52540066fee9':
+            if 'Ubuntu-15' in item['properties']['name'] and item['properties']['location'] == configuration.LOCATION:
                 self.image = item
 
     @classmethod
