@@ -1,9 +1,10 @@
 import unittest
 
-from profitbricks.client import ProfitBricksService
-from profitbricks.client import Datacenter, Volume
 from helpers import configuration
 from helpers.resources import resource, wait_for_completion
+from profitbricks.client import Datacenter, Volume
+from profitbricks.client import ProfitBricksService
+
 
 class TestVolume(unittest.TestCase):
     @classmethod

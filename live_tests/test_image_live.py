@@ -14,8 +14,8 @@ class TestImage(unittest.TestCase):
 
         # Find an Ubuntu image for testing.
         for item in self.client.list_images()['items']:
-            # if 'Ubuntu-15' in item['properties']['name'] and item['properties']['location'] == self.resource['location']:
-            if item['id'] == '2f98b678-6e7e-11e5-b680-52540066fee9':
+            # if item['id'] == '2f98b678-6e7e-11e5-b680-52540066fee9': # Custom image used due to existing REST API public image bug
+            if 'Ubuntu-15' in item['properties']['name'] and item['properties']['location'] == self.resource['location']:
                 self.image = item
 
     def test_list_images(self):
@@ -31,7 +31,6 @@ class TestImage(unittest.TestCase):
         self.assertEqual(image['type'], 'image')
         self.assertEqual(image['id'], self.image['id'])
         self.assertIn(image['properties']['imageType'], ['HDD', 'CDROM'])
-
 
     # A custom image would need to be uploaded and referenced to perform the
     # following tests. Skipping for now.

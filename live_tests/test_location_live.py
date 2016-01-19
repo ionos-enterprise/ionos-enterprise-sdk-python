@@ -1,8 +1,8 @@
 import unittest
 
-from profitbricks.client import ProfitBricksService
 from helpers import configuration
 from helpers.resources import resource
+from profitbricks.client import ProfitBricksService
 
 
 class TestLocation(unittest.TestCase):

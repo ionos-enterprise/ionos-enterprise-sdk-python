@@ -1,12 +1,14 @@
 import os
 import sys
 
+# Default settings for testing.
 LOCATION = os.getenv('PROFITBRICKS_LOCATION', 'us/lasdev')
 
-try:  
+# Import environment variables for credentials.
+try:
     os.environ['PROFITBRICKS_USERNAME']
     USERNAME = os.getenv('PROFITBRICKS_USERNAME')
-except KeyError: 
+except KeyError:
     raise Exception('Please set the environment variable PROFITBRICKS_USERNAME')
 
 try:

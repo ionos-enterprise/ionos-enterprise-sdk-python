@@ -1,9 +1,10 @@
 import unittest
 
-from profitbricks.client import ProfitBricksService
-from profitbricks.client import Datacenter, Server, Volume, NIC, FirewallRule
 from helpers import configuration
 from helpers.resources import resource, wait_for_completion
+from profitbricks.client import Datacenter, Server, Volume, NIC, FirewallRule
+from profitbricks.client import ProfitBricksService
+
 
 class TestServer(unittest.TestCase):
     @classmethod
@@ -16,7 +17,7 @@ class TestServer(unittest.TestCase):
         self.datacenter = self.client.create_datacenter(
             datacenter=Datacenter(**self.resource['datacenter']))
         wait_for_completion(self.client, self.datacenter, 'create_datacenter')
-        
+
         # Create test volume1.
         self.volume1 = self.client.create_volume(
             datacenter_id=self.datacenter['id'],
@@ -60,7 +61,6 @@ class TestServer(unittest.TestCase):
         self.assertGreater(len(servers), 0)
         self.assertEqual(servers['items'][0]['type'], 'server')
         self.assertRegexpMatches(servers['items'][0]['id'], self.resource['uuid_match'])
-
 
     def test_get(self):
         server = self.client.get_server(
@@ -131,7 +131,7 @@ class TestServer(unittest.TestCase):
         composite_server = self.client.get_server(
             datacenter_id=self.datacenter['id'],
             server_id=composite_server['id'])
-    
+
         self.assertRegexpMatches(composite_server['id'], self.resource['uuid_match'])
         self.assertEqual(composite_server['properties']['name'], self.resource['server']['name'])
         self.assertEqual(composite_server['properties']['cores'], self.resource['server']['cores'])
@@ -209,7 +209,6 @@ class TestServer(unittest.TestCase):
         self.assertFalse(server['properties']['discVirtioHotUnplug'])
         self.assertFalse(server['properties']['discScsiHotPlug'])
         self.assertFalse(server['properties']['discScsiHotUnplug'])
-
 
     def test_attach_volume(self):
         volume = self.client.attach_volume(

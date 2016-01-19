@@ -1,9 +1,9 @@
 import unittest
 
-from profitbricks.client import ProfitBricksService
-from profitbricks.client import Datacenter, Server, LAN, NIC
 from helpers import configuration
 from helpers.resources import resource, wait_for_completion
+from profitbricks.client import ProfitBricksService
+from profitbricks.client import Datacenter, Server, LAN, NIC
 
 
 class TestLan(unittest.TestCase):
@@ -80,7 +80,8 @@ class TestLan(unittest.TestCase):
         self.assertTrue(lan)
 
     def test_update_lan(self):
-        lan = self.client.update_lan(datacenter_id=self.datacenter['id'],
+        lan = self.client.update_lan(
+            datacenter_id=self.datacenter['id'],
             lan_id=self.lan['id'],
             name=self.resource['lan']['name'] + ' RENAME',
             public=False)

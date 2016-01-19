@@ -1,6 +1,8 @@
 import re
 import time
+
 from helpers import configuration
+
 
 def resource():
     return {
@@ -22,7 +24,7 @@ def resource():
         },
         'volume': {
             'name': 'Python SDK Test',
-            'size': 2,
+            'size': 3,
             'bus': 'VIRTIO',
             'type': 'HDD',
             'licence_type': 'UNKNOWN'

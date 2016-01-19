@@ -1,8 +1,9 @@
 import unittest
 
-from profitbricks.client import ProfitBricksService, IPBlock
 from helpers import configuration
 from helpers.resources import resource
+from profitbricks.client import IPBlock
+from profitbricks.client import ProfitBricksService
 
 
 class TestIPBlock(unittest.TestCase):

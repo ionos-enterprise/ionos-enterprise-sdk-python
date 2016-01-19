@@ -1,9 +1,10 @@
 import unittest
 
-from profitbricks.client import ProfitBricksService
-from profitbricks.client import Datacenter
 from helpers import configuration
 from helpers.resources import resource, wait_for_completion
+from profitbricks.client import Datacenter
+from profitbricks.client import ProfitBricksService
+
 
 class TestDatacenter(unittest.TestCase):
     @classmethod
@@ -15,7 +16,7 @@ class TestDatacenter(unittest.TestCase):
         # Create test datacenter.
         self.datacenter = self.client.create_datacenter(
             datacenter=Datacenter(**self.resource['datacenter']))
- 
+
     @classmethod
     def tearDownClass(self):
         self.client.delete_datacenter(datacenter_id=self.datacenter['id'])
