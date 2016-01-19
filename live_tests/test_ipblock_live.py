@@ -2,7 +2,7 @@ import unittest
 
 from profitbricks.client import ProfitBricksService, IPBlock
 from helpers import configuration
-from helpers.resources import resource, wait_for_completion
+from helpers.resources import resource
 
 
 class TestIPBlock(unittest.TestCase):

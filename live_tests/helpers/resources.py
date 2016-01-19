@@ -7,8 +7,9 @@ def resource():
         'locations': ['us/lasdev', 'us/las', 'de/fra', 'de/fkb'],
         'vm_states': ['RUNNING', 'SHUTOFF'],
         'uuid_match': re.compile(
-            '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$'
-        ),
+            '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$'),
+        'mac_match': re.compile(
+            '^([0-9a-f]{2}[:]){5}([0-9a-f]{2})$'),
         'datacenter': {
             'name': 'Python SDK Test',
             'description': 'Python SDK test datacenter',
@@ -21,7 +22,7 @@ def resource():
         },
         'volume': {
             'name': 'Python SDK Test',
-            'size': 5,
+            'size': 2,
             'bus': 'VIRTIO',
             'type': 'HDD',
             'licence_type': 'UNKNOWN'
@@ -52,7 +53,8 @@ def resource():
             'dhcp': True
         },
         'lan': {
-            'name': 'Python SDK Test',
+            # REST API seems to convert names to lowercase.
+            'name': 'python sdk test',
             'public': True,
         },
         'ipblock': {

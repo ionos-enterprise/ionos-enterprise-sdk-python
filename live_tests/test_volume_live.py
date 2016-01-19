@@ -23,22 +23,31 @@ class TestVolume(unittest.TestCase):
             volume=Volume(**self.resource['volume']))
         wait_for_completion(self.client, self.volume, 'create_volume')
 
+        # Create test volume
+        self.volume = self.client.create_volume(
+            datacenter_id=self.datacenter['id'],
+            volume=Volume(**self.resource['volume']))
+        wait_for_completion(self.client, self.volume, 'create_volume')
+
         # Create snapshot1
         self.snapshot1 = self.client.create_snapshot(
             datacenter_id=self.datacenter['id'],
             volume_id=self.volume['id'],
             name=self.resource['snapshot']['name'],
             description=self.resource['snapshot']['description'])
+        wait_for_completion(self.client, self.snapshot1, 'create_snapshot1')
 
-        # Create snapshot2 (delete test)
+        # Create snapshot2 (used in delete test)
         self.snapshot2 = self.client.create_snapshot(
             datacenter_id=self.datacenter['id'],
             volume_id=self.volume['id'],
             name=self.resource['snapshot']['name'],
             description=self.resource['snapshot']['description'])
+        wait_for_completion(self.client, self.snapshot2, 'create_snapshop2')
 
     @classmethod
     def tearDownClass(self):
+        self.client.remove_snapshot(snapshot_id=self.snapshot1['id'])
         self.client.delete_datacenter(datacenter_id=self.datacenter['id'])
 
     def test_list_volumes(self):
@@ -46,7 +55,7 @@ class TestVolume(unittest.TestCase):
             datacenter_id=self.datacenter['id'])
 
         self.assertGreater(len(volumes), 0)
-        self.assertEqual(volumes['items'][0]['id'], self.volume['id'])
+        self.assertRegexpMatches(volumes['items'][0]['id'], self.resource['uuid_match'])
         self.assertEqual(volumes['items'][0]['type'], 'volume')
         self.assertEqual(volumes['items'][0]['properties']['name'], self.resource['volume']['name'])
         self.assertEqual(volumes['items'][0]['properties']['size'], self.resource['volume']['size'])
@@ -88,9 +97,14 @@ class TestVolume(unittest.TestCase):
         self.assertIsNone(volume['properties']['bus'])
 
     def test_delete_volume(self):
+        volume = self.client.create_volume(
+            datacenter_id=self.datacenter['id'],
+            volume=Volume(**self.resource['volume']))
+        wait_for_completion(self.client, volume, 'create_volume')
+
         volume = self.client.delete_volume(
             datacenter_id=self.datacenter['id'],
-            volume_id=self.volume['id'])
+            volume_id=volume['id'])
 
         self.assertTrue(volume)
 
@@ -101,15 +115,14 @@ class TestVolume(unittest.TestCase):
             size=6,
             name=self.resource['volume']['name'] + ' RENAME')
         wait_for_completion(self.client, volume, 'update_volume')
+
         volume = self.client.get_volume(
             datacenter_id=self.datacenter['id'],
-            volume_id=self.volume['id']
-        )
+            volume_id=self.volume['id'])
 
         self.assertEqual(volume['id'], self.volume['id'])
-        self.assertEqual(volume['properties']['name'], self.resource['volume'] + ' RENAME')
+        self.assertEqual(volume['properties']['name'], self.resource['volume']['name'] + ' RENAME')
         self.assertEqual(volume['properties']['size'], 6)
-        self.assertTrue(volume['properties']['cpu_hot_unplug'])
 
     def test_create_volume(self):
         # Use volume created during volume test setup.
@@ -131,13 +144,11 @@ class TestVolume(unittest.TestCase):
 
     def test_create_snapshot(self):
         # Use snapshot created during volume test setup.
-        self.assertEqual(self.snapshot1['id'], snapshot_id)
+        self.assertRegexpMatches(self.snapshot1['id'], self.resource['uuid_match'])
         self.assertEqual(self.snapshot1['type'], 'snapshot')
         self.assertEqual(self.snapshot1['properties']['name'], self.resource['snapshot']['name'])
         self.assertEqual(self.snapshot1['properties']['description'], self.resource['snapshot']['description'])
         self.assertEqual(self.snapshot1['properties']['location'], configuration.LOCATION)
-        self.assertEqual(self.snapshot1['properties']['size'], self.resource['volume']['size'])
-        self.assertEqual(self.snapshot1['properties']['licenceType'], self.resource['volume']['licence_type'])
         self.assertFalse(self.snapshot1['properties']['cpuHotPlug'])
         self.assertFalse(self.snapshot1['properties']['cpuHotUnplug'])
         self.assertFalse(self.snapshot1['properties']['ramHotPlug'])
@@ -148,6 +159,8 @@ class TestVolume(unittest.TestCase):
         self.assertFalse(self.snapshot1['properties']['discVirtioHotUnplug'])
         self.assertFalse(self.snapshot1['properties']['discScsiHotPlug'])
         self.assertFalse(self.snapshot1['properties']['discScsiHotUnplug'])
+        self.assertIsNone(self.snapshot1['properties']['size'])
+        self.assertIsNone(self.snapshot1['properties']['licenceType'])
 
     def test_restore_snapshot(self):
         response = self.client.restore_snapshot(

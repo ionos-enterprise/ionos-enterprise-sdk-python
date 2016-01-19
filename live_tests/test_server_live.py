@@ -14,22 +14,19 @@ class TestServer(unittest.TestCase):
 
         # Create test datacenter.
         self.datacenter = self.client.create_datacenter(
-            datacenter=Datacenter(**self.resource['datacenter'])
-        )
+            datacenter=Datacenter(**self.resource['datacenter']))
         wait_for_completion(self.client, self.datacenter, 'create_datacenter')
         
         # Create test volume1.
         self.volume1 = self.client.create_volume(
             datacenter_id=self.datacenter['id'],
-            volume=Volume(**self.resource['volume'])
-        )
+            volume=Volume(**self.resource['volume']))
         wait_for_completion(self.client, self.volume1, 'create_volume')
 
-        # Create test volume2.
+        # Create test volume2 (attach volume test).
         self.volume2 = self.client.create_volume(
             datacenter_id=self.datacenter['id'],
-            volume=Volume(**self.resource['volume'])
-        )
+            volume=Volume(**self.resource['volume']))
         wait_for_completion(self.client, self.volume2, 'create_volume')
 
         # Create test server.
@@ -37,16 +34,14 @@ class TestServer(unittest.TestCase):
         server.attach_volumes = [self.volume1['id']]
         self.server = self.client.create_server(
             datacenter_id=self.datacenter['id'],
-            server=server
-        )
+            server=server)
         wait_for_completion(self.client, self.server, 'create_server')
 
         # Create test NIC.
         self.nic = self.client.create_nic(
             datacenter_id=self.datacenter['id'],
             server_id=self.server['id'],
-            nic=NIC(**self.resource['nic'])
-        )
+            nic=NIC(**self.resource['nic']))
         wait_for_completion(self.client, self.nic, 'create_nic')
 
         # Find an Ubuntu image for testing.
@@ -126,17 +121,16 @@ class TestServer(unittest.TestCase):
         server = Server(
             nics=[nic],
             create_volumes=[volume],
-            **self.resource['server']
-        )
+            **self.resource['server'])
+
         composite_server = self.client.create_server(
             datacenter_id=self.datacenter['id'],
-            server=server
-        )
-        wait_for_completion(self.client, composite_server, 'create_server')
+            server=server)
+        wait_for_completion(self.client, composite_server, 'create_server', wait_timeout=600)
+
         composite_server = self.client.get_server(
             datacenter_id=self.datacenter['id'],
-            server_id=composite_server['id']
-        )
+            server_id=composite_server['id'])
     
         self.assertRegexpMatches(composite_server['id'], self.resource['uuid_match'])
         self.assertEqual(composite_server['properties']['name'], self.resource['server']['name'])
@@ -148,24 +142,21 @@ class TestServer(unittest.TestCase):
     def test_start_server(self):
         server = self.client.start_server(
             datacenter_id=self.datacenter['id'],
-            server_id=self.server['id']
-        )
+            server_id=self.server['id'])
 
         self.assertTrue(server)
 
     def test_stop_server(self):
         server = self.client.stop_server(
             datacenter_id=self.datacenter['id'],
-            server_id=self.server['id']
-        )
+            server_id=self.server['id'])
 
         self.assertTrue(server)
 
     def test_reboot_server(self):
         server = self.client.reboot_server(
             datacenter_id=self.datacenter['id'],
-            server_id=self.server['id']
-        )
+            server_id=self.server['id'])
 
         self.assertTrue(server)
 

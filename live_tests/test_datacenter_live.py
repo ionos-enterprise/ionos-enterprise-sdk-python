@@ -11,6 +11,8 @@ class TestDatacenter(unittest.TestCase):
         self.resource = resource()
         self.client = ProfitBricksService(
             username=configuration.USERNAME, password=configuration.PASSWORD)
+
+        # Create test datacenter.
         self.datacenter = self.client.create_datacenter(
             datacenter=Datacenter(**self.resource['datacenter']))
  
@@ -27,8 +29,7 @@ class TestDatacenter(unittest.TestCase):
 
     def test_get(self):
         datacenter = self.client.get_datacenter(
-            datacenter_id=self.datacenter['id']
-        )
+            datacenter_id=self.datacenter['id'])
 
         self.assertEqual(datacenter['type'], 'datacenter')
         self.assertEqual(datacenter['id'], self.datacenter['id'])
@@ -38,9 +39,9 @@ class TestDatacenter(unittest.TestCase):
 
     def test_delete(self):
         datacenter = self.client.create_datacenter(
-            datacenter=Datacenter(**self.resource['datacenter'])
-        )
+            datacenter=Datacenter(**self.resource['datacenter']))
         wait_for_completion(self.client, datacenter, 'create_datacenter')
+
         response = self.client.delete_datacenter(
             datacenter_id=datacenter['id'])
 
@@ -62,8 +63,7 @@ class TestDatacenter(unittest.TestCase):
     def test_create_simple(self):
 
         datacenter = self.client.create_datacenter(
-            datacenter=Datacenter(**self.resource['datacenter'])
-        )
+            datacenter=Datacenter(**self.resource['datacenter']))
         wait_for_completion(self.client, datacenter, 'create_datacenter')
 
         self.assertRegexpMatches(datacenter['id'], self.resource['uuid_match'])

@@ -1596,9 +1596,7 @@ class ProfitBricksService(object):
                 return True
         elif type == 'POST-ACTION-JSON':
             response = self._perform_post_action_json(url, data, headers)
-            if response.status_code == 202:
-                return response
-            elif response.status_code == 401:
+            if response.status_code == 401:
                 raise response.raise_for_status()
         elif type == 'POST-ACTION':
             response = self._perform_post_action(url, data, headers)
