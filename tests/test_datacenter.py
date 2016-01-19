@@ -63,8 +63,8 @@ class TestDatacenter(unittest.TestCase):
         response = self.datacenter.create_datacenter(datacenter=i)
 
         self.assertEqual(response['id'], datacenter_id)
-        self.assertEqual(response['properties']['name'], 'My New Datacenter')
-        self.assertEqual(response['properties']['description'], 'Production environment')
+        self.assertEqual(response['properties']['name'], 'datacenter1')
+        self.assertEqual(response['properties']['description'], 'My New Datacenter')
         self.assertEqual(response['properties']['version'], 4)
         self.assertEqual(response['properties']['location'], 'de/fkb')
 
