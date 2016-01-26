@@ -105,10 +105,7 @@ class ProfitBricksService(object):
         ' Volumes '
         if len(datacenter.volumes) > 0:
             for volume in datacenter.volumes:
-                volume_properties = {
-                    "properties": volume.__dict__
-                }
-                volume_items.append(volume_properties)
+                volume_items.append(self._create_volume_dict(volume))
 
             volumes = {
                 "items": volume_items
