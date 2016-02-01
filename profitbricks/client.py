@@ -1552,15 +1552,13 @@ class ProfitBricksService(object):
                          allow_redirects=True,
                          proxies=None,
                          hooks=None,
-                         stream=None,
-                         json=None):
+                         stream=None):
 
         headers.update(self.headers)
         session = requests.Session()
         return session.request(method, url, params, data, headers, cookies,
                                files, auth, timeout, allow_redirects, proxies,
-                               hooks, stream, self.verify, self.host_cert,
-                               json)
+                               hooks, stream, self.verify, self.host_cert)
 
     def _perform_request(self, url, type='GET', data=None, headers=dict()):
         headers.update({'Authorization': 'Basic %s' % (base64.b64encode(
