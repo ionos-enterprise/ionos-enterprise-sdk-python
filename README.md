@@ -15,6 +15,7 @@ This guide will walk you through getting setup with the library and performing v
 * [How to: Update Cores, Memory, and Disk](#how-to-update-cores-memory-and-disk)
 * [How to: List Servers, Volumes, and Data Centers](#how-to-list-servers-volumes-and-data-centers)
 * [How to: Create Additional Network Interfaces](#how-to-create-additional-network-interfaces)
+* [How to: Check Resource Status](#how-to-check-resource-status)
 * [Conclusion](#conclusion)
 
 ## Concepts
@@ -385,6 +386,46 @@ The sample below shows you how to add a second NIC to an existing server:
         datacenter_id=datacenter_id,
         server_id=server_id,
         nic=i)
+
+## How to: Check Resource Status
+
+When a new resource (server, volume, NIC, etc.) is created, the return value will include a `requestId` UUID value. This value can be passed to the `get_request()` method to retrieve the request status and any potential error messages produced by the request.
+
+    client.get_request('3e2d336f-cdf5-482b-923a-f3026dfc934b', status=True)
+
+The request status can be repeatedly polled until the resource create resource operation completes with a `DONE` or `FAILED` status. An example poller method might look something like this:
+
+    def wait_for_completion(conn, response, timeout):
+        if not response:
+            return
+        timeout = time.time() + timeout
+        while timeout > time.time():
+            time.sleep(5)
+            request = conn.get_request(
+                request_id=response['requestId'],
+                status=True)
+
+            if request['metadata']['status'] == 'DONE':
+                return
+            elif request['metadata']['status'] == 'FAILED':
+                raise Exception('Request {0} failed to complete: {1}'.format(
+                    response['requestId'], request['metadata']['message']))
+
+        raise Exception('Timed out waiting for request {0}.'.format(
+            response['requestId']))
+
+The above method can then be called after creating a new resource.
+
+    i = Server(
+        name='server1',
+        ram=4096,
+        cores=4)
+
+    response = client.create_server(
+        datacenter_id=datacenter_id,
+        server=i)
+
+    wait_for_completion(client, response, 300)
 
 ## Conclusion
 
