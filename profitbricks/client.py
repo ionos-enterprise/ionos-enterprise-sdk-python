@@ -896,7 +896,7 @@ class ProfitBricksService(object):
 
     def create_nic(self, datacenter_id, server_id, nic):
         """
-        Creates a NIC on the specified NIC and Server.
+        Creates a NIC on the specified server.
 
         :param      datacenter_id: The unique ID of the Datacenter.
         :type       datacenter_id: ``str``
