@@ -1629,7 +1629,7 @@ class ProfitBricksService(object):
         return url
 
     def _b(self, s):
-        if isinstance(s, str):
+        if isinstance(s, str) or isinstance(s, unicode):
             return s.encode('utf-8')
         elif isinstance(s, bytes):
             return s
