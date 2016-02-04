@@ -77,7 +77,7 @@ def get_dc_inventory(pbclient, dc=None) :
     servers = pbclient.list_servers(dcid, 3)   # depth 3 is enough to get into volume/nic level plus details
     print("found %i servers in data center %s" % (len(servers['items']), dc['properties']['name']))
     if verbose > 2:
-        print str(servers)
+        print(str(servers))
     # this will build a hash to relate volumes to servers later
     bound_vols = dict()   # hash volume-to-server relations
     for server in servers['items'] :
@@ -137,7 +137,7 @@ def get_dc_inventory(pbclient, dc=None) :
 def get_images(pbclient):
     if pbclient is None:
         raise ValueError("argument 'pbclient' must not be None")
-    print "getting images.."
+    print("getting images..")
     images = pbclient.list_images()
     print("found %i images" % len(images['items']))
     img_inv = []
@@ -158,7 +158,7 @@ def get_images(pbclient):
 def get_snapshots(pbclient):
     if pbclient is None:
         raise ValueError("argument 'pbclient' must not be None")
-    print "getting snapshots.."
+    print("getting snapshots..")
     snapshots = pbclient.list_snapshots()
     print("found %i snapshots" % len(snapshots['items']))
     snap_inv = []
@@ -181,12 +181,12 @@ def get_snapshots(pbclient):
 def get_ipblocks(pbclient):
     if pbclient is None:
         raise ValueError("argument 'pbclient' must not be None")
-    print "getting IP blocks.."
+    print("getting IP blocks..")
     ipblocks = pbclient.list_ipblocks()
     print("found %i IP blocks" % len(ipblocks['items']))
     ip_inv = []
     if verbose > 1:
-        print str(ipblocks)
+        print(str(ipblocks))
     for block in ipblocks['items']:
         ip_data = [block['properties']['location'], block['type'], block['id'], block['metadata']['state'], block['properties']['size']]
         ip_data.extend(block['properties']['ips'])
@@ -203,7 +203,7 @@ def get_dc_network(pbclient, dc=None):
         raise ValueError("argument 'pbclient' must not be None")
     if dc is None:
         raise ValueError("argument 'dc' must not be None")
-    print "getting networks.."
+    print("getting networks..")
     dcid = dc['id']
     # dc_data contains dc specific columns
     dc_data = [dcid, dc['properties']['name'], dc['properties']['location']]
@@ -233,12 +233,12 @@ def get_dc_network(pbclient, dc=None):
                 if lbnames.has_key(serverid):
                     servertype = "LB"
                     servername = lbnames[serverid]
-                    print "server entry for %s is LOADBALANCER %s" % (serverid, servername)
+                    print("server entry for %s is LOADBALANCER %s" % (serverid, servername))
                 else:
                     servertype = "Server"
                     if not servernames.has_key(serverid):
                         if verbose:
-                            print "add server entry for %s" % serverid
+                            print("add server entry for %s" % serverid)
                         server = pbclient.get_server(dcid, serverid, 0);
                         servernames[serverid] = server['properties']['name']
                     servername = servernames[serverid]
@@ -257,7 +257,7 @@ def get_dc_network(pbclient, dc=None):
 def get_requests(pbclient):
     if pbclient is None:
         raise ValueError("argument 'pbclient' must not be None")
-    print "getting requests.."
+    print("getting requests..")
     requests = pbclient.list_requests()   # higher depth gives no more details (API-doc BUG)
     print("found %i requests" % len(requests['items']))
     if verbose:
@@ -335,7 +335,7 @@ USAGE
                 # the default depth=1 is sufficient, higher values don't provide more details
                 datacenters = pbclient.list_datacenters()
                 if verbose > 1:
-                    print str(datacenters)
+                    print(str(datacenters))
             else:
                 datacenters = [ pbclient.get_datacenter(datacenterid, 1) ]
             print("retrieved %i datacenters " % len(datacenters['items']))
