@@ -347,7 +347,7 @@ USAGE
                     try :
                         dc_inv = get_dc_inventory(pbclient, dc)
                         if verbose:
-                            print("DC %s has %i invnetory entries" % (dc['id'], len(dc_inv)))
+                            print("DC %s has %i inventory entries" % (dc['id'], len(dc_inv)))
                         for row in dc_inv:
                             csvwriter.writerow(row)
                     except Exception :
