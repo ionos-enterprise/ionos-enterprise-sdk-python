@@ -327,6 +327,8 @@ USAGE
             password = getpass()
         if verbose > 0:
             print("Verbose mode on")
+            print("using python ", sys.version_info)
+
         pbclient = ProfitBricksService(user, password)
 
         if datacenterid is not None:
@@ -340,8 +342,8 @@ USAGE
                 datacenters = [ pbclient.get_datacenter(datacenterid, 1) ]
             print("retrieved %i datacenters " % len(datacenters['items']))
             # dump inventory to file
-            with open("pb_datacenter_inventory.csv", 'wb') as csvfile :
-                csvwriter = csv.writer(csvfile, delimiter=';')
+            with open("pb_datacenter_inventory.csv", 'w') as csvfile :
+                csvwriter = csv.writer(csvfile, delimiter=';', lineterminator='\n')
                 csvwriter.writerow(['DCID','DCName','Loc','RscType','RscID','RscName','State','LicType','Cores','RAM','# NICs','# Volumes','(Total) Storage','Connected to','Created','Modified'])
                 for dc in datacenters['items'] :
                     try :
@@ -355,8 +357,8 @@ USAGE
                         exit(2)
                 # end for(datacenters)
         if args.show_images:
-            with open("pb_datacenter_images.csv", 'wb') as csvfile :
-                csvwriter = csv.writer(csvfile, delimiter=';')
+            with open("pb_datacenter_images.csv", 'w') as csvfile :
+                csvwriter = csv.writer(csvfile, delimiter=';', lineterminator='\n')
                 csvwriter.writerow(['Visibility','Loc','RscType','SubType','RscID','RscName','State','LicType','Size','Created','Modified'])
                 img_inv = get_images(pbclient)
                 for row in img_inv:
@@ -365,8 +367,8 @@ USAGE
                 for row in snap_inv:
                     csvwriter.writerow(row)
         if args.show_ipblocks:
-            with open("pb_datacenter_ipblocks.csv", 'wb') as csvfile :
-                csvwriter = csv.writer(csvfile, delimiter=';')
+            with open("pb_datacenter_ipblocks.csv", 'w') as csvfile :
+                csvwriter = csv.writer(csvfile, delimiter=';', lineterminator='\n')
                 csvwriter.writerow(['Loc','RscType','RscID','State','Size','IP addresses'])
                 ipblocks = get_ipblocks(pbclient)
                 for row in ipblocks:
@@ -376,8 +378,8 @@ USAGE
             # the default depth=1 is sufficient, higher values don't provide more details
             datacenters = pbclient.list_datacenters()
             print("retrieved %i datacenters " % len(datacenters['items']))
-            with open("pb_datacenter_networks.csv", 'wb') as csvfile :
-                csvwriter = csv.writer(csvfile, delimiter=';')
+            with open("pb_datacenter_networks.csv", 'w') as csvfile :
+                csvwriter = csv.writer(csvfile, delimiter=';', lineterminator='\n')
                 csvwriter.writerow(['DCID','DCName','Loc',
                                     'LAN ID','LAN name','public','State','# NICs',
                                     'NIC ID','MAC address','DHCP', 'IP(s)','NIC name','Firewall', 'Connected to', 'ID', 'Name'])
