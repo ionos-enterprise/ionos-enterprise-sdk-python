@@ -230,13 +230,13 @@ def get_dc_network(pbclient, dc=None):
                 # get the serverid of this nic by href
                 # !!! HUUUUH this might also be a loadbalancer ID, although it's '/servers/<id>/...' !!!
                 serverid = re.sub(r'^.*servers/([^/]+)/nics.*', r'\1', nic['href'])
-                if lbnames.has_key(serverid):
+                if serverid in lbnames:
                     servertype = "LB"
                     servername = lbnames[serverid]
                     print("server entry for %s is LOADBALANCER %s" % (serverid, servername))
                 else:
                     servertype = "Server"
-                    if not servernames.has_key(serverid):
+                    if serverid not in servernames:
                         if verbose:
                             print("add server entry for %s" % serverid)
                         server = pbclient.get_server(dcid, serverid, 0);
