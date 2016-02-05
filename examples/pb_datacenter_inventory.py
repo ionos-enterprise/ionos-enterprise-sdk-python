@@ -394,8 +394,8 @@ USAGE
                 # end for(datacenters)
             
         # just for fun:
-        if args.show_requests:
-            get_requests(pbclient)
+#         if args.show_requests:
+#             get_requests(pbclient)
         print("%s finished w/o errors" % program_name)
         return 0
     except KeyboardInterrupt:
