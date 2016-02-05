@@ -311,7 +311,7 @@ USAGE
         parser.add_argument('-b', '--ipblock', dest='show_ipblocks', action="store_true", help='show reserved IP blocks')
         parser.add_argument('-n', '--network', dest='show_networks', action="store_true", help='show network assignments')
 #        parser.add_argument('-r', '--request', dest='show_requests', action="store_true", help='show requests')
-        parser.add_argument("-v", "--verbose", dest="verbose", action="count", help="set verbosity level [default: %(default)s]")
+        parser.add_argument("-v", "--verbose", dest="verbose", action="count", default=0, help="set verbosity level [default: %(default)s]")
         parser.add_argument('-V', '--version', action='version', version=program_version_message)
         # Process arguments
         args = parser.parse_args()
