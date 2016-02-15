@@ -34,6 +34,7 @@ import sys
 import os
 import traceback
 import re
+import pprint
 
 from argparse import ArgumentParser
 from argparse import RawDescriptionHelpFormatter
@@ -50,6 +51,18 @@ __updated__ = '2016-01-15'
 
 verbose = 0
 DEBUG = 1
+
+def pp(value):
+    """
+    Returns a pretty print string of the given value.
+
+    @return: pretty print string
+    @rtype: str
+    """
+
+    pretty_printer = pprint.PrettyPrinter(indent=4)
+    return pretty_printer.pformat(value)
+
 
 class CLIError(Exception):
     '''Generic exception to raise and log different fatal errors.'''
@@ -306,7 +319,7 @@ USAGE
         parser = ArgumentParser(description=program_license, formatter_class=RawDescriptionHelpFormatter)
         parser.add_argument('-u', '--user', dest='user', required=True, help='the login name')
         parser.add_argument('-p', '--password', dest='password', help='the login password')
-        parser.add_argument('-d', '--datacenterid', dest='datacenterid', nargs='?', const='*', default=None, help='show server/storage of datacenter(s)')
+        parser.add_argument('-d', '--datacenterid', dest='datacenterid', nargs='?', const='*', help='show server/storage of datacenter(s)')
         parser.add_argument('-i', '--image', dest='show_images', action="store_true", help='show images and snapshots')
         parser.add_argument('-b', '--ipblock', dest='show_ipblocks', action="store_true", help='show reserved IP blocks')
         parser.add_argument('-n', '--network', dest='show_networks', action="store_true", help='show network assignments')
@@ -332,14 +345,15 @@ USAGE
         pbclient = ProfitBricksService(user, password)
 
         if datacenterid is not None:
-            datacenters = []
+            datacenters = {}
             if datacenterid == '*':
                 # the default depth=1 is sufficient, higher values don't provide more details
                 datacenters = pbclient.list_datacenters()
-                if verbose > 1:
-                    print(str(datacenters))
             else:
-                datacenters = [ pbclient.get_datacenter(datacenterid, 1) ]
+                datacenters['items'] = []
+                datacenters['items'] = [ pbclient.get_datacenter(datacenterid, 1) ]
+            if verbose > 1:
+                print(pp(datacenters))
             print("retrieved %i datacenters " % len(datacenters['items']))
             # dump inventory to file
             with open("pb_datacenter_inventory.csv", 'w') as csvfile :
