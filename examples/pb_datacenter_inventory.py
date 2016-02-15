@@ -362,7 +362,7 @@ USAGE
         parser.add_argument(
             '-p', '--password', dest='password', help='the login password')
         parser.add_argument(
-            '-d', '--datacenterid', dest='datacenterid', nargs='?', const='*',
+            '-d', '--datacenter', '--datacenterid', dest='datacenterid', nargs='?', const='*',
             help='show server/storage of datacenter(s)')
         parser.add_argument(
             '-i', '--image', dest='show_images', action="store_true",
