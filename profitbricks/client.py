@@ -1635,7 +1635,7 @@ class ProfitBricksService(object):
         Python2 as a str object, and in Python3 as a bytes object.
         Raises a TypeError, if it cannot be converted.
         """
-        id six.PY2:
+        if six.PY2:
             # This is Python2
             if isinstance(s, str):
                 return s
