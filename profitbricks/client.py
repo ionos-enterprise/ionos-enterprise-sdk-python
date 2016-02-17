@@ -1756,10 +1756,10 @@ class ProfitBricksService(object):
         if nic.ips:
             properties['ips'] = nic.ips
 
-        if nic.dhcp:
+        if nic.dhcp is not None:
             properties['dhcp'] = nic.dhcp
 
-        if nic.firewall_active:
+        if nic.firewall_active is not None:
             properties['firewallActive'] = nic.firewall_active
 
         if len(nic.firewall_rules) > 0:
