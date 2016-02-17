@@ -3,6 +3,7 @@ import json
 import re
 
 import requests
+import six
 from six.moves.urllib.parse import urlencode
 
 from profitbricks import (
@@ -1628,13 +1629,26 @@ class ProfitBricksService(object):
         url = self.host_base + uri
         return url
 
-    def _b(self, s):
-        if isinstance(s, str) or isinstance(s, unicode):
-            return s.encode('utf-8')
-        elif isinstance(s, bytes):
-            return s
+    def _b(self, s, encoding='utf-8'):
+        """
+        Returns the given string as a string of bytes. That means in
+        Python2 as a str object, and in Python3 as a bytes object.
+        Raises a TypeError, if it cannot be converted.
+        """
+        id six.PY2:
+            # This is Python2
+            if isinstance(s, str):
+                return s
+            elif isinstance(s, unicode):
+                return s.encode(encoding)
         else:
-            raise TypeError("Invalid argument %r for b()" % (s,))
+            # And this is Python3
+            if isinstance(s, bytes):
+                return s
+            elif isinstance(s, str):
+                return s.encode(encoding)
+
+        raise TypeError("Invalid argument %r for _b()" % (s,))
 
     'Used to convert python snake case back to mixed case.'
     def _underscore_to_camelcase(self, value):
