@@ -40,6 +40,9 @@ htmlcov/
 nosetests.xml
 coverage.xml
 
+# Result files
+*.csv
+
 # Translations
 *.mo
 *.pot
@@ -55,3 +58,7 @@ target/
 examples/live_test.py
 *.iml
 .idea/
+
+# Eclipse/PyDev metadatas
+/.project
+/.pydevproject
