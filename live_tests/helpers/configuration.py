@@ -1,5 +1,4 @@
 import os
-import sys
 
 # Default settings for testing.
 LOCATION = os.getenv('PROFITBRICKS_LOCATION', 'us/lasdev')
