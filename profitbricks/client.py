@@ -1669,7 +1669,7 @@ class ProfitBricksService(object):
         }
 
         ' Optional Properties'
-        if lan.public:
+        if lan.public is not None:
             properties['public'] = str(lan.public).lower()
 
         if len(lan.nics) > 0:
@@ -2067,11 +2067,11 @@ class LAN(ProfitBricksService):
         """
         LAN class initializer.
 
-        :param      name: Your API username from the portal.
+        :param      name: The name of the LAN.
         :type       name: ``str``
 
-        :param      public: Your API password from the portal.
-        :type       public: ``str``
+        :param      public: Indicates if the LAN is public.
+        :type       public: ``bool``
 
         :param      nics: A list of NICs
         :type       nics: ``list``
