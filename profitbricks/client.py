@@ -1669,7 +1669,7 @@ class ProfitBricksService(object):
         }
 
         ' Optional Properties'
-        if lan.public:
+        if lan.public is not None:
             properties['public'] = str(lan.public).lower()
 
         if len(lan.nics) > 0:
@@ -1712,7 +1712,7 @@ class ProfitBricksService(object):
         ' Optional Properties'
         if loadbalancer.ip:
             properties['ip'] = loadbalancer.ip
-        if loadbalancer.dhcp:
+        if loadbalancer.dhcp is not None:
             properties['dhcp'] = str(loadbalancer.dhcp).lower()
 
         if len(loadbalancer.balancednics) > 0:
@@ -1756,10 +1756,10 @@ class ProfitBricksService(object):
         if nic.ips:
             properties['ips'] = nic.ips
 
-        if nic.dhcp:
+        if nic.dhcp is not None:
             properties['dhcp'] = nic.dhcp
 
-        if nic.firewall_active:
+        if nic.firewall_active is not None:
             properties['firewallActive'] = nic.firewall_active
 
         if len(nic.firewall_rules) > 0:
@@ -2067,11 +2067,11 @@ class LAN(ProfitBricksService):
         """
         LAN class initializer.
 
-        :param      name: Your API username from the portal.
+        :param      name: The name of the LAN.
         :type       name: ``str``
 
-        :param      public: Your API password from the portal.
-        :type       public: ``str``
+        :param      public: Indicates if the LAN is public.
+        :type       public: ``bool``
 
         :param      nics: A list of NICs
         :type       nics: ``list``
