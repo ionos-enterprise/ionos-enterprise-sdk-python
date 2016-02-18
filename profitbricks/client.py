@@ -1712,7 +1712,7 @@ class ProfitBricksService(object):
         ' Optional Properties'
         if loadbalancer.ip:
             properties['ip'] = loadbalancer.ip
-        if loadbalancer.dhcp:
+        if loadbalancer.dhcp is not None:
             properties['dhcp'] = str(loadbalancer.dhcp).lower()
 
         if len(loadbalancer.balancednics) > 0:
