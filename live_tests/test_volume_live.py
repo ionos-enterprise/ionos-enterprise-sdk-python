@@ -33,7 +33,8 @@ class TestVolume(unittest.TestCase):
             volume_id=self.volume['id'],
             name=self.resource['snapshot']['name'],
             description=self.resource['snapshot']['description'])
-        wait_for_completion(self.client, self.snapshot1, 'create_snapshot1')
+        wait_for_completion(self.client, self.snapshot1, 'create_snapshot1',
+                            wait_timeout=600)
 
         # Create snapshot2 (used in delete test)
         self.snapshot2 = self.client.create_snapshot(
@@ -41,7 +42,8 @@ class TestVolume(unittest.TestCase):
             volume_id=self.volume['id'],
             name=self.resource['snapshot']['name'],
             description=self.resource['snapshot']['description'])
-        wait_for_completion(self.client, self.snapshot2, 'create_snapshop2')
+        wait_for_completion(self.client, self.snapshot2, 'create_snapshop2',
+                            wait_timeout=600)
 
     @classmethod
     def tearDownClass(self):
