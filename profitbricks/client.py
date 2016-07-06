@@ -2031,7 +2031,13 @@ class FirewallRule(ProfitBricksService):
         self.target_ip = target_ip
         self.port_range_start = port_range_start
         self.port_range_end = port_range_end
+
+        if icmp_type is not None:
+            icmp_type = str(icmp_type)
         self.icmp_type = icmp_type
+
+        if icmp_code is not None:
+            icmp_code = str(icmp_code)
         self.icmp_code = icmp_code
 
     def __repr__(self):
