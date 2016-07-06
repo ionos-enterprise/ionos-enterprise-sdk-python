@@ -1600,11 +1600,14 @@ class ProfitBricksService(object):
                 if response.status_code == 202:
                     return True
 
-        if not response.ok:
-            err = response.json()
-            code = err['httpStatus']
-            msg = err['messages'][0]['message']
-            raise Exception(code, msg)
+        try:
+            if not response.ok:
+                err = response.json()
+                code = err['httpStatus']
+                msg = err['messages'][0]['message']
+                raise Exception(code, msg)
+        except ValueError as e:
+            raise Exception('Failed to parse the response', response.text)
 
         json_response = response.json()
 
