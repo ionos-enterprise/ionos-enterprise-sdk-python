@@ -2262,7 +2262,7 @@ class Volume(ProfitBricksService):
 
         """
         self.name = name
-        self.size = size
+        self.size = int(size)
         self.image = image
         self.bus = bus
         self.disk_type = disk_type
