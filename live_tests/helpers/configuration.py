@@ -1,7 +1,7 @@
 import os
 
 # Default settings for testing.
-LOCATION = os.getenv('PROFITBRICKS_LOCATION', 'us/lasdev')
+LOCATION = os.getenv('PROFITBRICKS_LOCATION', 'us/las')
 # Custom HTTP headers
 # Connection: close - prevents resource warnings in Python 3.4
 HEADERS = {'Connection': 'close'}
