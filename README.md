@@ -149,12 +149,12 @@ Or if you want one with some volumes and NICs you would do:
 
 **Notes on volumes**:
 
-* You will need to provide either the `image` or the `licence_type` parameters. The `licence_type` is required, but if `image` is supplied, it will already have a `licence_type` set.
+* You will need to provide either the `image` or the `licence_type` parameter. The `licence_type` is required, but ProfitBricks images will already have a `licence_type` set.
 * A list of public SSH keys and/or the image root password can added to the volume. Only official ProfitBricks base images support the `ssh_keys` and `image_password` parameters.
 
 ## Additional Documentation and Support
 
-You can find additional examples in our repo [here]. If you find any issues, please let us know via the DevOps Central community or GitHub's issue system and we'll check it out. 
+You can find additional examples in the repo `examples` directory. If you find any issues, please let us know via the DevOps Central community or GitHub's issue system and we'll check it out. 
 
 
 ## How to: Create a Datacenter
