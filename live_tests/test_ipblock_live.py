@@ -38,6 +38,8 @@ class TestIPBlock(unittest.TestCase):
         ipblock = self.client.get_ipblock(self.ipblock1['id'])
 
         self.assertEqual(ipblock['id'], self.ipblock1['id'])
+        # Note: ProfitBricks changes the ipblock name to lowercase.
+        self.assertEqual(ipblock['properties']['name'], (self.resource['ipblock']['name']).lower())
         self.assertEqual(ipblock['properties']['size'], self.resource['ipblock']['size'])
         self.assertEqual(ipblock['properties']['location'], self.resource['ipblock']['location'])
 
@@ -50,6 +52,8 @@ class TestIPBlock(unittest.TestCase):
         ipblock = self.client.reserve_ipblock(IPBlock(**self.resource['ipblock']))
 
         assertRegex(self, ipblock['id'], self.resource['uuid_match'])
+        # Note: ProfitBricks changes the ipblock name to lowercase.
+        self.assertEqual(ipblock['properties']['name'], (self.resource['ipblock']['name']).lower())
         self.assertEqual(ipblock['properties']['size'], self.resource['ipblock']['size'])
         self.assertEqual(ipblock['properties']['location'], self.resource['ipblock']['location'])
 
