@@ -60,6 +60,7 @@ def resource():
             'public': True,
         },
         'ipblock': {
+            'name': 'Python SDK Test',
             'location': configuration.LOCATION,
             'size': 1
         }
