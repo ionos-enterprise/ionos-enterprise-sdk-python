@@ -60,7 +60,7 @@ class TestLan(unittest.TestCase):
 
         self.assertGreater(len(lans), 0)
         self.assertEqual(lans['items'][0]['type'], 'lan')
-        self.assertEqual(lans['items'][0]['id'], self.lan['id'])
+        self.assertIn(lans['items'][0]['id'], ('1', '2', '3'))
         self.assertEqual(lans['items'][0]['properties']['name'], self.resource['lan']['name'])
         self.assertTrue(lans['items'][0]['properties']['public'], self.resource['lan']['public'])
 
@@ -125,8 +125,6 @@ class TestLan(unittest.TestCase):
         self.assertEqual(response['type'], 'lan')
         self.assertEqual(response['properties']['name'], self.resource['lan']['name'])
         self.assertTrue(response['properties']['public'])
-
-        self.client.delete_lan(datacenter_id=self.datacenter['id'], lan_id=response['id'])
 
     def test_get_lan_members(self):
         members = self.client.get_lan_members(

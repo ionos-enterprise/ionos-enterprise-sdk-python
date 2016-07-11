@@ -1,7 +1,7 @@
 import unittest
 
 from helpers import configuration
-from helpers.resources import resource, wait_for_completion
+from helpers.resources import resource, wait_for_completion, find_image
 from profitbricks.client import Datacenter, Volume
 from profitbricks.client import ProfitBricksService
 from six import assertRegex
@@ -44,6 +44,8 @@ class TestVolume(unittest.TestCase):
             description=self.resource['snapshot']['description'])
         wait_for_completion(self.client, self.snapshot2, 'create_snapshop2',
                             wait_timeout=600)
+
+        self.image = find_image(self.client, configuration.IMAGE_NAME)
 
     @classmethod
     def tearDownClass(self):
@@ -174,6 +176,17 @@ class TestVolume(unittest.TestCase):
         volume = self.client.remove_snapshot(snapshot_id=self.snapshot2['id'])
 
         self.assertTrue(volume)
+
+    def test_create_volume_failure(self):
+        with self.assertRaises(Exception) as context:
+            self.client.create_volume(
+                datacenter_id=self.datacenter['id'],
+                volume=Volume(image=self.image['id'],
+                              **self.resource['volume_failure']))
+        exception = ('(422, u\'[(root).properties.image] Passwords/SSH Keys '
+                     'are mandatory for public ProfitBricks Images.\')')
+
+        self.assertIn(exception, str(context.exception))
 
 if __name__ == '__main__':
     unittest.main()
