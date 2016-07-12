@@ -27,6 +27,13 @@ def resource():
             'size': 3,
             'bus': 'VIRTIO',
             'type': 'HDD',
+            'licence_type': 'UNKNOWN',
+        },
+        'volume_failure': {
+            'name': 'Negative Python SDK Test',
+            'size': 3,
+            'bus': 'VIRTIO',
+            'type': 'HDD',
             'licence_type': 'UNKNOWN'
         },
         'snapshot': {
@@ -55,15 +62,28 @@ def resource():
             'dhcp': True
         },
         'lan': {
-            # REST API seems to convert names to lowercase.
+            # REST API converts names to lowercase.
             'name': 'python sdk test',
             'public': True,
         },
         'ipblock': {
+            # REST API converts names to lowercase.
+            'name': 'python sdk test',
             'location': configuration.LOCATION,
             'size': 1
         }
     }
+
+
+def find_image(conn, name):
+    '''
+    Find image by partial name and location.
+    '''
+    for item in conn.list_images()['items']:
+        if (item['properties']['location'] == configuration.LOCATION and
+           item['properties']['imageType'] == 'HDD' and
+           name in item['properties']['name']):
+            return item
 
 
 def wait_for_completion(conn, promise, msg, wait_timeout=300):

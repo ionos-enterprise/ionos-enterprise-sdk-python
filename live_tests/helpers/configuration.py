@@ -2,6 +2,8 @@ import os
 
 # Default settings for testing.
 LOCATION = os.getenv('PROFITBRICKS_LOCATION', 'us/las')
+IMAGE_NAME = 'Ubuntu-16'  # Note: Partial image name and case sensitive
+
 # Custom HTTP headers
 # Connection: close - prevents resource warnings in Python 3.4
 HEADERS = {'Connection': 'close'}

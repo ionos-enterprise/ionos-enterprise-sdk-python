@@ -119,7 +119,11 @@ class TestServer(unittest.TestCase):
     def test_create_complex(self):
         fwrule = FirewallRule(**self.resource['fwrule'])
         nic = NIC(firewall_rules=[fwrule], **self.resource['nic'])
-        volume = Volume(image=self.image['id'], **self.resource['volume'])
+        volume = Volume(image=self.image['id'],
+                        image_password='secretpassword123',
+                        ssh_keys=['ssh-rsa AAAAB3NzaC1'],
+                        **self.resource['volume'])
+
         server = Server(
             nics=[nic],
             create_volumes=[volume],
