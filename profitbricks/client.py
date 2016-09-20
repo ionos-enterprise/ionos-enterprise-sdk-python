@@ -477,6 +477,7 @@ class ProfitBricksService(object):
 
         """
         properties = {
+            "name": ipblock.name,
             "location": ipblock.location,
             "size": str(ipblock.size).lower()
         }
@@ -1600,11 +1601,14 @@ class ProfitBricksService(object):
                 if response.status_code == 202:
                     return True
 
-        if not response.ok:
-            err = response.json()
-            code = err['httpStatus']
-            msg = err['messages'][0]['message']
-            raise Exception(code, msg)
+        try:
+            if not response.ok:
+                err = response.json()
+                code = err['httpStatus']
+                msg = err['messages'][0]['message']
+                raise Exception(code, msg)
+        except ValueError as e:
+            raise Exception('Failed to parse the response', response.text)
 
         json_response = response.json()
 
@@ -1846,6 +1850,9 @@ class ProfitBricksService(object):
             }
             properties['bootVolume'] = boot_volume
 
+        if server.cpu_family:
+            properties['cpuFamily'] = server.cpu_family
+
         if len(server.create_volumes) > 0:
             for volume in server.create_volumes:
                 volume_items.append(self._create_volume_dict(volume))
@@ -2025,7 +2032,13 @@ class FirewallRule(ProfitBricksService):
         self.target_ip = target_ip
         self.port_range_start = port_range_start
         self.port_range_end = port_range_end
+
+        if icmp_type is not None:
+            icmp_type = str(icmp_type)
         self.icmp_type = icmp_type
+
+        if icmp_code is not None:
+            icmp_code = str(icmp_code)
         self.icmp_code = icmp_code
 
     def __repr__(self):
@@ -2039,9 +2052,12 @@ class FirewallRule(ProfitBricksService):
 
 
 class IPBlock(ProfitBricksService):
-    def __init__(self, location=None, size=None):
+    def __init__(self, name=None, location=None, size=None):
         """
         IPBlock class initializer.
+
+        :param      name: The name of the IP Block.
+        :type       name: ``str``
 
         :param      location: The location for the IP Block.
         :type       location: ``str``
@@ -2050,6 +2066,7 @@ class IPBlock(ProfitBricksService):
         :type       size: ``str``
 
         """
+        self.name = name
         self.location = location
         self.size = size
 
@@ -2169,10 +2186,9 @@ class Server(ProfitBricksService):
     '''
     This is the main class for managing server resources.
     '''
-    def __init__(self, name=None, cores=None, ram=None,
-                 availability_zone=None, boot_volume_id=None,
-                 boot_cdrom=None, create_volumes=[],
-                 attach_volumes=[], nics=[]):
+    def __init__(self, name=None, cores=None, ram=None, availability_zone=None,
+                 boot_volume_id=None, boot_cdrom=None, cpu_family=None,
+                 create_volumes=[], attach_volumes=[], nics=[]):
         """
         Server class initializer.
 
@@ -2185,8 +2201,7 @@ class Server(ProfitBricksService):
         :param      ram: The amount of memory for the server.
         :type       ram: ``str``
 
-        :param      availability_zone: The availability zone
-                                       for the server.
+        :param      availability_zone: The availability zone for the server.
         :type       availability_zone: ``str``
 
         :param      boot_volume_id: The ID of the boot volume.
@@ -2194,6 +2209,9 @@ class Server(ProfitBricksService):
 
         :param      boot_cdrom: Attach a CDROM.
         :type       boot_cdrom: ``str``
+
+        :param      cpu_family: Set the desired CPU type.
+        :type       cpu_family: ``str``
 
         :param      create_volumes: List of Volume dicts to create.
         :type       create_volumes: ``list``
@@ -2211,6 +2229,7 @@ class Server(ProfitBricksService):
         self.availability_zone = availability_zone
         self.boot_volume_id = boot_volume_id
         self.boot_cdrom = boot_cdrom
+        self.cpu_family = cpu_family
         self.create_volumes = create_volumes
         self.attach_volumes = attach_volumes
         self.nics = nics
@@ -2219,7 +2238,7 @@ class Server(ProfitBricksService):
         return ((
             '<Server: name=%s, cores=%s, ram=%s, '
             'availability_zone=%s, boot_volume_id=%s, '
-            'boot_cdrom=%s> ...>')
+            'boot_cdrom=%s, ...>')
             % (self.name, self.cores, self.ram,
                 self.availability_zone, self.boot_volume_id, self.boot_cdrom))
 
@@ -2254,7 +2273,7 @@ class Volume(ProfitBricksService):
 
         """
         self.name = name
-        self.size = size
+        self.size = int(size)
         self.image = image
         self.bus = bus
         self.disk_type = disk_type
@@ -2264,6 +2283,6 @@ class Volume(ProfitBricksService):
 
     def __repr__(self):
         return ((
-            '<Volume: name=%s, size=%s, image=%s, bus=%s, disk_type=%s> ...>')
+            '<Volume: name=%s, size=%s, image=%s, bus=%s, disk_type=%s, ...>')
             % (self.name, str(self.size), self.image,
                 self.bus, self.disk_type))
