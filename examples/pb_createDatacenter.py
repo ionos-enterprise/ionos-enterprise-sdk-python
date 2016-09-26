@@ -30,8 +30,8 @@ from profitbricks.client import Datacenter, Volume, Server
 from profitbricks.client import LAN, NIC, FirewallRule
 
 
-__version__ = 0.1
-__date__ = '2016-08-16'
+__version__ = 0.2
+__date__ = '2016-09-26'
 __updated__ = __date__
 
 
@@ -586,10 +586,12 @@ USAGE
     write_dc_definition(pbclient, dcdef, tmpfile)
 
     requests = []
+    # Attention:
+    # NICs appear in OS in the order, they are created.
+    # But DCD rearranges the display by ascending MAC addresses.
+    # This does not change the OS order.
     # MAC may not be available from create response,
     # thus we wait for each request :-(
-    # Huuh, looks like we get unpredictable order for NICs!
-    # AARGH, NICs seem to be reordered by MAC address somehow!?!
     print("create NICs {}".format(str(dc)))
     for server in dcdef['entities']['servers']['items']:
         print("- server {}".format(server['properties']['name']))
@@ -599,41 +601,22 @@ USAGE
             continue
         macmap = dict()
         for nic in server['entities']['nics']['items']:
-            dummy = NIC(lan=1, dhcp=False, name='dummy')
-            response = pbclient.create_nic(dc_id, srv_id, dummy)
-            print("dummy response {}".format(str(response)))
+            dcnic = getNICObject(nic)
+            response = pbclient.create_nic(dc_id, srv_id, dcnic)
+            # print("dcnic response {}".format(str(response)))
             # mac = response['properties']['mac'] # we don't get it here !?
             nic_id = response['id']
             result = wait_for_request(pbclient, response['requestId'])
             print("wait loop returned {}".format(str(result)))
             response = pbclient.get_nic(dc_id, srv_id, nic_id, 2)
             mac = response['properties']['mac']
-            print("dummy has {} for {}".format(mac, nic_id))
+            print("dcnic has MAC {} for {}".format(mac, nic_id))
             macmap[mac] = nic_id
         # end for(nic)
         macs = sorted(macmap)
+        print("macs will be displayed by DCD in th following order:")
         for mac in macs:
             print("mac {} -> id{}".format(mac, macmap[mac]))
-        # now correct the shit
-        for idx in range(len(macs)):
-            mac = macs[idx]
-            nic_id = macmap[mac]
-            nic = server['entities']['nics']['items'][idx]
-            # Huuh, update_nic() uses underscore_to_camelcase() for python->JSON
-            # That mangles capitalization of JSON: firewallActive->firewallactive
-            # So we can't use it directly, but transform the dirty way
-            print("nic in  : {}".format(nic['properties']))
-            if 'firewallActive' in nic['properties']:
-                nic['properties']['firewall_active'] = nic['properties'].pop('firewallActive')
-            if 'firewallrules' in nic['properties']:
-                nic['properties']['firewall_rules'] = nic['properties'].pop('firewallrules')
-            if 'mac' in nic['properties']:
-                nic['properties'].pop('mac', None)   # we can't change it
-            print("nic out : {}".format(nic))
-            response = pbclient.update_nic(dc_id, srv_id, nic_id, 
-                                           **nic['properties'])
-            result = wait_for_request(pbclient, response['requestId'])
-            print("wait loop returned {}".format(str(result)))
     # end for(server)
     tmpfile = usefile+".tmp_postnic"
     write_dc_definition(pbclient, dcdef, tmpfile)
