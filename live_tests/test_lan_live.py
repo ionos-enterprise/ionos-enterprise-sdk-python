@@ -4,7 +4,6 @@ from helpers import configuration
 from helpers.resources import resource, wait_for_completion
 from profitbricks.client import ProfitBricksService
 from profitbricks.client import Datacenter, Server, LAN, NIC
-from six import assertRegex
 
 
 class TestLan(unittest.TestCase):
@@ -99,6 +98,7 @@ class TestLan(unittest.TestCase):
         self.assertEqual(self.lan['properties']['name'], self.resource['lan']['name'])
         self.assertEqual(self.lan['properties']['public'], self.resource['lan']['public'])
 
+
     def test_create_complex_lan(self):
         resource = NIC(**self.resource['nic'])
 
@@ -107,14 +107,13 @@ class TestLan(unittest.TestCase):
             server_id=self.server['id'],
             nic=resource)
         wait_for_completion(self.client, nic1, 'create_nic1')
+        self.assertFalse(nic1['properties']['nat'])
+        self.assertEqual(nic1['properties']['name'],'Python SDK Test')
+        self.assertTrue(nic1['properties']['dhcp'])
+        self.assertEqual(nic1['properties']['lan'],1)
+        self.assertTrue(nic1['properties']['firewallActive'])
 
-        nic2 = self.client.create_nic(
-            datacenter_id=self.datacenter['id'],
-            server_id=self.server['id'],
-            nic=resource)
-        wait_for_completion(self.client, nic2, 'create_nic2')
-
-        nics = [nic1['id'], nic2['id']]
+        nics = [nic1['id']]
         lan = LAN(nics=nics, **self.resource['lan'])
 
         response = self.client.create_lan(
@@ -132,10 +131,8 @@ class TestLan(unittest.TestCase):
             lan_id=self.lan['id'])
 
         self.assertGreater(len(members), 0)
-        assertRegex(self, members['items'][0]['id'], self.resource['uuid_match'])
         self.assertEqual(members['items'][0]['type'], 'nic')
         self.assertEqual(members['items'][0]['properties']['name'], self.resource['nic']['name'])
-        assertRegex(self, members['items'][0]['properties']['mac'], self.resource['mac_match'])
 
 if __name__ == '__main__':
     unittest.main()

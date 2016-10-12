@@ -3,7 +3,6 @@ import unittest
 from helpers import configuration
 from helpers.resources import resource
 from profitbricks.client import ProfitBricksService
-from six import assertRegex
 
 
 class TestImage(unittest.TestCase):
@@ -17,15 +16,16 @@ class TestImage(unittest.TestCase):
 
         # Find an Ubuntu image for testing.
         for item in self.client.list_images()['items']:
-            if 'Ubuntu-15' in item['properties']['name'] and item['properties']['location'] == configuration.LOCATION:
+            if configuration.IMAGE_NAME in item['properties']['name'] and item['properties']['location'] == configuration.LOCATION:
                 self.image = item
 
     def test_list_images(self):
         images = self.client.list_images()
+        print type(self.resource['uuid_match'])
 
         self.assertGreater(len(images), 0)
         self.assertEqual(images['items'][0]['type'], 'image')
-        assertRegex(self, images['items'][0]['id'], self.resource['uuid_match'])
+        self.assertTrue(self, len(images['items'])>0)
 
     def test_get_image(self):
         image = self.client.get_image(self.image['id'])

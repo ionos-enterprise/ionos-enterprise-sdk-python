@@ -1757,6 +1757,9 @@ class ProfitBricksService(object):
         }
 
         ' Optional Properties'
+        if nic.nat:
+            properties['nat'] = nic.nat
+
         if nic.ips:
             properties['ips'] = nic.ips
 
@@ -1917,6 +1920,9 @@ class ProfitBricksService(object):
         }
 
         ' Optional Properties'
+        if volume.availabilityZone:
+            properties['availabilityZone'] = volume.availabilityZone
+
         if volume.image:
             properties['image'] = volume.image
 
@@ -2142,7 +2148,7 @@ class LoadBalancer(ProfitBricksService):
 class NIC(ProfitBricksService):
     def __init__(self, name=None, ips=None,
                  dhcp=None, lan=None, firewall_active=None,
-                 firewall_rules=[], **kwargs):
+                 firewall_rules=[], nat=None, **kwargs):
         """
         NIC class initializer.
 
@@ -2168,6 +2174,7 @@ class NIC(ProfitBricksService):
 
         """
         self.name = name
+        self.nat = nat
         self.ips = ips
         self.dhcp = dhcp
         self.lan = lan
@@ -2246,7 +2253,7 @@ class Server(ProfitBricksService):
 class Volume(ProfitBricksService):
     def __init__(self, name=None, size=None, bus='VIRTIO', image=None,
                  disk_type='HDD', licence_type='UNKNOWN', image_password=None,
-                 ssh_keys=[], **kwargs):
+                 ssh_keys=[], availabilityZone='AUTO', **kwargs):
         """
         Volume class initializer.
 
@@ -2273,6 +2280,7 @@ class Volume(ProfitBricksService):
 
         """
         self.name = name
+        self.availabilityZone = availabilityZone
         self.size = int(size)
         self.image = image
         self.bus = bus

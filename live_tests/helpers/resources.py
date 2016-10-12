@@ -6,10 +6,10 @@ from helpers import configuration
 
 def resource():
     return {
-        'locations': ['us/lasdev', 'us/las', 'de/fra', 'de/fkb'],
+        'locations': ['us/las', 'de/fra', 'de/fkb'],
         'vm_states': ['RUNNING', 'SHUTOFF'],
-        'uuid_match': re.compile(
-            '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$'),
+        'uuid_match':
+            '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$',
         'mac_match': re.compile(
             '^([0-9a-f]{2}[:]){5}([0-9a-f]{2})$'),
         'datacenter': {
@@ -28,6 +28,7 @@ def resource():
             'bus': 'VIRTIO',
             'type': 'HDD',
             'licence_type': 'UNKNOWN',
+            'availabilityZone' : 'ZONE_3'
         },
         'volume_failure': {
             'name': 'Negative Python SDK Test',
@@ -44,7 +45,8 @@ def resource():
             'name': 'Python SDK Test',
             'dhcp': True,
             'lan': 1,
-            'firewall_active': True
+            'firewall_active': True,
+            'nat': False
         },
         'fwrule': {
             'name': 'SSH',

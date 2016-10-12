@@ -4,7 +4,6 @@ from helpers import configuration
 from helpers.resources import resource, wait_for_completion, find_image
 from profitbricks.client import Datacenter, Volume
 from profitbricks.client import ProfitBricksService
-from six import assertRegex
 
 
 class TestVolume(unittest.TestCase):
@@ -50,6 +49,7 @@ class TestVolume(unittest.TestCase):
     @classmethod
     def tearDownClass(self):
         self.client.remove_snapshot(snapshot_id=self.snapshot1['id'])
+        self.client.remove_snapshot(snapshot_id=self.snapshot2['id'])
         self.client.delete_datacenter(datacenter_id=self.datacenter['id'])
 
     def test_list_volumes(self):
@@ -57,7 +57,6 @@ class TestVolume(unittest.TestCase):
             datacenter_id=self.datacenter['id'])
 
         self.assertGreater(len(volumes), 0)
-        assertRegex(self, volumes['items'][0]['id'], self.resource['uuid_match'])
         self.assertEqual(volumes['items'][0]['type'], 'volume')
         self.assertEqual(volumes['items'][0]['properties']['name'], self.resource['volume']['name'])
         self.assertEqual(volumes['items'][0]['properties']['size'], self.resource['volume']['size'])
@@ -97,6 +96,7 @@ class TestVolume(unittest.TestCase):
         self.assertFalse(volume['properties']['discScsiHotPlug'])
         self.assertFalse(volume['properties']['discScsiHotUnplug'])
         self.assertIsNone(volume['properties']['bus'])
+        self.assertTrue(volume['properties']['availabilityZone'] == 'ZONE_3')
 
     def test_delete_volume(self):
         volume = self.client.create_volume(
@@ -143,10 +143,10 @@ class TestVolume(unittest.TestCase):
         self.assertFalse(self.volume['properties']['discVirtioHotUnplug'])
         self.assertFalse(self.volume['properties']['discScsiHotPlug'])
         self.assertFalse(self.volume['properties']['discScsiHotUnplug'])
+        self.assertTrue(self.volume['properties']['availabilityZone'] == 'ZONE_3')
 
     def test_create_snapshot(self):
         # Use snapshot created during volume test setup.
-        assertRegex(self, self.snapshot1['id'], self.resource['uuid_match'])
         self.assertEqual(self.snapshot1['type'], 'snapshot')
         self.assertEqual(self.snapshot1['properties']['name'], self.resource['snapshot']['name'])
         self.assertEqual(self.snapshot1['properties']['description'], self.resource['snapshot']['description'])

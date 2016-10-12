@@ -4,7 +4,6 @@ from helpers import configuration
 from helpers.resources import resource
 from profitbricks.client import IPBlock
 from profitbricks.client import ProfitBricksService
-from six import assertRegex
 
 
 class TestIPBlock(unittest.TestCase):
@@ -31,7 +30,6 @@ class TestIPBlock(unittest.TestCase):
 
         self.assertGreater(len(ipblocks), 0)
         self.assertGreater(ipblocks['items'][0]['properties']['size'], 0)
-        assertRegex(self, ipblocks['items'][0]['id'], self.resource['uuid_match'])
         self.assertIn(ipblocks['items'][0]['properties']['location'], self.resource['locations'])
 
     def test_get_ipblock(self):
@@ -50,7 +48,6 @@ class TestIPBlock(unittest.TestCase):
     def test_reserve_ipblock(self):
         ipblock = self.client.reserve_ipblock(IPBlock(**self.resource['ipblock']))
 
-        assertRegex(self, ipblock['id'], self.resource['uuid_match'])
         self.assertEqual(ipblock['properties']['name'], (self.resource['ipblock']['name']))
         self.assertEqual(ipblock['properties']['size'], self.resource['ipblock']['size'])
         self.assertEqual(ipblock['properties']['location'], self.resource['ipblock']['location'])
