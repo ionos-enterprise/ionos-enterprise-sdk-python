@@ -6,7 +6,6 @@ from profitbricks.client import Datacenter, Volume
 from profitbricks.client import ProfitBricksService
 from six import assertRegex
 
-
 class TestVolume(unittest.TestCase):
     @classmethod
     def setUpClass(self):
@@ -36,20 +35,10 @@ class TestVolume(unittest.TestCase):
         wait_for_completion(self.client, self.snapshot1, 'create_snapshot1',
                             wait_timeout=600)
 
-        # Create snapshot2 (used in delete test)
-        self.snapshot2 = self.client.create_snapshot(
-            datacenter_id=self.datacenter['id'],
-            volume_id=self.volume['id'],
-            name=self.resource['snapshot']['name'],
-            description=self.resource['snapshot']['description'])
-        wait_for_completion(self.client, self.snapshot2, 'create_snapshop2',
-                            wait_timeout=600)
-
         self.image = find_image(self.client, configuration.IMAGE_NAME)
 
     @classmethod
     def tearDownClass(self):
-        self.client.remove_snapshot(snapshot_id=self.snapshot1['id'])
         self.client.delete_datacenter(datacenter_id=self.datacenter['id'])
 
     def test_list_volumes(self):
@@ -97,6 +86,7 @@ class TestVolume(unittest.TestCase):
         self.assertFalse(volume['properties']['discScsiHotPlug'])
         self.assertFalse(volume['properties']['discScsiHotUnplug'])
         self.assertIsNone(volume['properties']['bus'])
+        self.assertEqual(volume['properties']['availabilityZone'], self.resource["volume"]["availability_zone"])
 
     def test_delete_volume(self):
         volume = self.client.create_volume(
@@ -143,10 +133,10 @@ class TestVolume(unittest.TestCase):
         self.assertFalse(self.volume['properties']['discVirtioHotUnplug'])
         self.assertFalse(self.volume['properties']['discScsiHotPlug'])
         self.assertFalse(self.volume['properties']['discScsiHotUnplug'])
+        self.assertEqual(self.volume['properties']['availabilityZone'], self.resource["volume"]["availability_zone"])
 
     def test_create_snapshot(self):
         # Use snapshot created during volume test setup.
-        assertRegex(self, self.snapshot1['id'], self.resource['uuid_match'])
         self.assertEqual(self.snapshot1['type'], 'snapshot')
         self.assertEqual(self.snapshot1['properties']['name'], self.resource['snapshot']['name'])
         self.assertEqual(self.snapshot1['properties']['description'], self.resource['snapshot']['description'])
@@ -173,7 +163,7 @@ class TestVolume(unittest.TestCase):
         self.assertTrue(response)
 
     def test_remove_snapshot(self):
-        volume = self.client.remove_snapshot(snapshot_id=self.snapshot2['id'])
+        volume = self.client.remove_snapshot(snapshot_id=self.snapshot1['id'])
 
         self.assertTrue(volume)
 
@@ -183,8 +173,8 @@ class TestVolume(unittest.TestCase):
                 datacenter_id=self.datacenter['id'],
                 volume=Volume(image=self.image['id'],
                               **self.resource['volume_failure']))
-        exception = ('(422, u\'[(root).properties.image] Passwords/SSH Keys '
-                     'are mandatory for public ProfitBricks Images.\')')
+        exception = ('Passwords/SSH Keys '
+                     'are mandatory for public ProfitBricks Images.')
 
         self.assertIn(exception, str(context.exception))
 

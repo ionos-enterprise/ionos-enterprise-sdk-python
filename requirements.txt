@@ -1,5 +1,5 @@
 requests>=2.0.0
-six
+six>=1.10.0
 
 # Testing requirements
 pytest

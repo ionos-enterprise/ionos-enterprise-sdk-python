@@ -104,6 +104,7 @@ Or if you want one with some volumes and NICs you would do:
         dhcp='true',
         lan=1,
         firewall_active=True,
+        nat=False
         )
 
     nic2 = NIC(
@@ -120,7 +121,8 @@ Or if you want one with some volumes and NICs you would do:
         image='<IMAGE/SNAPSHOT-ID>',
         bus='VIRTIO'
         ssh_keys=['ssh-rsa AAAAB3NzaC1yc2EAAAADAQ...'],
-        image_password='s3cr3tpass0rd'
+        image_password='s3cr3tpass0rd',
+        availability_zone='ZONE_3'
         )
 
     volume2 = Volume(

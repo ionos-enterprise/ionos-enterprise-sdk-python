@@ -29,14 +29,16 @@ class TestIPBlock(unittest.TestCase):
     def test_list_ipblocks(self):
         ipblocks = self.client.list_ipblocks()
 
-        self.assertGreater(len(ipblocks), 0)
-        self.assertGreater(ipblocks['items'][0]['properties']['size'], 0)
         assertRegex(self, ipblocks['items'][0]['id'], self.resource['uuid_match'])
+        self.assertGreater(len(ipblocks), 0)
+        assertRegex(self, ipblocks['items'][0]['id'], self.resource['uuid_match'])
+        self.assertGreater(ipblocks['items'][0]['properties']['size'], 0)
         self.assertIn(ipblocks['items'][0]['properties']['location'], self.resource['locations'])
 
     def test_get_ipblock(self):
         ipblock = self.client.get_ipblock(self.ipblock1['id'])
 
+        assertRegex(self, ipblock['id'], self.resource['uuid_match'])
         self.assertEqual(ipblock['id'], self.ipblock1['id'])
         self.assertEqual(ipblock['properties']['name'], (self.resource['ipblock']['name']))
         self.assertEqual(ipblock['properties']['size'], self.resource['ipblock']['size'])
@@ -56,6 +58,7 @@ class TestIPBlock(unittest.TestCase):
         self.assertEqual(ipblock['properties']['location'], self.resource['ipblock']['location'])
 
         self.client.delete_ipblock(ipblock['id'])
+
 
 if __name__ == '__main__':
     unittest.main()
