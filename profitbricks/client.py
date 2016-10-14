@@ -7,8 +7,8 @@ import six
 from six.moves.urllib.parse import urlencode
 
 from profitbricks import (
-    API_HOST,
-    )
+    API_HOST, __version__
+)
 
 """ProfitBricks Object Classes
 """
@@ -49,7 +49,7 @@ class ProfitBricksService(object):
         Retrieves a list of all datacenters.
 
         """
-        response = self._perform_request('/datacenters?depth='+str(depth))
+        response = self._perform_request('/datacenters?depth=' + str(depth))
 
         return response
 
@@ -124,8 +124,8 @@ class ProfitBricksService(object):
                 loadbalancer_items.append(
                     self._create_loadbalancer_dict(
                         loadbalancer
-                        )
                     )
+                )
 
             loadbalancers = {
                 "items": loadbalancer_items
@@ -142,7 +142,7 @@ class ProfitBricksService(object):
             for lan in datacenter.lans:
                 lan_items.append(
                     self._create_lan_dict(lan)
-                    )
+                )
 
             lans = {
                 "items": lan_items
@@ -407,7 +407,7 @@ class ProfitBricksService(object):
         :type       depth: ``int``
 
         """
-        response = self._perform_request('/images?depth='+str(depth))
+        response = self._perform_request('/images?depth=' + str(depth))
         return response
 
     def delete_image(self, image_id):
@@ -418,7 +418,7 @@ class ProfitBricksService(object):
         :type       image_id: ``str``
 
         """
-        response = self._perform_request(url='/images/'+image_id,
+        response = self._perform_request(url='/images/' + image_id,
                                          type='DELETE')
         return response
 
@@ -432,13 +432,14 @@ class ProfitBricksService(object):
         for attr in kwargs.keys():
             data[self._underscore_to_camelcase(attr)] = kwargs[attr]
 
-        response = self._perform_request(url='/images/'+image_id,
+        response = self._perform_request(url='/images/' + image_id,
                                          type='PATCH',
                                          data=json.dumps(data))
         return response
 
     """IPBlock Functions
     """
+
     def get_ipblock(self, ipblock_id):
         """
         Retrieves a single IPBlock by ID.
@@ -467,7 +468,7 @@ class ProfitBricksService(object):
 
         """
         response = self._perform_request(
-            url='/ipblocks/'+ipblock_id, type='DELETE')
+            url='/ipblocks/' + ipblock_id, type='DELETE')
 
         return response
 
@@ -561,8 +562,8 @@ class ProfitBricksService(object):
         data = self._underscore_to_camelcase(
             json.dumps(
                 self._create_lan_dict(lan)
-                )
             )
+        )
 
         response = self._perform_request(
             url='/datacenters/%s/lans' % datacenter_id,
@@ -678,8 +679,8 @@ class ProfitBricksService(object):
         data = self._underscore_to_camelcase(
             json.dumps(
                 self._create_loadbalancer_dict(loadbalancer)
-                )
             )
+        )
 
         response = self._perform_request(
             url='/datacenters/%s/loadbalancers' % datacenter_id,
@@ -816,7 +817,7 @@ class ProfitBricksService(object):
         :type       location_id: ``str``
 
         """
-        response = self._perform_request('/locations/'+location_id)
+        response = self._perform_request('/locations/' + location_id)
         return response
 
     def list_locations(self):
@@ -968,7 +969,7 @@ class ProfitBricksService(object):
         """
         if status:
             response = self._perform_request(
-                '/requests/'+request_id+'/status')
+                '/requests/' + request_id + '/status')
         else:
             response = self._perform_request(
                 '/requests/%s' % request_id)
@@ -1362,7 +1363,7 @@ class ProfitBricksService(object):
 
         """
         response = self._perform_request(
-            url='/snapshots/'+snapshot_id, type='DELETE')
+            url='/snapshots/' + snapshot_id, type='DELETE')
 
         return response
 
@@ -1379,7 +1380,7 @@ class ProfitBricksService(object):
             data[self._underscore_to_camelcase(attr)] = kwargs[attr]
 
         response = self._perform_request(
-            url='/snapshots/'+snapshot_id, type='PATCH', data=json.dumps(data))
+            url='/snapshots/' + snapshot_id, type='PATCH', data=json.dumps(data))
 
         return response
 
@@ -1441,7 +1442,7 @@ class ProfitBricksService(object):
 
         """
         response = self._perform_request(
-            url='/snapshots/'+snapshot_id, type='DELETE')
+            url='/snapshots/' + snapshot_id, type='DELETE')
 
         return response
 
@@ -1568,17 +1569,19 @@ class ProfitBricksService(object):
                                self.password))).decode('utf-8'))})
 
         url = self._build_url(url)
-
+        headers.update(
+            {'User-Agent':
+                 'profitbricks-sdk-python/' + __version__})
         if type == 'POST' or type == 'PUT':
             headers.update(
                 {'Content-Type':
-                 'application/vnd.profitbricks.resource+json'})
+                     'application/json'})
             response = self._wrapped_request(type, url, data=data,
                                              headers=headers)
         elif type == 'POST-ACTION-JSON' or type == 'POST-ACTION':
             headers.update(
                 {'Content-Type':
-                 'application/x-www-form-urlencoded; charset=UTF-8'})
+                     'application/x-www-form-urlencoded; charset=UTF-8'})
             response = self._wrapped_request('POST', url, data=data,
                                              headers=headers)
             if response.status_code == 202 and type == 'POST-ACTION':
@@ -1588,13 +1591,13 @@ class ProfitBricksService(object):
         elif type == 'PATCH':
             headers.update(
                 {'Content-Type':
-                 'application/vnd.profitbricks.partial-properties+json'})
+                     'application/json'})
             response = self._wrapped_request(type, url, data=data,
                                              headers=headers)
         else:
             headers.update(
                 {'Content-Type':
-                 'application/vnd.profitbricks.resource+json'})
+                     'application/json'})
             response = self._wrapped_request(type, url, params=data,
                                              headers=headers)
             if type == 'DELETE':
@@ -1627,7 +1630,7 @@ class ProfitBricksService(object):
         else:
             raise Exception("Failed to extract request ID from response "
                             "header 'location': '{location}'".format(
-                                location=headers['location']))
+                location=headers['location']))
 
     def _build_url(self, uri):
         url = self.host_base + uri
@@ -1655,6 +1658,7 @@ class ProfitBricksService(object):
         raise TypeError("Invalid argument %r for _b()" % (s,))
 
     'Used to convert python snake case back to mixed case.'
+
     def _underscore_to_camelcase(self, value):
         def camelcase():
             yield str.lower
@@ -1757,6 +1761,9 @@ class ProfitBricksService(object):
         }
 
         ' Optional Properties'
+        if nic.nat:
+            properties['nat'] = nic.nat
+
         if nic.ips:
             properties['ips'] = nic.ips
 
@@ -1917,6 +1924,9 @@ class ProfitBricksService(object):
         }
 
         ' Optional Properties'
+        if volume.availability_zone:
+            properties['availabilityZone'] = volume.availability_zone
+
         if volume.image:
             properties['image'] = volume.image
 
@@ -1984,8 +1994,8 @@ class Datacenter(ProfitBricksService):
 
     def __repr__(self):
         return ((
-            '<Datacenter: name=%s, location=%s, description=%s> ...>')
-            % (self.name, self.location, self.description))
+                    '<Datacenter: name=%s, location=%s, description=%s> ...>')
+                % (self.name, self.location, self.description))
 
 
 class FirewallRule(ProfitBricksService):
@@ -2043,12 +2053,12 @@ class FirewallRule(ProfitBricksService):
 
     def __repr__(self):
         return ((
-            '<FirewallRule: name=%s, protocol=%s, source_mac=%s, '
-            'source_ip=%s, target_ip=%s, port_range_start=%s, '
-            'port_range_end=%s, icmp_type=%s, icmp_code=%s> ...>')
-            % (self.name, self.protocol, self.source_mac,
-                self.source_ip, self.target_ip, self.port_range_start,
-                self.port_range_end, self.icmp_type, self.icmp_code))
+                    '<FirewallRule: name=%s, protocol=%s, source_mac=%s, '
+                    'source_ip=%s, target_ip=%s, port_range_start=%s, '
+                    'port_range_end=%s, icmp_type=%s, icmp_code=%s> ...>')
+                % (self.name, self.protocol, self.source_mac,
+                   self.source_ip, self.target_ip, self.port_range_start,
+                   self.port_range_end, self.icmp_type, self.icmp_code))
 
 
 class IPBlock(ProfitBricksService):
@@ -2072,14 +2082,15 @@ class IPBlock(ProfitBricksService):
 
     def __repr__(self):
         return ((
-            '<IPBlock: location=%s, size=%s>')
-            % (self.location, self.size))
+                    '<IPBlock: location=%s, size=%s>')
+                % (self.location, self.size))
 
 
 class LAN(ProfitBricksService):
     '''
     This is the main class for managing LAN resources.
     '''
+
     def __init__(self, name=None, public=None, nics=[]):
         """
         LAN class initializer.
@@ -2100,14 +2111,15 @@ class LAN(ProfitBricksService):
 
     def __repr__(self):
         return ((
-            '<LAN: name=%s, public=%s> ...>')
-            % (self.name, str(self.public)))
+                    '<LAN: name=%s, public=%s> ...>')
+                % (self.name, str(self.public)))
 
 
 class LoadBalancer(ProfitBricksService):
     '''
     This is the main class for managing LoadBalancer resources.
     '''
+
     def __init__(self, name=None, ip=None,
                  dhcp=None, balancednics=[], **kwargs):
         """
@@ -2135,14 +2147,14 @@ class LoadBalancer(ProfitBricksService):
 
     def __repr__(self):
         return ((
-            '<LoadBalancer: name=%s, ip=%s, dhcp=%s> ...>')
-            % (self.name, self.ip, str(self.dhcp)))
+                    '<LoadBalancer: name=%s, ip=%s, dhcp=%s> ...>')
+                % (self.name, self.ip, str(self.dhcp)))
 
 
 class NIC(ProfitBricksService):
     def __init__(self, name=None, ips=None,
                  dhcp=None, lan=None, firewall_active=None,
-                 firewall_rules=[], **kwargs):
+                 firewall_rules=[], nat=None, **kwargs):
         """
         NIC class initializer.
 
@@ -2168,6 +2180,7 @@ class NIC(ProfitBricksService):
 
         """
         self.name = name
+        self.nat = nat
         self.ips = ips
         self.dhcp = dhcp
         self.lan = lan
@@ -2176,16 +2189,17 @@ class NIC(ProfitBricksService):
 
     def __repr__(self):
         return ((
-            '<NIC: name=%s, ips=%s, dhcp=%s,lan=%s, '
-            'firewall_active=%s> ...>')
-            % (self.name, self.ips, str(self.dhcp),
-                self.lan, str(self.firewall_active)))
+                    '<NIC: name=%s, ips=%s, dhcp=%s,lan=%s, '
+                    'firewall_active=%s> ...>')
+                % (self.name, self.ips, str(self.dhcp),
+                   self.lan, str(self.firewall_active)))
 
 
 class Server(ProfitBricksService):
     '''
     This is the main class for managing server resources.
     '''
+
     def __init__(self, name=None, cores=None, ram=None, availability_zone=None,
                  boot_volume_id=None, boot_cdrom=None, cpu_family=None,
                  create_volumes=[], attach_volumes=[], nics=[]):
@@ -2236,17 +2250,17 @@ class Server(ProfitBricksService):
 
     def __repr__(self):
         return ((
-            '<Server: name=%s, cores=%s, ram=%s, '
-            'availability_zone=%s, boot_volume_id=%s, '
-            'boot_cdrom=%s, ...>')
-            % (self.name, self.cores, self.ram,
-                self.availability_zone, self.boot_volume_id, self.boot_cdrom))
+                    '<Server: name=%s, cores=%s, ram=%s, '
+                    'availability_zone=%s, boot_volume_id=%s, '
+                    'boot_cdrom=%s, ...>')
+                % (self.name, self.cores, self.ram,
+                   self.availability_zone, self.boot_volume_id, self.boot_cdrom))
 
 
 class Volume(ProfitBricksService):
     def __init__(self, name=None, size=None, bus='VIRTIO', image=None,
                  disk_type='HDD', licence_type='UNKNOWN', image_password=None,
-                 ssh_keys=[], **kwargs):
+                 ssh_keys=[], availability_zone='AUTO', **kwargs):
         """
         Volume class initializer.
 
@@ -2273,6 +2287,7 @@ class Volume(ProfitBricksService):
 
         """
         self.name = name
+        self.availability_zone = availability_zone
         self.size = int(size)
         self.image = image
         self.bus = bus
@@ -2283,6 +2298,6 @@ class Volume(ProfitBricksService):
 
     def __repr__(self):
         return ((
-            '<Volume: name=%s, size=%s, image=%s, bus=%s, disk_type=%s, ...>')
-            % (self.name, str(self.size), self.image,
-                self.bus, self.disk_type))
+                    '<Volume: name=%s, size=%s, image=%s, bus=%s, disk_type=%s, ...>')
+                % (self.name, str(self.size), self.image,
+                   self.bus, self.disk_type))

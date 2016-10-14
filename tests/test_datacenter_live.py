@@ -1,11 +1,11 @@
 import unittest
+import re
 
 from helpers import configuration
 from helpers.resources import resource, wait_for_completion
 from profitbricks.client import Datacenter
 from profitbricks.client import ProfitBricksService
 from six import assertRegex
-
 
 class TestDatacenter(unittest.TestCase):
     @classmethod
@@ -29,12 +29,12 @@ class TestDatacenter(unittest.TestCase):
 
         self.assertGreater(len(datacenters), 0)
         self.assertEqual(datacenters['items'][0]['type'], 'datacenter')
-        assertRegex(self, datacenters['items'][0]['id'], self.resource['uuid_match'])
 
     def test_get(self):
         datacenter = self.client.get_datacenter(
             datacenter_id=self.datacenter['id'])
 
+        assertRegex(self, datacenter['id'], self.resource['uuid_match'])
         self.assertEqual(datacenter['type'], 'datacenter')
         self.assertEqual(datacenter['id'], self.datacenter['id'])
         self.assertEqual(datacenter['properties']['name'], self.resource['datacenter']['name'])
@@ -54,13 +54,14 @@ class TestDatacenter(unittest.TestCase):
     def test_update(self):
         datacenter = self.client.update_datacenter(
             datacenter_id=self.datacenter['id'],
-            description='Python SDK test datacenter - RENAME')
+            description=self.resource['datacenter']['name']+' - RENAME')
         wait_for_completion(self.client, datacenter, 'update_datacenter')
         datacenter = self.client.get_datacenter(datacenter_id=self.datacenter['id'])
 
+        assertRegex(self, datacenter['id'], self.resource['uuid_match'])
         self.assertEqual(datacenter['id'], self.datacenter['id'])
-        self.assertEqual(datacenter['properties']['name'], 'Python SDK Test')
-        self.assertEqual(datacenter['properties']['description'], 'Python SDK test datacenter - RENAME')
+        self.assertEqual(datacenter['properties']['name'], self.resource['datacenter']['name'])
+        self.assertEqual(datacenter['properties']['description'], self.resource['datacenter']['name']+' - RENAME')
         self.assertEqual(datacenter['properties']['location'], self.resource['datacenter']['location'])
         self.assertGreater(datacenter['properties']['version'], 1)
 
