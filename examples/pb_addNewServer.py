@@ -208,7 +208,7 @@ USAGE
             raise ValueError("user or password resolved to None")
         pbclient = ProfitBricksService(user, password)
 
-        first_nic = NIC(name="local", ips=[], dhcp=False, lan=lan_id)
+        first_nic = NIC(name="local", ips=[], dhcp=True, lan=lan_id)
         volume = Volume(name=servername+"-Disk", size=args.storage,
                         image=hdimage, image_password=args.imgpassword)
         server = Server(name=servername, cores=args.cores, ram=args.ram*1024,
