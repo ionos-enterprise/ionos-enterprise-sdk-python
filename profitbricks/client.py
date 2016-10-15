@@ -2164,11 +2164,14 @@ class NIC(ProfitBricksService):
         :param      ips: A list of IPs.
         :type       ips: ``list``
 
-        :param      dhcp: Disable or enable DHCP. Default is enabled.
+        :param      dhcp: Enable or disable DHCP. Default is enabled.
         :type       dhcp: ``bool``
 
         :param      lan: ID of the LAN in which the NIC should reside.
         :type       lan: ``str``
+
+        :param      nat: Enable or disable NAT. Default is disabled.
+        :type       nat: ``bool``
 
         :param      firewall_active: Turns the firewall on or not;
                                      default is disabled until a
@@ -2283,7 +2286,10 @@ class Volume(ProfitBricksService):
         :type       licence_type: ``str``
 
         :param      ssh_keys: A list of public SSH keys.
-        :type       ssh_keys ``list``
+        :type       ssh_keys: ``list``
+
+        :param      availability_zone: The availability zone for the server.
+        :type       availability_zone: ``str``
 
         """
         self.name = name
