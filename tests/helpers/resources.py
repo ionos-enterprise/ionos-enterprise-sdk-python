@@ -28,7 +28,6 @@ def resource():
             'bus': 'VIRTIO',
             'type': 'HDD',
             'licence_type': 'UNKNOWN',
-            'availability_zone': 'ZONE_3'
         },
         'volume_failure': {
             'name': 'Negative Python SDK Test',

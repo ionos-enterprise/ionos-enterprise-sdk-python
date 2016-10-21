@@ -2263,7 +2263,7 @@ class Server(ProfitBricksService):
 class Volume(ProfitBricksService):
     def __init__(self, name=None, size=None, bus='VIRTIO', image=None,
                  disk_type='HDD', licence_type='UNKNOWN', image_password=None,
-                 ssh_keys=[], availability_zone='AUTO', **kwargs):
+                 ssh_keys=[], availability_zone=None, **kwargs):
         """
         Volume class initializer.
 
