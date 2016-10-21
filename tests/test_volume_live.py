@@ -86,7 +86,6 @@ class TestVolume(unittest.TestCase):
         self.assertFalse(volume['properties']['discScsiHotPlug'])
         self.assertFalse(volume['properties']['discScsiHotUnplug'])
         self.assertIsNone(volume['properties']['bus'])
-        self.assertEqual(volume['properties']['availabilityZone'], self.resource["volume"]["availability_zone"])
 
     def test_delete_volume(self):
         volume = self.client.create_volume(
@@ -133,7 +132,6 @@ class TestVolume(unittest.TestCase):
         self.assertFalse(self.volume['properties']['discVirtioHotUnplug'])
         self.assertFalse(self.volume['properties']['discScsiHotPlug'])
         self.assertFalse(self.volume['properties']['discScsiHotUnplug'])
-        self.assertEqual(self.volume['properties']['availabilityZone'], self.resource["volume"]["availability_zone"])
 
     def test_create_snapshot(self):
         # Use snapshot created during volume test setup.
