@@ -82,8 +82,8 @@ def find_image(conn, name):
     '''
     for item in conn.list_images()['items']:
         if (item['properties']['location'] == configuration.LOCATION and
-                    item['properties']['imageType'] == 'HDD' and
-                    name in item['properties']['name']):
+                item['properties']['imageType'] == 'HDD' and
+                name in item['properties']['name']):
             return item
 
 

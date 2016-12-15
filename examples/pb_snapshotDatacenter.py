@@ -147,7 +147,7 @@ def wait_for_request(pbclient, request_id,
 
 
 def wait_for_requests(pbclient, request_ids=[],
-                     timeout=0, initial_wait=5, scaleup=10):
+                      timeout=0, initial_wait=5, scaleup=10):
     '''
     Waits for a list of requests to finish until timeout.
     timeout==0 is interpreted as infinite wait time.
@@ -239,8 +239,8 @@ def select_where(info=None, select=None, **where):
         select = info[0].keys()
     server_info = []
     for old_si in info:
-        w_matches = all(old_si[wk]==wv for (wk,wv) in where.items())
-        new_si = {k:v for (k,v) in old_si.items() if k in select and w_matches}
+        w_matches = all(old_si[wk] == wv for (wk, wv) in where.items())
+        new_si = {k: v for (k, v) in old_si.items() if k in select and w_matches}
         if len(new_si) > 0:
             server_info.append(new_si)
     # end for(info)
@@ -402,7 +402,8 @@ USAGE
 
     try:
         # Setup argument parser
-        parser = ArgumentParser(description=program_license, formatter_class=RawDescriptionHelpFormatter)
+        parser = ArgumentParser(description=program_license,
+                                formatter_class=RawDescriptionHelpFormatter)
         parser.add_argument('-u', '--user', dest='user', help='the login name')
         parser.add_argument('-p', '--password', dest='password',
                             help='the login password')
@@ -562,7 +563,7 @@ USAGE
         return 0
 
     except KeyboardInterrupt:
-        ### handle keyboard interrupt ###
+        # handle keyboard interrupt
         return 0
     except Exception:
         traceback.print_exc()
@@ -571,4 +572,3 @@ USAGE
 
 if __name__ == "__main__":
     sys.exit(main())
-    

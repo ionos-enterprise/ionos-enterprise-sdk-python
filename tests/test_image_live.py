@@ -17,8 +17,8 @@ class TestImage(unittest.TestCase):
 
         # Find an Ubuntu image for testing.
         for item in self.client.list_images()['items']:
-            if configuration.IMAGE_NAME in item['properties']['name'] and item['properties'][
-                'location'] == configuration.LOCATION:
+            if (configuration.IMAGE_NAME in item['properties']['name'] and
+                    item['properties']['location'] == configuration.LOCATION):
                 self.image = item
 
     def test_list_images(self):

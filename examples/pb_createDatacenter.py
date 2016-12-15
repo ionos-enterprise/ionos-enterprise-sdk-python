@@ -20,7 +20,6 @@ import os
 from argparse import ArgumentParser
 from argparse import RawDescriptionHelpFormatter
 
-from datetime import datetime
 from time import sleep
 import json
 from base64 import b64decode, b64encode
@@ -273,7 +272,7 @@ def read_dc_definition(pbclient, filename=None):
 # end read_dc_definition()
 
 
-#-- build objects from internal dict structures --
+# -- build objects from internal dict structures --
 
 def getDatacenterObject(defdict=None):
     if defdict is None or not type(defdict) is dict or len(defdict.keys()) == 0:
@@ -290,7 +289,7 @@ def getDatacenterObject(defdict=None):
 def getVolumeObject(defdict=None):
     if defdict is None or not type(defdict) is dict or len(defdict.keys()) == 0:
         raise ValueError("argument 'defdict' must be non-empty dict")
-    #-- TODO: can we set deviceNumber too? Nope, not supported in Volume()
+    # TODO: can we set deviceNumber too? Nope, not supported in Volume()
     # AARGH! some of Volume's fields have different names -> need to convert
     # so make a copy and let source as is
     props = dict()
@@ -330,7 +329,7 @@ def getServerObject(defdict=None):
         if k == 'cpuFamily':
             props['cpu_family'] = v
             continue
-#-- TODO: if volumes entries have an ID -> attach, else create w/ properties of volume
+# -- TODO: if volumes entries have an ID -> attach, else create w/ properties of volume
 #         if k == 'bootVolume':
 #             props['boot_volume_id'] = v
 #             continue
@@ -421,7 +420,7 @@ def getLANObject(defdict=None):
 # end getLANObject()
 
 
-#-- the (far too long) main method --
+# -- the (far too long) main method --
 
 def main(argv=None):
     '''Parse command line options and create a server/volume composite.'''
@@ -571,7 +570,7 @@ USAGE
     requests = []
     # Huuh, looks like we get unpredictable order for LANs!
     # Nope, order of creation determines the LAN id,
-    # thus we better wait for each request 
+    # thus we better wait for each request
     print("create LANs {}".format(str(dc)))
     for lan in dcdef['entities']['lans']['items']:
         print("- lan {}".format(lan['properties']['name']))
