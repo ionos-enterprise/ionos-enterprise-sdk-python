@@ -9,6 +9,7 @@ from six.moves.urllib.parse import urlencode
 from profitbricks import (
     API_HOST, __version__
 )
+from profitbricks.errors import PBNotAuthorizedError, PBNotFoundError, PBValidationError, PBError
 
 # ProfitBricks Object Classes
 
@@ -1559,9 +1560,9 @@ class ProfitBricksService(object):
         url = self._build_url(url)
         headers.update({'User-Agent': 'profitbricks-sdk-python/' + __version__})
         if type == 'POST' or type == 'PUT':
-            headers.update({'Content-Type': 'application/json'})
             response = self._wrapped_request(type, url, data=data,
                                              headers=headers)
+            headers.update({'Content-Type': 'application/json'})
         elif type == 'POST-ACTION-JSON' or type == 'POST-ACTION':
             headers.update({'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'})
             response = self._wrapped_request('POST', url, data=data,
@@ -1586,9 +1587,18 @@ class ProfitBricksService(object):
             if not response.ok:
                 err = response.json()
                 code = err['httpStatus']
-                msg = err['messages'][0]['message']
-                raise Exception(code, msg)
-        except ValueError:
+                msg = err['messages']
+                if response.status_code == 401:
+                    raise PBNotAuthorizedError(code, msg, url)
+                if response.status_code == 404:
+                    raise PBNotFoundError(code, msg, url)
+                if response.status_code == 422:
+                    raise PBValidationError(code, msg, url)
+                else:
+                    raise PBError(code, msg, url)
+
+
+        except ValueError as e:
             raise Exception('Failed to parse the response', response.text)
 
         json_response = response.json()

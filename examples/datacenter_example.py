@@ -3,21 +3,15 @@
 from profitbricks.client import ProfitBricksService
 
 client = ProfitBricksService(
-    username='username', password='password')
+    username=os.getenv('PROFITBRICKS_USERNAME'), password=os.getenv('PROFITBRICKS_PASSWORD'))
 
 datacenters = client.list_datacenters()
 
 for d in datacenters['items']:
     vdc = client.get_datacenter(d['id'])
     name = vdc['properties']['name']
-    if name is
-
-
-for d in datacenters['items']:
-    vdc = client.get_datacenter(d['id'])
-    vdc['properties']['name']
-    if dc_name == vdc['properties']['name']:
-
+    datacenter_id = vdc['id']
+    break
 
 """Get Datacenter
 """
@@ -36,14 +30,11 @@ datacenter = client.get_datacenter(
 from profitbricks.client import ProfitBricksService  # noqa
 from profitbricks.client import Datacenter, Volume, Server  # noqa
 
-client = ProfitBricksService(
-    username='username', password='password')
-
 i = Datacenter(
     name='dc1',
     description='My New Datacenter',
     location='de/fkb'
-    )
+)
 
 response = client.create_datacenter(datacenter=i)
 
@@ -54,11 +45,7 @@ from profitbricks.client import ProfitBricksService  # noqa
 from profitbricks.client import Datacenter, Volume, Server  # noqa
 from profitbricks.client import LAN, NIC, LoadBalancer, FirewallRule, IPBlock, Server  # noqa
 
-
-image_id = '226ed8c0-a2fe-11e4-b187-5f1f641608c8'
-
-client = ProfitBricksService(
-    username='username', password='password')
+image_id = 'df8382a1-0f40-11e6-ab6b-52540005ab80'
 
 fwrule1 = FirewallRule(
     name='Open SSH port',
@@ -66,14 +53,14 @@ fwrule1 = FirewallRule(
     source_mac='01:23:45:67:89:00',
     port_range_start=22,
     port_range_end=22
-    )
+)
 
 fwrule2 = FirewallRule(
     name='Allow PING',
     protocol='ICMP',
     icmp_type=8,
     icmp_code=0
-    )
+)
 
 fw_rules = [fwrule1, fwrule2]
 
@@ -84,7 +71,7 @@ nic1 = NIC(
     lan=1,
     firewall_active=True,
     firewall_rules=fw_rules
-    )
+)
 
 nic2 = NIC(
     name='nic2',
@@ -93,7 +80,7 @@ nic2 = NIC(
     lan=1,
     firewall_active=True,
     firewall_rules=fw_rules
-    )
+)
 
 nics = [nic1, nic2]
 
@@ -101,15 +88,17 @@ volume1 = Volume(
     name='volume1',
     size=56,
     image=image_id,
-    bus='VIRTIO'
-    )
+    bus='VIRTIO',
+    image_password = "test1234"
+)
 
 volume2 = Volume(
     name='volume2',
     size=56,
     image=image_id,
-    bus='VIRTIO'
-    )
+    bus='VIRTIO',
+    image_password="test1234"
+)
 
 volumes = [volume2]
 
@@ -119,19 +108,19 @@ server1 = Server(
     cores=4,
     nics=nics,
     create_volumes=[volume1]
-    )
+)
 
 servers = [server1]
 
 lan1 = LAN(
     name='public Lan 4',
     public=True
-    )
+)
 
 lan2 = LAN(
     name='public Lan 5',
     public=True
-    )
+)
 
 lans = [lan1, lan2]
 
@@ -150,6 +139,8 @@ d = Datacenter(
     volumes=volumes,
     lans=lans,
     loadbalancers=loadbalancers
-    )
+)
 
 response = client.create_datacenter(datacenter=d)
+
+del_response = client.delete_datacenter(response['id'])
