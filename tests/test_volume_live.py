@@ -6,6 +6,7 @@ from profitbricks.client import Datacenter, Volume
 from profitbricks.client import ProfitBricksService
 from six import assertRegex
 
+
 class TestVolume(unittest.TestCase):
     @classmethod
     def setUpClass(self):
@@ -48,10 +49,14 @@ class TestVolume(unittest.TestCase):
         self.assertGreater(len(volumes), 0)
         assertRegex(self, volumes['items'][0]['id'], self.resource['uuid_match'])
         self.assertEqual(volumes['items'][0]['type'], 'volume')
-        self.assertEqual(volumes['items'][0]['properties']['name'], self.resource['volume']['name'])
-        self.assertEqual(volumes['items'][0]['properties']['size'], self.resource['volume']['size'])
-        self.assertEqual(volumes['items'][0]['properties']['licenceType'], self.resource['volume']['licence_type'])
-        self.assertEqual(volumes['items'][0]['properties']['type'], self.resource['volume']['type'])
+        self.assertEqual(volumes['items'][0]['properties']['name'],
+                         self.resource['volume']['name'])
+        self.assertEqual(volumes['items'][0]['properties']['size'],
+                         self.resource['volume']['size'])
+        self.assertEqual(volumes['items'][0]['properties']['licenceType'],
+                         self.resource['volume']['licence_type'])
+        self.assertEqual(volumes['items'][0]['properties']['type'],
+                         self.resource['volume']['type'])
         self.assertFalse(volumes['items'][0]['properties']['cpuHotPlug'])
         self.assertFalse(volumes['items'][0]['properties']['cpuHotUnplug'])
         self.assertFalse(volumes['items'][0]['properties']['ramHotPlug'])
@@ -73,7 +78,8 @@ class TestVolume(unittest.TestCase):
         self.assertEqual(volume['type'], 'volume')
         self.assertEqual(volume['properties']['name'], self.resource['volume']['name'])
         self.assertEqual(volume['properties']['size'], self.resource['volume']['size'])
-        self.assertEqual(volume['properties']['licenceType'], self.resource['volume']['licence_type'])
+        self.assertEqual(volume['properties']['licenceType'],
+                         self.resource['volume']['licence_type'])
         self.assertEqual(volume['properties']['type'], self.resource['volume']['type'])
         self.assertFalse(volume['properties']['cpuHotPlug'])
         self.assertFalse(volume['properties']['cpuHotUnplug'])
@@ -86,7 +92,6 @@ class TestVolume(unittest.TestCase):
         self.assertFalse(volume['properties']['discScsiHotPlug'])
         self.assertFalse(volume['properties']['discScsiHotUnplug'])
         self.assertIsNone(volume['properties']['bus'])
-        self.assertEqual(volume['properties']['availabilityZone'], self.resource["volume"]["availability_zone"])
 
     def test_delete_volume(self):
         volume = self.client.create_volume(
@@ -122,7 +127,8 @@ class TestVolume(unittest.TestCase):
         self.assertEqual(self.volume['properties']['bus'], self.resource['volume']['bus'])
         self.assertEqual(self.volume['properties']['type'], self.resource['volume']['type'])
         self.assertEqual(self.volume['properties']['size'], self.resource['volume']['size'])
-        self.assertEqual(self.volume['properties']['licenceType'], self.resource['volume']['licence_type'])
+        self.assertEqual(self.volume['properties']['licenceType'],
+                         self.resource['volume']['licence_type'])
         self.assertFalse(self.volume['properties']['cpuHotPlug'])
         self.assertFalse(self.volume['properties']['cpuHotUnplug'])
         self.assertFalse(self.volume['properties']['ramHotPlug'])
@@ -133,13 +139,13 @@ class TestVolume(unittest.TestCase):
         self.assertFalse(self.volume['properties']['discVirtioHotUnplug'])
         self.assertFalse(self.volume['properties']['discScsiHotPlug'])
         self.assertFalse(self.volume['properties']['discScsiHotUnplug'])
-        self.assertEqual(self.volume['properties']['availabilityZone'], self.resource["volume"]["availability_zone"])
 
     def test_create_snapshot(self):
         # Use snapshot created during volume test setup.
         self.assertEqual(self.snapshot1['type'], 'snapshot')
         self.assertEqual(self.snapshot1['properties']['name'], self.resource['snapshot']['name'])
-        self.assertEqual(self.snapshot1['properties']['description'], self.resource['snapshot']['description'])
+        self.assertEqual(self.snapshot1['properties']['description'],
+                         self.resource['snapshot']['description'])
         self.assertEqual(self.snapshot1['properties']['location'], configuration.LOCATION)
         self.assertFalse(self.snapshot1['properties']['cpuHotPlug'])
         self.assertFalse(self.snapshot1['properties']['cpuHotUnplug'])
