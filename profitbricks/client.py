@@ -9,6 +9,7 @@ from six.moves.urllib.parse import urlencode
 from profitbricks import (
     API_HOST, __version__
 )
+from profitbricks.errors import PBNotAuthorizedError, PBNotFoundError, PBValidationError, PBError
 
 """ProfitBricks Object Classes
 """
@@ -1608,8 +1609,17 @@ class ProfitBricksService(object):
             if not response.ok:
                 err = response.json()
                 code = err['httpStatus']
-                msg = err['messages'][0]['message']
-                raise Exception(code, msg)
+                msg = err['messages']
+                if response.status_code == 401:
+                    raise PBNotAuthorizedError(code, msg)
+                if response.status_code == 404:
+                    raise PBNotFoundError(code, msg)
+                if response.status_code == 422:
+                    raise PBValidationError(code, msg)
+                else:
+                    raise PBError(code, msg)
+
+
         except ValueError as e:
             raise Exception('Failed to parse the response', response.text)
 
