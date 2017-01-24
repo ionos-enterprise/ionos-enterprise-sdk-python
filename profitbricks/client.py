@@ -19,7 +19,9 @@ class ProfitBricksService(object):
     """
 
     def __init__(self, username=None, password=None, host_base=API_HOST,
-                 host_cert=None, ssl_verify=True, headers=dict()):
+                 host_cert=None, ssl_verify=True, headers=None):
+        if headers is None:
+            headers = dict()
         self.username = username
         self.password = password
         self.host_base = host_base
@@ -1933,7 +1935,7 @@ class ProfitBricksService(object):
 
 class Datacenter(ProfitBricksService):
     def __init__(self, name=None, location=None, description=None,
-                 volumes=[], servers=[], lans=[], loadbalancers=[],
+                 volumes=None, servers=None, lans=None, loadbalancers=None,
                  **kwargs):
         """
         Datacenter class initializer.
@@ -1960,6 +1962,14 @@ class Datacenter(ProfitBricksService):
         :type       loadbalancers: ``list``
 
         """
+        if volumes is None:
+            volumes = []
+        if servers is None:
+            servers = []
+        if lans is None:
+            lans = []
+        if loadbalancers is None:
+            loadbalancers = []
         self.name = name
         self.description = description
         self.location = location
@@ -2064,7 +2074,7 @@ class LAN(ProfitBricksService):
     This is the main class for managing LAN resources.
     '''
 
-    def __init__(self, name=None, public=None, nics=[]):
+    def __init__(self, name=None, public=None, nics=None):
         """
         LAN class initializer.
 
@@ -2078,6 +2088,8 @@ class LAN(ProfitBricksService):
         :type       nics: ``list``
 
         """
+        if nics is None:
+            nics = []
         self.name = name
         self.public = public
         self.nics = nics
@@ -2093,7 +2105,7 @@ class LoadBalancer(ProfitBricksService):
     '''
 
     def __init__(self, name=None, ip=None,
-                 dhcp=None, balancednics=[], **kwargs):
+                 dhcp=None, balancednics=None, **kwargs):
         """
         LoadBalancer class initializer.
 
@@ -2112,6 +2124,8 @@ class LoadBalancer(ProfitBricksService):
         :type       balancednics: ``list``
 
         """
+        if balancednics is None:
+            balancednics = []
         self.name = name
         self.ip = ip
         self.dhcp = dhcp
@@ -2125,7 +2139,7 @@ class LoadBalancer(ProfitBricksService):
 class NIC(ProfitBricksService):
     def __init__(self, name=None, ips=None,
                  dhcp=None, lan=None, firewall_active=None,
-                 firewall_rules=[], nat=None, **kwargs):
+                 firewall_rules=None, nat=None, **kwargs):
         """
         NIC class initializer.
 
@@ -2153,6 +2167,8 @@ class NIC(ProfitBricksService):
         :type       firewall_rules: ``list``
 
         """
+        if firewall_rules is None:
+            firewall_rules = []
         self.name = name
         self.nat = nat
         self.ips = ips
@@ -2175,7 +2191,7 @@ class Server(ProfitBricksService):
 
     def __init__(self, name=None, cores=None, ram=None, availability_zone=None,
                  boot_volume_id=None, boot_cdrom=None, cpu_family=None,
-                 create_volumes=[], attach_volumes=[], nics=[]):
+                 create_volumes=None, attach_volumes=None, nics=None):
         """
         Server class initializer.
 
@@ -2210,6 +2226,12 @@ class Server(ProfitBricksService):
         :type       nics: ``list``
 
         """
+        if create_volumes is None:
+            create_volumes = []
+        if attach_volumes is None:
+            attach_volumes = []
+        if nics is None:
+            nics = []
         self.name = name
         self.cores = cores
         self.ram = ram
@@ -2232,7 +2254,7 @@ class Server(ProfitBricksService):
 class Volume(ProfitBricksService):
     def __init__(self, name=None, size=None, bus='VIRTIO', image=None,
                  disk_type='HDD', licence_type='UNKNOWN', image_password=None,
-                 ssh_keys=[], availability_zone=None, **kwargs):
+                 ssh_keys=None, availability_zone='AUTO', **kwargs):
         """
         Volume class initializer.
 
@@ -2261,6 +2283,8 @@ class Volume(ProfitBricksService):
         :type       availability_zone: ``str``
 
         """
+        if ssh_keys is None:
+            ssh_keys = []
         self.name = name
         self.availability_zone = availability_zone
         self.size = int(size)
