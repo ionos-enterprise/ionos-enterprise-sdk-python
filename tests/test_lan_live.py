@@ -4,6 +4,7 @@ from helpers import configuration
 from helpers.resources import resource, wait_for_completion
 from profitbricks.client import ProfitBricksService
 from profitbricks.client import Datacenter, Server, LAN, NIC
+from six import assertRegex
 
 
 class TestLan(unittest.TestCase):
@@ -54,6 +55,7 @@ class TestLan(unittest.TestCase):
     def tearDownClass(self):
         self.client.delete_datacenter(datacenter_id=self.datacenter['id'])
 
+
     def test_list_lans(self):
         lans = self.client.list_lans(datacenter_id=self.datacenter['id'])
 
@@ -63,6 +65,7 @@ class TestLan(unittest.TestCase):
         self.assertEqual(lans['items'][0]['properties']['name'], self.resource['lan']['name'])
         self.assertTrue(lans['items'][0]['properties']['public'], self.resource['lan']['public'])
 
+
     def test_get_lan(self):
         lan = self.client.get_lan(datacenter_id=self.datacenter['id'], lan_id=self.lan['id'])
 
@@ -71,15 +74,18 @@ class TestLan(unittest.TestCase):
         self.assertEqual(lan['properties']['name'], self.resource['lan']['name'])
         self.assertTrue(lan['properties']['public'], self.resource['lan']['public'])
 
+
     def test_delete_lan(self):
         lan = self.client.create_lan(
             datacenter_id=self.datacenter['id'],
             lan=LAN(**self.resource['lan']))
-        wait_for_completion(self.client, self.lan, 'create_lan')
+
+        wait_for_completion(self.client, lan, 'create_lan')
 
         lan = self.client.delete_lan(datacenter_id=self.datacenter['id'], lan_id=lan['id'])
 
         self.assertTrue(lan)
+
 
     def test_update_lan(self):
         lan = self.client.update_lan(
@@ -91,6 +97,7 @@ class TestLan(unittest.TestCase):
         self.assertEqual(lan['type'], 'lan')
         self.assertEqual(lan['properties']['name'], self.resource['lan']['name'] + ' RENAME')
         self.assertFalse(lan['properties']['public'])
+
 
     def test_create_lan(self):
         self.assertEqual(self.lan['id'], '1')
@@ -108,9 +115,9 @@ class TestLan(unittest.TestCase):
             nic=resource)
         wait_for_completion(self.client, nic1, 'create_nic1')
         self.assertFalse(nic1['properties']['nat'])
-        self.assertEqual(nic1['properties']['name'],'Python SDK Test')
+        self.assertEqual(nic1['properties']['name'], 'Python SDK Test')
         self.assertTrue(nic1['properties']['dhcp'])
-        self.assertEqual(nic1['properties']['lan'],1)
+        self.assertEqual(nic1['properties']['lan'], 1)
         self.assertTrue(nic1['properties']['firewallActive'])
 
         nics = [nic1['id']]
@@ -125,6 +132,7 @@ class TestLan(unittest.TestCase):
         self.assertEqual(response['properties']['name'], self.resource['lan']['name'])
         self.assertTrue(response['properties']['public'])
 
+
     def test_get_lan_members(self):
         members = self.client.get_lan_members(
             datacenter_id=self.datacenter['id'],
@@ -133,6 +141,8 @@ class TestLan(unittest.TestCase):
         self.assertGreater(len(members), 0)
         self.assertEqual(members['items'][0]['type'], 'nic')
         self.assertEqual(members['items'][0]['properties']['name'], self.resource['nic']['name'])
+        assertRegex(self, members['items'][0]['properties']['mac'], self.resource['mac_match'])
+
 
 if __name__ == '__main__':
     unittest.main()

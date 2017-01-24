@@ -1,5 +1,8 @@
 """List Snapshots
 """
+
+from __future__ import print_function
+
 from profitbricks.client import ProfitBricksService
 
 client = ProfitBricksService(
@@ -8,11 +11,11 @@ client = ProfitBricksService(
 snapshots = client.list_snapshots()
 
 for s in snapshots['items']:
-    print s['properties']['name']
+    print(s['properties']['name'])
 
 """Get Snapshot
 """
-from profitbricks.client import ProfitBricksService
+from profitbricks.client import ProfitBricksService  # noqa
 
 snapshot_id = '7df81087-5835-41c6-a10b-3e098593bba4'
 
@@ -40,7 +43,7 @@ Valid snapshot parameters are:
 * disc_scsi_hot_unplug (bool)
 
 """
-from profitbricks.client import ProfitBricksService
+from profitbricks.client import ProfitBricksService  # noqa
 
 client = ProfitBricksService(
     username='username', password='password')
@@ -61,7 +64,7 @@ image = client.update_snapshot(
 """Remove Snapshot
 """
 
-from profitbricks.client import ProfitBricksService
+from profitbricks.client import ProfitBricksService  # noqa
 
 snapshot_id = '7df81087-5835-41c6-a10b-3e098593bba4'
 

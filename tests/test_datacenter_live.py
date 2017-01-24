@@ -33,11 +33,14 @@ class TestDatacenter(unittest.TestCase):
         datacenter = self.client.get_datacenter(
             datacenter_id=self.datacenter['id'])
 
+        assertRegex(self, datacenter['id'], self.resource['uuid_match'])
         self.assertEqual(datacenter['type'], 'datacenter')
         self.assertEqual(datacenter['id'], self.datacenter['id'])
         self.assertEqual(datacenter['properties']['name'], self.resource['datacenter']['name'])
-        self.assertEqual(datacenter['properties']['description'], self.resource['datacenter']['description'])
-        self.assertEqual(datacenter['properties']['location'], self.resource['datacenter']['location'])
+        self.assertEqual(datacenter['properties']['description'],
+                         self.resource['datacenter']['description'])
+        self.assertEqual(datacenter['properties']['location'],
+                         self.resource['datacenter']['location'])
 
     def test_delete(self):
         datacenter = self.client.create_datacenter(
@@ -52,14 +55,17 @@ class TestDatacenter(unittest.TestCase):
     def test_update(self):
         datacenter = self.client.update_datacenter(
             datacenter_id=self.datacenter['id'],
-            description='Python SDK test datacenter - RENAME')
+            description=self.resource['datacenter']['name']+' - RENAME')
         wait_for_completion(self.client, datacenter, 'update_datacenter')
         datacenter = self.client.get_datacenter(datacenter_id=self.datacenter['id'])
 
+        assertRegex(self, datacenter['id'], self.resource['uuid_match'])
         self.assertEqual(datacenter['id'], self.datacenter['id'])
-        self.assertEqual(datacenter['properties']['name'], 'Python SDK Test')
-        self.assertEqual(datacenter['properties']['description'], 'Python SDK test datacenter - RENAME')
-        self.assertEqual(datacenter['properties']['location'], self.resource['datacenter']['location'])
+        self.assertEqual(datacenter['properties']['name'], self.resource['datacenter']['name'])
+        self.assertEqual(datacenter['properties']['description'],
+                         self.resource['datacenter']['name']+' - RENAME')
+        self.assertEqual(datacenter['properties']['location'],
+                         self.resource['datacenter']['location'])
         self.assertGreater(datacenter['properties']['version'], 1)
 
     def test_create_simple(self):
@@ -68,8 +74,10 @@ class TestDatacenter(unittest.TestCase):
         wait_for_completion(self.client, datacenter, 'create_datacenter')
 
         self.assertEqual(datacenter['properties']['name'], self.resource['datacenter']['name'])
-        self.assertEqual(datacenter['properties']['description'], self.resource['datacenter']['description'])
-        self.assertEqual(datacenter['properties']['location'], self.resource['datacenter']['location'])
+        self.assertEqual(datacenter['properties']['description'],
+                         self.resource['datacenter']['description'])
+        self.assertEqual(datacenter['properties']['location'],
+                         self.resource['datacenter']['location'])
 
         response = self.client.delete_datacenter(
             datacenter_id=datacenter['id'])

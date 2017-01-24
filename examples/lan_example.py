@@ -13,7 +13,7 @@ print(lans)
 
 """Create Complex LAN
 """
-from profitbricks.client import ProfitBricksService, LAN
+from profitbricks.client import ProfitBricksService, LAN  # noqa
 
 lan_id = '4'
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
@@ -32,7 +32,7 @@ response = client.create_lan(datacenter_id=datacenter_id, lan=i)
 
 """Create LAN
 """
-from profitbricks.client import ProfitBricksService, LAN
+from profitbricks.client import ProfitBricksService, LAN  # noqa
 
 lan_id = '4'
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
@@ -48,7 +48,7 @@ response = client.create_lan(datacenter_id=datacenter_id, lan=i)
 
 """Get LAN Members
 """
-from profitbricks.client import ProfitBricksService
+from profitbricks.client import ProfitBricksService  # noqa
 
 lan_id = '4'
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'

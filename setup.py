@@ -3,12 +3,14 @@ Setup script for the ProfitBricks API Python client.
 
 """
 from __future__ import print_function
-from setuptools import setup
-from setuptools.command.test import test as TestCommand
+
 import codecs
 import os
-import sys
 import re
+import sys
+
+from setuptools import setup
+from setuptools.command.test import test as TestCommand
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -51,7 +53,7 @@ setup(
     author='Matt Baldwin (stackpointcloud.com)',
     author_email='baldwin@stackpointcloud.com',
     url='https://github.com/profitbricks/profitbricks-sdk-python',
-    download_url='https://github.com/profitbricks/profitbricks-sdk-python/tarball/2.3.4',
+    download_url='https://github.com/profitbricks/profitbricks-sdk-python/tarball/3.0.0',
     install_requires=['requests>=2.0.0', 'six>=1.10.0'],
     packages=['profitbricks'],
     platforms='any',

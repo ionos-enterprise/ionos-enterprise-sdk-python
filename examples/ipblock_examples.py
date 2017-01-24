@@ -1,9 +1,10 @@
+import os
 """List IPBlocks
 """
 from profitbricks.client import ProfitBricksService
 
 client = ProfitBricksService(
-    username='username', password='password')
+    username=os.getenv('PROFITBRICKS_USERNAME'), password=os.getenv('PROFITBRICKS_PASSWORD'))
 
 ipblocks = client.list_ipblocks()
 
@@ -11,22 +12,17 @@ print(ipblocks)
 
 """Reserve IPBlock
 """
-from profitbricks.client import ProfitBricksService, IPBlock
+from profitbricks.client import ProfitBricksService, IPBlock  # noqa
 
-client = ProfitBricksService(
-    username='username', password='password')
-
-i = IPBlock(location='de/fra', size=5)
+i = IPBlock(name='py-test',location='de/fra', size=1)
 
 ipblock = client.reserve_ipblock(i)
 
 """Release IPBlock
 """
-from profitbricks.client import ProfitBricksService
+from profitbricks.client import ProfitBricksService  # noqa
 
-ipblock_id = '854467eb-a0d3-4651-ac83-754e2faedba4'
+ipblock_id = ipblock['id']
 
-client = ProfitBricksService(
-    username='username', password='password')
 
 ipblock = client.delete_ipblock(ipblock_id)

@@ -4,6 +4,7 @@ from helpers import configuration
 from helpers.resources import resource, wait_for_completion
 from profitbricks.client import Datacenter, Server, Volume, NIC, FirewallRule
 from profitbricks.client import ProfitBricksService
+from six import assertRegex
 
 
 class TestServer(unittest.TestCase):
@@ -49,7 +50,8 @@ class TestServer(unittest.TestCase):
 
         # Find an Ubuntu image for testing.
         for item in self.client.list_images()['items']:
-            if configuration.IMAGE_NAME in item['properties']['name'] and item['properties']['location'] == configuration.LOCATION:
+            if (configuration.IMAGE_NAME in item['properties']['name'] and
+                    item['properties']['location'] == configuration.LOCATION):
                 self.image = item
 
     @classmethod
@@ -61,7 +63,8 @@ class TestServer(unittest.TestCase):
 
         self.assertGreater(len(servers), 0)
         self.assertEqual(servers['items'][0]['type'], 'server')
-        self.assertTrue(self, len(servers['items'])>0)
+        self.assertTrue(self, len(servers['items']) > 0)
+        assertRegex(self, servers['items'][0]['id'], self.resource['uuid_match'])
 
     def test_get(self):
         server = self.client.get_server(
@@ -107,6 +110,7 @@ class TestServer(unittest.TestCase):
 
     def test_create_simple(self):
         # Use server created dring server test setup
+        assertRegex(self, self.server['id'], self.resource['uuid_match'])
         self.assertEqual(self.server['type'], 'server')
         self.assertEqual(self.server['properties']['name'], self.resource['server']['name'])
         self.assertEqual(self.server['properties']['cores'], self.resource['server']['cores'])
@@ -136,6 +140,7 @@ class TestServer(unittest.TestCase):
             datacenter_id=self.datacenter['id'],
             server_id=composite_server['id'])
 
+        assertRegex(self, composite_server['id'], self.resource['uuid_match'])
         self.assertEqual(composite_server['properties']['name'], self.resource['server']['name'])
         self.assertEqual(composite_server['properties']['cores'], self.resource['server']['cores'])
         self.assertEqual(composite_server['properties']['ram'], self.resource['server']['ram'])
@@ -170,10 +175,14 @@ class TestServer(unittest.TestCase):
 
         self.assertGreater(len(servers), 0)
         self.assertEqual(servers['items'][0]['id'], self.volume1['id'])
-        self.assertEqual(servers['items'][0]['properties']['name'], self.resource['volume']['name'])
-        self.assertEqual(servers['items'][0]['properties']['size'], self.resource['volume']['size'])
-        self.assertEqual(servers['items'][0]['properties']['bus'], self.resource['volume']['bus'])
-        self.assertEqual(servers['items'][0]['properties']['type'], self.resource['volume']['type'])
+        self.assertEqual(servers['items'][0]['properties']['name'],
+                         self.resource['volume']['name'])
+        self.assertEqual(servers['items'][0]['properties']['size'],
+                         self.resource['volume']['size'])
+        self.assertEqual(servers['items'][0]['properties']['bus'],
+                         self.resource['volume']['bus'])
+        self.assertEqual(servers['items'][0]['properties']['type'],
+                         self.resource['volume']['type'])
         self.assertEqual(servers['items'][0]['properties']['licenceType'], 'UNKNOWN')
         self.assertIsNone(servers['items'][0]['properties']['image'])
         self.assertIsNone(servers['items'][0]['properties']['imagePassword'])
@@ -199,7 +208,8 @@ class TestServer(unittest.TestCase):
         self.assertEqual(server['properties']['size'], self.resource['volume']['size'])
         self.assertEqual(server['properties']['bus'], self.resource['volume']['bus'])
         self.assertEqual(server['properties']['type'], self.resource['volume']['type'])
-        self.assertEqual(server['properties']['licenceType'], self.resource['volume']['licence_type'])
+        self.assertEqual(server['properties']['licenceType'],
+                         self.resource['volume']['licence_type'])
         self.assertIsNone(server['properties']['image'])
         self.assertIsNone(server['properties']['imagePassword'])
         self.assertFalse(server['properties']['cpuHotPlug'])
@@ -224,7 +234,8 @@ class TestServer(unittest.TestCase):
         self.assertEqual(volume['properties']['name'], self.resource['volume']['name'])
         self.assertEqual(volume['properties']['size'], self.resource['volume']['size'])
         self.assertEqual(volume['properties']['type'], self.resource['volume']['type'])
-        self.assertEqual(volume['properties']['licenceType'], self.resource['volume']['licence_type'])
+        self.assertEqual(volume['properties']['licenceType'],
+                         self.resource['volume']['licence_type'])
         self.assertIsNone(volume['properties']['bus'])
         self.assertIsNone(volume['properties']['image'])
         self.assertIsNone(volume['properties']['imagePassword'])
@@ -239,7 +250,7 @@ class TestServer(unittest.TestCase):
         self.assertFalse(volume['properties']['discScsiHotPlug'])
         self.assertFalse(volume['properties']['discScsiHotUnplug'])
 
-        response = self.client.detach_volume(
+        self.client.detach_volume(
             datacenter_id=self.datacenter['id'],
             server_id=self.server['id'],
             volume_id=self.volume2['id'])

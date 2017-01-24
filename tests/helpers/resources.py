@@ -24,7 +24,7 @@ def resource():
         },
         'volume': {
             'name': 'Python SDK Test',
-            'size': 3,
+            'size': 2,
             'bus': 'VIRTIO',
             'type': 'HDD',
             'licence_type': 'UNKNOWN',
@@ -83,8 +83,8 @@ def find_image(conn, name):
     '''
     for item in conn.list_images()['items']:
         if (item['properties']['location'] == configuration.LOCATION and
-           item['properties']['imageType'] == 'HDD' and
-           name in item['properties']['name']):
+                item['properties']['imageType'] == 'HDD' and
+                name in item['properties']['name']):
             return item
 
 
@@ -93,7 +93,7 @@ def wait_for_completion(conn, promise, msg, wait_timeout=300):
         return
     wait_timeout = time.time() + wait_timeout
     while wait_timeout > time.time():
-        time.sleep(5)
+        time.sleep(1)
         operation_result = conn.get_request(
             request_id=promise['requestId'],
             status=True)
@@ -102,7 +102,7 @@ def wait_for_completion(conn, promise, msg, wait_timeout=300):
             return
         elif operation_result['metadata']['status'] == "FAILED":
             raise Exception(
-                'Request failed to complete to complete.'.format(
+                'Request failed to complete'.format(
                     msg, str(promise['requestId']))
             )
 
