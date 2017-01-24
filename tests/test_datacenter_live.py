@@ -1,11 +1,11 @@
 import unittest
-import re
 
 from helpers import configuration
 from helpers.resources import resource, wait_for_completion
 from profitbricks.client import Datacenter
 from profitbricks.client import ProfitBricksService
 from six import assertRegex
+
 
 class TestDatacenter(unittest.TestCase):
     @classmethod
@@ -38,8 +38,10 @@ class TestDatacenter(unittest.TestCase):
         self.assertEqual(datacenter['type'], 'datacenter')
         self.assertEqual(datacenter['id'], self.datacenter['id'])
         self.assertEqual(datacenter['properties']['name'], self.resource['datacenter']['name'])
-        self.assertEqual(datacenter['properties']['description'], self.resource['datacenter']['description'])
-        self.assertEqual(datacenter['properties']['location'], self.resource['datacenter']['location'])
+        self.assertEqual(datacenter['properties']['description'],
+                         self.resource['datacenter']['description'])
+        self.assertEqual(datacenter['properties']['location'],
+                         self.resource['datacenter']['location'])
 
     def test_delete(self):
         datacenter = self.client.create_datacenter(
@@ -61,8 +63,10 @@ class TestDatacenter(unittest.TestCase):
         assertRegex(self, datacenter['id'], self.resource['uuid_match'])
         self.assertEqual(datacenter['id'], self.datacenter['id'])
         self.assertEqual(datacenter['properties']['name'], self.resource['datacenter']['name'])
-        self.assertEqual(datacenter['properties']['description'], self.resource['datacenter']['name']+' - RENAME')
-        self.assertEqual(datacenter['properties']['location'], self.resource['datacenter']['location'])
+        self.assertEqual(datacenter['properties']['description'],
+                         self.resource['datacenter']['name']+' - RENAME')
+        self.assertEqual(datacenter['properties']['location'],
+                         self.resource['datacenter']['location'])
         self.assertGreater(datacenter['properties']['version'], 1)
 
     def test_create_simple(self):
@@ -72,8 +76,10 @@ class TestDatacenter(unittest.TestCase):
 
         assertRegex(self, datacenter['id'], self.resource['uuid_match'])
         self.assertEqual(datacenter['properties']['name'], self.resource['datacenter']['name'])
-        self.assertEqual(datacenter['properties']['description'], self.resource['datacenter']['description'])
-        self.assertEqual(datacenter['properties']['location'], self.resource['datacenter']['location'])
+        self.assertEqual(datacenter['properties']['description'],
+                         self.resource['datacenter']['description'])
+        self.assertEqual(datacenter['properties']['location'],
+                         self.resource['datacenter']['location'])
 
         response = self.client.delete_datacenter(
             datacenter_id=datacenter['id'])

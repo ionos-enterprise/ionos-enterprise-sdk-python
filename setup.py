@@ -3,12 +3,14 @@ Setup script for the ProfitBricks API Python client.
 
 """
 from __future__ import print_function
-from setuptools import setup
-from setuptools.command.test import test as TestCommand
+
 import codecs
 import os
-import sys
 import re
+import sys
+
+from setuptools import setup
+from setuptools.command.test import test as TestCommand
 
 here = os.path.abspath(os.path.dirname(__file__))
 

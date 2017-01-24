@@ -107,8 +107,8 @@ def select_where(info=None, select=None, **where):
         select = info[0].keys()
     server_info = []
     for old_si in info:
-        w_matches = all(old_si[wk]==wv for (wk,wv) in where.items())
-        new_si = {k:v for (k,v) in old_si.items() if k in select and w_matches}
+        w_matches = all(old_si[wk] == wv for (wk, wv) in where.items())
+        new_si = {k: v for (k, v) in old_si.items() if k in select and w_matches}
         if len(new_si) > 0:
             server_info.append(new_si)
     # end for(info)

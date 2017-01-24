@@ -27,7 +27,7 @@ Valid image parameters are:
 * disc_scsi_hot_unplug (bool)
 
 """
-from profitbricks.client import ProfitBricksService
+from profitbricks.client import ProfitBricksService  # noqa
 
 client = ProfitBricksService(
     username='username', password='password')
@@ -47,7 +47,7 @@ image = client.update_image(
 
 """Delete Image
 """
-from profitbricks.client import ProfitBricksService
+from profitbricks.client import ProfitBricksService  # noqa
 
 client = ProfitBricksService(
     username='username', password='password')
