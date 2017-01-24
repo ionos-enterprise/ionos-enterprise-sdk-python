@@ -26,7 +26,6 @@ class TestErrors(unittest.TestCase):
     def test_pb_not_found(self):
         try:
             response = self.client.get_datacenter("fake_id")
-            print(response)
         except PBError as err:
             self.assertTrue(isinstance(err, PBNotFoundError))
 

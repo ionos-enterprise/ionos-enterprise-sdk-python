@@ -1611,13 +1611,13 @@ class ProfitBricksService(object):
                 code = err['httpStatus']
                 msg = err['messages']
                 if response.status_code == 401:
-                    raise PBNotAuthorizedError(code, msg)
+                    raise PBNotAuthorizedError(code, msg, url)
                 if response.status_code == 404:
-                    raise PBNotFoundError(code, msg)
+                    raise PBNotFoundError(code, msg, url)
                 if response.status_code == 422:
-                    raise PBValidationError(code, msg)
+                    raise PBValidationError(code, msg, url)
                 else:
-                    raise PBError(code, msg)
+                    raise PBError(code, msg, url)
 
 
         except ValueError as e:
