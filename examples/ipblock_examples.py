@@ -12,7 +12,7 @@ print(ipblocks)
 
 """Reserve IPBlock
 """
-from profitbricks.client import ProfitBricksService, IPBlock
+from profitbricks.client import ProfitBricksService, IPBlock  # noqa
 
 i = IPBlock(name='py-test',location='de/fra', size=1)
 
@@ -20,7 +20,7 @@ ipblock = client.reserve_ipblock(i)
 
 """Release IPBlock
 """
-from profitbricks.client import ProfitBricksService
+from profitbricks.client import ProfitBricksService  # noqa
 
 ipblock_id = ipblock['id']
 

@@ -11,8 +11,7 @@ from profitbricks import (
 )
 from profitbricks.errors import PBNotAuthorizedError, PBNotFoundError, PBValidationError, PBError
 
-"""ProfitBricks Object Classes
-"""
+# ProfitBricks Object Classes
 
 
 class ProfitBricksService(object):
@@ -21,7 +20,9 @@ class ProfitBricksService(object):
     """
 
     def __init__(self, username=None, password=None, host_base=API_HOST,
-                 host_cert=None, ssl_verify=True, headers=dict()):
+                 host_cert=None, ssl_verify=True, headers=None):
+        if headers is None:
+            headers = dict()
         self.username = username
         self.password = password
         self.host_base = host_base
@@ -29,8 +30,7 @@ class ProfitBricksService(object):
         self.verify = ssl_verify
         self.headers = headers
 
-    """Datacenter Functions
-    """
+    # Datacenter Functions
 
     def get_datacenter(self, datacenter_id, depth=1):
         """
@@ -85,11 +85,11 @@ class ProfitBricksService(object):
             "location": datacenter.location,
         }
 
-        ' Optional Properties'
+        # Optional Properties
         if datacenter.description:
             properties['description'] = datacenter.description
 
-        ' Servers '
+        # Servers
         if len(datacenter.servers) > 0:
             for server in datacenter.servers:
                 server_items.append(self._create_server_dict(server))
@@ -104,7 +104,7 @@ class ProfitBricksService(object):
 
             entities.update(server_entities)
 
-        ' Volumes '
+        # Volumes
         if len(datacenter.volumes) > 0:
             for volume in datacenter.volumes:
                 volume_items.append(self._create_volume_dict(volume))
@@ -119,7 +119,7 @@ class ProfitBricksService(object):
 
             entities.update(volume_entities)
 
-        ' Load Balancers '
+        # Load Balancers
         if len(datacenter.loadbalancers) > 0:
             for loadbalancer in datacenter.loadbalancers:
                 loadbalancer_items.append(
@@ -138,7 +138,7 @@ class ProfitBricksService(object):
 
             entities.update(loadbalancer_entities)
 
-        ' LANs '
+        # LANs
         if len(datacenter.lans) > 0:
             for lan in datacenter.lans:
                 lan_items.append(
@@ -195,8 +195,7 @@ class ProfitBricksService(object):
 
         return response
 
-    """FirewallRule Functions
-    """
+    # FirewallRule Functions
 
     def get_firewall_rule(self, datacenter_id,
                           server_id, nic_id, firewall_rule_id):
@@ -299,7 +298,7 @@ class ProfitBricksService(object):
             "protocol": firewall_rule.protocol,
         }
 
-        ' Optional Properties'
+        # Optional Properties
         if firewall_rule.source_mac:
             properties['sourceMac'] = firewall_rule.source_mac
 
@@ -386,8 +385,7 @@ class ProfitBricksService(object):
 
         return response
 
-    """Image Functions
-    """
+    # Image Functions
 
     def get_image(self, image_id):
         """
@@ -438,8 +436,7 @@ class ProfitBricksService(object):
                                          data=json.dumps(data))
         return response
 
-    """IPBlock Functions
-    """
+    # IPBlock Functions
 
     def get_ipblock(self, ipblock_id):
         """
@@ -495,8 +492,7 @@ class ProfitBricksService(object):
 
         return response
 
-    """LAN Functions
-    """
+    # LAN Functions
 
     def get_lan(self, datacenter_id, lan_id, depth=1):
         """
@@ -615,8 +611,7 @@ class ProfitBricksService(object):
 
         return response
 
-    """LoadBalancer Functions
-    """
+    # LoadBalancer Functions
 
     def get_loadbalancer(self, datacenter_id, loadbalancer_id):
         """
@@ -807,8 +802,7 @@ class ProfitBricksService(object):
 
         return response
 
-    """Location Functions
-    """
+    # Location Functions
 
     def get_location(self, location_id):
         """
@@ -830,8 +824,7 @@ class ProfitBricksService(object):
 
         return response
 
-    """NIC Functions
-    """
+    # NIC Functions
 
     def get_nic(self, datacenter_id, server_id, nic_id, depth=1):
         """
@@ -954,8 +947,7 @@ class ProfitBricksService(object):
 
         return response
 
-    """Request Functions
-    """
+    # Request Functions
 
     def get_request(self, request_id, status=False):
         """
@@ -987,8 +979,7 @@ class ProfitBricksService(object):
 
         return response
 
-    """Server Functions
-    """
+    # Server Functions
 
     def get_server(self, datacenter_id, server_id, depth=1):
         """
@@ -1331,8 +1322,7 @@ class ProfitBricksService(object):
 
         return response
 
-    """Snapshot Functions
-    """
+    # Snapshot Functions
 
     def get_snapshot(self, snapshot_id):
         """
@@ -1447,8 +1437,7 @@ class ProfitBricksService(object):
 
         return response
 
-    """Volume Functions
-    """
+    # Volume Functions
 
     def get_volume(self, datacenter_id, volume_id):
         """
@@ -1542,8 +1531,7 @@ class ProfitBricksService(object):
 
         return response
 
-    """Private Functions
-    """
+    # Private Functions
 
     def _wrapped_request(self, method, url,
                          params=None,
@@ -1570,19 +1558,13 @@ class ProfitBricksService(object):
                                self.password))).decode('utf-8'))})
 
         url = self._build_url(url)
-        headers.update(
-            {'User-Agent':
-                 'profitbricks-sdk-python/' + __version__})
+        headers.update({'User-Agent': 'profitbricks-sdk-python/' + __version__})
         if type == 'POST' or type == 'PUT':
-            headers.update(
-                {'Content-Type':
-                     'application/json'})
             response = self._wrapped_request(type, url, data=data,
                                              headers=headers)
+            headers.update({'Content-Type': 'application/json'})
         elif type == 'POST-ACTION-JSON' or type == 'POST-ACTION':
-            headers.update(
-                {'Content-Type':
-                     'application/x-www-form-urlencoded; charset=UTF-8'})
+            headers.update({'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'})
             response = self._wrapped_request('POST', url, data=data,
                                              headers=headers)
             if response.status_code == 202 and type == 'POST-ACTION':
@@ -1590,15 +1572,11 @@ class ProfitBricksService(object):
             elif response.status_code == 401:
                 raise response.raise_for_status()
         elif type == 'PATCH':
-            headers.update(
-                {'Content-Type':
-                     'application/json'})
+            headers.update({'Content-Type': 'application/json'})
             response = self._wrapped_request(type, url, data=data,
                                              headers=headers)
         else:
-            headers.update(
-                {'Content-Type':
-                     'application/json'})
+            headers.update({'Content-Type': 'application/json'})
             response = self._wrapped_request(type, url, params=data,
                                              headers=headers)
             if type == 'DELETE':
@@ -1639,8 +1617,7 @@ class ProfitBricksService(object):
             return match.group(1)
         else:
             raise Exception("Failed to extract request ID from response "
-                            "header 'location': '{location}'".format(
-                location=headers['location']))
+                            "header 'location': '{location}'".format(location=headers['location']))
 
     def _build_url(self, uri):
         url = self.host_base + uri
@@ -1656,7 +1633,7 @@ class ProfitBricksService(object):
             # This is Python2
             if isinstance(s, str):
                 return s
-            elif isinstance(s, unicode):
+            elif isinstance(s, unicode):  # noqa
                 return s.encode(encoding)
         else:
             # And this is Python3
@@ -1670,6 +1647,9 @@ class ProfitBricksService(object):
     'Used to convert python snake case back to mixed case.'
 
     def _underscore_to_camelcase(self, value):
+        """
+        Convert Python snake case back to mixed case.
+        """
         def camelcase():
             yield str.lower
             while True:
@@ -1686,7 +1666,7 @@ class ProfitBricksService(object):
             "name": lan.name
         }
 
-        ' Optional Properties'
+        # Optional Properties
         if lan.public is not None:
             properties['public'] = str(lan.public).lower()
 
@@ -1727,7 +1707,7 @@ class ProfitBricksService(object):
             "name": loadbalancer.name
         }
 
-        ' Optional Properties'
+        # Optional Properties
         if loadbalancer.ip:
             properties['ip'] = loadbalancer.ip
         if loadbalancer.dhcp is not None:
@@ -1770,7 +1750,7 @@ class ProfitBricksService(object):
             "lan": nic.lan,
         }
 
-        ' Optional Properties'
+        # Optional Properties
         if nic.nat:
             properties['nat'] = nic.nat
 
@@ -1854,7 +1834,7 @@ class ProfitBricksService(object):
             "cores": server.cores
         }
 
-        ' Optional Properties'
+        # Optional Properties
         if server.availability_zone:
             properties['availabilityZone'] = server.availability_zone
 
@@ -1897,7 +1877,7 @@ class ProfitBricksService(object):
             }
             entities.update(nic_entities)
 
-        ' Attach Existing Volume(s) '
+        # Attach Existing Volume(s)
         if len(server.attach_volumes) > 0:
             for volume in server.attach_volumes:
                 volume_properties = {
@@ -1933,7 +1913,7 @@ class ProfitBricksService(object):
             "size": volume.size
         }
 
-        ' Optional Properties'
+        # Optional Properties
         if volume.availability_zone:
             properties['availabilityZone'] = volume.availability_zone
 
@@ -1967,7 +1947,7 @@ class ProfitBricksService(object):
 
 class Datacenter(ProfitBricksService):
     def __init__(self, name=None, location=None, description=None,
-                 volumes=[], servers=[], lans=[], loadbalancers=[],
+                 volumes=None, servers=None, lans=None, loadbalancers=None,
                  **kwargs):
         """
         Datacenter class initializer.
@@ -1994,6 +1974,14 @@ class Datacenter(ProfitBricksService):
         :type       loadbalancers: ``list``
 
         """
+        if volumes is None:
+            volumes = []
+        if servers is None:
+            servers = []
+        if lans is None:
+            lans = []
+        if loadbalancers is None:
+            loadbalancers = []
         self.name = name
         self.description = description
         self.location = location
@@ -2003,8 +1991,7 @@ class Datacenter(ProfitBricksService):
         self.loadbalancers = loadbalancers
 
     def __repr__(self):
-        return ((
-                    '<Datacenter: name=%s, location=%s, description=%s> ...>')
+        return (('<Datacenter: name=%s, location=%s, description=%s> ...>')
                 % (self.name, self.location, self.description))
 
 
@@ -2062,10 +2049,9 @@ class FirewallRule(ProfitBricksService):
         self.icmp_code = icmp_code
 
     def __repr__(self):
-        return ((
-                    '<FirewallRule: name=%s, protocol=%s, source_mac=%s, '
-                    'source_ip=%s, target_ip=%s, port_range_start=%s, '
-                    'port_range_end=%s, icmp_type=%s, icmp_code=%s> ...>')
+        return (('<FirewallRule: name=%s, protocol=%s, source_mac=%s, '
+                 'source_ip=%s, target_ip=%s, port_range_start=%s, '
+                 'port_range_end=%s, icmp_type=%s, icmp_code=%s> ...>')
                 % (self.name, self.protocol, self.source_mac,
                    self.source_ip, self.target_ip, self.port_range_start,
                    self.port_range_end, self.icmp_type, self.icmp_code))
@@ -2091,8 +2077,7 @@ class IPBlock(ProfitBricksService):
         self.size = size
 
     def __repr__(self):
-        return ((
-                    '<IPBlock: location=%s, size=%s>')
+        return (('<IPBlock: location=%s, size=%s>')
                 % (self.location, self.size))
 
 
@@ -2101,7 +2086,7 @@ class LAN(ProfitBricksService):
     This is the main class for managing LAN resources.
     '''
 
-    def __init__(self, name=None, public=None, nics=[]):
+    def __init__(self, name=None, public=None, nics=None):
         """
         LAN class initializer.
 
@@ -2115,13 +2100,14 @@ class LAN(ProfitBricksService):
         :type       nics: ``list``
 
         """
+        if nics is None:
+            nics = []
         self.name = name
         self.public = public
         self.nics = nics
 
     def __repr__(self):
-        return ((
-                    '<LAN: name=%s, public=%s> ...>')
+        return (('<LAN: name=%s, public=%s> ...>')
                 % (self.name, str(self.public)))
 
 
@@ -2131,7 +2117,7 @@ class LoadBalancer(ProfitBricksService):
     '''
 
     def __init__(self, name=None, ip=None,
-                 dhcp=None, balancednics=[], **kwargs):
+                 dhcp=None, balancednics=None, **kwargs):
         """
         LoadBalancer class initializer.
 
@@ -2150,21 +2136,22 @@ class LoadBalancer(ProfitBricksService):
         :type       balancednics: ``list``
 
         """
+        if balancednics is None:
+            balancednics = []
         self.name = name
         self.ip = ip
         self.dhcp = dhcp
         self.balancednics = balancednics
 
     def __repr__(self):
-        return ((
-                    '<LoadBalancer: name=%s, ip=%s, dhcp=%s> ...>')
+        return (('<LoadBalancer: name=%s, ip=%s, dhcp=%s> ...>')
                 % (self.name, self.ip, str(self.dhcp)))
 
 
 class NIC(ProfitBricksService):
     def __init__(self, name=None, ips=None,
                  dhcp=None, lan=None, firewall_active=None,
-                 firewall_rules=[], nat=None, **kwargs):
+                 firewall_rules=None, nat=None, **kwargs):
         """
         NIC class initializer.
 
@@ -2174,11 +2161,14 @@ class NIC(ProfitBricksService):
         :param      ips: A list of IPs.
         :type       ips: ``list``
 
-        :param      dhcp: Disable or enable DHCP. Default is enabled.
+        :param      dhcp: Enable or disable DHCP. Default is enabled.
         :type       dhcp: ``bool``
 
         :param      lan: ID of the LAN in which the NIC should reside.
         :type       lan: ``str``
+
+        :param      nat: Enable or disable NAT. Default is disabled.
+        :type       nat: ``bool``
 
         :param      firewall_active: Turns the firewall on or not;
                                      default is disabled until a
@@ -2189,6 +2179,8 @@ class NIC(ProfitBricksService):
         :type       firewall_rules: ``list``
 
         """
+        if firewall_rules is None:
+            firewall_rules = []
         self.name = name
         self.nat = nat
         self.ips = ips
@@ -2198,9 +2190,8 @@ class NIC(ProfitBricksService):
         self.firewall_rules = firewall_rules
 
     def __repr__(self):
-        return ((
-                    '<NIC: name=%s, ips=%s, dhcp=%s,lan=%s, '
-                    'firewall_active=%s> ...>')
+        return (('<NIC: name=%s, ips=%s, dhcp=%s,lan=%s, '
+                 'firewall_active=%s> ...>')
                 % (self.name, self.ips, str(self.dhcp),
                    self.lan, str(self.firewall_active)))
 
@@ -2212,7 +2203,7 @@ class Server(ProfitBricksService):
 
     def __init__(self, name=None, cores=None, ram=None, availability_zone=None,
                  boot_volume_id=None, boot_cdrom=None, cpu_family=None,
-                 create_volumes=[], attach_volumes=[], nics=[]):
+                 create_volumes=None, attach_volumes=None, nics=None):
         """
         Server class initializer.
 
@@ -2247,6 +2238,12 @@ class Server(ProfitBricksService):
         :type       nics: ``list``
 
         """
+        if create_volumes is None:
+            create_volumes = []
+        if attach_volumes is None:
+            attach_volumes = []
+        if nics is None:
+            nics = []
         self.name = name
         self.cores = cores
         self.ram = ram
@@ -2259,10 +2256,9 @@ class Server(ProfitBricksService):
         self.nics = nics
 
     def __repr__(self):
-        return ((
-                    '<Server: name=%s, cores=%s, ram=%s, '
-                    'availability_zone=%s, boot_volume_id=%s, '
-                    'boot_cdrom=%s, ...>')
+        return (('<Server: name=%s, cores=%s, ram=%s, '
+                 'availability_zone=%s, boot_volume_id=%s, '
+                 'boot_cdrom=%s, ...>')
                 % (self.name, self.cores, self.ram,
                    self.availability_zone, self.boot_volume_id, self.boot_cdrom))
 
@@ -2270,7 +2266,7 @@ class Server(ProfitBricksService):
 class Volume(ProfitBricksService):
     def __init__(self, name=None, size=None, bus='VIRTIO', image=None,
                  disk_type='HDD', licence_type='UNKNOWN', image_password=None,
-                 ssh_keys=[], availability_zone=None, **kwargs):
+                 ssh_keys=None, availability_zone='AUTO', **kwargs):
         """
         Volume class initializer.
 
@@ -2293,9 +2289,14 @@ class Volume(ProfitBricksService):
         :type       licence_type: ``str``
 
         :param      ssh_keys: A list of public SSH keys.
-        :type       ssh_keys ``list``
+        :type       ssh_keys: ``list``
+
+        :param      availability_zone: The availability zone for the server.
+        :type       availability_zone: ``str``
 
         """
+        if ssh_keys is None:
+            ssh_keys = []
         self.name = name
         self.availability_zone = availability_zone
         self.size = int(size)
@@ -2307,7 +2308,6 @@ class Volume(ProfitBricksService):
         self.ssh_keys = ssh_keys
 
     def __repr__(self):
-        return ((
-                    '<Volume: name=%s, size=%s, image=%s, bus=%s, disk_type=%s, ...>')
+        return (('<Volume: name=%s, size=%s, image=%s, bus=%s, disk_type=%s, ...>')
                 % (self.name, str(self.size), self.image,
                    self.bus, self.disk_type))

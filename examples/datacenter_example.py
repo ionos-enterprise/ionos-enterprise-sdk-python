@@ -1,5 +1,3 @@
-import os
-
 """List Datacenters
 """
 from profitbricks.client import ProfitBricksService
@@ -17,12 +15,20 @@ for d in datacenters['items']:
 
 """Get Datacenter
 """
-datacenter = client.get_datacenter(datacenter_id=datacenter_id)
+from profitbricks.client import ProfitBricksService  # noqa
+
+datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
+
+client = ProfitBricksService(
+    username='username', password='password')
+
+datacenter = client.get_datacenter(
+    datacenter_id=datacenter_id)
 
 """Create Simple Datacenter
 """
-from profitbricks.client import ProfitBricksService
-from profitbricks.client import Datacenter, Volume, Server
+from profitbricks.client import ProfitBricksService  # noqa
+from profitbricks.client import Datacenter, Volume, Server  # noqa
 
 i = Datacenter(
     name='dc1',
@@ -35,9 +41,9 @@ response = client.create_datacenter(datacenter=i)
 """Create Complex Datacenter
 """
 
-from profitbricks.client import ProfitBricksService
-from profitbricks.client import Datacenter, Volume, Server
-from profitbricks.client import LAN, NIC, LoadBalancer, FirewallRule, IPBlock, Server
+from profitbricks.client import ProfitBricksService  # noqa
+from profitbricks.client import Datacenter, Volume, Server  # noqa
+from profitbricks.client import LAN, NIC, LoadBalancer, FirewallRule, IPBlock, Server  # noqa
 
 image_id = 'df8382a1-0f40-11e6-ab6b-52540005ab80'
 

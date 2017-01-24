@@ -23,8 +23,8 @@ response = client.create_server(
 """Create Complex Server
 """
 
-from profitbricks.client import ProfitBricksService
-from profitbricks.client import Server, NIC, Volume
+from profitbricks.client import ProfitBricksService  # noqa
+from profitbricks.client import Server, NIC, Volume  # noqa
 
 server_id = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
@@ -80,8 +80,8 @@ response = client.create_server(
 """Create Server with Existing Volume
 """
 
-from profitbricks.client import ProfitBricksService
-from profitbricks.client import Server
+from profitbricks.client import ProfitBricksService  # noqa
+from profitbricks.client import Server  # noqa
 
 server_id = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
@@ -105,8 +105,8 @@ response = client.create_server(
 """Create Server with New Volumes
 """
 
-from profitbricks.client import ProfitBricksService
-from profitbricks.client import Server, Volume
+from profitbricks.client import ProfitBricksService  # noqa
+from profitbricks.client import Server, Volume  # noqa
 
 server_id = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
 volume_id = '700e1cab-99b2-4c30-ba8c-1d273ddba044'
@@ -146,8 +146,8 @@ response = client.create_server(
 """Create Server with NICs Only
 """
 
-from profitbricks.client import ProfitBricksService
-from profitbricks.client import Server, NIC
+from profitbricks.client import ProfitBricksService  # noqa
+from profitbricks.client import Server, NIC  # noqa
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 
@@ -184,8 +184,8 @@ response = client.create_server(
 
 """Create Server with Two Existing Volumes
 """
-from profitbricks.client import ProfitBricksService
-from profitbricks.client import Server
+from profitbricks.client import ProfitBricksService  # noqa
+from profitbricks.client import Server  # noqa
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 volume_id1 = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
@@ -210,8 +210,8 @@ response = client.create_server(
 """Create Server with Boot Volume
 """
 
-from profitbricks.client import ProfitBricksService
-from profitbricks.client import Server
+from profitbricks.client import ProfitBricksService  # noqa
+from profitbricks.client import Server  # noqa
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 volume_id1 = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
@@ -235,8 +235,8 @@ response = client.create_server(
 """Create Server with Existing Volumes and NICs
 """
 
-from profitbricks.client import ProfitBricksService
-from profitbricks.client import Server, NIC
+from profitbricks.client import ProfitBricksService  # noqa
+from profitbricks.client import Server, NIC  # noqa
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 volume_id1 = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
@@ -281,7 +281,7 @@ response = client.create_server(
 
 """Start Server
 """
-from profitbricks.client import ProfitBricksService
+from profitbricks.client import ProfitBricksService  # noqa
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 server_id = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
@@ -295,7 +295,7 @@ server = client.start_server(
 
 """Stop Server
 """
-from profitbricks.client import ProfitBricksService
+from profitbricks.client import ProfitBricksService  # noqa
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 server_id = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
@@ -309,7 +309,7 @@ server = client.stop_server(
 
 """Reboot Server
 """
-from profitbricks.client import ProfitBricksService
+from profitbricks.client import ProfitBricksService  # noqa
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 server_id = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
@@ -323,7 +323,7 @@ server = client.reboot_server(
 
 """List Servers
 """
-from profitbricks.client import ProfitBricksService
+from profitbricks.client import ProfitBricksService  # noqa
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 
@@ -334,7 +334,7 @@ servers = client.list_servers(datacenter_id=datacenter_id)
 
 """Delete Server
 """
-from profitbricks.client import ProfitBricksService
+from profitbricks.client import ProfitBricksService  # noqa
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 server_id = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
@@ -348,7 +348,7 @@ server = client.delete_server(
 
 """Update Server
 """
-from profitbricks.client import ProfitBricksService
+from profitbricks.client import ProfitBricksService  # noqa
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 server_id = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
