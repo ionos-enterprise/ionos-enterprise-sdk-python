@@ -1644,8 +1644,6 @@ class ProfitBricksService(object):
 
         raise TypeError("Invalid argument %r for _b()" % (s,))
 
-    'Used to convert python snake case back to mixed case.'
-
     def _underscore_to_camelcase(self, value):
         """
         Convert Python snake case back to mixed case.
