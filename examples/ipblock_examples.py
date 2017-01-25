@@ -14,7 +14,7 @@ print(ipblocks)
 """
 from profitbricks.client import ProfitBricksService, IPBlock  # noqa
 
-i = IPBlock(name='py-test',location='de/fra', size=1)
+i = IPBlock(name='py-test', location='de/fra', size=1)
 
 ipblock = client.reserve_ipblock(i)
 

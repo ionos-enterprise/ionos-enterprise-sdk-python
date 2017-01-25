@@ -1,3 +1,4 @@
+import os
 """List Datacenters
 """
 from profitbricks.client import ProfitBricksService
@@ -42,8 +43,7 @@ response = client.create_datacenter(datacenter=i)
 """
 
 from profitbricks.client import ProfitBricksService  # noqa
-from profitbricks.client import Datacenter, Volume, Server  # noqa
-from profitbricks.client import LAN, NIC, LoadBalancer, FirewallRule, IPBlock, Server  # noqa
+from profitbricks.client import Datacenter, LAN, NIC, LoadBalancer, FirewallRule  # noqa
 
 image_id = 'df8382a1-0f40-11e6-ab6b-52540005ab80'
 
@@ -89,7 +89,7 @@ volume1 = Volume(
     size=56,
     image=image_id,
     bus='VIRTIO',
-    image_password = "test1234"
+    image_password="test1234"
 )
 
 volume2 = Volume(

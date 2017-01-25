@@ -55,7 +55,6 @@ class TestLan(unittest.TestCase):
     def tearDownClass(self):
         self.client.delete_datacenter(datacenter_id=self.datacenter['id'])
 
-
     def test_list_lans(self):
         lans = self.client.list_lans(datacenter_id=self.datacenter['id'])
 
@@ -65,7 +64,6 @@ class TestLan(unittest.TestCase):
         self.assertEqual(lans['items'][0]['properties']['name'], self.resource['lan']['name'])
         self.assertTrue(lans['items'][0]['properties']['public'], self.resource['lan']['public'])
 
-
     def test_get_lan(self):
         lan = self.client.get_lan(datacenter_id=self.datacenter['id'], lan_id=self.lan['id'])
 
@@ -73,7 +71,6 @@ class TestLan(unittest.TestCase):
         self.assertEqual(lan['id'], self.lan['id'])
         self.assertEqual(lan['properties']['name'], self.resource['lan']['name'])
         self.assertTrue(lan['properties']['public'], self.resource['lan']['public'])
-
 
     def test_delete_lan(self):
         lan = self.client.create_lan(
@@ -86,7 +83,6 @@ class TestLan(unittest.TestCase):
 
         self.assertTrue(lan)
 
-
     def test_update_lan(self):
         lan = self.client.update_lan(
             datacenter_id=self.datacenter['id'],
@@ -98,13 +94,11 @@ class TestLan(unittest.TestCase):
         self.assertEqual(lan['properties']['name'], self.resource['lan']['name'] + ' RENAME')
         self.assertFalse(lan['properties']['public'])
 
-
     def test_create_lan(self):
         self.assertEqual(self.lan['id'], '1')
         self.assertEqual(self.lan['type'], 'lan')
         self.assertEqual(self.lan['properties']['name'], self.resource['lan']['name'])
         self.assertEqual(self.lan['properties']['public'], self.resource['lan']['public'])
-
 
     def test_create_complex_lan(self):
         resource = NIC(**self.resource['nic'])
@@ -131,7 +125,6 @@ class TestLan(unittest.TestCase):
         self.assertEqual(response['type'], 'lan')
         self.assertEqual(response['properties']['name'], self.resource['lan']['name'])
         self.assertTrue(response['properties']['public'])
-
 
     def test_get_lan_members(self):
         members = self.client.get_lan_members(
