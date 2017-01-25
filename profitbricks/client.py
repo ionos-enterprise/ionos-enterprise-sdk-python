@@ -1597,8 +1597,7 @@ class ProfitBricksService(object):
                 else:
                     raise PBError(code, msg, url)
 
-
-        except ValueError as e:
+        except ValueError:
             raise Exception('Failed to parse the response', response.text)
 
         json_response = response.json()

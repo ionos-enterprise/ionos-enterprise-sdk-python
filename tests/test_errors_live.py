@@ -2,7 +2,7 @@ import unittest
 
 from profitbricks.client import ProfitBricksService, Datacenter, Volume
 
-from profitbricks.errors import *
+from profitbricks.errors import PBError, PBNotAuthorizedError, PBNotFoundError, PBValidationError
 from tests.helpers import configuration
 from tests.helpers.resources import resource
 
@@ -22,13 +22,11 @@ class TestErrors(unittest.TestCase):
     def tearDownClass(self):
         self.client.delete_datacenter(datacenter_id=self.datacenter['id'])
 
-
     def test_pb_not_found(self):
         try:
-            response = self.client.get_datacenter("fake_id")
+            self.client.get_datacenter("fake_id")
         except PBError as err:
             self.assertTrue(isinstance(err, PBNotFoundError))
-
 
     def test_pb_unauthorized_error(self):
         try:
@@ -36,11 +34,10 @@ class TestErrors(unittest.TestCase):
                 username=configuration.USERNAME + "1",
                 password=configuration.PASSWORD,
                 headers=configuration.HEADERS)
-            response = self.client.list_datacenters()
+            self.client.list_datacenters()
 
         except PBError as err:
             self.assertTrue(isinstance(err, PBNotAuthorizedError))
-
 
     def test_pb_validation_error(self):
         try:
@@ -50,8 +47,7 @@ class TestErrors(unittest.TestCase):
                 disk_type='HDD',
                 image='fake_image_id',
                 bus='VIRTIO')
-            response = self.client.create_volume(
-                datacenter_id=self.datacenter['id'], volume=i)
+            self.client.create_volume(datacenter_id=self.datacenter['id'], volume=i)
         except PBError as err:
             self.assertTrue(isinstance(err, PBValidationError))
 
