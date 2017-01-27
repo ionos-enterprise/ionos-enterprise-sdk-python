@@ -4,7 +4,6 @@ from helpers import configuration
 from helpers.resources import resource, wait_for_completion
 from profitbricks.client import Datacenter
 from profitbricks.client import ProfitBricksService
-from six import assertRegex
 
 
 class TestDatacenter(unittest.TestCase):
@@ -74,7 +73,6 @@ class TestDatacenter(unittest.TestCase):
             datacenter=Datacenter(**self.resource['datacenter']))
         wait_for_completion(self.client, datacenter, 'create_datacenter')
 
-        assertRegex(self, datacenter['id'], self.resource['uuid_match'])
         self.assertEqual(datacenter['properties']['name'], self.resource['datacenter']['name'])
         self.assertEqual(datacenter['properties']['description'],
                          self.resource['datacenter']['description'])

@@ -8,8 +8,8 @@ def resource():
     return {
         'locations': ['us/las', 'de/fra', 'de/fkb'],
         'vm_states': ['RUNNING', 'SHUTOFF'],
-        'uuid_match': re.compile(
-            '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$'),
+        'uuid_match':
+            '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$',
         'mac_match': re.compile(
             '^([0-9a-f]{2}[:]){5}([0-9a-f]{2})$'),
         'datacenter': {
@@ -28,6 +28,7 @@ def resource():
             'bus': 'VIRTIO',
             'type': 'HDD',
             'licence_type': 'UNKNOWN',
+            'availabilityZone' : 'ZONE_3'
         },
         'volume_failure': {
             'name': 'Negative Python SDK Test',
