@@ -53,7 +53,6 @@ setup(
     author='Matt Baldwin (stackpointcloud.com)',
     author_email='baldwin@stackpointcloud.com',
     url='https://github.com/profitbricks/profitbricks-sdk-python',
-    download_url='https://github.com/profitbricks/profitbricks-sdk-python/tarball/3.1.0',
     install_requires=['requests>=2.0.0', 'six>=1.10.0'],
     packages=['profitbricks'],
     platforms='any',
