@@ -1594,6 +1594,8 @@ class ProfitBricksService(object):
                     raise PBNotFoundError(code, msg, url)
                 if response.status_code == 422:
                     raise PBValidationError(code, msg, url)
+                if response.status_code == 429:
+                    raise PBRateLimitExceededError(code, msg, url)
                 else:
                     raise PBError(code, msg, url)
 
