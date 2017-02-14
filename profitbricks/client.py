@@ -9,7 +9,9 @@ from six.moves.urllib.parse import urlencode
 from profitbricks import (
     API_HOST, __version__
 )
-from profitbricks.errors import PBNotAuthorizedError, PBNotFoundError, PBValidationError, PBError
+from profitbricks.errors import PBNotAuthorizedError, PBNotFoundError, PBValidationError, PBError, \
+    PBRateLimitExceededError
+
 
 # ProfitBricks Object Classes
 

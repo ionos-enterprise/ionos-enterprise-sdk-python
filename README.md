@@ -45,6 +45,17 @@ Connecting to ProfitBricks is handled by first setting up your authentication.
 
 You can now use `client` for any future request.
 
+## SDK Exceptions
+
+The Python Client Library will raise custom exceptions whenever CloudAPI returns an error. There are 5 exceptions types:
+    
+   * PBNotAuthorizedError - The error is raised when CloudAPI responds with status code "401". Indicates that user credentials are incorrect
+   * PBNotFoundError - The error is raised when CloudAPI responds with status code "404". 
+   * PBValidationError - The error is raised when CloudAPI responds with status code "422". 
+   * PBRateLimitExceededError - The error is raised when CloudAPI responds with status code "429". 
+   * PBError - This is a generic error which be raised for all other status codes.  
+    
+
 ## Using the Module
 
 Here are a few examples on how to use the module. In this first one we pull a list of our datacenters.
