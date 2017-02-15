@@ -8,6 +8,7 @@ This guide will walk you through getting setup with the library and performing v
 * [Getting Started](#getting-started)
 * [Installation](#installation)
 * [Authenticating](#authenticating)
+* [Error Handling](#error-handling)
 * [Using the Module](#using-the-module)
 * [Additional Documentation and Support](#additional-documentation-and-support)
 * [How to: Create a Datacenter](#how-to-create-a-datacenter)
@@ -44,6 +45,18 @@ Connecting to ProfitBricks is handled by first setting up your authentication.
         username='username', password='password')
 
 You can now use `client` for any future request.
+
+## Error Handling
+
+The Python Client Library will raise custom exceptions when the Cloud API returns an error. There are five exception types:
+    
+| EXCEPTION | HTTP CODE | DESCRIPTION |
+|---|---|---|
+| PBNotAuthorizedError | 401 | The supplied user credentials are invalid. |
+| PBNotFoundError | 404 | The requested resource cannot be found. |
+| PBValidationError | 422 | The request body includes invalid JSON. |
+| PBRateLimitExceededError | 429 | The Cloud API rate limit has been exceeded. |
+| PBError | Other | A generic exception for all other status codes. |
 
 ## Using the Module
 
@@ -441,4 +454,4 @@ The above method can then be called after creating a new resource.
 
 ## Conclusion
 
-We touched on only a few ways you can interact with the ProfitBricks API using python. Our repo, located [here], has further examples. If you have any other question, ping us in the community.
+We touched on only a few ways you can interact with the ProfitBricks Cloud API using Python. Our [repository](https://github.com/profitbricks/profitbricks-sdk-python) has further examples. If you have any other question, ping us in the community.

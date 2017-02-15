@@ -1,7 +1,6 @@
 import base64
 import json
 import re
-
 import requests
 import six
 from six.moves.urllib.parse import urlencode
@@ -9,11 +8,17 @@ from six.moves.urllib.parse import urlencode
 from profitbricks import (
     API_HOST, __version__
 )
-from profitbricks.errors import PBNotAuthorizedError, PBNotFoundError, PBValidationError, PBError
+
+from profitbricks.errors import (
+    PBNotAuthorizedError,
+    PBNotFoundError,
+    PBValidationError,
+    PBRateLimitExceededError,
+    PBError
+)
+
 
 # ProfitBricks Object Classes
-
-
 class ProfitBricksService(object):
     """
         ProfitBricksClient Base Class
