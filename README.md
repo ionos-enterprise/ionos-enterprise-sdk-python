@@ -8,6 +8,7 @@ This guide will walk you through getting setup with the library and performing v
 * [Getting Started](#getting-started)
 * [Installation](#installation)
 * [Authenticating](#authenticating)
+* [Error Handling](#error-handling)
 * [Using the Module](#using-the-module)
 * [Additional Documentation and Support](#additional-documentation-and-support)
 * [How to: Create a Datacenter](#how-to-create-a-datacenter)
