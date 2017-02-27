@@ -1,4 +1,4 @@
-The ProfitBricks Client Library for Python provides you with access to the ProfitBricks REST API. The client library supports both simple and complex requests. It is designed for developers who are building applications in Python.
+The ProfitBricks Client Library for Python provides you with access to the ProfitBricks Cloud API. The client library supports both simple and complex requests. It is designed for developers who are building applications in Python.
 
 This guide will walk you through getting setup with the library and performing various actions against the API.
 
@@ -11,17 +11,17 @@ This guide will walk you through getting setup with the library and performing v
 * [Error Handling](#error-handling)
 * [Using the Module](#using-the-module)
 * [Additional Documentation and Support](#additional-documentation-and-support)
-* [How to: Create a Datacenter](#how-to-create-a-datacenter)
-* [How to: Delete a Datacenter](#how-to-delete-a-datacenter)
+* [How to: Create a Virtual Data Center](#how-to-create-a-virtual-data-center)
+* [How to: Delete a Virtual Data Center](#how-to-delete-a-virtual-data-center)
 * [How to: Update Cores, Memory, and Disk](#how-to-update-cores-memory-and-disk)
-* [How to: List Servers, Volumes, and Data Centers](#how-to-list-servers-volumes-and-data-centers)
+* [How to: List Servers, Volumes, and Virtual Data Centers](#how-to-list-servers-volumes-and-virtual-data-centers)
 * [How to: Create Additional Network Interfaces](#how-to-create-additional-network-interfaces)
 * [How to: Check Resource Status](#how-to-check-resource-status)
 * [Conclusion](#conclusion)
 
 ## Concepts
 
-The Python Client Library wraps the latest version of the ProfitBricks REST API. All API operations are performed over SSL and authenticated using your ProfitBricks portal credentials. The API can be accessed within an instance running in ProfitBricks or directly over the Internet from any application that can send an HTTPS request and receive an HTTPS response.
+The Python Client Library wraps version 3 of the ProfitBricks Cloud API. All API operations are performed over SSL and authenticated using your ProfitBricks portal credentials. The API can be accessed within an instance running in ProfitBricks or directly over the Internet from any application that can send an HTTPS request and receive an HTTPS response.
 
 ## Getting Started
 
@@ -29,7 +29,7 @@ Before you begin you will need to have [signed-up](https://www.profitbricks.com/
 
 ## Installation
 
-The Python Client Library is available on [PyPi](https://pypi.python.org/pypi/profitbricks). You can install the latest stable version using pip:
+The Python Client Library is available on [PyPi](https://pypi.python.org/pypi/profitbricks). You can install the latest stable version using `pip`:
 
     pip install profitbricks
 
@@ -49,7 +49,7 @@ You can now use `client` for any future request.
 ## Error Handling
 
 The Python Client Library will raise custom exceptions when the Cloud API returns an error. There are five exception types:
-    
+
 | EXCEPTION | HTTP CODE | DESCRIPTION |
 |---|---|---|
 | PBNotAuthorizedError | 401 | The supplied user credentials are invalid. |
@@ -60,7 +60,7 @@ The Python Client Library will raise custom exceptions when the Cloud API return
 
 ## Using the Module
 
-Here are a few examples on how to use the module. In this first one we pull a list of our datacenters.
+Here are a few examples on how to use the module. In this first one we pull a list of our virtual data centers.
 
     from profitbricks.client import ProfitBricksService
 
@@ -169,14 +169,15 @@ Or if you want one with some volumes and NICs you would do:
 
 ## Additional Documentation and Support
 
-You can find additional examples in the repo `examples` directory. If you find any issues, please let us know via the DevOps Central community or GitHub's issue system and we'll check it out.
+You can find additional examples in the repo `examples` directory. If you find any issues, please let us know via the [DevOps Central community](https://devops.profitbricks.com) or [GitHub's issue system](https://github.com/profitbricks/profitbricks-sdk-python/issues) and we'll check it out.
 
+# How to:
 
-## How to: Create a Datacenter
+## How to: Create a Virtual Data Center
 
-ProfitBricks introduces the concept of Virtual Datacenters. These are logically separated from one and the other and allow you to have a self-contained environment for all servers, volumes, networking, snapshots, and so forth. The goal is to give you the same experience as you would have if you were running your own physical datacenter.
+ProfitBricks introduces the concept of Virtual Data Centers. These are logically separated from one and the other and allow you to have a self-contained environment for all servers, volumes, networking, snapshots, and so forth. The goal is to give you the same experience as you would have if you were running your own physical data center.
 
-You will need a datacenter before you can create anything else. Like the server functions, the datacenter functions can be used to create a simple vDC or a complex one.
+You will need a virtual data center before you can create any other resources. Like the server functions, the virtual data center functions can be used to create a simple (empty) virtual data center or a complex one.
 
 To create a simple one you would do this:
 
@@ -196,7 +197,7 @@ To create a simple one you would do this:
 
     response = client.create_datacenter(datacenter=i)
 
-To create a complex datacenter you would do this. As you can see, you can create quite a few of the objects you will need later all in one request. These all get serialized in a request queue which you can check using the Requests functions:
+To create a complex virtual data center you would do this. As you can see, you can create quite a few of the objects you will need later all in one request. These all get serialized in a request queue which you can check using the Requests functions:
 
     from profitbricks.client import ProfitBricksService
     from profitbricks.client import Datacenter, Volume, Server
@@ -299,9 +300,9 @@ To create a complex datacenter you would do this. As you can see, you can create
 
     response = client.create_datacenter(datacenter=d)
 
-## How to: Delete a Datacenter
+## How to: Delete a Virtual Data Center
 
-You will want to exercise a bit of caution here. Removing a datacenter will **destroy** all objects contained within that datacenter -- servers, volumes, snapshots, and so on. The objects -- once removed -- will be unrecoverable.
+You will want to exercise a bit of caution here. Removing a virtual data center will **destroy** all objects contained within that datacenter -- servers, volumes, snapshots, and so on. The objects -- once removed -- will be unrecoverable.
 
     from profitbricks.client import ProfitBricksService
 
@@ -313,7 +314,7 @@ You will want to exercise a bit of caution here. Removing a datacenter will **de
 
 ## How to: Update Cores, Memory, and Disk
 
-ProfitBricks allows users to dynamically update cores, memory, and disk independently of each other. This removes the restriction of needing to upgrade to the next size up to receive an increase in memory. You can now simply increase the instances memory keeping your costs in-line with your resource needs.
+ProfitBricks allows users to dynamically update cores, memory, and disk resources independently of each other. This removes the restriction of needing to upgrade to the next size up to receive an increase in memory. You can now simply increase the instances memory keeping your costs in-line with your resource needs.
 
 The following code illustrates how you can update cores and memory:
 
@@ -349,11 +350,11 @@ The following code illustrates how you can update cores and memory:
         cpu_hot_unplug=True)
 
 
-## How to: List Servers, Volumes, and Data Centers
+## How to: List Servers, Volumes, and Virtual Data Centers
 
 Listing resources is fairly straight forward.
 
-Grabbing the datacenters:
+Grabbing the data centers:
 
     from profitbricks.client import ProfitBricksService
 
@@ -414,7 +415,7 @@ The sample below shows you how to add a second NIC to an existing server:
 
 ## How to: Check Resource Status
 
-When a new resource (server, volume, NIC, etc.) is created, the return value will include a `requestId` UUID value. This value can be passed to the `get_request()` method to retrieve the request status and any potential error messages produced by the request.
+When a new resource (server, volume, NIC, etc.) is created, the return value will include a `requestId` value. This value can be passed to the `get_request()` method to retrieve the request status and any potential error messages produced by the request.
 
     client.get_request('3e2d336f-cdf5-482b-923a-f3026dfc934b', status=True)
 
@@ -454,4 +455,4 @@ The above method can then be called after creating a new resource.
 
 ## Conclusion
 
-We touched on only a few ways you can interact with the ProfitBricks Cloud API using Python. Our [repository](https://github.com/profitbricks/profitbricks-sdk-python) has further examples. If you have any other question, ping us in the community.
+We touched on only a few ways you can interact with the ProfitBricks Cloud API using Python. Our [repository](https://github.com/profitbricks/profitbricks-sdk-python) has further examples. If you have any other questions, please ping us in the [DevOps Central](https://devops.profitbricks.com/community) community.
