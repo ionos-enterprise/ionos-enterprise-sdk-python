@@ -2,6 +2,9 @@ import unittest
 
 from helpers import configuration
 from helpers.resources import resource, wait_for_completion
+from profitbricks.client import Server, Volume, LAN, LoadBalancer
+from six import assertRegex
+
 from profitbricks.client import Datacenter
 from profitbricks.client import ProfitBricksService
 
@@ -78,6 +81,27 @@ class TestDatacenter(unittest.TestCase):
                          self.resource['datacenter']['description'])
         self.assertEqual(datacenter['properties']['location'],
                          self.resource['datacenter']['location'])
+
+        response = self.client.delete_datacenter(
+            datacenter_id=datacenter['id'])
+        self.assertTrue(response)
+
+    def test_create_complex(self):
+        datacenter_resource=Datacenter(**self.resource['datacenter_complex'])
+        datacenter_resource.servers=[Server(**self.resource['server'])]
+        datacenter_resource.volumes = [Volume(**self.resource['volume'])]
+
+        datacenter = self.client.create_datacenter(
+            datacenter=datacenter_resource)
+        wait_for_completion(self.client, datacenter, 'create_datacenter_complex')
+
+        self.assertEqual(datacenter['properties']['name'], self.resource['datacenter_complex']['name'])
+        self.assertEqual(datacenter['properties']['description'],
+                         self.resource['datacenter_complex']['description'])
+        self.assertEqual(datacenter['properties']['location'],
+                         self.resource['datacenter_complex']['location'])
+        self.assertGreater(len(datacenter['entities']['servers']), 0)
+        self.assertGreater(len(datacenter['entities']['volumes']), 0)
 
         response = self.client.delete_datacenter(
             datacenter_id=datacenter['id'])

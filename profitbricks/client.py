@@ -2315,3 +2315,33 @@ class Volume(ProfitBricksService):
         return (('<Volume: name=%s, size=%s, image=%s, bus=%s, disk_type=%s, ...>')
                 % (self.name, str(self.size), self.image,
                    self.bus, self.disk_type))
+
+class Snapshot(ProfitBricksService):
+    def __init__(self, name=None, description=None,licence_type='UNKNOWN', size=None, location=None, **kwargs):
+        """
+        Volume class initializer.
+
+        :param      name: The name of the snapshot.
+        :type       name: ``str``
+
+        :param      name: The description of the snapshot.
+        :type       name: ``str``
+
+        :param      size: The size of the snapshot.
+        :type       size: ``str``
+
+        :param      licence_type: The license type.
+        :type       licence_type: ``str``
+
+
+        """
+        self.name = name
+        self.description=description
+        self.size = int(size)
+        self.licence_type = licence_type
+        self.location=location
+
+    def __repr__(self):
+        return (('<Snapshot: name=%s, description=%s, size=%s,location=%s, ...>')
+                % (self.name, str(self.size), self.description,
+                   self.locatoin))
