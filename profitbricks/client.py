@@ -2344,5 +2344,5 @@ class Snapshot(ProfitBricksService):
         self.location = location
 
     def __repr__(self):
-        return (('<Snapshot: name=%s, description=%s, size=%s,location=%s, ...>')
-                % (self.name, str(self.size), self.description, self.locatoin))
+        return ('<Snapshot: name={}, description={}, size={},location={}, ...>'.format(
+            self.name, self.description, str(self.size), self.locatoin))
