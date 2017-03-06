@@ -28,5 +28,6 @@ class TestLocation(unittest.TestCase):
         self.assertEqual(location['type'], 'location')
         self.assertEqual(location['id'], configuration.LOCATION)
 
+
 if __name__ == '__main__':
     unittest.main()

@@ -42,8 +42,8 @@ class TestLoadBalancer(unittest.TestCase):
         wait_for_completion(self.client, self.nic1, 'create_nic1')
 
         # Create test LoadBalancer
-        loadbalancer=LoadBalancer(**self.resource['loadbalancer'])
-        self.loadbalancer=self.client.create_loadbalancer(
+        loadbalancer = LoadBalancer(**self.resource['loadbalancer'])
+        self.loadbalancer = self.client.create_loadbalancer(
             datacenter_id=self.datacenter['id'],
             loadbalancer=loadbalancer
         )
@@ -52,7 +52,7 @@ class TestLoadBalancer(unittest.TestCase):
 
         # Create test LoadBalancer
         loadbalancer2 = LoadBalancer(**self.resource['loadbalancer'])
-        loadbalancer2.name="Python SDK Test 2"
+        loadbalancer2.name = "Python SDK Test 2"
         self.loadbalancer2 = self.client.create_loadbalancer(
             datacenter_id=self.datacenter['id'],
             loadbalancer=loadbalancer2
@@ -70,7 +70,7 @@ class TestLoadBalancer(unittest.TestCase):
 
         wait_for_completion(self.client, self.loadbalancer3, 'create_loadbalancer3')
 
-        #Associate nic to loadbalancer
+        # Associate nic to loadbalancer
         self.associated_nic = self.client.add_loadbalanced_nics(
             datacenter_id=self.datacenter['id'],
             loadbalancer_id=self.loadbalancer['id'],
@@ -103,7 +103,10 @@ class TestLoadBalancer(unittest.TestCase):
             datacenter_id=self.datacenter['id'])
 
         self.assertGreater(len(loadbalancers), 0)
-        self.assertIn(loadbalancers['items'][0]['id'], (self.loadbalancer['id'], self.loadbalancer2['id'],self.loadbalancer3['id']))
+        self.assertIn(loadbalancers['items'][0]['id'],
+                      (self.loadbalancer['id'],
+                       self.loadbalancer2['id'],
+                       self.loadbalancer3['id']))
         self.assertEqual(loadbalancers['items'][0]['type'], 'loadbalancer')
 
     def test_get_loadbalancer(self):
@@ -113,7 +116,8 @@ class TestLoadBalancer(unittest.TestCase):
 
         self.assertEqual(loadbalancer['type'], 'loadbalancer')
         self.assertEqual(loadbalancer['id'], self.loadbalancer['id'])
-        self.assertEqual(loadbalancer['properties']['name'], self.loadbalancer['properties']['name'])
+        self.assertEqual(loadbalancer['properties']['name'],
+                         self.loadbalancer['properties']['name'])
 
     def test_delete_loadbalancer(self):
         loadbalancer = self.client.delete_loadbalancer(
@@ -133,27 +137,28 @@ class TestLoadBalancer(unittest.TestCase):
 
     def test_create_loadbalancer(self):
         self.assertEqual(self.loadbalancer['type'], 'loadbalancer')
-        self.assertEqual(self.loadbalancer['properties']['name'], self.resource['loadbalancer']['name'])
+        self.assertEqual(self.loadbalancer['properties']['name'],
+                         self.resource['loadbalancer']['name'])
 
     def test_associate_nic(self):
-        associated_nic=self.client.get_loadbalanced_nic(
+        associated_nic = self.client.get_loadbalanced_nic(
             datacenter_id=self.datacenter['id'],
             loadbalancer_id=self.loadbalancer['id'],
             nic_id=self.nic1['id'])
 
-
         self.assertEqual(associated_nic['id'], self.associated_nic['id'])
-        self.assertEqual(associated_nic['properties']['name'], self.associated_nic['properties']['name'])
+        self.assertEqual(associated_nic['properties']['name'],
+                         self.associated_nic['properties']['name'])
 
     def test_remove_nic(self):
-        remove_nic=self.client.remove_loadbalanced_nic(
+        remove_nic = self.client.remove_loadbalanced_nic(
             datacenter_id=self.datacenter['id'],
             loadbalancer_id=self.loadbalancer3['id'],
             nic_id=self.nic1['id'])
         self.assertTrue(remove_nic)
 
     def test_list_balanced_nics(self):
-        balanced_nics=self.client.get_loadbalancer_members(
+        balanced_nics = self.client.get_loadbalancer_members(
             datacenter_id=self.datacenter['id'],
             loadbalancer_id=self.loadbalancer['id']
         )
@@ -163,13 +168,14 @@ class TestLoadBalancer(unittest.TestCase):
         self.assertEqual(balanced_nics['items'][0]['type'], 'nic')
 
     def test_get_balanced_nic(self):
-        balanced_nic=self.client.get_loadbalanced_nic(
+        balanced_nic = self.client.get_loadbalanced_nic(
             datacenter_id=self.datacenter['id'],
             loadbalancer_id=self.loadbalancer['id'],
             nic_id=self.nic1['id'])
 
         self.assertEqual(balanced_nic['id'], self.nic1['id'])
         self.assertEqual(balanced_nic['type'], 'nic')
+
 
 if __name__ == '__main__':
     unittest.main()

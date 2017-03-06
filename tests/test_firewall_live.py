@@ -4,7 +4,6 @@ from helpers import configuration
 from helpers.resources import resource, wait_for_completion
 from profitbricks.client import ProfitBricksService
 from profitbricks.client import Datacenter, Server, LAN, NIC, FirewallRule
-from six import assertRegex
 
 
 class TestFirewall(unittest.TestCase):
@@ -42,15 +41,15 @@ class TestFirewall(unittest.TestCase):
             nic=nic1)
         wait_for_completion(self.client, self.nic1, 'create_nic1')
 
-        #Create test Firewall Rule
-        fwrule=FirewallRule(**self.resource['fwrule'])
+        # Create test Firewall Rule
+        fwrule = FirewallRule(**self.resource['fwrule'])
         self.fwrule = self.client.create_firewall_rule(
-            datacenter_id = self.datacenter['id'],
-            server_id = self.server['id'],
-            nic_id = self.nic1['id'],
+            datacenter_id=self.datacenter['id'],
+            server_id=self.server['id'],
+            nic_id=self.nic1['id'],
             firewall_rule=fwrule)
 
-        #Create test Firewall Rule 2
+        # Create test Firewall Rule 2
         fwrule2 = FirewallRule(**self.resource['fwrule'])
         fwrule2.port_range_start = 8080
         fwrule2.port_range_end = 8080
@@ -110,6 +109,7 @@ class TestFirewall(unittest.TestCase):
     def test_create_fwrule(self):
         self.assertEqual(self.fwrule['type'], 'firewall-rule')
         self.assertEqual(self.fwrule['properties']['name'], self.resource['fwrule']['name'])
+
 
 if __name__ == '__main__':
     unittest.main()

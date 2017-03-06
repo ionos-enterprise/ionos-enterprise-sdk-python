@@ -21,8 +21,8 @@ class TestLan(unittest.TestCase):
         wait_for_completion(self.client, self.datacenter, 'create_datacenter')
 
         # Create test volume
-        volume=Volume(**self.resource['volume'])
-        self.volume=self.client.create_volume(
+        volume = Volume(**self.resource['volume'])
+        self.volume = self.client.create_volume(
             datacenter_id=self.datacenter['id'],
             volume=volume
         )
@@ -39,8 +39,8 @@ class TestLan(unittest.TestCase):
         wait_for_completion(self.client, self.volume1, 'create_volume1')
 
         # Create test snapshot1
-        snapshot=Snapshot(**self.resource['snapshot'])
-        self.snapshot1=self.client.create_snapshot(
+        snapshot = Snapshot(**self.resource['snapshot'])
+        self.snapshot1 = self.client.create_snapshot(
             datacenter_id=self.datacenter['id'],
             volume_id=self.volume['id'],
             name=snapshot.name,
@@ -73,7 +73,8 @@ class TestLan(unittest.TestCase):
         self.assertEqual(snapshot['type'], 'snapshot')
         self.assertEqual(snapshot['id'], self.snapshot1['id'])
         self.assertEqual(snapshot['properties']['name'], self.resource['snapshot']['name'])
-        self.assertTrue(snapshot['properties']['description'],self.resource['snapshot']['description'])
+        self.assertTrue(snapshot['properties']['description'],
+                        self.resource['snapshot']['description'])
 
     def test_delete_snapshot(self):
         snapshot = self.client.delete_snapshot(snapshot_id=self.snapshot2['id'])
@@ -87,13 +88,18 @@ class TestLan(unittest.TestCase):
             description=self.resource['snapshot']['description'] + ' RENAME')
 
         self.assertEqual(snapshot['type'], 'snapshot')
-        self.assertEqual(snapshot['properties']['name'], self.resource['snapshot']['name'] + ' RENAME')
-        self.assertEqual(snapshot['properties']['description'],self.resource['snapshot']['description'] + ' RENAME')
+        self.assertEqual(snapshot['properties']['name'],
+                         self.resource['snapshot']['name'] + ' RENAME')
+        self.assertEqual(snapshot['properties']['description'],
+                         self.resource['snapshot']['description'] + ' RENAME')
 
     def test_create_snapshot(self):
         self.assertEqual(self.snapshot1['type'], 'snapshot')
-        self.assertEqual(self.snapshot1['properties']['name'], self.resource['snapshot']['name'])
-        self.assertEqual(self.snapshot1['properties']['description'], self.resource['snapshot']['description'])
+        self.assertEqual(self.snapshot1['properties']['name'],
+                         self.resource['snapshot']['name'])
+        self.assertEqual(self.snapshot1['properties']['description'],
+                         self.resource['snapshot']['description'])
+
 
 if __name__ == '__main__':
     unittest.main()

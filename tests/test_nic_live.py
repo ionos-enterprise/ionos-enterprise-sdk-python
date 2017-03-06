@@ -4,7 +4,6 @@ from helpers import configuration
 from helpers.resources import resource, wait_for_completion
 from profitbricks.client import ProfitBricksService
 from profitbricks.client import Datacenter, Server, LAN, NIC
-from six import assertRegex
 
 
 class TestNic(unittest.TestCase):
@@ -61,7 +60,7 @@ class TestNic(unittest.TestCase):
             server_id=self.server['id'])
 
         self.assertGreater(len(nics), 0)
-        self.assertIn(nics['items'][0]['id'], (self.nic1['id'],self.nic2['id']))
+        self.assertIn(nics['items'][0]['id'], (self.nic1['id'], self.nic2['id']))
         self.assertEqual(nics['items'][0]['type'], 'nic')
 
     def test_get_nic(self):
@@ -93,6 +92,7 @@ class TestNic(unittest.TestCase):
     def test_create_nic(self):
         self.assertEqual(self.nic1['type'], 'nic')
         self.assertEqual(self.nic1['properties']['name'], self.resource['nic']['name'])
+
 
 if __name__ == '__main__':
     unittest.main()

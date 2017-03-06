@@ -8,9 +8,9 @@ import codecs
 import os
 import re
 import sys
-
 from setuptools import setup
 from setuptools.command.test import test as TestCommand
+
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -26,6 +26,7 @@ def find_version(*file_paths):
     if version_match:
         return version_match.group(1)
     raise RuntimeError("Unable to find version string.")
+
 
 if os.path.isfile("README.md"):
     long_desc = read('README.md')

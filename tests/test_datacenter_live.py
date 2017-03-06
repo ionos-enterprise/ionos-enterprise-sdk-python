@@ -2,7 +2,7 @@ import unittest
 
 from helpers import configuration
 from helpers.resources import resource, wait_for_completion
-from profitbricks.client import Server, Volume, LAN, LoadBalancer
+from profitbricks.client import Server, Volume
 from six import assertRegex
 
 from profitbricks.client import Datacenter
@@ -87,15 +87,16 @@ class TestDatacenter(unittest.TestCase):
         self.assertTrue(response)
 
     def test_create_complex(self):
-        datacenter_resource=Datacenter(**self.resource['datacenter_complex'])
-        datacenter_resource.servers=[Server(**self.resource['server'])]
+        datacenter_resource = Datacenter(**self.resource['datacenter_complex'])
+        datacenter_resource.servers = [Server(**self.resource['server'])]
         datacenter_resource.volumes = [Volume(**self.resource['volume'])]
 
         datacenter = self.client.create_datacenter(
             datacenter=datacenter_resource)
         wait_for_completion(self.client, datacenter, 'create_datacenter_complex')
 
-        self.assertEqual(datacenter['properties']['name'], self.resource['datacenter_complex']['name'])
+        self.assertEqual(datacenter['properties']['name'],
+                         self.resource['datacenter_complex']['name'])
         self.assertEqual(datacenter['properties']['description'],
                          self.resource['datacenter_complex']['description'])
         self.assertEqual(datacenter['properties']['location'],
@@ -106,6 +107,7 @@ class TestDatacenter(unittest.TestCase):
         response = self.client.delete_datacenter(
             datacenter_id=datacenter['id'])
         self.assertTrue(response)
+
 
 if __name__ == '__main__':
     unittest.main()

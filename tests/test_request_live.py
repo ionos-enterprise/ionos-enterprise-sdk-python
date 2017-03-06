@@ -1,7 +1,7 @@
 import unittest
 
 from helpers import configuration
-from helpers.resources import resource, wait_for_completion
+from helpers.resources import resource
 from profitbricks.client import ProfitBricksService
 
 
@@ -14,8 +14,8 @@ class TestRequest(unittest.TestCase):
             password=configuration.PASSWORD,
             headers=configuration.HEADERS)
 
-        self.requests=self.client.list_requests();
-        self.request=self.requests['items'][0]
+        self.requests = self.client.list_requests()
+        self.request = self.requests['items'][0]
 
     def test_list_requests(self):
         requests = self.client.list_requests()
@@ -24,7 +24,7 @@ class TestRequest(unittest.TestCase):
         self.assertEqual(requests['items'][0]['type'], 'request')
 
     def test_get_request(self):
-        request = self.client.get_request(request_id=self.request['id'],status=False)
+        request = self.client.get_request(request_id=self.request['id'], status=False)
 
         self.assertEqual(request['type'], 'request')
         self.assertEqual(request['id'], self.request['id'])
@@ -35,7 +35,8 @@ class TestRequest(unittest.TestCase):
 
         self.assertEqual(request['type'], 'request-status')
         self.assertEqual(request['id'], self.request['id'] + '/status')
-        self.assertEqual(request['href'], self.request['href']+ '/status')
+        self.assertEqual(request['href'], self.request['href'] + '/status')
+
 
 if __name__ == '__main__':
     unittest.main()

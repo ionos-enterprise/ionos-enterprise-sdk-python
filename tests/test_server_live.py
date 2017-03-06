@@ -1,6 +1,6 @@
 import unittest
-
 import time
+
 from helpers import configuration
 from helpers.resources import resource, wait_for_completion
 from profitbricks.client import Datacenter, Server, Volume, NIC, FirewallRule
@@ -37,8 +37,6 @@ class TestServer(unittest.TestCase):
             volume=Volume(**self.resource['volume']))
         wait_for_completion(self.client, self.volume2, 'create_volume')
 
-
-
         # Create test server.
         server = Server(**self.resource['server'])
         server.attach_volumes = [self.volume1['id']]
@@ -61,16 +59,16 @@ class TestServer(unittest.TestCase):
                 self.image = item
         # Find a cdrom image
         images = self.client.list_images(depth=5)
-        usedIndex=0;
+        usedIndex = 0
         for index, image in enumerate(images['items']):
             if (image['metadata']['state'] == "AVAILABLE"
-                and image['properties']['public'] == True
-                and image['properties']['imageType'] == "CDROM"
-                and image['properties']['location'] == configuration.LOCATION
-                and image['properties']['licenceType'] == "LINUX"):
-                if(usedIndex==0):
+                    and image['properties']['public'] is True
+                    and image['properties']['imageType'] == "CDROM"
+                    and image['properties']['location'] == configuration.LOCATION
+                    and image['properties']['licenceType'] == "LINUX"):
+                if(usedIndex == 0):
                     self.test_image1 = image
-                    usedIndex=index
+                    usedIndex = index
                 else:
                     self.test_image2 = image
                     break
@@ -305,7 +303,8 @@ class TestServer(unittest.TestCase):
 
         wait_for_completion(self.client, attached_cdrom, 'attach_cdrom', wait_timeout=600)
         self.assertEqual(attached_cdrom['id'], self.test_image2['id'])
-        self.assertEqual(attached_cdrom['properties']['name'], self.test_image2['properties']['name'])
+        self.assertEqual(attached_cdrom['properties']['name'],
+                         self.test_image2['properties']['name'])
 
     def test_get_cdrom(self):
         attached_cdrom = self.client.attach_cdrom(
@@ -328,6 +327,9 @@ class TestServer(unittest.TestCase):
             cdrom_id=self.cdrom['id'])
         time.sleep(5)
 
-        self.assertRaises(PBNotFoundError,check_detached_cdrom_gone(self))
+        self.assertTrue(detached_cd)
+        self.assertRaises(PBNotFoundError, check_detached_cdrom_gone(self))
+
+
 if __name__ == '__main__':
     unittest.main()

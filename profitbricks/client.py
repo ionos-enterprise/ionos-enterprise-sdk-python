@@ -2316,8 +2316,10 @@ class Volume(ProfitBricksService):
                 % (self.name, str(self.size), self.image,
                    self.bus, self.disk_type))
 
+
 class Snapshot(ProfitBricksService):
-    def __init__(self, name=None, description=None,licence_type='UNKNOWN', size=None, location=None, **kwargs):
+    def __init__(self, name=None, description=None, licence_type='UNKNOWN', size=None,
+                 location=None, **kwargs):
         """
         Volume class initializer.
 
@@ -2336,12 +2338,11 @@ class Snapshot(ProfitBricksService):
 
         """
         self.name = name
-        self.description=description
+        self.description = description
         self.size = int(size)
         self.licence_type = licence_type
-        self.location=location
+        self.location = location
 
     def __repr__(self):
         return (('<Snapshot: name=%s, description=%s, size=%s,location=%s, ...>')
-                % (self.name, str(self.size), self.description,
-                   self.locatoin))
+                % (self.name, str(self.size), self.description, self.locatoin))
