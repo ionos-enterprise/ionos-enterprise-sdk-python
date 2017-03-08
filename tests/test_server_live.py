@@ -1,10 +1,14 @@
 import unittest
+import time
 
 from helpers import configuration
 from helpers.resources import resource, wait_for_completion
 from profitbricks.client import Datacenter, Server, Volume, NIC, FirewallRule
 from profitbricks.client import ProfitBricksService
 from six import assertRegex
+
+from profitbricks.errors import PBNotFoundError
+from tests.helpers.resources import check_detached_cdrom_gone
 
 
 class TestServer(unittest.TestCase):
@@ -53,6 +57,27 @@ class TestServer(unittest.TestCase):
             if (configuration.IMAGE_NAME in item['properties']['name'] and
                     item['properties']['location'] == configuration.LOCATION):
                 self.image = item
+        # Find a cdrom image
+        images = self.client.list_images(depth=5)
+        usedIndex = 0
+        for index, image in enumerate(images['items']):
+            if (image['metadata']['state'] == "AVAILABLE"
+                    and image['properties']['public'] is True
+                    and image['properties']['imageType'] == "CDROM"
+                    and image['properties']['location'] == configuration.LOCATION
+                    and image['properties']['licenceType'] == "LINUX"):
+                if(usedIndex == 0):
+                    self.test_image1 = image
+                    usedIndex = index
+                else:
+                    self.test_image2 = image
+                    break
+        # Create test cdrom1
+        self.cdrom = self.client.attach_cdrom(
+            datacenter_id=self.datacenter['id'],
+            server_id=self.server['id'],
+            cdrom_id=self.test_image1['id'])
+        wait_for_completion(self.client, self.cdrom, 'attach_cdrom')
 
     @classmethod
     def tearDownClass(self):
@@ -262,6 +287,49 @@ class TestServer(unittest.TestCase):
             volume_id=self.volume1['id'])
 
         self.assertTrue(volume)
+
+    def test_list_cdroms(self):
+        cdroms = self.client.get_attached_cdroms(
+            datacenter_id=self.datacenter['id'],
+            server_id=self.server['id'])
+
+        self.assertGreater(len(cdroms['items']), 0)
+
+    def test_attach_cdrom(self):
+        attached_cdrom = self.client.attach_cdrom(
+            datacenter_id=self.datacenter['id'],
+            server_id=self.server['id'],
+            cdrom_id=self.test_image2['id'])
+
+        wait_for_completion(self.client, attached_cdrom, 'attach_cdrom', wait_timeout=600)
+        self.assertEqual(attached_cdrom['id'], self.test_image2['id'])
+        self.assertEqual(attached_cdrom['properties']['name'],
+                         self.test_image2['properties']['name'])
+
+    def test_get_cdrom(self):
+        attached_cdrom = self.client.attach_cdrom(
+            datacenter_id=self.datacenter['id'],
+            server_id=self.server['id'],
+            cdrom_id=self.test_image1['id'])
+
+        wait_for_completion(self.client, attached_cdrom, 'attach_cdrom', wait_timeout=600)
+        cdrom = self.client.get_attached_cdrom(
+            datacenter_id=self.datacenter['id'],
+            server_id=self.server['id'],
+            cdrom_id=attached_cdrom['id'])
+        self.assertEqual(cdrom['id'], attached_cdrom['id'])
+        self.assertEqual(cdrom['properties']['name'], attached_cdrom['properties']['name'])
+
+    def test_detach_cdrom(self):
+        detached_cd = self.client.detach_cdrom(
+            datacenter_id=self.datacenter['id'],
+            server_id=self.server['id'],
+            cdrom_id=self.cdrom['id'])
+        time.sleep(5)
+
+        self.assertTrue(detached_cd)
+        self.assertRaises(PBNotFoundError, check_detached_cdrom_gone(self))
+
 
 if __name__ == '__main__':
     unittest.main()
