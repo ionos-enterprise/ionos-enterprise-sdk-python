@@ -6,8 +6,8 @@ This guide will walk you through getting setup with the library and performing v
 
 * [Getting Started](#getting-started)
   * [Installation](#installation)
-  * [Authentication](#Authenticating)
-  * [Error Handling](#Error-Handling)
+  * [Authentication](#authenticating)
+  * [Error Handling](#error-handlingg)
 * [Operations](#operations)
   * [Data Centers](#data-centers)
     * [List Data Centers](#list-data-centers)
@@ -88,8 +88,8 @@ This guide will walk you through getting setup with the library and performing v
     * [Update a LAN](#update-a-lan)
     * [Delete a LAN](#delete-a-lan)
 * [Examples](#examples)
-* [Support](#Support)
-* [Testing](#Testing)
+* [Support](#support)
+* [Testing](#testing)
 * [Contributing](#contributing)
 
 ## Concepts
