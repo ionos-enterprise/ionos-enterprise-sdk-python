@@ -6,8 +6,8 @@ This guide will walk you through getting setup with the library and performing v
 
 * [Getting Started](#getting-started)
   * [Installation](#installation)
-  * [Authentication](#authentication)
-  * [Error Handling](#Error Handling)
+  * [Authentication](#Authenticating)
+  * [Error Handling](#Error-Handling)
 * [Operations](#operations)
   * [Data Centers](#data-centers)
     * [List Data Centers](#list-data-centers)
@@ -89,7 +89,8 @@ This guide will walk you through getting setup with the library and performing v
     * [Delete a LAN](#delete-a-lan)
 * [Examples](#examples)
 * [Support](#Support)
-  * [Contributing](#contributing)
+* [Testing](#Testing)
+* [Contributing](#contributing)
 
 ## Concepts
 
@@ -200,7 +201,7 @@ After retrieving a data center, either by getting it by id, or as a create respo
 datacenter = client.update_datacenter(
 	datacenter_id='datacenter_id',
 	name='name'
-        description='description')
+	description='description')
 ```
 
 The following table describes the request arguments:
@@ -1680,3 +1681,15 @@ Or if you want one with some volumes and NICs you would do:
 ##Support
 
 You can find additional examples in the repo `examples` directory. If you find any issues, please let us know via the [DevOps Central community](https://devops.profitbricks.com) or [GitHub's issue system](https://github.com/profitbricks/profitbricks-sdk-python/issues) and we'll check it out.
+
+##Testing
+
+You can find a full list of tests inside the tests folder. Run any test by typing the following command: `pyhton tests\test_file_name.py`
+
+##Contributing
+
+1. Fork it ( https://github.com/profitbricks/profitbricks-sdk-python/fork )
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create a new Pull Request
