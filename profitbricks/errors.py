@@ -11,7 +11,7 @@ class PBNotAuthorizedError(PBError):
 
 
 class PBNotFoundError(PBError):
-    """The entity was not found over the Profitbricks account"""
+    """The ProfitBricks entity was not found"""
 
 
 class PBValidationError(PBError):
@@ -19,4 +19,4 @@ class PBValidationError(PBError):
 
 
 class PBRateLimitExceededError(PBError):
-    """The amount of requests sent have exceeded the API limit"""
+    """The amount of requests sent have exceeded the API allowed limit"""
