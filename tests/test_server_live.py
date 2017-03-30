@@ -72,7 +72,7 @@ class TestServer(unittest.TestCase):
                 else:
                     self.test_image2 = image
                     break
-        # Create test cdrom1
+        # Create test cdrom
         self.cdrom = self.client.attach_cdrom(
             datacenter_id=self.datacenter['id'],
             server_id=self.server['id'],
