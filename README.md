@@ -1,14 +1,15 @@
-The ProfitBricks Client Library for Python provides you with access to the ProfitBricks Cloud API. The client library supports both simple and complex requests. It is designed for developers who are building applications in Python.
+# Python SDK
 
-This guide will walk you through getting setup with the library and performing various actions against the API.
+Version: profitbricks-sdk-python **3.1.2**
 
 ## Table of Contents
 
+* [Description](#description)
 * [Getting Started](#getting-started)
   * [Installation](#installation)
   * [Authentication](#authenticating)
-  * [Error Handling](#error-handlingg)
-* [Operations](#operations)
+  * [Error Handling](#error-handling)
+* [Reference](#reference)
   * [Data Centers](#data-centers)
     * [List Data Centers](#list-data-centers)
     * [Retrieve a Data Center](#retrieve-a-data-center)
@@ -65,7 +66,9 @@ This guide will walk you through getting setup with the library and performing v
     * [Delete a Firewall Rule](#delete-a-firewall-rule)
   * [Images](#images)
     * [List Images](#list-images)
-    * [Get an Image](#get-an-image)    
+    * [Get an Image](#get-an-image)
+    * [Update an Image](#update-an-image)
+    * [Delete an Image](#delete-an-image)
   * [Network Interfaces (NICs)](#network-interfaces-nics)
     * [List NICs](#list-nics)
     * [Get a NIC](#get-a-nic)
@@ -92,13 +95,17 @@ This guide will walk you through getting setup with the library and performing v
 * [Testing](#testing)
 * [Contributing](#contributing)
 
-## Concepts
+## Description
 
-The Python Client Library wraps version 3 of the ProfitBricks Cloud API. All API operations are performed over SSL and authenticated using your ProfitBricks portal credentials. The API can be accessed within an instance running in ProfitBricks or directly over the Internet from any application that can send an HTTPS request and receive an HTTPS response.
+The ProfitBricks Client Library for Python provides you with access to the ProfitBricks Cloud API. The client library supports both simple and complex requests. It is designed for developers who are building applications in Python.
+
+This guide will walk you through getting setup with the library and performing various actions against the API.
+
+The Python Client Library wraps the ProfitBricks Cloud API. All API operations are performed over SSL and authenticated using your ProfitBricks portal credentials. The API can be accessed within an instance running in ProfitBricks or directly over the Internet from any application that can send an HTTPS request and receive an HTTPS response.
 
 ## Getting Started
 
-Before you begin you will need to have [signed-up](https://www.profitbricks.com/signup) for a ProfitBricks account. The credentials you setup during sign-up will be used to authenticate against the API.
+Before you begin you will need to have [signed-up](https://www.profitbricks.com/signup) for a ProfitBricks account. The credentials you setup during sign-up will be used to authenticate against the Cloud API.
 
 ### Installation
 
@@ -110,12 +117,14 @@ Done!
 
 ### Authenticating
 
-Connecting to ProfitBricks is handled by first setting up your authentication.
+Connecting to ProfitBricks is handled by first setting up your authentication credentails.
 
     from profitbricks.client import ProfitBricksService
 
     client = ProfitBricksService(
-        username='username', password='password')
+        username='YOUR_USERNAME', password='YOUR_PASSWORD')
+
+Replace the values for *YOUR_USERNAME* and *YOUR_PASSWORD* with the ProfitBricks credentials you established during sign-up..
 
 You can now use `client` for any future request.
 
@@ -123,8 +132,8 @@ You can now use `client` for any future request.
 
 The Python Client Library will raise custom exceptions when the Cloud API returns an error. There are five exception types:
 
-| EXCEPTION | HTTP CODE | DESCRIPTION |
-|---|---|---|
+| Exception | HTTP Code | Description |
+|---|:-:|---|
 | PBNotAuthorizedError | 401 | The supplied user credentials are invalid. |
 | PBNotFoundError | 404 | The requested resource cannot be found. |
 | PBValidationError | 422 | The request body includes invalid JSON. |
@@ -132,51 +141,72 @@ The Python Client Library will raise custom exceptions when the Cloud API return
 | PBError | Other | A generic exception for all other status codes. |
 
 
-## Operations
+## Reference
+
+This section provides details on all the available operations and the parameters they accept. Brief code snippets demonstrating usage are also included.
+
 `client` is the `ProfitBricksService` class imported `from profitbricks.client import ProfitBricksService`
 
 ### Data Centers
 
-Virtual Data Centers (VDCs) are the foundation of the ProfitBricks platform. VDCs act as logical containers for all other objects you will be creating, e.g., servers. You can provision as many data centers as you want. Data centers have their own private network and are logically segmented from each other to create isolation.
+Virtual data centers (VDCs) are the foundation of the ProfitBricks platform. VDCs act as logical containers for all other objects you will be creating, e.g., servers. You can provision as many VDCs as you want. VDCs have their own private network and are logically segmented from each other to create isolation.
 
 #### List Data Centers
+
+This operation will list all currently provisioned VDCs that your account credentials provide access to.
+
+There are no request arguments that need to be supplied.
 
 ```
 datacenters = client.list_datacenters()
 ```
+
 ---
 
 #### Retrieve a Data Center
 
+Use this to retrieve details about a specific VDC.
+
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | The unique ID of the data center. | Yes |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the virtual data center. |
 
 ```
    datacenter = client.get_datacenter(
             datacenter_id='datacenter_id')
 ```
+
 ---
 
 #### Create a Data Center
 
+Use this operation to create a new VDC. You can create a "simple" VDC by supplying just the required *name* and *location* parameters. This operation also has the capability of provisioning a "complex" VDC by supplying additional parameters for servers, volumes, lans, and/or load balancers.
+
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| name | string | The name of the data center. | Yes |
-| location | string | The physical location where the data center will be created. This will be where all of your servers live. | Yes |
-| description | string | A description for the data center, e.g. staging, production. | No|
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| name | **yes** | string | The name of the data center. |
+| location | **yes** | string | The physical ProfitBricks location where the VDC will be created. |
+| description | no | string | A description for the data center, e.g. staging, production. |
+| server_items | no | collection | Details about creating one or more servers. See [create a server](#create-a-server). |
+| volume_items | no | collection | Details about creating one or more volumes. See [create a volume](#create-a-volume). |
+| lan_items | no | collection | Details about creating one or more LANs. See [create-a-lan](#create-a-lan). |
+| loadbalancer_items | no | collection | Details about creating one or more load balancers. See [create-a-loadbalancer](#create-a-loadbalancer). |
 
 The following table outlines the locations currently supported:
 
-| VALUE| COUNTRY | CITY |
+| Value| Country | City |
 |---|---|---|
 | us/las | United States | Las Vegas |
 | de/fra | Germany | Frankfurt |
 | de/fkb | Germany | Karlsruhe |
+
+**NOTES**:
+- The value for `name` cannot contain the following characters: (@, /, , |, ‘’, ‘).
+- You cannot change the virtual data center `location` once it has been provisioned.
 
 ```
 i = Datacenter(
@@ -184,32 +214,30 @@ i = Datacenter(
     description='My New Datacenter',
     location='de/fkb'
     )
+
 response = client.create_datacenter(datacenter=i)
 ```
-
-*NOTES*:
-- The value for `name` cannot contain the following characters: (@, /, , |, ‘’, ‘).
-- You cannot change a data center's `location` once it has been provisioned.
 
 ---
 
 #### Update a Data Center
 
-After retrieving a data center, either by getting it by id, or as a create response object, you can change it's properties and call the `update` method:
+After retrieving a data center, either by getting it by id, or as a create response object, you can change its properties by calling the `update_datacenter` method. Some parameters may not be changed using `update_datacenter`.
+
+The following table describes the available request arguments:
+
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| name | no | string | The new name of the VDC. |
+| description | no | string | The new description of the VDC. |
 
 ```
 datacenter = client.update_datacenter(
-	datacenter_id='datacenter_id',
-	name='name'
-	description='description')
+	datacenter_id='existing_datacenter_id',
+	name='new name'
+	description='new description')
 ```
-
-The following table describes the request arguments:
-
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-| --- | --- | --- | --- |
-| name | string | The new name of the data center. | No|
-| description | string | The new description of the data center. | No |
 
 ---
 
@@ -217,20 +245,29 @@ The following table describes the request arguments:
 
 This will remove all objects within the data center and remove the data center object itself.
 
-**NOTE**: This is a highly destructive operation which should be used with extreme caution.
+**NOTE**: This is a highly destructive operation which should be used with extreme caution!
+
+The following table describes the available request arguments:
+
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC that you want to delete. |
 
 ```
-response = client.delete_datacenter(
-           datacenter_id='datacenter_id'])
+response = client.delete_datacenter(datacenter_id='existing_datacenter_id')
 ```
 
 ---
 
 ### Locations
 
-Locations represent regions where you can provision your Virtual Data Centers.
+Locations are the physical ProfitBricks data centers where you can provision your VDCs.
 
 #### List Locations
+
+The `list_locations` operation will return the list of currently available locations.
+
+There are no request parameters to supply.
 
 ```
 locations = client.list_locations()
@@ -240,13 +277,13 @@ locations = client.list_locations()
 
 #### Get a Location
 
-Retrieves the attributes of a given location.
+Retrieves the attributes of a specific location.
 
 The following table describes the request arguments:
 
-| NAME | TYPE | DESCRIPTION | REQUIRED |
-| --- | --- | --- | --- |
-| location_id | string | The resource's unique identifier consisting of country/city. | Yes|
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| location_id | **yes** | string | The resource's unique identifier consisting of country/city. |
 
 ```
 self.client.get_location('us/las')
@@ -258,35 +295,35 @@ self.client.get_location('us/las')
 
 #### List Servers
 
-You can retrieve a list of all servers within a data center.
+You can retrieve a list of all the servers provisioned inside a specific VDC.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | 	The unique ID of the data center. | Yes |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes**  | string | The unique ID of the VDC. |
 
 ```
-servers = client.list_servers(datacenter_id=datacenter_id)
+servers = client.list_servers(datacenter_id='existing_datacenter_id')
 ```
 
 ---
 
 #### Retrieve a Server
 
-Returns information about a server such as its configuration, provisioning status, etc.
+Returns information about a specific server such as its configuration, provisioning status, etc.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | 	The unique ID of the data center. | Yes |
-| server-id | string | 	The unique ID of the server. | Yes |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| server_id | **yes** | string | The unique ID of the server. |
 
 ```
 server = client.get_server(
-            datacenter_id=s'datacenter_id',
-            server_id='server-id'
+            datacenter_id=s'existing_datacenter_id',
+            server_id='existing_server_id'
         )
 ```
 
@@ -294,36 +331,27 @@ server = client.get_server(
 
 #### Create a Server
 
-Creates a server within an existing data center. You can configure additional properties such as specifying a boot volume and connecting the server to an existing LAN.
+Creates a server within an existing VDC. You can configure additional properties such as specifying a boot volume and connecting the server to a LAN.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | 	The unique ID of the data center. | Yes |
-| name | string | The hostname of the server. | Yes |
-| cores | int | The total number of cores for the server. | Yes |
-| ram | int | The amount of memory for the server in MB, e.g. 2048. Size must be specified in multiples of 256 MB with a minimum of 256 MB; however, if you set ramHotPlug to TRUE then you must use a minimum of 1024 MB. | Yes |
-| availabilityZone | string |The availability zone in which the server should exist. | No |
-| licenceType | string | Sets the OS type of the server. If undefined the OS type will be inherited from the boot image or boot volume. | No* |
-| boot_volume_id | string | Reference to a Volume used for booting. If not ‘null’ then bootCdrom has to be ‘null’. | No |
-| boot_cdrom | string | Reference to a CD-ROM used for booting. If not 'null' then bootVolume has to be 'null'. | No |
-| attach_volumes | collection | A collection of volume IDs that you want to connect to the server. | No |
-| create_volumes | collection | A collection of volume objects that you want to create and attach to the server.| No |
-| nics | collection | A collection of NICs you wish to create at the time the server is provisioned. | No |
-| cpu_family | string | Sets the CPU type. "AMD_OPTERON" or "INTEL_XEON". Defaults to "AMD_OPTERON". | No |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| name | **yes** | string | The name of the server. |
+| cores | **yes** | int | The total number of cores for the server. |
+| ram | **yes** | int | The amount of memory for the server in MB, e.g. 2048. Size must be specified in multiples of 256 MB with a minimum of 256 MB; however, if you set `ramHotPlug` to TRUE then you must use a minimum of 1024 MB. |
+| availability_zone | no | string | The availability zone in which the server should exist. |
+| cpu_family | no | string | Sets the CPU type. "AMD_OPTERON" or "INTEL_XEON". Defaults to "AMD_OPTERON". |
+| boot_volume_id | no | string | Reference to a Volume used for booting. If not ‘null’ then bootCdrom has to be ‘null’. |
+| boot_cdrom | no | string | Reference to a CD-ROM used for booting. If not 'null' then bootVolume has to be 'null'. |
+| attach_volumes | no | collection | A collection of volume IDs that you want to connect to the server. |
+| create_volumes | no | collection | A collection of volume objects that you want to create and attach to the server.|
+| nics | no | collection | A collection of NICs you wish to create at the time the server is provisioned. |
 
-The following table outlines the various licence types you can define:
+The following table outlines the server availability zones currently supported:
 
-| LICENCE TYPE | COMMENT |
-|---|---|
-| WINDOWS | You must specify this if you are using your own, custom Windows image due to Microsoft's licensing terms. |
-| LINUX ||
-| UNKNOWN | If you are using an image uploaded to your account your OS Type will inherit as UNKNOWN. |
-
-The following table outlines the availability zones currently supported:
-
-| LICENCE TYPE | COMMENT |
+| Availability Zone | Comment |
 |---|---|
 | AUTO | Automatically Selected Zone |
 | ZONE_1 | Fire Zone 1 |
@@ -333,7 +361,7 @@ The following table outlines the availability zones currently supported:
 i = Server(
     name='name',
     cores=1,
-    ram=1,
+    ram=2048,
     description='My New Datacenter',
     location='de/fkb'
     )
@@ -342,29 +370,27 @@ server = client.create_server(
             server=i)
 ```
 
-**NOTE**: When creating a volume, you must specify either the `licence_type` or an `image`.
-
 ---
 
 #### Update a Server
 
-Perform updates to attributes of a server.
+Perform updates to the attributes of a server.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | The unique ID of the data center. | Yes |
-| server-id | string | The unique ID of the server. | Yes |
-| name | string | The name of the server. | No |
-| cores | int | The number of cores for the server. | No |
-| ram | int | The amount of memory in the server. | No |
-| availabilityZone | string | The new availability zone for the server. | No |
-| licenceType | string | The licence type for the server. | No |
-| boot_volume | string | Reference to a Volume used for booting. If not ‘null’ then bootCdrom has to be ‘null’ | No |
-| bootCdrom | string | Reference to a CD-ROM used for booting. If not 'null' then bootVolume has to be 'null'. | No |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the data center. |
+| server_id | **yes** | string | The unique ID of the server. |
+| name | no | string | The name of the server. |
+| cores | no | int | The number of cores for the server. |
+| ram | no | int | The amount of memory in the server. |
+| availability_zone | no | string | The new availability zone for the server. |
+| cpu_family | no | string | Sets the CPU type. "AMD_OPTERON" or "INTEL_XEON". Defaults to "AMD_OPTERON". |
+| boot_volume_id | no | string | Reference to a Volume used for booting. If not ‘null’ then bootCdrom has to be ‘null’ |
+| boot_cdrom | no | string | Reference to a CD-ROM used for booting. If not 'null' then bootVolume has to be 'null'. |
 
-After retrieving a server, either by getting it by id, or as a create response object, you can change it's properties and call the `update` method:
+After retrieving a server, either by getting it by id, or as a create response object, you can change its properties and call the `update_server` method:
 
 ```
 server = client.update_server(
@@ -377,21 +403,21 @@ server = client.update_server(
 
 #### Delete a Server
 
-This will remove a server from a data center. NOTE: This will not automatically remove the storage volume(s) attached to a server. A separate API call is required to perform that action.
+This will remove a server from a data center. **NOTE**: This will not automatically remove the storage volume(s) attached to a server. A separate operation is required to delete a storage volume.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | 	The unique ID of the data center. | Yes |
-| server-id | string | The unique ID of the server. | Yes |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | 	The unique ID of the VDC. |
+| server_id | **yes** | string | The unique ID of the server. |
 
 After retrieving a server, either by getting it by id, or as a create response object, you can call the `delete` method directly on the object:
 
 ```
 response = client.delete_server(
-            datacenter_id='datacenter_id',
-            server_id='server-id'
+            datacenter_id='existing_datacenter_id',
+            server_id='existing_server_id'
         )
 ```
 
@@ -403,12 +429,12 @@ Retrieves a list of volumes attached to the server.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | 	The unique ID of the data center. | Yes |
-| server-id | string | 	The unique ID of the server. | Yes |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| server_id | **yes** | string | The unique ID of the server. |
 
-After retrieving a server, either by getting it by id, or as a create response object, you can call the `get_volumes` method directly on the object:
+After retrieving a server, either by getting it by id, or as a create response object, you can call the `get_attached_volumes` method directly on the object:
 
 ```
 servers = client.get_attached_volumes(
@@ -424,19 +450,19 @@ This will attach a pre-existing storage volume to the server.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | The unique ID of the data center. | Yes |
-| server-id | string | The unique ID of the server. | Yes |
-| volume_id | string | The unique ID of a storage volume. | Yes |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| server_id | **yes** | string | The unique ID of the server. |
+| volume_id | **yes** | string | The unique ID of a storage volume. |
 
 After retrieving a server, either by getting it by id, or as a create response object, you can call the `attach_volume` method directly on the object:
 
 ```
  volume = client.attach_volume(
-            datacenter_id='datacenter_id',
-            server_id='server-id',
-            volume_id='volume_id')
+            datacenter_id='existing_datacenter_id',
+            server_id='existing_server_id',
+            volume_id='existing_volume_id')
 ```
 
 ---
@@ -447,65 +473,65 @@ This will retrieve the properties of an attached volume.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | The unique ID of the data center. | Yes |
-| server-id | string | The unique ID of the server. | Yes |
-| volume-id | string | The unique ID of the attached volume. | Yes |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| server_id | **yes** | string | The unique ID of the server. |
+| volume_id | **yes** | string | The unique ID of the attached volume. |
 
 After retrieving a server, either by getting it by id, or as a create response object, you can call the `get_attached_volume` method directly on the object:
 
 ```
 server = client.get_attached_volume(
-            datacenter_id='datacenter_id',
-            server_id='server-id',
-            volume_id='volume_id')
+            datacenter_id='existing_datacenter_id',
+            server_id='existing_server_id',
+            volume_id='existing_volume_id')
 ```
 
 ---
 
 #### Detach a Volume
 
-This will detach the volume from the server. Depending on the volume "hot_unplug" settings, this may result in the server being rebooted.
+This will detach the volume from the server. Depending on the volume `hot_unplug` settings, this may result in the server being rebooted.
 
-This will NOT delete the volume from your data center. You will need to make a separate request to delete a volume.
+This will NOT delete the volume from your virtual data center. You will need to make a separate request to delete a volume.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | The unique ID of the data center. | Yes |
-| server-id | string | The unique ID of the server. | Yes |
-| volume-id | string | The unique ID of the attached volume. | Yes |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| server_id | **yes** | string | The unique ID of the server. |
+| volume_id | **yes** | string | The unique ID of the attached volume. |
 
 After retrieving a server, either by getting it by id, or as a create response object, you can call the `detach_volume` method directly on the object:
 
 ```
 volume = client.detach_volume(
-           datacenter_id='datacenter_id',
-           server_id='server-id',
-           volume_id='volume_id')
+           datacenter_id='existing_datacenter_id',
+           server_id='existing_server_id',
+           volume_id='existing_volume_id')
 ```
 
 ---
 
 #### List Attached CD-ROMs
 
-Retrieves a list of CD-ROMs attached to the server.
+Retrieves a list of CD-ROMs attached to a server.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | The unique ID of the data center. | Yes |
-| server-id | string | The unique ID of the server. | Yes |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| server_id | **yes** | string | The unique ID of the server. |
 
-After retrieving a server, either by getting it by id, or as a create response object, you can call the `get_cdroms` method directly on the object:
+After retrieving a server, either by getting it by id, or as a create response object, you can call the `get_attached_cdroms` method directly on the object:
 
 ```
 cdroms = client.get_attached_cdroms(
             datacenter_id='datacenter_id',
-            server_id='server-id')
+            server_id='server_id')
 ```
 
 ---
@@ -516,19 +542,19 @@ You can attach a CD-ROM to an existing server.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | The unique ID of the data center. | Yes |
-| server-id | string | The unique ID of the server. | Yes |
-| cdrom_id | string | The unique ID of a CD-ROM. | Yes |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| server_id | **yes** | string | The unique ID of the server. |
+| cdrom_id | **yes** | string | The unique ID of a CD-ROM. |
 
 After retrieving a server, either by getting it by id, or as a create response object, you can call the `attach_cdrom` method directly on the object:
 
 ```
 attached_cdrom = client.attach_cdrom(
-            datacenter_id='datacenter_id',
-            server_id='server-id',
-            cdrom_id='cdrom-image-id')
+            datacenter_id='existing_datacenter_id',
+            server_id='existing_server_id',
+            cdrom_id='existing_cdrom_id')
 ```
 
 ---
@@ -539,19 +565,19 @@ You can retrieve a specific CD-ROM attached to the server.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | The unique ID of the data center. | Yes |
-| server-id | string | The unique ID of the server. | Yes |
-| cdrom-id | string | The unique ID of the attached CD-ROM. | Yes |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| server_id | **yes** | string | The unique ID of the server. |
+| cdrom_id | **yes** | string | The unique ID of the attached CD-ROM. |
 
 After retrieving a server, either by getting it by id, or as a create response object, you can call the `get_attached_cdrom` method directly on the object:
 
 ```
-attached_cdrom = client.attach_cdrom(
-            datacenter_id='datacenter_id',
-            server_id='server-id',
-            cdrom_id='cdrom-id')
+attached_cdrom = client.get_attached_cdrom(
+            datacenter_id='existing_datacenter_id',
+            server_id='existing_server_id',
+            cdrom_id='attached_cdrom_id')
 ```
 
 ---
@@ -562,19 +588,19 @@ This will detach a CD-ROM from the server.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | The unique ID of the data center. | Yes |
-| server-id | string | The unique ID of the server. | Yes |
-| cdrom-id | string | The unique ID of the attached CD-ROM. | Yes |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| server_id | **yes** | string | The unique ID of the server. |
+| cdrom_id | **yes** | string | The unique ID of the attached CD-ROM. |
 
 After retrieving a server, either by getting it by id, or as a create response object, you can call the `detach_cdrom` method directly on the object:
 
 ```
 detached_cd = client.detach_cdrom(
-            datacenter_id='datacenter_id',
-            server_id='server-id',
-            cdrom_id='cdrom-id')
+            datacenter_id='existing_datacenter_id',
+            server_id='existing_server_id',
+            cdrom_id='attached_cdrom_id')
 ```
 
 ---
@@ -585,17 +611,17 @@ This will force a hard reboot of the server. Do not use this method if you want 
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | The unique ID of the data center. | Yes |
-| server-id | string | The unique ID of the server. | Yes |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| server_id | **yes** | string | The unique ID of the server. |
 
-After retrieving a server, either by getting it by id, or as a create response object, you can call the `reboot` method directly on the object:
+After retrieving a server, either by getting it by id, or as a create response object, you can call the `reboot_server` method directly on the object:
 
 ```
 server = client.reboot_server(
-            datacenter_id='datacenter_id',
-            server_id='server-id')
+            datacenter_id='existing_datacenter_id',
+            server_id='rebooting_server_id')
 ```
 
 ---
@@ -606,17 +632,17 @@ This will start a server. If the server's public IP was deallocated then a new I
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | The unique ID of the data center. | Yes |
-| server-id | string | The unique ID of the server. | Yes |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| server_id | **yes** | string | The unique ID of the server. |
 
-After retrieving a server, either by getting it by id, or as a create response object, you can call the `start` method directly on the object:
+After retrieving a server, either by getting it by id, or as a create response object, you can call the `start_server` method directly on the object:
 
 ```
 server = client.start_server(
-           datacenter_id='datacenter_id',
-           server_id='server-id')
+           datacenter_id='existing_datacenter_id',
+           server_id='starting_server_id')
 ```
 
 ---
@@ -627,17 +653,17 @@ This will stop a server. The machine will be forcefully powered off, billing wil
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | The unique ID of the data center. | Yes |
-| server-id | string | The unique ID of the server. | Yes |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| server_id | **yes** | string | The unique ID of the server. |
 
-After retrieving a server, either by getting it by id, or as a create response object, you can call the `stop` method directly on the object:
+After retrieving a server, either by getting it by id, or as a create response object, you can call the `stop_server` method directly on the object:
 
 ```
 server = client.stop_server(
-           datacenter_id='datacenter_id',
-           server_id='server-id')
+           datacenter_id='existing_datacenter_id',
+           server_id='stopping_server_id')
 ```
 
 ---
@@ -646,17 +672,17 @@ server = client.stop_server(
 
 #### List Volumes
 
-Retrieve a list of volumes within the data center. If you want to retrieve a list of volumes attached to a server please see the [Servers](#servers) section for examples on how to do so.
+Retrieve a list of volumes within the virtual data center. If you want to retrieve a list of volumes attached to a server please see the [List Attached Volumes](#list-attached-volumes) entry in the Server section for details.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | 	The unique ID of the data center. | Yes |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
 
 ```
 volumes = client.list_volumes(
-            datacenter_id='datacenter_id')
+            datacenter_id='existing_datacenter_id')
 ```
 
 ---
@@ -667,51 +693,71 @@ Retrieves the attributes of a given volume.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | 	The unique ID of the data center. | Yes |
-| volume-id | string | 	The unique ID of the volume. | Yes |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| volume_id | **yes** | string | The unique ID of the volume. |
 
 ```
 volume = client.get_volume(
-            datacenter_id='datacenter_id',
-            volume_id='volume-id')
+            datacenter_id='existing_datacenter_id',
+            volume_id='existing_volume_id')
 ```
 
 ---
 
 #### Create a Volume
 
-Creates a volume within the data center. This will NOT attach the volume to a server. Please see the [Servers](#servers) section for details on how to attach storage volumes.
+Creates a volume within the virutal data center. This will NOT attach the volume to a server. Please see the [Attach a Volume](#attach-a-volume) entry in the Server section for details on how to attach storage volumes.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | 	The unique ID of the data center. | Yes |
-| name | string | The name of the volume. | No |
-| size | int | The size of the volume in GB. | Yes |
-| bus | string | The bus type of the volume (VIRTIO or IDE). Default: VIRTIO. | No |
-| image | string | The image or snapshot ID. | Yes* |
-| type | string | The volume type, HDD or SSD. | Yes |
-| licenceType | string | The licence type of the volume. Options: LINUX, WINDOWS, UNKNOWN, OTHER | Yes* |
-| imagePassword | string | One-time password is set on the Image for the appropriate account. This field may only be set in creation requests. When reading, it always returns null. Password has to contain 8-50 characters. Only these characters are allowed: [abcdefghjkmnpqrstuvxABCDEFGHJKLMNPQRSTUVX23456789] | Yes* |
-| sshKeys | string | SSH keys to allow access to the volume via SSH | Yes* |
-| availabilityZone | string | The storage availability zone assigned to the volume. Valid values: AUTO, ZONE_1, ZONE_2, or ZONE_3. This only applies to HDD volumes. Leave blank or set to AUTO when provisioning SSD volumes. | No |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| name | no | string | The name of the volume. |
+| size | **yes** | int | The size of the volume in GB. |
+| bus | no | string | The bus type of the volume (VIRTIO or IDE). Default: VIRTIO. |
+| image | **yes** | string | The image or snapshot ID. |
+| type | **yes** | string | The volume type, HDD or SSD. |
+| licence_type | **yes** | string | The licence type of the volume. Options: LINUX, WINDOWS, WINDOWS2016, UNKNOWN, OTHER |
+| image_password | **yes** | string | One-time password is set on the Image for the appropriate root or administrative account. This field may only be set in creation requests. When reading, it always returns null. Password has to contain 8-50 characters. Only these characters are allowed: [abcdefghjkmnpqrstuvxABCDEFGHJKLMNPQRSTUVX23456789] |
+| ssh_keys | **yes** | string | SSH keys to allow access to the volume via SSH. |
+| availability_zone | no | string | The storage availability zone assigned to the volume. Valid values: AUTO, ZONE_1, ZONE_2, or ZONE_3. This only applies to HDD volumes. Leave blank or set to AUTO when provisioning SSD volumes. |
 
-*You will need to provide either the `image` or the `licenceType` parameters. `licenceType` is required, but if `image` is supplied, it is already set and cannot be changed. Similarly either the `imagePassword` or `sshKeys` parameters need to be supplied when creating a volume. We recommend setting a valid value for `imagePassword` even when using `sshKeys` so that it is possible to authenticate using the remote console feature of the DCD.
+The following table outlines the various licence types you can define:
+
+| Licence Type | Comment |
+|---|---|
+| WINDOWS2016 | Use this for the Microsoft Windows Server 2016 operating system. |
+| WINDOWS | Use this for the Microsoft Windows Server 2008 and 2012 operating systems. |
+| LINUX |Use this for Linux distributions such as CentOS, Ubuntu, Debian, etc. |
+| OTHER | Use this for any volumes that do not match one of the other licence types. |
+| UNKNOWN | This value may be set when you've uploaded an image and haven't set the license type. Use one of the options above instead. |
+
+The following table outlines the storage availability zones currently supported:
+
+| Availability Zone | Comment |
+|---|---|
+| AUTO | Automatically Selected Zone |
+| ZONE_1 | Fire Zone 1 |
+| ZONE_2 | Fire Zone 2 |
+| ZONE_3 | Fire Zone 3 |
+
+*You will need to provide either the `image` or the `licence_type` parameters. `licence_type` is required, but if `image` is supplied, it is already set and cannot be changed. Similarly either the `image_password` or `ssh_keys` parameters need to be supplied when creating a volume. We recommend setting a valid value for `image_password` even when using `ssh_keys` so that it is possible to authenticate using the remote console feature of the DCD.
 
 ```
 i = Volume(
     name='name',
-    size=2,
+    size=20,
     bus='VIRTIO',
     type='HDD',
     licence_type='LINUX',
-    availabilityZone='ZONE_3')
+    availability_zone='ZONE_3')
+
 volume = client.create_volume(
-            datacenter_id='datacenter_id',
-            volume=i))
+            datacenter_id='existing_datacenter_id',
+            volume=i)
 ```
 
 ---
@@ -720,18 +766,32 @@ volume = client.create_volume(
 
 You can update -- in full or partially -- various attributes on the volume; however, some restrictions are in place:
 
-You can increase the size of an existing storage volume. You cannot reduce the size of an existing storage volume. The volume size will be increased without reboot if the hot plug settings have been set to true. The additional capacity is not added to any partition therefore you will need to partition it afterwards. Once you have increased the volume size you cannot decrease the volume size.
+You can increase the size of an existing storage volume. You cannot reduce the size of an existing storage volume. The volume size will be increased without requiring a reboot if the relevant hot plug settings have been set to *true*. The additional capacity is not added automatically added to any partition, therefore you will need to handle that inside the OS afterwards. Once you have increased the volume size you cannot decrease the volume size.
 
-Since an existing volume is being modified , none of the request parameters are specifically required as long as the changes being made satisfy the requirements for creating a volume.
+Since an existing volume is being modified, none of the request parameters are specifically required as long as the changes being made satisfy the requirements for creating a volume.
 
-After retrieving a volume, either by getting it by id, or as a create response object, you can change it's properties and call the `update` method:
+The following table describes the request arguments:
+
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| volume_id | **yes** | string | The unique ID of the volume. |
+| name | no | string | The name of the volume. |
+| size | no | int | The size of the volume in GB. Only increase when updating. |
+| bus | no | string | The bus type of the volume (VIRTIO or IDE). Default: VIRTIO. |
+| image | no | string | The image or snapshot ID. |
+| type | no | string | The volume type, HDD or SSD. |
+| licence_type | no | string | The licence type of the volume. Options: LINUX, WINDOWS, WINDOWS2016, UNKNOWN, OTHER |
+| availability_zone | no | string | The storage availability zone assigned to the volume. Valid values: AUTO, ZONE_1, ZONE_2, or ZONE_3. This only applies to HDD volumes. Leave blank or set to AUTO when provisioning SSD volumes. |
+
+After retrieving a volume, either by getting it by id, or as a create response object, you can change its properties and call the `update_volume` method:
 
 ```
 volume = client.update_volume(
-            datacenter_id='datacenter_id',
-            volume_id='volume_id',
+            datacenter_id='existing_datacenter_id',
+            volume_id='existing_volume_id',
             size=6,
-            name='name')
+            name='new_name')
 ```
 
 ---
@@ -740,35 +800,44 @@ volume = client.update_volume(
 
 Deletes the specified volume. This will result in the volume being removed from your data center. Use this with caution.
 
-After retrieving a volume, either by getting it by id, or as a create response object, you can call the `delete` method directly on the object:
+The following table describes the request arguments:
+
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the data center. |
+| volume_id | **yes** | string | The unique ID of the volume. |
+
+After retrieving a volume, either by getting it by id, or as a create response object, you can call the `delete_volume` method directly on the object:
 
 ```
 volume = client.delete_volume(
-            datacenter_id='datacenter_id',
-            volume_id='volume_id')
+            datacenter_id='existing_datacenter_id',
+            volume_id='deleting_volume_id')
 ```
 
 ---
 
 #### Create a Volume Snapshot
 
-Creates a snapshot of a volume within the data center. You can use a snapshot to create a new storage volume or to restore a storage volume.
+Creates a snapshot of a volume within the virtual data center. You can use a snapshot to create a new storage volume or to restore a storage volume.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| name | string | The name of the snapshot. ||
-| description | string | The description of the snapshot. ||
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| volume_id | **yes** | string | The unique ID of the volume. |
+| name | no | string | The name of the snapshot. |
+| description | no | string | The description of the snapshot. |
 
 After retrieving a volume, either by getting it by id, or as a create response object, you can call the `create_snapshot` method directly on the object:
 
 ```
 snapshot = client.create_snapshot(
-            datacenter_id='datacenter_id',
-            volume_id='volume_id',
-            name='name',
-            description='description')
+            datacenter_id='existing_datacenter_id',
+            volume_id='existing_volume_id',
+            name='new_snapshot_name',
+            description='new_snapshot_description')
 ```
 
 ---
@@ -779,17 +848,19 @@ This will restore a snapshot onto a volume. A snapshot is created as just anothe
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| snapshotId | string |  The ID of the snapshot. | Yes |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| volume_id | **yes** | string | The unique ID of the volume. |
+| snapshot_id | **yes** | string |  The ID of the snapshot. |
 
 After retrieving a volume, either by getting it by id, or as a create response object, you can call the `restore_snapshot` method directly on the object:
 
 ```
- response = client.restore_snapshot(
-            datacenter_id='datacenter_id',
-            volume_id='volume_id',
-            snapshot_id='snapshot_id')
+response = client.restore_snapshot(
+            datacenter_id='existing_datacenter_id',
+            volume_id='existing_volume_id',
+            snapshot_id='existing_snapshot_id')
 ```
 
 ---
@@ -798,7 +869,9 @@ After retrieving a volume, either by getting it by id, or as a create response o
 
 #### List Snapshots
 
-You can retrieve a list of all snapshots.
+You can retrieve a list of all available snapshots.
+
+There are no request parameters to supply.
 
 ```
 snapshots = client.list_snapshots()
@@ -812,12 +885,13 @@ Retrieves the attributes of a specific snapshot.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| snapshotId | string |  The ID of the snapshot. | Yes |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| snapshot_id | **yes** | string | The ID of the snapshot. |
 
 ```
-snapshot = client.get_snapshot(snapshot_id='snapshotId')
+snapshot = client.get_snapshot(
+			snapshot_id='existing_snapshot_id')
 ```
 
 ---
@@ -828,30 +902,30 @@ Perform updates to attributes of a snapshot.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| snapshotId | string |  The ID of the snapshot. | Yes |
-| name | string |  The name of the snapshot. ||
-| description | string | The description of the snapshot. ||
-| cpuHotPlug | bool |  This volume is capable of CPU hot plug (no reboot required) ||
-| cpuHotUnplug | bool |  	This volume is capable of CPU hot unplug (no reboot required) ||
-| ramHotPlug | bool |  This volume is capable of memory hot plug (no reboot required) ||
-| ramHotUnplug | bool |  	This volume is capable of memory hot unplug (no reboot required) ||
-| nicHotPlug | bool | This volume is capable of NIC hot plug (no reboot required) ||
-| nicHotUnplug | bool |  This volume is capable of NIC hot unplug (no reboot required) ||
-| discVirtioHotPlug | bool |  This volume is capable of Virt-IO drive hot plug (no reboot required) ||
-| discVirtioHotUnplug | bool |  This volume is capable of Virt-IO drive hot unplug (no reboot required) ||
-| discScsiHotPlug | bool |  This volume is capable of SCSI drive hot plug (no reboot required) ||
-| discScsiHotUnplug | bool |  This volume is capable of SCSI drive hot unplug (no reboot required) ||
-| licencetype | string |  The snapshot's licence type: LINUX, WINDOWS, or UNKNOWN. ||
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| snapshot_id | **yes** | string | The ID of the snapshot. |
+| name | no | string | The name of the snapshot. |
+| description | no | string | The description of the snapshot. |
+| licence_type | no | string | The snapshot's licence type: LINUX, WINDOWS, WINDOWS2016, or OTHER. |
+| cpu_hot_ulug | no | bool | This volume is capable of CPU hot plug (no reboot required) |
+| cpu_hot_unplug | no | bool | This volume is capable of CPU hot unplug (no reboot required) |
+| ram_hot_ulug | no | bool |  This volume is capable of memory hot plug (no reboot required) |
+| ram_hot_unplug | no | bool | This volume is capable of memory hot unplug (no reboot required) |
+| nic_hot_ulug | no | bool | This volume is capable of NIC hot plug (no reboot required) |
+| nic_hot_unplug | no | bool | This volume is capable of NIC hot unplug (no reboot required) |
+| disc_virtio_hot_plug | no | bool | This volume is capable of Virt-IO drive hot plug (no reboot required) |
+| disc_virtio_hot_unplug | no | bool | This volume is capable of Virt-IO drive hot unplug (no reboot required) |
+| disc_scsi_hot_ulug | no | bool | This volume is capable of SCSI drive hot plug (no reboot required) |
+| disc_scsi_hot_unplug | no | bool | This volume is capable of SCSI drive hot unplug (no reboot required) |
 
-After retrieving a snapshot, either by getting it by id, or as a create response object, you can change it's properties and call the `update` method:
+After retrieving a snapshot, either by getting it by id, or as a create response object, you can change its properties and call the `update_snapshot` method:
 
 ```
 snapshot = client.update_snapshot(
-            snapshot_id='snapshotId',
-            name='name',
-            description='description')
+            snapshot_id='existing_snapshot_id',
+            name='new_name',
+            description='new_description')
 ```
 
 ---
@@ -862,14 +936,14 @@ Deletes the specified snapshot.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| snapshotId | string |  The ID of the snapshot. | Yes |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| snapshot_id | **yes** | string | The ID of the snapshot. |
 
-After retrieving a snapshot, either by getting it by id, or as a create response object, you can call the `delete` method directly on the object:
+After retrieving a snapshot, either by getting it by id, or as a create response object, you can call the `delete_snapshot` method directly on the object:
 
 ```
-snapshot = client.delete_snapshot(snapshot_id='snapshotId')
+snapshot = client.delete_snapshot(snapshot_id='deleting_snapshot_id')
 ```
 
 ---
@@ -880,13 +954,15 @@ snapshot = client.delete_snapshot(snapshot_id='snapshotId')
 
 Retrieve a list of load balancers within the data center.
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | The unique ID of the data center. | Yes |
+The following table describes the request arguments:
+
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
 
 ```
 loadbalancers = client.list_loadbalancers(
-            datacenter_id='datacenter_id')
+            	 datacenter_id='existing_datacenter_id')
 ```
 
 ---
@@ -895,35 +971,40 @@ loadbalancers = client.list_loadbalancers(
 
 Retrieves the attributes of a given load balancer.
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | The unique ID of the data center. | Yes |
-| load_balancer_id | string | The unique ID of the load balancer. | Yes |
+The following table describes the request arguments:
+
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| loadbalancer_id | **yes** | string | The unique ID of the load balancer. |
 
 ```
 loadbalancer = client.get_loadbalancer(
-            datacenter_id='datacenter_id',
-            loadbalancer_id='load_balancer_id')
+            datacenter_id='existing_datacenter_id',
+            loadbalancer_id='existing_loadbalancer_id')
 ```
 
 ---
 
 #### Create a Load Balancer
 
-Creates a load balancer within the data center. Load balancers can be used for public or private IP traffic.
+Creates a load balancer within the virtual data center. Load balancers can be used for public or private IP traffic.
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | The unique ID of the data center. | Yes |
-| name | string | The name of the load balancer. | Yes |
-| ip | string | IPv4 address of the load balancer. All attached NICs will inherit this IP. | No |
-| dhcp | bool | Indicates if the load balancer will reserve an IP using DHCP. | No |
-| balancednics | string collection | List of NICs taking part in load-balancing. All balanced nics inherit the IP of the load balancer. | No |
+The following table describes the request arguments:
+
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| name | **yes** | string | The name of the load balancer. |
+| ip | no | string | IPv4 address of the load balancer. All attached NICs will inherit this IP. |
+| dhcp | no | bool | Indicates if the load balancer will reserve an IP using DHCP. |
+| balancednics | no | string collection | List of NICs taking part in load-balancing. All balanced nics inherit the IP of the load balancer. |
 
 ```
 i = LoadBalancer(
     name='name',
     dhcp=True)
+
 self.loadbalancer = client.create_loadbalancer(
             datacenter_id='datacenter_id',
             loadbalancer=i
@@ -936,20 +1017,22 @@ self.loadbalancer = client.create_loadbalancer(
 
 Perform updates to attributes of a load balancer.
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | The unique ID of the data center. | Yes |
-| name | string | The name of the load balancer. | No |
-| ip | string | 	The IP of the load balancer. | No |
-| dhcp | bool | Indicates if the load balancer will reserve an IP using DHCP. | No |
+The following table describes the request arguments:
 
-After retrieving a load balancer, either by getting it by id, or as a create response object, you can change it's properties and call the `update` method:
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the data center. |
+| name | no | string | The name of the load balancer. |
+| ip | no | string | The IP of the load balancer. |
+| dhcp | no | bool | Indicates if the load balancer will reserve an IP using DHCP. |
+
+After retrieving a load balancer, either by getting it by id, or as a create response object, you can change it's properties and call the `update_loadbalancer` method:
 
 ```
 loadbalancer = client.update_loadbalancer(
             datacenter_id='datacenter_id',
             loadbalancer_id='loadbalancer_id',
-            name="updated name")
+            name="updated_name")
 ```
 
 ---
@@ -958,17 +1041,19 @@ loadbalancer = client.update_loadbalancer(
 
 Deletes the specified load balancer.
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | The unique ID of the data center. | Yes |
-| load_balancer_id | string | The unique ID of the load balancer. | Yes |
+The following table describes the request arguments:
 
-After retrieving a load balancer, either by getting it by id, or as a create response object, you can call the `delete` method directly on the object:
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| load_balancer_id | **yes** | string | The unique ID of the load balancer. |
+
+After retrieving a load balancer, either by getting it by id, or as a create response object, you can call the `delete_loadbalancer` method directly on the object:
 
 ```
 loadbalancer = client.delete_loadbalancer(
-            datacenter_id='datacenter_id',
-            loadbalancer_id='loadbalancer_id')
+            datacenter_id='existing_datacenter_id',
+            loadbalancer_id='deleting_loadbalancer_id')
 ```
 
 ---
@@ -977,17 +1062,19 @@ loadbalancer = client.delete_loadbalancer(
 
 This will retrieve a list of NICs associated with the load balancer.
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | The unique ID of the data center. | Yes |
-| load_balancer_id | string | The unique ID of the load balancer. | Yes |
+The following table describes the request arguments:
 
-After retrieving a load balancer, either by getting it by id, or as a create response object, you can call the `get_nics` method directly on the object:
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the data center. |
+| loadbalancer_id | **yes** | string | The unique ID of the load balancer. |
+
+After retrieving a load balancer, either by getting it by id, or as a create response object, you can call the `get_loadbalancer_membors` method directly on the object:
 
 ```
- balanced_nics = client.get_loadbalancer_members(
-            datacenter_id='datacenter_id',
-            loadbalancer_id='loadbalancer_id')
+balanced_nics = client.get_loadbalancer_members(
+            datacenter_id='existing_datacenter_id',
+            loadbalancer_id='existing_loadbalancer_id')
 ```
 
 ---
@@ -996,40 +1083,44 @@ After retrieving a load balancer, either by getting it by id, or as a create res
 
 Retrieves the attributes of a given load balanced NIC.
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | The unique ID of the data center. | Yes |
-| load_balancer_id | string | The unique ID of the load balancer. | Yes |
-| nic_id | string | The unique ID of the load balancer. | Yes |
+The following table describes the request arguments:
 
-After retrieving a load balancer, either by getting it by id, or as a create response object, you can call the `get_nic` method directly on the object:
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| loadbalancer_id | **yes** | string | The unique ID of the load balancer. |
+| nic_id | **yes** | string | The unique ID of the NIC. |
+
+After retrieving a load balancer, either by getting it by id, or as a create response object, you can call the `get_loadbalance_nic` method directly on the object:
 
 ```
 balanced_nic = client.get_loadbalanced_nic(
-            datacenter_id='datacenter_id',
-            loadbalancer_id='loadbalancer_id',
-            nic_id='nic_id')
+            datacenter_id='existing_datacenter_id',
+            loadbalancer_id='existing_loadbalancer_id',
+            nic_id='existing_nic_id')
 ```
 
 ---
 
 #### Associate NIC to a Load Balancer
 
-This will associate a NIC to a Load Balancer, enabling the NIC to participate in load-balancing.
+This will associate a NIC to a load balancer, enabling the NIC to participate in load-balancing.
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | The unique ID of the data center. | Yes |
-| load_balancer_id | string | The unique ID of the load balancer. | Yes |
-| nic_id | string | The unique ID of the load balancer. | Yes |
+The following table describes the request arguments:
 
-After retrieving a load balancer, either by getting it by id, or as a create response object, you can call the `associate_nic` method directly on the object:
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| loadbalancer_id | **yes** | string | The unique ID of the load balancer. |
+| nic_id | **yes** | string | The unique ID of the NIC. |
+
+After retrieving a load balancer, either by getting it by id, or as a create response object, you can call the `add_loadbalanced_nics` method directly on the object:
 
 ```
-associated_nic = client.get_loadbalanced_nic(
-             datacenter_id='datacenter_id',
-             loadbalancer_id='loadbalancer_id',
-             nic_id='nic_id')
+associated_nic = client.add_loadbalanced_nics(
+             datacenter_id='existing_datacenter_id',
+             loadbalancer_id='existing_loadbalancer_id',
+             nic_id='existing_nic_id')
 ```
 
 ---
@@ -1038,19 +1129,21 @@ associated_nic = client.get_loadbalanced_nic(
 
 Removes the association of a NIC with a load balancer.
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | The unique ID of the data center. | Yes |
-| load_balancer_id | string | The unique ID of the load balancer. | Yes |
-| nic_id | string | The unique ID of the load balancer. | Yes |
+The following table describes the request arguments:
 
-After retrieving a load balancer, either by getting it by id, or as a create response object, you can call the `remove_nic_association` method directly on the object:
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| loadbalancer_id | **yes** | string | The unique ID of the load balancer. |
+| nic_id | **yes** | string | The unique ID of the load balancer. |
+
+After retrieving a load balancer, either by getting it by id, or as a create response object, you can call the `remove_loadbalanced_nic` method directly on the object:
 
 ```
 remove_nic = client.remove_loadbalanced_nic(
-             datacenter_id='datacenter_id',
-             loadbalancer_id='loadbalancer_id',
-             nic_id='nic_id')
+             datacenter_id='existig_datacenter_id',
+             loadbalancer_id='existing_loadbalancer_id',
+             nic_id='removal_nic_id')
 ```
 
 ---
@@ -1061,16 +1154,18 @@ remove_nic = client.remove_loadbalanced_nic(
 
 Retrieves a list of firewall rules associated with a particular NIC.
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | The unique ID of the data center. | Yes |
-| server_id | string | The unique ID of the server. | Yes |
-| nic_id | string | The unique ID of the NIC. | Yes |
+The following table describes the request arguments:
+
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| server_id | **yes** | string | The unique ID of the server. |
+| nic_id | **yes** | string | The unique ID of the NIC. |
 
 ```
 fwrules = client.get_firewall_rules(
-             datacenter_id='datacenter_id',
-             loadbalancer_id='loadbalancer_id',
+             datacenter_id='existing_datacenter_id',
+             server_id='existing_server_id',
              nic_id='nic_id')
 ```
 
@@ -1080,19 +1175,21 @@ fwrules = client.get_firewall_rules(
 
 Retrieves the attributes of a given firewall rule.
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | The unique ID of the data center. | Yes |
-| server_id | string | The unique ID of the server. | Yes |
-| nic_id | string | The unique ID of the NIC. | Yes |
-| firewall_rule_id | string | The unique ID of the firewall rule. | Yes |
+The following table describes the request arguments:
+
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| server_id | **yes** | string | The unique ID of the server. |
+| nic_id | **yes** | string | The unique ID of the NIC. |
+| firewall_rule_id | **yes** | string | The unique ID of the firewall rule. |
 
 ```
 fwrule = client.get_firewall_rule(
-             datacenter_id='datacenter_id',
-             loadbalancer_id='loadbalancer_id',
-             nic_id='nic_id',
-             firewall_rule_id='firewall_rule_id')
+             datacenter_id='existing_datacenter_id',
+             loadbalancer_id='existing_loadbalancer_id',
+             nic_id='existing_nic_id',
+             firewall_rule_id='existing_firewall_rule_id')
 ```
 
 ---
@@ -1103,20 +1200,20 @@ This will add a firewall rule to the NIC.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | 	The unique ID of the data center. | Yes |
-| server_id | string | The unique ID of the server. | Yes |
-| nic_id | string | The unique ID of the NIC. | Yes |
-| name | string | The name of the Firewall Rule. ||
-| protocol | string | The protocol for the rule: TCP, UDP, ICMP, ANY. | Yes |
-| source_mac | string | Only traffic originating from the respective MAC address is allowed. Valid format: aa:bb:cc:dd:ee:ff. Value null allows all source MAC address. ||
-| source_ip | string | Only traffic originating from the respective IPv4 address is allowed. Value null allows all source IPs. ||
-| target_ip | string | In case the target NIC has multiple IP addresses, only traffic directed to the respective IP address of the NIC is allowed. Value null allows all target IPs. ||
-| port_range_start | string | Defines the start range of the allowed port (from 1 to 65534) if protocol TCP or UDP is chosen. Leave portRangeStart and portRangeEnd value null to allow all ports. ||
-| port_range_end | string | Defines the end range of the allowed port (from 1 to 65534) if the protocol TCP or UDP is chosen. Leave portRangeStart and portRangeEnd null to allow all ports. ||
-| icmp_type | string | Defines the allowed type (from 0 to 254) if the protocol ICMP is chosen. Value null allows all types. ||
-| icmp_code | string | Defines the allowed code (from 0 to 254) if protocol ICMP is chosen. Value null allows all codes. ||
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| server_id | **yes** | string | The unique ID of the server. |
+| nic_id | **yes** | string | The unique ID of the NIC. |
+| name | no | string | The name of the Firewall Rule. |
+| protocol | **yes** | string | The protocol for the rule: TCP, UDP, ICMP, ANY. |
+| source_mac | no | string | Only traffic originating from the respective MAC address is allowed. Valid format: aa:bb:cc:dd:ee:ff. Value null allows all source MAC address. |
+| source_ip | no | string | Only traffic originating from the respective IPv4 address is allowed. Value null allows all source IPs. |
+| target_ip | no | string | In case the target NIC has multiple IP addresses, only traffic directed to the respective IP address of the NIC is allowed. Value null allows all target IPs. |
+| port_range_start | no | string | Defines the start range of the allowed port (from 1 to 65534) if protocol TCP or UDP is chosen. Leave portRangeStart and portRangeEnd value null to allow all ports. |
+| port_range_end | no | string | Defines the end range of the allowed port (from 1 to 65534) if the protocol TCP or UDP is chosen. Leave portRangeStart and portRangeEnd null to allow all ports. |
+| icmp_type | no | string | Defines the allowed type (from 0 to 254) if the protocol ICMP is chosen. Value null allows all types. |
+| icmp_code | no | string | Defines the allowed code (from 0 to 254) if protocol ICMP is chosen. Value null allows all codes. |
 
 ```
 i = FirewallRule(
@@ -1128,6 +1225,7 @@ i = FirewallRule(
     icmp_type=None,
     icmp_code=None
     )
+
 self.fwrule = client.create_firewall_rule(
             datacenter_id='datacenter_id',
             loadbalancer_id='loadbalancer_id',
@@ -1143,22 +1241,22 @@ Perform updates to attributes of a firewall rule.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | 	The unique ID of the data center. | Yes |
-| server_id | string | The unique ID of the server. | Yes |
-| nic_id | string | The unique ID of the NIC. | Yes |
-| firewall_rule_id | string | The unique ID of the firewall rule. | Yes |
-| name | string | The name of the Firewall Rule. ||
-| sourceMac | string | Only traffic originating from the respective MAC address is allowed. Valid format: aa:bb:cc:dd:ee:ff. Value null allows all source MAC address. ||
-| sourceIp | string | Only traffic originating from the respective IPv4 address is allowed. Value null allows all source IPs. ||
-| targetIp | string | In case the target NIC has multiple IP addresses, only traffic directed to the respective IP address of the NIC is allowed. Value null allows all target IPs. ||
-| portRangeStart | string |	Defines the start range of the allowed port (from 1 to 65534) if protocol TCP or UDP is chosen. Leave portRangeStart and portRangeEnd value null to allow all ports. ||
-| portRangeEnd | string | Defines the end range of the allowed port (from 1 to 65534) if the protocol TCP or UDP is chosen. Leave portRangeStart and portRangeEnd null to allow all ports. ||
-| icmpType | string | Defines the allowed type (from 0 to 254) if the protocol ICMP is chosen. Value null allows all types. ||
-| icmpCode | string | Defines the allowed code (from 0 to 254) if protocol ICMP is chosen. Value null allows all codes. ||
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| server_id | **yes** | string | The unique ID of the server. |
+| nic_id | **yes** | string | The unique ID of the NIC. |
+| firewall_rule_id | **yes** | string | The unique ID of the firewall rule. |
+| name | no | string | The name of the Firewall Rule. |
+| source_mac | no | string | Only traffic originating from the respective MAC address is allowed. Valid format: aa:bb:cc:dd:ee:ff. Value null allows all source MAC address. |
+| source_ip | no | string | Only traffic originating from the respective IPv4 address is allowed. Value null allows all source IPs. |
+| target_ip | no | string | In case the target NIC has multiple IP addresses, only traffic directed to the respective IP address of the NIC is allowed. Value null allows all target IPs. |
+| port_range_start | no | string | Defines the start range of the allowed port (from 1 to 65534) if protocol TCP or UDP is chosen. Leave port_range_start and port_range_end value null to allow all ports. |
+| port_range_end | no | string | Defines the end range of the allowed port (from 1 to 65534) if the protocol TCP or UDP is chosen. Leave port_range_start and port_range_end null to allow all ports. |
+| icmp_type | no | string | Defines the allowed type (from 0 to 254) if the protocol ICMP is chosen. Value null allows all types. |
+| icmp_code | no | string | Defines the allowed code (from 0 to 254) if protocol ICMP is chosen. Value null allows all codes. |
 
-After retrieving a firewall rule, either by getting it by id, or as a create response object, you can change its properties and call the `update` method:
+After retrieving a firewall rule, either by getting it by id, or as a create response object, you can change its properties and call the `update_firewall_rule` method:
 
 ```
 fwrule = client.update_firewall_rule(
@@ -1166,7 +1264,7 @@ fwrule = client.update_firewall_rule(
             loadbalancer_id='loadbalancer_id',
             nic_id='nic_id',
             firewall_rule_id='firewall_rule_id',
-            name="updated name")
+            name="updated_name")
 ```
 
 ---
@@ -1175,21 +1273,21 @@ fwrule = client.update_firewall_rule(
 
 Removes the specific firewall rule.
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | The unique ID of the data center. | Yes |
-| server_id | string | The unique ID of the server. | Yes |
-| nic_id | string | The unique ID of the NIC. | Yes |
-| firewall_rule_id | string | The unique ID of the firewall rule. | Yes |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| server_id | **yes** | string | The unique ID of the server. |
+| nic_id | **yes** | string | The unique ID of the NIC. |
+| firewall_rule_id | **yes** | string | The unique ID of the firewall rule. |
 
-After retrieving a firewall rule, either by getting it by id, or as a create response object, you can call the `delete` method directly on the object:
+After retrieving a firewall rule, either by getting it by id, or as a create response object, you can call the `delete_firewall_rule` method directly on the object:
 
 ```
 fwrule = client.delete_firewall_rule(
-            datacenter_id='datacenter_id',
-            server_id='server_id',
-            nic_id='nic_id',
-            firewall_rule_id='firewall_rule_id')
+            datacenter_id='existing_datacenter_id',
+            server_id='existing_server_id',
+            nic_id='existing_nic_id',
+            firewall_rule_id='deleting_firewall_rule_id')
 ```
 
 ---
@@ -1212,12 +1310,63 @@ Retrieves the attributes of a specific image.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| image-id | string | The unique ID of the image. | Yes |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| image_id | **yes** | string | The unique ID of the image. |
 
 ```
-image = client.get_image('image-id')
+image = client.get_image('existing_image_id')
+```
+
+---
+
+#### Update an Image
+
+Updates the attributes of a specific user created image. You cannot update the properties of a public image supplied by ProfitBricks.
+
+The following table describes the request arguments:
+
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| image_id | **yes** | string | The unique ID of the image. |
+| name | no | string | The name of the image. |
+| description | no | string | The description of the image. |
+| licence_type | no | string | The snapshot's licence type: LINUX, WINDOWS, WINDOWS2016, or OTHER. |
+| cpu_hot_ulug | no | bool | This volume is capable of CPU hot plug (no reboot required) |
+| cpu_hot_unplug | no | bool | This volume is capable of CPU hot unplug (no reboot required) |
+| ram_hot_ulug | no | bool |  This volume is capable of memory hot plug (no reboot required) |
+| ram_hot_unplug | no | bool | This volume is capable of memory hot unplug (no reboot required) |
+| nic_hot_ulug | no | bool | This volume is capable of NIC hot plug (no reboot required) |
+| nic_hot_unplug | no | bool | This volume is capable of NIC hot unplug (no reboot required) |
+| disc_virtio_hot_plug | no | bool | This volume is capable of VirtIO drive hot plug (no reboot required) |
+| disc_virtio_hot_unplug | no | bool | This volume is capable of VirtIO drive hot unplug (no reboot required) |
+| disc_scsi_hot_ulug | no | bool | This volume is capable of SCSI drive hot plug (no reboot required) |
+| disc_scsi_hot_unplug | no | bool | This volume is capable of SCSI drive hot unplug (no reboot required) |
+
+You can change an image's properties by calling the `update_image` method:
+
+```
+image = client.update_image(
+            image_id='existing_image_id',
+            name='new_name',
+            description='new_description',
+            licence_type='new_licence_type")
+```
+
+---
+
+#### Delete an Image
+
+Deletes a specific user created image. You cannot delete public images supplied by ProfitBricks.
+
+The following table describes the request arguments:
+
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| image_id | **yes** | string | The unique ID of the image. |
+
+```
+image = client.delete_image('existing_image_id')
 ```
 
 ---
@@ -1226,19 +1375,19 @@ image = client.get_image('image-id')
 
 #### List NICs
 
-Retrieve a list of LANs within the data center.
+Retrieve a list of LANs within the virtual data center.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | 	The unique ID of the data center. | Yes |
-| server-id | string | The unique ID of the server. | Yes |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| server_id | **yes** | string | The unique ID of the server. |
 
 ```
 nics = client.list_nics(
-            datacenter_id='datacenter_id',
-            server_id='server-id')
+            datacenter_id='existing_datacenter_id',
+            server_id='existing_server-id')
 ```
 
 ---
@@ -1249,16 +1398,16 @@ Retrieves the attributes of a given NIC.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | The unique ID of the data center. | Yes |
-| server-id | string | The unique ID of the server. | Yes |
-| nic-id | string | The unique ID of the NIC. | Yes |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| server_id | **yes** | string | The unique ID of the server. |
+| nic_id | **yes** | string | The unique ID of the NIC. |
 
 ```
-nic = client.get_nic(datacenter_id='datacenter_id',
-                                  server_id='server-id',
-                                  nic_id='nic-id')
+nic = client.get_nic(datacenter_id='existing_datacenter_id',
+                                  server_id='existing_server_id',
+                                  nic_id='existing_nic_id')
 ```
 
 ---
@@ -1269,17 +1418,17 @@ Adds a NIC to the target server.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | The unique ID of the data center. | Yes |
-| server_id | string| The unique ID of the server. | Yes |
-| name | string | The name of the NIC. ||
-| ips | string collection | IPs assigned to the NIC. This can be a collection. ||
-| dhcp | bool | Set to FALSE if you wish to disable DHCP on the NIC. Default: TRUE. ||
-| lan | int | The LAN ID the NIC will sit on. If the LAN ID does not exist it will be created. | Yes |
-| nat | bool | Indicates the private IP address has outbound access to the public internet. ||
-| firewallActive | bool | Once you add a firewall rule this will reflect a true value. ||
-| firewallrules | string collection | A list of firewall rules associated to the NIC represented as a collection. ||
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| server_id | **yes** | string| The unique ID of the server. |
+| name | no | string | The name of the NIC. |
+| ips | no | string collection | IPs assigned to the NIC. This can be a collection. |
+| dhcp | no | bool | Set to FALSE if you wish to disable DHCP on the NIC. Default: TRUE. |
+| lan | **yes** | int | The LAN ID the NIC will sit on. If the LAN ID does not exist it will be created. |
+| nat | no | bool | Indicates the private IP address has outbound access to the public internet. |
+| firewallActive | no | bool | Once you add a firewall rule this will reflect a true value. |
+| firewallrules | no | string collection | A list of firewall rules associated to the NIC represented as a collection. |
 
 ```
 i = NIC(
@@ -1288,9 +1437,10 @@ i = NIC(
     lan=1,
     firewall_active=True,
     nat=False)
+
 nic2 = client.create_nic(
-            datacenter_id='datacenter_id',
-            server_id='server-id',
+            datacenter_id='existing_datacenter_id',
+            server_id='existing_server_id',
             nic=i)
 ```
 
@@ -1306,25 +1456,25 @@ The user can specify and assign private IPs manually. Valid IP addresses for pri
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | The unique ID of the data center. | Yes |
-| server_id | string| The unique ID of the server. | Yes |
-| nic-id | string| The unique ID of the NIC. | Yes |
-| name | string | The name of the NIC. ||
-| ips | string collection | IPs assigned to the NIC represented as a collection. ||
-| dhcp | bool | Boolean value that indicates if the NIC is using DHCP or not. ||
-| lan | int | The LAN ID the NIC sits on. ||
-| nat | bool | Indicates the private IP address has outbound access to the public internet. ||
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| server_id | **yes** | string| The unique ID of the server. |
+| nic-id | **yes** | string| The unique ID of the NIC. |
+| name | no | string | The name of the NIC. |
+| ips | no | string collection | IPs assigned to the NIC represented as a collection. |
+| dhcp | no | bool | Boolean value that indicates if the NIC is using DHCP or not. |
+| lan | no | int | The LAN ID the NIC sits on. |
+| nat | no | bool | Indicates the private IP address has outbound access to the public internet. |
 
-After retrieving a NIC, either by getting it by id, or as a create response object, you can call the `update` method directly on the object:
+After retrieving a NIC, either by getting it by id, or as a create response object, you can call the `update_nic` method directly on the object:
 
 ```
 nic = client.update_nic(
-            datacenter_id='datacenter_id',
-            server_id='server-id',
-            nic_id='nic_id',
-            name='name')
+            datacenter_id='existing_datacenter_id',
+            server_id='existing_server_id',
+            nic_id='updating_nic_id',
+            name='new_name')
 ```
 
 ---
@@ -1335,28 +1485,30 @@ Deletes the specified NIC.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | The unique ID of the data center. | Yes |
-| server_id | string| The unique ID of the server. | Yes |
-| nic-id | string| The unique ID of the NIC. | Yes |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| server_id | **yes** | string| The unique ID of the server. |
+| nic_id | **yes** | string| The unique ID of the NIC. |
 
-After retrieving a NIC, either by getting it by id, or as a create response object, you can call the `delete` method directly on the object:
+After retrieving a NIC, either by getting it by id, or as a create response object, you can call the `delete_nic` method directly on the object:
 
 ```
 nic = client.delete_nic(
-            datacenter_id='datacenter_id',
-            server_id='server-id',
-            nic_id='nic_id')
+            datacenter_id='existing_datacenter_id',
+            server_id='existing_server_id',
+            nic_id='deleting_nic_id')
 ```
 
 ---
 
 ### IP Blocks
 
+The IP block operations assist with managing reserved /static public IP addresses.
+
 #### List IP Blocks
 
-Retrieve a list of IP Blocks.
+Retrieve a list of available IP blocks.
 
 ```
 ipblocks = client.list_ipblocks()
@@ -1366,38 +1518,49 @@ ipblocks = client.list_ipblocks()
 
 #### Get an IP Block
 
-Retrieves the attributes of a specific IP Block.
+Retrieves the attributes of a specific IP block.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| ipblock-id | string | The unique ID of the IP block. | Yes |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| ipblock_id | **yes** | string | The unique ID of the IP block. |
 
 ```
-ipblock = client.get_ipblock('ipblock-id')
+ipblock = client.get_ipblock('existing_ipblock_id')
 ```
 
 ---
 
 #### Create an IP Block
 
-Creates an IP block.
+Creates an IP block. IP blocks are attached to a location, so you must specify a valid `location` along with a `size` parameter indicating the number of ip addresses you want to reserve in the IP block. Servers or other resources using an IP address from an IP block must be in the same `location`.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| location | string | 	This must be one of the locations: us/las, de/fra, de/fkb. | Yes |
-| size | int | The size of the IP block you want. | Yes |
-| name | string | A descriptive name for the IP block | No |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| location | **yes** | string | This must be one of the locations: us/las, de/fra, de/fkb. |
+| size | **yes** | int | The size of the IP block you want. |
+| name | no | string | A descriptive name for the IP block |
+
+The following table outlines the locations currently supported:
+
+| Value| Country | City |
+|---|---|---|
+| us/las | United States | Las Vegas |
+| de/fra | Germany | Frankfurt |
+| de/fkb | Germany | Karlsruhe |
+
+To create an IP block, establish the parameters and then call `reserve_ipblock`.
 
 ```
 i = IPBlock(
-    name='name',
+    name='new_ipblock_name',
     size=4,
     location='de/fkb'
     )
+
 ipblock = client.reserve_ipblock(i)
 ```
 
@@ -1409,18 +1572,20 @@ Deletes the specified IP Block.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| ipblock-id | string | The unique ID of the IP block. | Yes |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| ipblock_id | **yes** | string | The unique ID of the IP block. |
 
-After retrieving an IP block, either by getting it by id, or as a create response object, you can call the `delete` method directly on the object:
+After retrieving an IP block, either by getting it by id, or as a create response object, you can call the `delete_ipblock` method directly on the object:
 
 ```
-client.delete_ipblock('ipblock-id')
+client.delete_ipblock('deleting_ipblock_id')
 ```
 ---
 
 ### Requests
+
+Each call to the ProfitBricks Cloud API is assigned a request ID. These operations can be used to get information about the requests that have been submitted and their current status.
 
 #### List Requests
 
@@ -1434,14 +1599,14 @@ requests = client.list_requests()
 
 #### Get a Request
 
-Retrieves the attributes of a specific request.
+Retrieves the attributes of a specific request. This operation shares the same `get_request` method used for getting request status, however the response it determined by the boolean value you pass for *status*. To get details about the request itself, you want to pass a *status* of *False*.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| request-id | string | The unique ID of the request. | Yes |
-| status | boolean | Defins the type of the request status or request. | Yes |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| request_id | **yes** | string | The unique ID of the request. |
+| status | **yes** | bool | Set to *False* to have the request details returned. |
 
 ```
 request = client.get_request(request_id='request-id', status=False)
@@ -1451,14 +1616,14 @@ request = client.get_request(request_id='request-id', status=False)
 
 #### Get a Request Status
 
-Retrieves the status of a request.
+Retrieves the status of a request. This operation shares the same `get_request` method used for getting the details of a request, however the response it determined by the boolean value you pass for *status*. To get the request status, you want to pass a *status* of *True*.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| request-id | string | The unique ID of the request. | Yes |
-| status | boolean | Defins the type of the request status or request. | Yes |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| request_id | **yes** | string | The unique ID of the request. |
+| status | **yes** | boolean | Set to *True* to have the status of the request returned. |
 
 ```
 request = client.get_request(request_id='request-id', status=True)
@@ -1470,42 +1635,38 @@ request = client.get_request(request_id='request-id', status=True)
 
 #### List LANs
 
-Retrieve a list of LANs within the data center.
+Retrieve a list of LANs within the virtual data center.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | 	The unique ID of the data center. | Yes |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
 
 ```
-lans = client.list_lans(datacenter_id='datacenter_id')
+lans = client.list_lans(datacenter_id='existing_datacenter_id')
 ```
 
 ---
 
 #### Create a LAN
 
-Creates a LAN within a data center.
+Creates a LAN within a virtual data center.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | 	The unique ID of the data center. | Yes |
-| server_id | string| The unique ID of the server. | Yes |
-| name | string | The name of your LAN. ||
-| public | bool | Boolean indicating if the LAN faces the public Internet or not. ||
-| nics | 	string collection | A collection of NICs associated with the LAN. ||
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| name | no | string | The name of your LAN. |
+| public | **Yes** | bool | Boolean indicating if the LAN faces the public Internet or not. |
+| nics | no | string collection | A collection of NICs associated with the LAN. |
 
 ```
-i = NIC(
-    name='name',
-    public=True)
-nic = client.create_nic(
-            datacenter_id='datacenter_id',
-            server_id='server_id',
-            nic=i)
+lan = client.create_lan(
+            datacenter_id='existing_datacenter_id',
+            name='new_lan_name',
+            public=False)
 ```
 
 ---
@@ -1516,13 +1677,13 @@ Retrieves the attributes of a given LAN.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | 	The unique ID of the data center. | Yes |
-| lan-id | string | The unique ID of the LAN. | Yes |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| lan_id | **yes** | int | The unique ID of the LAN. |
 
 ```
-lan = client.get_lan(datacenter_id='datacenter_id', lan_id='lan-id')
+lan = client.get_lan(datacenter_id='existing_datacenter_id', lan_id='existing_lan-id')
 ```
 
 ---
@@ -1533,20 +1694,20 @@ Perform updates to attributes of a LAN.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | The unique ID of the data center. | Yes |
-| lan-id | string | The unique ID of the LAN. | Yes |
-| name | string | A descriptive name for the LAN. ||
-| public | bool | Boolean indicating if the LAN faces the public Internet or not. ||
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| lan_id | **yes** | int | The unique ID of the LAN. |
+| name | no | string | A descriptive name for the LAN. |
+| public | no | bool | Boolean indicating if the LAN faces the public Internet or not. |
 
-After retrieving a LAN, either by getting it by id, or as a create response object, you can change it's properties and call the `update` method:
+After retrieving a LAN, either by getting it by id, or as a create response object, you can change its properties and call the `update_lan` method:
 
 ```
 lan = client.update_lan(
-            datacenter_id='datacenter_id',
-            lan_id='lan_id',
-            name='name',
+            datacenter_id='existing_datacenter_id',
+            lan_id=existing_lan_id,
+            name='new_lan_name',
             public=False)
 ```
 
@@ -1558,12 +1719,12 @@ Deletes the specified LAN.
 
 The following table describes the request arguments:
 
-| NAME| TYPE | DESCRIPTION | REQUIRED |
-|---|---|---|---|
-| datacenter_id | string | 	The unique ID of the data center. | Yes |
-| lan-id | string | The unique ID of the LAN. | Yes |
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| datacenter_id | **yes** | string | The unique ID of the data center. |
+| lan_id | **yes** | string | The unique ID of the LAN. |
 
-After retrieving a LAN, either by getting it by id, or as a create response object, you can call the `delete` method directly on the object:
+After retrieving a LAN, either by getting it by id, or as a create response object, you can call the `delete_lan` method directly on the object:
 
 ```
 lan = client.delete_lan(datacenter_id='datacenter_id', lan_id='lan_id')
@@ -1580,7 +1741,7 @@ Here are a few examples on how to use the module. In this first one we pull a li
 
     datacenters = client.list_datacenters()
 
-And in this one we reserve an IPBlock:
+And in this one we reserve an IP block:
 
     from profitbricks.client import ProfitBricksService, IPBlock
 
@@ -1591,7 +1752,7 @@ And in this one we reserve an IPBlock:
 
     ipblock = client.reserve_ipblock(i)
 
-Some object creation supports simple and complex requests, such as a server which can be created simply by doing this:
+Some object creation operations support both simple and complex requests, such as a server which can be created simply by doing this:
 
     from profitbricks.client import ProfitBricksService
     from profitbricks.client import Server, NIC, Volume
@@ -1611,7 +1772,7 @@ Some object creation supports simple and complex requests, such as a server whic
         datacenter_id=datacenter_id,
         server=i)
 
-Or if you want one with some volumes and NICs you would do:
+Or if you want to create a server with some volumes and NICs you would do:
 
     from profitbricks.client import ProfitBricksService
     from profitbricks.client import Server, NIC, Volume
@@ -1678,15 +1839,19 @@ Or if you want one with some volumes and NICs you would do:
 * You will need to provide either the `image` or the `licence_type` parameter. The `licence_type` is required, but ProfitBricks images will already have a `licence_type` set.
 * A list of public SSH keys and/or the image root password can added to the volume. Only official ProfitBricks base images support the `ssh_keys` and `image_password` parameters.
 
-##Support
+## Support
 
-You can find additional examples in the repo `examples` directory. If you find any issues, please let us know via the [DevOps Central community](https://devops.profitbricks.com) or [GitHub's issue system](https://github.com/profitbricks/profitbricks-sdk-python/issues) and we'll check it out.
+You can find additional examples in the repository `examples` directory. If you find any issues, please let us know via the [DevOps Central community](https://devops.profitbricks.com) or [GitHub's issue system](https://github.com/profitbricks/profitbricks-sdk-python/issues) and we'll check it out.
 
-##Testing
+## Testing
 
-You can find a full list of tests inside the tests folder. Run any test by typing the following command: `pyhton tests\test_file_name.py`
+You can find a full list of tests inside the `tests` folder. Run any test by typing the following command:
 
-##Contributing
+```
+python tests\test_file_name.py
+```
+
+## Contributing
 
 1. Fork it ( https://github.com/profitbricks/profitbricks-sdk-python/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
