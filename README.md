@@ -708,7 +708,7 @@ volume = client.get_volume(
 
 #### Create a Volume
 
-Creates a volume within the virutal data center. This will NOT attach the volume to a server. Please see the [Attach a Volume](#attach-a-volume) entry in the Server section for details on how to attach storage volumes.
+Creates a volume within the virtual data center. This will NOT attach the volume to a server. Please see the [Attach a Volume](#attach-a-volume) entry in the Server section for details on how to attach storage volumes.
 
 The following table describes the request arguments:
 
