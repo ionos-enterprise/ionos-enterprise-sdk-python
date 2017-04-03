@@ -908,15 +908,15 @@ The following table describes the request arguments:
 | name | no | string | The name of the snapshot. |
 | description | no | string | The description of the snapshot. |
 | licence_type | no | string | The snapshot's licence type: LINUX, WINDOWS, WINDOWS2016, or OTHER. |
-| cpu_hot_ulug | no | bool | This volume is capable of CPU hot plug (no reboot required) |
+| cpu_hot_plug | no | bool | This volume is capable of CPU hot plug (no reboot required) |
 | cpu_hot_unplug | no | bool | This volume is capable of CPU hot unplug (no reboot required) |
-| ram_hot_ulug | no | bool |  This volume is capable of memory hot plug (no reboot required) |
+| ram_hot_plug | no | bool |  This volume is capable of memory hot plug (no reboot required) |
 | ram_hot_unplug | no | bool | This volume is capable of memory hot unplug (no reboot required) |
-| nic_hot_ulug | no | bool | This volume is capable of NIC hot plug (no reboot required) |
+| nic_hot_plug | no | bool | This volume is capable of NIC hot plug (no reboot required) |
 | nic_hot_unplug | no | bool | This volume is capable of NIC hot unplug (no reboot required) |
 | disc_virtio_hot_plug | no | bool | This volume is capable of Virt-IO drive hot plug (no reboot required) |
 | disc_virtio_hot_unplug | no | bool | This volume is capable of Virt-IO drive hot unplug (no reboot required) |
-| disc_scsi_hot_ulug | no | bool | This volume is capable of SCSI drive hot plug (no reboot required) |
+| disc_scsi_hot_plug | no | bool | This volume is capable of SCSI drive hot plug (no reboot required) |
 | disc_scsi_hot_unplug | no | bool | This volume is capable of SCSI drive hot unplug (no reboot required) |
 
 After retrieving a snapshot, either by getting it by id, or as a create response object, you can change its properties and call the `update_snapshot` method:
