@@ -117,7 +117,7 @@ Done!
 
 ### Authenticating
 
-Connecting to ProfitBricks is handled by first setting up your authentication credentails.
+Connecting to ProfitBricks is handled by first setting up your authentication credentials.
 
     from profitbricks.client import ProfitBricksService
 
@@ -1248,9 +1248,9 @@ The following table describes the request arguments:
 | nic_id | **yes** | string | The unique ID of the NIC. |
 | firewall_rule_id | **yes** | string | The unique ID of the firewall rule. |
 | name | no | string | The name of the firewall rule. |
-| source_mac | no | string | Only traffic originating from the respective MAC address is allowed. Valid format: aa:bb:cc:dd:ee:ff. Value null allows all source MAC address. |
-| source_ip | no | string | Only traffic originating from the respective IPv4 address is allowed. Value null allows all source IPs. |
-| target_ip | no | string | In case the target NIC has multiple IP addresses, only traffic directed to the respective IP address of the NIC is allowed. Value null allows all target IPs. |
+| source_mac | no | string | Only traffic originating from the respective MAC address is allowed. Valid format: aa:bb:cc:dd:ee:ff. A *null* value allows all source MAC address. |
+| source_ip | no | string | Only traffic originating from the respective IPv4 address is allowed. A *null* value allows all source IPs. |
+| target_ip | no | string | In case the target NIC has multiple IP addresses, only traffic directed to the respective IP address of the NIC is allowed. A *null* value allows all target IPs. |
 | port_range_start | no | string | Defines the start range of the allowed port (from 1 to 65534) if protocol TCP or UDP is chosen. Leave `port_range_start` and `port_range_end` value as *null* to allow all ports. |
 | port_range_end | no | string | Defines the end range of the allowed port (from 1 to 65534) if the protocol TCP or UDP is chosen. Leave `port_range_start` and `port_range_end` value as *null* to allow all ports. |
 | icmp_type | no | string | Defines the allowed type (from 0 to 254) if the protocol ICMP is chosen. A *null* value allows all types. |
