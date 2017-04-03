@@ -380,23 +380,23 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the data center. |
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
 | server_id | **yes** | string | The unique ID of the server. |
 | name | no | string | The name of the server. |
 | cores | no | int | The number of cores for the server. |
 | ram | no | int | The amount of memory in the server. |
 | availability_zone | no | string | The new availability zone for the server. |
 | cpu_family | no | string | Sets the CPU type. "AMD_OPTERON" or "INTEL_XEON". Defaults to "AMD_OPTERON". |
-| boot_volume_id | no | string | Reference to a Volume used for booting. If not ‘null’ then bootCdrom has to be ‘null’ |
-| boot_cdrom | no | string | Reference to a CD-ROM used for booting. If not 'null' then bootVolume has to be 'null'. |
+| boot_volume_id | no | string | Reference to a volume used for booting. If not ‘null’ then `boot_cdrom` has to be ‘null’ |
+| boot_cdrom | no | string | Reference to a CD-ROM used for booting. If not 'null' then `boot_volume_id` has to be 'null'. |
 
 After retrieving a server, either by getting it by id, or as a create response object, you can change its properties and call the `update_server` method:
 
 ```
 server = client.update_server(
-            datacenter_id='datacenter_id',
-            server_id'server-id',
-            name='name')
+            datacenter_id='existing_datacenter_id',
+            server_id'existing_server_id',
+            name='new name')
 ```
 
 ---
@@ -409,10 +409,10 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | 	The unique ID of the VDC. |
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
 | server_id | **yes** | string | The unique ID of the server. |
 
-After retrieving a server, either by getting it by id, or as a create response object, you can call the `delete` method directly on the object:
+After retrieving a server, either by getting it by id, or as a create response object, you can call the `delete_server` method directly on the object:
 
 ```
 response = client.delete_server(
@@ -438,8 +438,8 @@ After retrieving a server, either by getting it by id, or as a create response o
 
 ```
 servers = client.get_attached_volumes(
-          datacenter_id='datacenter_id',
-          server_id='server-id')
+          datacenter_id='existing_datacenter_id',
+          server_id='existing_server_id')
 ```
 
 ---
@@ -733,7 +733,7 @@ The following table outlines the various licence types you can define:
 | WINDOWS | Use this for the Microsoft Windows Server 2008 and 2012 operating systems. |
 | LINUX |Use this for Linux distributions such as CentOS, Ubuntu, Debian, etc. |
 | OTHER | Use this for any volumes that do not match one of the other licence types. |
-| UNKNOWN | This value may be set when you've uploaded an image and haven't set the license type. Use one of the options above instead. |
+| UNKNOWN | This value may be inherited when you've uploaded an image and haven't set the license type. Use one of the options above instead. |
 
 The following table outlines the storage availability zones currently supported:
 
@@ -1066,7 +1066,7 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the data center. |
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
 | loadbalancer_id | **yes** | string | The unique ID of the load balancer. |
 
 After retrieving a load balancer, either by getting it by id, or as a create response object, you can call the `get_loadbalancer_membors` method directly on the object:
@@ -1332,15 +1332,15 @@ The following table describes the request arguments:
 | name | no | string | The name of the image. |
 | description | no | string | The description of the image. |
 | licence_type | no | string | The snapshot's licence type: LINUX, WINDOWS, WINDOWS2016, or OTHER. |
-| cpu_hot_ulug | no | bool | This volume is capable of CPU hot plug (no reboot required) |
+| cpu_hot_plug | no | bool | This volume is capable of CPU hot plug (no reboot required) |
 | cpu_hot_unplug | no | bool | This volume is capable of CPU hot unplug (no reboot required) |
-| ram_hot_ulug | no | bool |  This volume is capable of memory hot plug (no reboot required) |
+| ram_hot_plug | no | bool |  This volume is capable of memory hot plug (no reboot required) |
 | ram_hot_unplug | no | bool | This volume is capable of memory hot unplug (no reboot required) |
-| nic_hot_ulug | no | bool | This volume is capable of NIC hot plug (no reboot required) |
+| nic_hot_plug | no | bool | This volume is capable of NIC hot plug (no reboot required) |
 | nic_hot_unplug | no | bool | This volume is capable of NIC hot unplug (no reboot required) |
 | disc_virtio_hot_plug | no | bool | This volume is capable of VirtIO drive hot plug (no reboot required) |
 | disc_virtio_hot_unplug | no | bool | This volume is capable of VirtIO drive hot unplug (no reboot required) |
-| disc_scsi_hot_ulug | no | bool | This volume is capable of SCSI drive hot plug (no reboot required) |
+| disc_scsi_hot_plug | no | bool | This volume is capable of SCSI drive hot plug (no reboot required) |
 | disc_scsi_hot_unplug | no | bool | This volume is capable of SCSI drive hot unplug (no reboot required) |
 
 You can change an image's properties by calling the `update_image` method:
@@ -1427,15 +1427,14 @@ The following table describes the request arguments:
 | dhcp | no | bool | Set to FALSE if you wish to disable DHCP on the NIC. Default: TRUE. |
 | lan | **yes** | int | The LAN ID the NIC will sit on. If the LAN ID does not exist it will be created. |
 | nat | no | bool | Indicates the private IP address has outbound access to the public internet. |
-| firewallActive | no | bool | Once you add a firewall rule this will reflect a true value. |
-| firewallrules | no | string collection | A list of firewall rules associated to the NIC represented as a collection. |
+| firewall_active | no | bool | Once you add a firewall rule this will reflect a true value. |
+| firewall_rules | no | string collection | A list of firewall rules associated to the NIC represented as a collection. |
 
 ```
 i = NIC(
     name='Python SDK Test',
     dhcp=True,
     lan=1,
-    firewall_active=True,
     nat=False)
 
 nic2 = client.create_nic(
@@ -1460,7 +1459,7 @@ The following table describes the request arguments:
 |---|:-:|---|---|
 | datacenter_id | **yes** | string | The unique ID of the VDC. |
 | server_id | **yes** | string| The unique ID of the server. |
-| nic-id | **yes** | string| The unique ID of the NIC. |
+| nic_id | **yes** | string| The unique ID of the NIC. |
 | name | no | string | The name of the NIC. |
 | ips | no | string collection | IPs assigned to the NIC represented as a collection. |
 | dhcp | no | bool | Boolean value that indicates if the NIC is using DHCP or not. |
@@ -1803,7 +1802,7 @@ Or if you want to create a server with some volumes and NICs you would do:
     volume1 = Volume(
         name='volume1',
         size=56,
-        image='<IMAGE/SNAPSHOT-ID>',
+        image='IMAGE/SNAPSHOT-ID',
         bus='VIRTIO'
         ssh_keys=['ssh-rsa AAAAB3NzaC1yc2EAAAADAQ...'],
         image_password='s3cr3tpass0rd',
@@ -1813,7 +1812,7 @@ Or if you want to create a server with some volumes and NICs you would do:
     volume2 = Volume(
         name='volume2',
         size=56,
-        image='<IMAGE/SNAPSHOT-ID>',
+        image='IMAGE/SNAPSHOT-ID',
         type='SSD',
         bus='VIRTIO',
         license_type='OTHER'
