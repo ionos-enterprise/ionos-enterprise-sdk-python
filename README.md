@@ -182,7 +182,7 @@ The following table describes the request arguments:
 
 #### Create a Data Center
 
-Use this operation to create a new VDC. You can create a "simple" VDC by supplying just the required *name* and *location* parameters. This operation also has the capability of provisioning a "complex" VDC by supplying additional parameters for servers, volumes, lans, and/or load balancers.
+Use this operation to create a new VDC. You can create a "simple" VDC by supplying just the required *name* and *location* parameters. This operation also has the capability of provisioning a "complex" VDC by supplying additional parameters for servers, volumes, LANs, and/or load balancers.
 
 The following table describes the request arguments:
 
@@ -322,7 +322,7 @@ The following table describes the request arguments:
 
 ```
 server = client.get_server(
-            datacenter_id=s'existing_datacenter_id',
+            datacenter_id='existing_datacenter_id',
             server_id='existing_server_id'
         )
 ```
@@ -340,11 +340,11 @@ The following table describes the request arguments:
 | datacenter_id | **yes** | string | The unique ID of the VDC. |
 | name | **yes** | string | The name of the server. |
 | cores | **yes** | int | The total number of cores for the server. |
-| ram | **yes** | int | The amount of memory for the server in MB, e.g. 2048. Size must be specified in multiples of 256 MB with a minimum of 256 MB; however, if you set `ramHotPlug` to TRUE then you must use a minimum of 1024 MB. |
+| ram | **yes** | int | The amount of memory for the server in MB, e.g. 2048. Size must be specified in multiples of 256 MB with a minimum of 256 MB; however, if you set `ram_hot_plug` to *True* then you must use a minimum of 1024 MB. |
 | availability_zone | no | string | The availability zone in which the server should exist. |
 | cpu_family | no | string | Sets the CPU type. "AMD_OPTERON" or "INTEL_XEON". Defaults to "AMD_OPTERON". |
-| boot_volume_id | no | string | Reference to a Volume used for booting. If not ‘null’ then bootCdrom has to be ‘null’. |
-| boot_cdrom | no | string | Reference to a CD-ROM used for booting. If not 'null' then bootVolume has to be 'null'. |
+| boot_volume_id | no | string | Reference to a volume used for booting. If not *null* then `boot_cdrom` has to be *null*. |
+| boot_cdrom | no | string | Reference to a CD-ROM used for booting. If not *null* then `boot_volume_id` has to be *null*. |
 | attach_volumes | no | collection | A collection of volume IDs that you want to connect to the server. |
 | create_volumes | no | collection | A collection of volume objects that you want to create and attach to the server.|
 | nics | no | collection | A collection of NICs you wish to create at the time the server is provisioned. |
@@ -362,7 +362,7 @@ i = Server(
     name='name',
     cores=1,
     ram=2048,
-    description='My New Datacenter',
+    description='My new server',
     location='de/fkb'
     )
 server = client.create_server(
@@ -387,8 +387,8 @@ The following table describes the request arguments:
 | ram | no | int | The amount of memory in the server. |
 | availability_zone | no | string | The new availability zone for the server. |
 | cpu_family | no | string | Sets the CPU type. "AMD_OPTERON" or "INTEL_XEON". Defaults to "AMD_OPTERON". |
-| boot_volume_id | no | string | Reference to a volume used for booting. If not ‘null’ then `boot_cdrom` has to be ‘null’ |
-| boot_cdrom | no | string | Reference to a CD-ROM used for booting. If not 'null' then `boot_volume_id` has to be 'null'. |
+| boot_volume_id | no | string | Reference to a volume used for booting. If not *null* then `boot_cdrom` has to be *null* |
+| boot_cdrom | no | string | Reference to a CD-ROM used for booting. If not *null* then `boot_volume_id` has to be *null*. |
 
 After retrieving a server, either by getting it by id, or as a create response object, you can change its properties and call the `update_server` method:
 
@@ -721,7 +721,7 @@ The following table describes the request arguments:
 | image | **yes** | string | The image or snapshot ID. |
 | type | **yes** | string | The volume type, HDD or SSD. |
 | licence_type | **yes** | string | The licence type of the volume. Options: LINUX, WINDOWS, WINDOWS2016, UNKNOWN, OTHER |
-| image_password | **yes** | string | One-time password is set on the Image for the appropriate root or administrative account. This field may only be set in creation requests. When reading, it always returns null. Password has to contain 8-50 characters. Only these characters are allowed: [abcdefghjkmnpqrstuvxABCDEFGHJKLMNPQRSTUVX23456789] |
+| image_password | **yes** | string | One-time password is set on the Image for the appropriate root or administrative account. This field may only be set in creation requests. When reading, it always returns *null*. The password has to contain 8-50 characters. Only these characters are allowed: [abcdefghjkmnpqrstuvxABCDEFGHJKLMNPQRSTUVX23456789] |
 | ssh_keys | **yes** | string | SSH keys to allow access to the volume via SSH. |
 | availability_zone | no | string | The storage availability zone assigned to the volume. Valid values: AUTO, ZONE_1, ZONE_2, or ZONE_3. This only applies to HDD volumes. Leave blank or set to AUTO when provisioning SSD volumes. |
 
@@ -744,7 +744,7 @@ The following table outlines the storage availability zones currently supported:
 | ZONE_2 | Fire Zone 2 |
 | ZONE_3 | Fire Zone 3 |
 
-*You will need to provide either the `image` or the `licence_type` parameters. `licence_type` is required, but if `image` is supplied, it is already set and cannot be changed. Similarly either the `image_password` or `ssh_keys` parameters need to be supplied when creating a volume. We recommend setting a valid value for `image_password` even when using `ssh_keys` so that it is possible to authenticate using the remote console feature of the DCD.
+* You will need to provide either the `image` or the `licence_type` parameters. `licence_type` is required, but if `image` is supplied, it is already set and cannot be changed. Similarly either the `image_password` or `ssh_keys` parameters need to be supplied when creating a volume. We recommend setting a valid value for `image_password` even when using `ssh_keys` so that it is possible to authenticate using the remote console feature of the DCD.
 
 ```
 i = Volume(
@@ -804,7 +804,7 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the data center. |
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
 | volume_id | **yes** | string | The unique ID of the volume. |
 
 After retrieving a volume, either by getting it by id, or as a create response object, you can call the `delete_volume` method directly on the object:
@@ -914,8 +914,8 @@ The following table describes the request arguments:
 | ram_hot_unplug | no | bool | This volume is capable of memory hot unplug (no reboot required) |
 | nic_hot_plug | no | bool | This volume is capable of NIC hot plug (no reboot required) |
 | nic_hot_unplug | no | bool | This volume is capable of NIC hot unplug (no reboot required) |
-| disc_virtio_hot_plug | no | bool | This volume is capable of Virt-IO drive hot plug (no reboot required) |
-| disc_virtio_hot_unplug | no | bool | This volume is capable of Virt-IO drive hot unplug (no reboot required) |
+| disc_virtio_hot_plug | no | bool | This volume is capable of VirtIO drive hot plug (no reboot required) |
+| disc_virtio_hot_unplug | no | bool | This volume is capable of VirtIO drive hot unplug (no reboot required) |
 | disc_scsi_hot_plug | no | bool | This volume is capable of SCSI drive hot plug (no reboot required) |
 | disc_scsi_hot_unplug | no | bool | This volume is capable of SCSI drive hot unplug (no reboot required) |
 
@@ -998,7 +998,7 @@ The following table describes the request arguments:
 | name | **yes** | string | The name of the load balancer. |
 | ip | no | string | IPv4 address of the load balancer. All attached NICs will inherit this IP. |
 | dhcp | no | bool | Indicates if the load balancer will reserve an IP using DHCP. |
-| balancednics | no | string collection | List of NICs taking part in load-balancing. All balanced nics inherit the IP of the load balancer. |
+| balancednics | no | string collection | List of NICs taking part in load-balancing. All balanced NICs inherit the IP of the load balancer. |
 
 ```
 i = LoadBalancer(
@@ -1006,7 +1006,7 @@ i = LoadBalancer(
     dhcp=True)
 
 self.loadbalancer = client.create_loadbalancer(
-            datacenter_id='datacenter_id',
+            datacenter_id='existing_datacenter_id',
             loadbalancer=i
         )
 ```
@@ -1021,7 +1021,7 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the data center. |
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
 | name | no | string | The name of the load balancer. |
 | ip | no | string | The IP of the load balancer. |
 | dhcp | no | bool | Indicates if the load balancer will reserve an IP using DHCP. |
@@ -1069,7 +1069,7 @@ The following table describes the request arguments:
 | datacenter_id | **yes** | string | The unique ID of the VDC. |
 | loadbalancer_id | **yes** | string | The unique ID of the load balancer. |
 
-After retrieving a load balancer, either by getting it by id, or as a create response object, you can call the `get_loadbalancer_membors` method directly on the object:
+After retrieving a load balancer, either by getting it by id, or as a create response object, you can call the `get_loadbalancer_members` method directly on the object:
 
 ```
 balanced_nics = client.get_loadbalancer_members(
@@ -1091,7 +1091,7 @@ The following table describes the request arguments:
 | loadbalancer_id | **yes** | string | The unique ID of the load balancer. |
 | nic_id | **yes** | string | The unique ID of the NIC. |
 
-After retrieving a load balancer, either by getting it by id, or as a create response object, you can call the `get_loadbalance_nic` method directly on the object:
+After retrieving a load balancer, either by getting it by id, or as a create response object, you can call the `get_loadbalanced_nic` method directly on the object:
 
 ```
 balanced_nic = client.get_loadbalanced_nic(
@@ -1533,7 +1533,7 @@ ipblock = client.get_ipblock('existing_ipblock_id')
 
 #### Create an IP Block
 
-Creates an IP block. IP blocks are attached to a location, so you must specify a valid `location` along with a `size` parameter indicating the number of ip addresses you want to reserve in the IP block. Servers or other resources using an IP address from an IP block must be in the same `location`.
+Creates an IP block. IP blocks are attached to a location, so you must specify a valid `location` along with a `size` parameter indicating the number of IP addresses you want to reserve in the IP block. Servers or other resources using an IP address from an IP block must be in the same `location`.
 
 The following table describes the request arguments:
 
@@ -1682,7 +1682,7 @@ The following table describes the request arguments:
 | lan_id | **yes** | int | The unique ID of the LAN. |
 
 ```
-lan = client.get_lan(datacenter_id='existing_datacenter_id', lan_id='existing_lan-id')
+lan = client.get_lan(datacenter_id='existing_datacenter_id', lan_id='existing_lan_id')
 ```
 
 ---
@@ -1720,7 +1720,7 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the data center. |
+| datacenter_id | **yes** | string | The unique ID of the VDC. |
 | lan_id | **yes** | string | The unique ID of the LAN. |
 
 After retrieving a LAN, either by getting it by id, or as a create response object, you can call the `delete_lan` method directly on the object:
