@@ -171,7 +171,7 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the virtual data center. |
+| datacenter_id | **yes** | string | The ID of the virtual data center. |
 
 ```
    datacenter = client.get_datacenter(
@@ -228,7 +228,7 @@ The following table describes the available request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
 | name | no | string | The new name of the VDC. |
 | description | no | string | The new description of the VDC. |
 
@@ -251,7 +251,7 @@ The following table describes the available request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC that you want to delete. |
+| datacenter_id | **yes** | string | The ID of the VDC that you want to delete. |
 
 ```
 response = client.delete_datacenter(datacenter_id='existing_datacenter_id')
@@ -283,7 +283,7 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| location_id | **yes** | string | The resource's unique identifier consisting of country/city. |
+| location_id | **yes** | string | The ID consisting of country/city. |
 
 ```
 self.client.get_location('us/las')
@@ -301,7 +301,7 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes**  | string | The unique ID of the VDC. |
+| datacenter_id | **yes**  | string | The ID of the VDC. |
 
 ```
 servers = client.list_servers(datacenter_id='existing_datacenter_id')
@@ -317,8 +317,8 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| server_id | **yes** | string | The unique ID of the server. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| server_id | **yes** | string | The ID of the server. |
 
 ```
 server = client.get_server(
@@ -337,7 +337,7 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
 | name | **yes** | string | The name of the server. |
 | cores | **yes** | int | The total number of cores for the server. |
 | ram | **yes** | int | The amount of memory for the server in MB, e.g. 2048. Size must be specified in multiples of 256 MB with a minimum of 256 MB; however, if you set `ram_hot_plug` to *True* then you must use a minimum of 1024 MB. |
@@ -380,8 +380,8 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| server_id | **yes** | string | The unique ID of the server. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| server_id | **yes** | string | The ID of the server. |
 | name | no | string | The name of the server. |
 | cores | no | int | The number of cores for the server. |
 | ram | no | int | The amount of memory in the server. |
@@ -409,8 +409,8 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| server_id | **yes** | string | The unique ID of the server. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| server_id | **yes** | string | The ID of the server. |
 
 After retrieving a server, either by getting it by id, or as a create response object, you can call the `delete_server` method directly on the object:
 
@@ -431,8 +431,8 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| server_id | **yes** | string | The unique ID of the server. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| server_id | **yes** | string | The ID of the server. |
 
 After retrieving a server, either by getting it by id, or as a create response object, you can call the `get_attached_volumes` method directly on the object:
 
@@ -452,9 +452,9 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| server_id | **yes** | string | The unique ID of the server. |
-| volume_id | **yes** | string | The unique ID of a storage volume. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| server_id | **yes** | string | The ID of the server. |
+| volume_id | **yes** | string | The ID of a storage volume. |
 
 After retrieving a server, either by getting it by id, or as a create response object, you can call the `attach_volume` method directly on the object:
 
@@ -475,9 +475,9 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| server_id | **yes** | string | The unique ID of the server. |
-| volume_id | **yes** | string | The unique ID of the attached volume. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| server_id | **yes** | string | The ID of the server. |
+| volume_id | **yes** | string | The ID of the attached volume. |
 
 After retrieving a server, either by getting it by id, or as a create response object, you can call the `get_attached_volume` method directly on the object:
 
@@ -500,9 +500,9 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| server_id | **yes** | string | The unique ID of the server. |
-| volume_id | **yes** | string | The unique ID of the attached volume. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| server_id | **yes** | string | The ID of the server. |
+| volume_id | **yes** | string | The ID of the attached volume. |
 
 After retrieving a server, either by getting it by id, or as a create response object, you can call the `detach_volume` method directly on the object:
 
@@ -523,8 +523,8 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| server_id | **yes** | string | The unique ID of the server. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| server_id | **yes** | string | The ID of the server. |
 
 After retrieving a server, either by getting it by id, or as a create response object, you can call the `get_attached_cdroms` method directly on the object:
 
@@ -544,9 +544,9 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| server_id | **yes** | string | The unique ID of the server. |
-| cdrom_id | **yes** | string | The unique ID of a CD-ROM. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| server_id | **yes** | string | The ID of the server. |
+| cdrom_id | **yes** | string | The ID of a CD-ROM. |
 
 After retrieving a server, either by getting it by id, or as a create response object, you can call the `attach_cdrom` method directly on the object:
 
@@ -567,9 +567,9 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| server_id | **yes** | string | The unique ID of the server. |
-| cdrom_id | **yes** | string | The unique ID of the attached CD-ROM. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| server_id | **yes** | string | The ID of the server. |
+| cdrom_id | **yes** | string | The ID of the attached CD-ROM. |
 
 After retrieving a server, either by getting it by id, or as a create response object, you can call the `get_attached_cdrom` method directly on the object:
 
@@ -590,9 +590,9 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| server_id | **yes** | string | The unique ID of the server. |
-| cdrom_id | **yes** | string | The unique ID of the attached CD-ROM. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| server_id | **yes** | string | The ID of the server. |
+| cdrom_id | **yes** | string | The ID of the attached CD-ROM. |
 
 After retrieving a server, either by getting it by id, or as a create response object, you can call the `detach_cdrom` method directly on the object:
 
@@ -613,8 +613,8 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| server_id | **yes** | string | The unique ID of the server. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| server_id | **yes** | string | The ID of the server. |
 
 After retrieving a server, either by getting it by id, or as a create response object, you can call the `reboot_server` method directly on the object:
 
@@ -634,8 +634,8 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| server_id | **yes** | string | The unique ID of the server. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| server_id | **yes** | string | The ID of the server. |
 
 After retrieving a server, either by getting it by id, or as a create response object, you can call the `start_server` method directly on the object:
 
@@ -655,8 +655,8 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| server_id | **yes** | string | The unique ID of the server. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| server_id | **yes** | string | The ID of the server. |
 
 After retrieving a server, either by getting it by id, or as a create response object, you can call the `stop_server` method directly on the object:
 
@@ -678,7 +678,7 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
 
 ```
 volumes = client.list_volumes(
@@ -695,8 +695,8 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| volume_id | **yes** | string | The unique ID of the volume. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| volume_id | **yes** | string | The ID of the volume. |
 
 ```
 volume = client.get_volume(
@@ -714,7 +714,7 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
 | name | no | string | The name of the volume. |
 | size | **yes** | int | The size of the volume in GB. |
 | bus | no | string | The bus type of the volume (VIRTIO or IDE). Default: VIRTIO. |
@@ -774,8 +774,8 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| volume_id | **yes** | string | The unique ID of the volume. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| volume_id | **yes** | string | The ID of the volume. |
 | name | no | string | The name of the volume. |
 | size | no | int | The size of the volume in GB. Only increase when updating. |
 | bus | no | string | The bus type of the volume (VIRTIO or IDE). Default: VIRTIO. |
@@ -804,8 +804,8 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| volume_id | **yes** | string | The unique ID of the volume. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| volume_id | **yes** | string | The ID of the volume. |
 
 After retrieving a volume, either by getting it by id, or as a create response object, you can call the `delete_volume` method directly on the object:
 
@@ -825,8 +825,8 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| volume_id | **yes** | string | The unique ID of the volume. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| volume_id | **yes** | string | The ID of the volume. |
 | name | no | string | The name of the snapshot. |
 | description | no | string | The description of the snapshot. |
 
@@ -850,8 +850,8 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| volume_id | **yes** | string | The unique ID of the volume. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| volume_id | **yes** | string | The ID of the volume. |
 | snapshot_id | **yes** | string |  The ID of the snapshot. |
 
 After retrieving a volume, either by getting it by id, or as a create response object, you can call the `restore_snapshot` method directly on the object:
@@ -958,7 +958,7 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
 
 ```
 loadbalancers = client.list_loadbalancers(
@@ -975,8 +975,8 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| loadbalancer_id | **yes** | string | The unique ID of the load balancer. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| loadbalancer_id | **yes** | string | The ID of the load balancer. |
 
 ```
 loadbalancer = client.get_loadbalancer(
@@ -994,7 +994,7 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
 | name | **yes** | string | The name of the load balancer. |
 | ip | no | string | IPv4 address of the load balancer. All attached NICs will inherit this IP. |
 | dhcp | no | bool | Indicates if the load balancer will reserve an IP using DHCP. |
@@ -1021,7 +1021,7 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
 | name | no | string | The name of the load balancer. |
 | ip | no | string | The IP of the load balancer. |
 | dhcp | no | bool | Indicates if the load balancer will reserve an IP using DHCP. |
@@ -1045,8 +1045,8 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| load_balancer_id | **yes** | string | The unique ID of the load balancer. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| load_balancer_id | **yes** | string | The ID of the load balancer. |
 
 After retrieving a load balancer, either by getting it by id, or as a create response object, you can call the `delete_loadbalancer` method directly on the object:
 
@@ -1066,8 +1066,8 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| loadbalancer_id | **yes** | string | The unique ID of the load balancer. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| loadbalancer_id | **yes** | string | The ID of the load balancer. |
 
 After retrieving a load balancer, either by getting it by id, or as a create response object, you can call the `get_loadbalancer_members` method directly on the object:
 
@@ -1087,9 +1087,9 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| loadbalancer_id | **yes** | string | The unique ID of the load balancer. |
-| nic_id | **yes** | string | The unique ID of the NIC. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| loadbalancer_id | **yes** | string | The ID of the load balancer. |
+| nic_id | **yes** | string | The ID of the NIC. |
 
 After retrieving a load balancer, either by getting it by id, or as a create response object, you can call the `get_loadbalanced_nic` method directly on the object:
 
@@ -1110,9 +1110,9 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| loadbalancer_id | **yes** | string | The unique ID of the load balancer. |
-| nic_id | **yes** | string | The unique ID of the NIC. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| loadbalancer_id | **yes** | string | The ID of the load balancer. |
+| nic_id | **yes** | string | The ID of the NIC. |
 
 After retrieving a load balancer, either by getting it by id, or as a create response object, you can call the `add_loadbalanced_nics` method directly on the object:
 
@@ -1133,9 +1133,9 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| loadbalancer_id | **yes** | string | The unique ID of the load balancer. |
-| nic_id | **yes** | string | The unique ID of the load balancer. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| loadbalancer_id | **yes** | string | The ID of the load balancer. |
+| nic_id | **yes** | string | The ID of the load balancer. |
 
 After retrieving a load balancer, either by getting it by id, or as a create response object, you can call the `remove_loadbalanced_nic` method directly on the object:
 
@@ -1158,9 +1158,9 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| server_id | **yes** | string | The unique ID of the server. |
-| nic_id | **yes** | string | The unique ID of the NIC. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| server_id | **yes** | string | The ID of the server. |
+| nic_id | **yes** | string | The ID of the NIC. |
 
 ```
 fwrules = client.get_firewall_rules(
@@ -1179,10 +1179,10 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| server_id | **yes** | string | The unique ID of the server. |
-| nic_id | **yes** | string | The unique ID of the NIC. |
-| firewall_rule_id | **yes** | string | The unique ID of the firewall rule. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| server_id | **yes** | string | The ID of the server. |
+| nic_id | **yes** | string | The ID of the NIC. |
+| firewall_rule_id | **yes** | string | The ID of the firewall rule. |
 
 ```
 fwrule = client.get_firewall_rule(
@@ -1202,9 +1202,9 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| server_id | **yes** | string | The unique ID of the server. |
-| nic_id | **yes** | string | The unique ID of the NIC. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| server_id | **yes** | string | The ID of the server. |
+| nic_id | **yes** | string | The ID of the NIC. |
 | name | no | string | The name of the firewall rule. |
 | protocol | **yes** | string | The protocol for the rule: TCP, UDP, ICMP, ANY. |
 | source_mac | no | string | Only traffic originating from the respective MAC address is allowed. Valid format: aa:bb:cc:dd:ee:ff. A *null* value allows all source MAC address. |
@@ -1243,10 +1243,10 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| server_id | **yes** | string | The unique ID of the server. |
-| nic_id | **yes** | string | The unique ID of the NIC. |
-| firewall_rule_id | **yes** | string | The unique ID of the firewall rule. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| server_id | **yes** | string | The ID of the server. |
+| nic_id | **yes** | string | The ID of the NIC. |
+| firewall_rule_id | **yes** | string | The ID of the firewall rule. |
 | name | no | string | The name of the firewall rule. |
 | source_mac | no | string | Only traffic originating from the respective MAC address is allowed. Valid format: aa:bb:cc:dd:ee:ff. A *null* value allows all source MAC address. |
 | source_ip | no | string | Only traffic originating from the respective IPv4 address is allowed. A *null* value allows all source IPs. |
@@ -1275,10 +1275,10 @@ Removes the specific firewall rule.
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| server_id | **yes** | string | The unique ID of the server. |
-| nic_id | **yes** | string | The unique ID of the NIC. |
-| firewall_rule_id | **yes** | string | The unique ID of the firewall rule. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| server_id | **yes** | string | The ID of the server. |
+| nic_id | **yes** | string | The ID of the NIC. |
+| firewall_rule_id | **yes** | string | The ID of the firewall rule. |
 
 After retrieving a firewall rule, either by getting it by id, or as a create response object, you can call the `delete_firewall_rule` method directly on the object:
 
@@ -1312,7 +1312,7 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| image_id | **yes** | string | The unique ID of the image. |
+| image_id | **yes** | string | The ID of the image. |
 
 ```
 image = client.get_image('existing_image_id')
@@ -1328,7 +1328,7 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| image_id | **yes** | string | The unique ID of the image. |
+| image_id | **yes** | string | The ID of the image. |
 | name | no | string | The name of the image. |
 | description | no | string | The description of the image. |
 | licence_type | no | string | The snapshot's licence type: LINUX, WINDOWS, WINDOWS2016, or OTHER. |
@@ -1363,7 +1363,7 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| image_id | **yes** | string | The unique ID of the image. |
+| image_id | **yes** | string | The ID of the image. |
 
 ```
 image = client.delete_image('existing_image_id')
@@ -1381,8 +1381,8 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| server_id | **yes** | string | The unique ID of the server. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| server_id | **yes** | string | The ID of the server. |
 
 ```
 nics = client.list_nics(
@@ -1400,9 +1400,9 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| server_id | **yes** | string | The unique ID of the server. |
-| nic_id | **yes** | string | The unique ID of the NIC. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| server_id | **yes** | string | The ID of the server. |
+| nic_id | **yes** | string | The ID of the NIC. |
 
 ```
 nic = client.get_nic(datacenter_id='existing_datacenter_id',
@@ -1420,8 +1420,8 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| server_id | **yes** | string| The unique ID of the server. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| server_id | **yes** | string| The ID of the server. |
 | name | no | string | The name of the NIC. |
 | ips | no | string collection | IPs assigned to the NIC. This can be a collection. |
 | dhcp | no | bool | Set to FALSE if you wish to disable DHCP on the NIC. Default: TRUE. |
@@ -1457,9 +1457,9 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| server_id | **yes** | string| The unique ID of the server. |
-| nic_id | **yes** | string| The unique ID of the NIC. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| server_id | **yes** | string| The ID of the server. |
+| nic_id | **yes** | string| The ID of the NIC. |
 | name | no | string | The name of the NIC. |
 | ips | no | string collection | IPs assigned to the NIC represented as a collection. |
 | dhcp | no | bool | Boolean value that indicates if the NIC is using DHCP or not. |
@@ -1486,9 +1486,9 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| server_id | **yes** | string| The unique ID of the server. |
-| nic_id | **yes** | string| The unique ID of the NIC. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| server_id | **yes** | string| The ID of the server. |
+| nic_id | **yes** | string| The ID of the NIC. |
 
 After retrieving a NIC, either by getting it by id, or as a create response object, you can call the `delete_nic` method directly on the object:
 
@@ -1523,7 +1523,7 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| ipblock_id | **yes** | string | The unique ID of the IP block. |
+| ipblock_id | **yes** | string | The ID of the IP block. |
 
 ```
 ipblock = client.get_ipblock('existing_ipblock_id')
@@ -1573,7 +1573,7 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| ipblock_id | **yes** | string | The unique ID of the IP block. |
+| ipblock_id | **yes** | string | The ID of the IP block. |
 
 After retrieving an IP block, either by getting it by id, or as a create response object, you can call the `delete_ipblock` method directly on the object:
 
@@ -1604,7 +1604,7 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| request_id | **yes** | string | The unique ID of the request. |
+| request_id | **yes** | string | The ID of the request. |
 | status | **yes** | bool | Set to *False* to have the request details returned. |
 
 ```
@@ -1621,7 +1621,7 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| request_id | **yes** | string | The unique ID of the request. |
+| request_id | **yes** | string | The ID of the request. |
 | status | **yes** | boolean | Set to *True* to have the status of the request returned. |
 
 ```
@@ -1640,7 +1640,7 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
 
 ```
 lans = client.list_lans(datacenter_id='existing_datacenter_id')
@@ -1656,7 +1656,7 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
 | name | no | string | The name of your LAN. |
 | public | **Yes** | bool | Boolean indicating if the LAN faces the public Internet or not. |
 | nics | no | string collection | A collection of NICs associated with the LAN. |
@@ -1678,8 +1678,8 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| lan_id | **yes** | int | The unique ID of the LAN. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| lan_id | **yes** | int | The ID of the LAN. |
 
 ```
 lan = client.get_lan(datacenter_id='existing_datacenter_id', lan_id='existing_lan_id')
@@ -1695,8 +1695,8 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| lan_id | **yes** | int | The unique ID of the LAN. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| lan_id | **yes** | int | The ID of the LAN. |
 | name | no | string | A descriptive name for the LAN. |
 | public | no | bool | Boolean indicating if the LAN faces the public Internet or not. |
 
@@ -1720,8 +1720,8 @@ The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| datacenter_id | **yes** | string | The unique ID of the VDC. |
-| lan_id | **yes** | string | The unique ID of the LAN. |
+| datacenter_id | **yes** | string | The ID of the VDC. |
+| lan_id | **yes** | string | The ID of the LAN. |
 
 After retrieving a LAN, either by getting it by id, or as a create response object, you can call the `delete_lan` method directly on the object:
 
@@ -1844,11 +1844,17 @@ You can find additional examples in the repository `examples` directory. If you 
 
 ## Testing
 
-You can find a full list of tests inside the `tests` folder. Run any test by typing the following command:
+You can find a full list of tests inside the `tests` folder. To run all available tests:
 
-```
-python tests\test_file_name.py
-```
+    export PROFITBRICKS_USERNAME=username
+    export PROFITBRICKS_PASSWORD=password
+    
+    pip install -r requirements.txt
+    python -m unittest discover tests
+
+To run a single test:
+
+    python -m unittest discover tests test_datacenter.py
 
 ## Contributing
 
