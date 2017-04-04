@@ -35,14 +35,17 @@ class ProfitBricksService(object):
         self.verify = ssl_verify
         self.headers = headers
 
-    # Datacenter Functions
+    # Data center Functions
 
     def get_datacenter(self, datacenter_id, depth=1):
         """
-        Retrieves a datacenter by its ID.
+        Retrieves a data center by its ID.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
+
+        :param      depth: The depth of the response data.
+        :type       depth: ``int``
 
         """
         response = self._perform_request(
@@ -52,7 +55,7 @@ class ProfitBricksService(object):
 
     def list_datacenters(self, depth=1):
         """
-        Retrieves a list of all datacenters.
+        Retrieves a list of all data centers.
 
         """
         response = self._perform_request('/datacenters?depth=' + str(depth))
@@ -61,9 +64,9 @@ class ProfitBricksService(object):
 
     def delete_datacenter(self, datacenter_id):
         """
-        Removes the server from your Datacenter.
+        Removes the Data center and all its components such as servers, nics, loadbalancers, volumes.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         """
@@ -75,7 +78,7 @@ class ProfitBricksService(object):
 
     def create_datacenter(self, datacenter):
         """
-        Creates a Datacenter -- both simple and complex are supported.
+        Creates a Data center -- both simple and complex are supported.
 
         """
         server_items = []
@@ -183,7 +186,7 @@ class ProfitBricksService(object):
         """
         Updates a server with the parameters provided.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         """
@@ -200,14 +203,14 @@ class ProfitBricksService(object):
 
         return response
 
-    # FirewallRule Functions
+    # Firewall Rule Functions
 
     def get_firewall_rule(self, datacenter_id,
                           server_id, nic_id, firewall_rule_id):
         """
-        Retrieves a single FirewallRule by ID.
+        Retrieves a single Firewall Rule by ID.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      server_id: The unique ID of the server.
@@ -216,7 +219,7 @@ class ProfitBricksService(object):
         :param      nic_id: The unique ID of the NIC.
         :type       nic_id: ``str``
 
-        :param      firewall_rule_id: The unique ID of the FirewallRule.
+        :param      firewall_rule_id: The unique ID of the Firewall Rule.
         :type       firewall_rule_id: ``str``
 
         """
@@ -231,9 +234,9 @@ class ProfitBricksService(object):
 
     def get_firewall_rules(self, datacenter_id, server_id, nic_id, depth=1):
         """
-        Retrieves a list of FirewallRules available in the account.
+        Retrieves a list of Firewall Rules available in the account.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      server_id: The unique ID of the server.
@@ -241,6 +244,9 @@ class ProfitBricksService(object):
 
         :param      nic_id: The unique ID of the NIC.
         :type       nic_id: ``str``
+
+        :param      depth: The depth of the response data.
+        :type       depth: ``int``
 
         """
         response = self._perform_request(
@@ -257,7 +263,7 @@ class ProfitBricksService(object):
         """
         Removes a Firewall rule from the NIC.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      server_id: The unique ID of the server.
@@ -266,7 +272,7 @@ class ProfitBricksService(object):
         :param      nic_id: The unique ID of the NIC.
         :type       nic_id: ``str``
 
-        :param      firewall_rule_id: The unique ID of the FirewallRule.
+        :param      firewall_rule_id: The unique ID of the Firewall Rule.
         :type       firewall_rule_id: ``str``
 
         """
@@ -285,7 +291,7 @@ class ProfitBricksService(object):
         """
         Creates a firewall rule on the specified NIC and Server.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      server_id: The unique ID of the Server.
@@ -294,7 +300,7 @@ class ProfitBricksService(object):
         :param      nic_id: The unique ID of the NIC.
         :type       nic_id: ``str``
 
-        :param      firewall_rule: A FirewallRule dict.
+        :param      firewall_rule: A Firewall Rule dict.
         :type       firewall_rule: ``dict``
 
         """
@@ -344,7 +350,7 @@ class ProfitBricksService(object):
         """
         Updates a firewall rule.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      server_id: The unique ID of the server.
@@ -405,7 +411,7 @@ class ProfitBricksService(object):
 
     def list_images(self, depth=1):
         """
-        Retrieves a list of images available in the datacenter.
+        Retrieves a list of images available in the data center.
 
         :param      depth: The depth of the response data.
         :type       depth: ``int``
@@ -441,13 +447,13 @@ class ProfitBricksService(object):
                                          data=json.dumps(data))
         return response
 
-    # IPBlock Functions
+    # IP block Functions
 
     def get_ipblock(self, ipblock_id):
         """
-        Retrieves a single IPBlock by ID.
+        Retrieves a single IP block by ID.
 
-        :param      ipblock_id: The unique ID of the IPBlock.
+        :param      ipblock_id: The unique ID of the IP block.
         :type       ipblock_id: ``str``
 
         """
@@ -456,7 +462,7 @@ class ProfitBricksService(object):
 
     def list_ipblocks(self, depth=1):
         """
-        Retrieves a list of IPBlocks available in the account.
+        Retrieves a list of IP blocks available in the account.
 
         """
         response = self._perform_request('/ipblocks?depth=%s' % str(depth))
@@ -464,9 +470,9 @@ class ProfitBricksService(object):
 
     def delete_ipblock(self, ipblock_id):
         """
-        Removes a IPBlock from your account.
+        Removes a IP block from your account.
 
-        :param      ipblock_id: The unique ID of the IPBlock.
+        :param      ipblock_id: The unique ID of the IP block.
         :type       ipblock_id: ``str``
 
         """
@@ -477,7 +483,7 @@ class ProfitBricksService(object):
 
     def reserve_ipblock(self, ipblock):
         """
-        Reserves an IPBlock within your account.
+        Reserves an IP block within your account.
 
         """
         properties = {
@@ -503,11 +509,14 @@ class ProfitBricksService(object):
         """
         Retrieves a single LAN by ID.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      lan_id: The unique ID of the LAN.
         :type       lan_id: ``str``
+
+        :param      depth: The depth of the response data.
+        :type       depth: ``int``
 
         """
         response = self._perform_request(
@@ -522,8 +531,11 @@ class ProfitBricksService(object):
         """
         Retrieves a list of LANs available in the account.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
+
+        :param      depth: The depth of the response data.
+        :type       depth: ``int``
 
         """
         response = self._perform_request(
@@ -535,9 +547,9 @@ class ProfitBricksService(object):
 
     def delete_lan(self, datacenter_id, lan_id):
         """
-        Removes a LAN from the Datacenter.
+        Removes a LAN from the Data center.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      lan_id: The unique ID of the LAN.
@@ -552,9 +564,9 @@ class ProfitBricksService(object):
 
     def create_lan(self, datacenter_id, lan):
         """
-        Creates a LAN in the Datacenter.
+        Creates a LAN in the Data center.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      lan: The LAN object to be created.
@@ -578,7 +590,7 @@ class ProfitBricksService(object):
         """
         Updates a LAN
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      lan_id: The unique ID of the LAN.
@@ -601,7 +613,7 @@ class ProfitBricksService(object):
         """
         Retrieves the list of NICs that are part of the LAN.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      lan_id: The unique ID of the LAN.
@@ -616,16 +628,16 @@ class ProfitBricksService(object):
 
         return response
 
-    # LoadBalancer Functions
+    # Load balancer Functions
 
     def get_loadbalancer(self, datacenter_id, loadbalancer_id):
         """
-        Retrieves a single LoadBalancer by ID.
+        Retrieves a single Load balancer by ID.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
-        :param      loadbalancer_id: The unique ID of the LoadBalancer.
+        :param      loadbalancer_id: The unique ID of the Load balancer.
         :type       loadbalancer_id: ``str``
 
         """
@@ -637,10 +649,13 @@ class ProfitBricksService(object):
 
     def list_loadbalancers(self, datacenter_id, depth=1):
         """
-        Retrieves a list of LoadBalancers in the Datacenter.
+        Retrieves a list of Load balancers in the Data center.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
+
+        :param      depth: The depth of the response data.
+        :type       depth: ``int``
 
         """
         response = self._perform_request(
@@ -651,12 +666,12 @@ class ProfitBricksService(object):
 
     def delete_loadbalancer(self, datacenter_id, loadbalancer_id):
         """
-        Removes the LoadBalancer from the Datacenter.
+        Removes the Load balancer from the Data center.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
-        :param      loadbalancer_id: The unique ID of the LoadBalancer.
+        :param      loadbalancer_id: The unique ID of the Load balancer.
         :type       loadbalancer_id: ``str``
 
         """
@@ -668,12 +683,12 @@ class ProfitBricksService(object):
 
     def create_loadbalancer(self, datacenter_id, loadbalancer):
         """
-        Creates a LoadBalancer within the specified DataCenter.
+        Creates a Load balancer within the specified DataCenter.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
-        :param      loadbalancer: The LoadBalancer object to be created.
+        :param      loadbalancer: The Load balancer object to be created.
         :type       loadbalancer: ``dict``
 
         """
@@ -693,12 +708,12 @@ class ProfitBricksService(object):
     def update_loadbalancer(self, datacenter_id,
                             loadbalancer_id, **kwargs):
         """
-        Updates a LoadBalancer
+        Updates a Load balancer
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
-        :param      loadbalancer_id: The unique ID of the LoadBalancer.
+        :param      loadbalancer_id: The unique ID of the Load balancer.
         :type       loadbalancer_id: ``str``
 
         """
@@ -718,13 +733,16 @@ class ProfitBricksService(object):
     def get_loadbalancer_members(self, datacenter_id, loadbalancer_id,
                                  depth=1):
         """
-        Retrieves the list of NICs that are part of the LAN.
+        Retrieves the list of NICs that are associated to a loadbalancer.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
-        :param      loadbalancer_id: The unique ID of the LoadBalancer.
+        :param      loadbalancer_id: The unique ID of the Load balancer.
         :type       loadbalancer_id: ``str``
+
+        :param      depth: The depth of the response data.
+        :type       depth: ``int``
 
         """
         response = self._perform_request(
@@ -736,12 +754,12 @@ class ProfitBricksService(object):
     def add_loadbalanced_nics(self, datacenter_id,
                               loadbalancer_id, nic_id):
         """
-        Associates a NIC with the given LoadBalancer.
+        Associates a NIC with the given Load balancer.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
-        :param      loadbalancer_id: The unique ID of the LoadBalancer.
+        :param      loadbalancer_id: The unique ID of the Load balancer.
         :type       loadbalancer_id: ``str``
 
         :param      nic_id: The ID of the NIC.
@@ -764,14 +782,17 @@ class ProfitBricksService(object):
         """
         Gets the properties of a balanced NIC.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
-        :param      loadbalancer_id: The unique ID of the LoadBalancer.
+        :param      loadbalancer_id: The unique ID of the Load balancer.
         :type       loadbalancer_id: ``str``
 
         :param      nic_id: The unique ID of the NIC.
         :type       nic_id: ``str``
+
+        :param      depth: The depth of the response data.
+        :type       depth: ``int``
 
         """
         response = self._perform_request(
@@ -788,10 +809,10 @@ class ProfitBricksService(object):
         """
         Removes a NIC from the loadbalancer.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
-        :param      loadbalancer_id: The unique ID of the LoadBalancer.
+        :param      loadbalancer_id: The unique ID of the Load balancer.
         :type       loadbalancer_id: ``str``
 
         :param      nic_id: The unique ID of the NIC.
@@ -835,7 +856,7 @@ class ProfitBricksService(object):
         """
         Retrieves a NIC by its ID.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      server_id: The unique ID of the server.
@@ -843,6 +864,9 @@ class ProfitBricksService(object):
 
         :param      nic_id: The unique ID of the NIC.
         :type       nic_id: ``str``
+
+        :param      depth: The depth of the response data.
+        :type       depth: ``int``
 
         """
         response = self._perform_request(
@@ -858,11 +882,14 @@ class ProfitBricksService(object):
         """
         Retrieves a list of all NICs bound to the specified server.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      server_id: The unique ID of the server.
         :type       server_id: ``str``
+
+        :param      depth: The depth of the response data.
+        :type       depth: ``int``
 
         """
         response = self._perform_request(
@@ -877,7 +904,7 @@ class ProfitBricksService(object):
         """
         Removes a NIC from the server.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      server_id: The unique ID of the server.
@@ -900,7 +927,7 @@ class ProfitBricksService(object):
         """
         Creates a NIC on the specified server.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      server_id: The unique ID of the Server.
@@ -927,7 +954,7 @@ class ProfitBricksService(object):
         """
         Updates a NIC with the parameters provided.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      server_id: The unique ID of the Server.
@@ -990,11 +1017,14 @@ class ProfitBricksService(object):
         """
         Retrieves a server by its ID.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      server_id: The unique ID of the server.
         :type       server_id: ``str``
+
+        :param      depth: The depth of the response data.
+        :type       depth: ``int``
 
         """
         response = self._perform_request(
@@ -1007,10 +1037,13 @@ class ProfitBricksService(object):
 
     def list_servers(self, datacenter_id, depth=1):
         """
-        Retrieves a list of all servers bound to the specified server.
+        Retrieves a list of all servers bound to the specified Data center.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
+
+        :param      depth: The depth of the response data.
+        :type       depth: ``int``
 
         """
         response = self._perform_request(
@@ -1020,9 +1053,9 @@ class ProfitBricksService(object):
 
     def delete_server(self, datacenter_id, server_id):
         """
-        Removes the server from your Datacenter.
+        Removes the server from your Data center.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      server_id: The unique ID of the server.
@@ -1039,9 +1072,9 @@ class ProfitBricksService(object):
 
     def create_server(self, datacenter_id, server):
         """
-        Creates a server within the Datacenter.
+        Creates a server within the Data center.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      server: A dict of the Server to be created.
@@ -1062,7 +1095,7 @@ class ProfitBricksService(object):
         """
         Updates a server with the parameters provided.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      server_id: The unique ID of the server.
@@ -1096,11 +1129,14 @@ class ProfitBricksService(object):
         """
         Retrieves a list of volumes attached to the server.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      server_id: The unique ID of the server.
         :type       server_id: ``str``
+
+        :param      depth: The depth of the response data.
+        :type       depth: ``int``
 
         """
         response = self._perform_request(
@@ -1115,7 +1151,7 @@ class ProfitBricksService(object):
         """
         Retrieves volume information.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      server_id: The unique ID of the server.
@@ -1137,7 +1173,7 @@ class ProfitBricksService(object):
         """
         Attaches a volume to a server.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      server_id: The unique ID of the server.
@@ -1162,7 +1198,7 @@ class ProfitBricksService(object):
         """
         Detaches a volume from a server.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      server_id: The unique ID of the server.
@@ -1185,11 +1221,14 @@ class ProfitBricksService(object):
         """
         Retrieves a list of CDROMs attached to the server.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      server_id: The unique ID of the server.
         :type       server_id: ``str``
+
+        :param      depth: The depth of the response data.
+        :type       depth: ``int``
 
         """
         response = self._perform_request(
@@ -1204,7 +1243,7 @@ class ProfitBricksService(object):
         """
         Retrieves an attached CDROM.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      server_id: The unique ID of the server.
@@ -1226,13 +1265,13 @@ class ProfitBricksService(object):
         """
         Attaches a CDROM to a server.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      server_id: The unique ID of the server.
         :type       server_id: ``str``
 
-        :param      cdrom_id: The unique ID of the volume.
+        :param      cdrom_id: The unique ID of the CDROM.
         :type       cdrom_id: ``str``
 
         """
@@ -1251,7 +1290,7 @@ class ProfitBricksService(object):
         """
         Detaches a volume from a server.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      server_id: The unique ID of the server.
@@ -1274,7 +1313,7 @@ class ProfitBricksService(object):
         """
         Starts the server.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      server_id: The unique ID of the server.
@@ -1293,7 +1332,7 @@ class ProfitBricksService(object):
         """
         Stops the server.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      server_id: The unique ID of the server.
@@ -1312,7 +1351,7 @@ class ProfitBricksService(object):
         """
         Reboots the server.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      server_id: The unique ID of the server.
@@ -1385,11 +1424,17 @@ class ProfitBricksService(object):
         """
         Creates a snapshot of the specified volume.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      volume_id: The unique ID of the volume.
         :type       volume_id: ``str``
+
+        :param      name: The name given to the volume.
+        :type       name: ``str``
+
+        :param      description: The description given to the volume.
+        :type       description: ``str``
 
         """
 
@@ -1407,7 +1452,7 @@ class ProfitBricksService(object):
         """
         Restores a snapshot to the specified volume.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      volume_id: The unique ID of the volume.
@@ -1448,7 +1493,7 @@ class ProfitBricksService(object):
         """
         Retrieves a single volume by ID.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      volume_id: The unique ID of the volume.
@@ -1462,10 +1507,13 @@ class ProfitBricksService(object):
 
     def list_volumes(self, datacenter_id, depth=1):
         """
-        Retrieves a list of Volumes in the datacenter.
+        Retrieves a list of Volumes in the data center.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
+
+        :param      depth: The depth of the response data.
+        :type       depth: ``int``
 
         """
         response = self._perform_request(
@@ -1475,9 +1523,9 @@ class ProfitBricksService(object):
 
     def delete_volume(self, datacenter_id, volume_id):
         """
-        Removes a Volume from the Datacenter.
+        Removes a Volume from the Data center.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      volume_id: The unique ID of the volume.
@@ -1494,7 +1542,7 @@ class ProfitBricksService(object):
         """
         Creates a volume within the specified DataCenter.
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      volume: A Volume dict.
@@ -1515,7 +1563,7 @@ class ProfitBricksService(object):
         """
         Updates a volume
 
-        :param      datacenter_id: The unique ID of the Datacenter.
+        :param      datacenter_id: The unique ID of the Data center.
         :type       datacenter_id: ``str``
 
         :param      volume_id: The unique ID of the volume.
@@ -1954,12 +2002,12 @@ class Datacenter(ProfitBricksService):
                  volumes=None, servers=None, lans=None, loadbalancers=None,
                  **kwargs):
         """
-        Datacenter class initializer.
+        Data center class initializer.
 
-        :param      name: The Datacenter name..
+        :param      name: The Data center name..
         :type       name: ``str``
 
-        :param      location: The Datacenter geographical location.
+        :param      location: The Data center geographical location.
         :type       location: ``str``
 
         :param      description: Optional description.
@@ -2006,9 +2054,9 @@ class FirewallRule(ProfitBricksService):
                  port_range_end=None, icmp_type=None,
                  icmp_code=None, **kwargs):
         """
-        FirewallRule class initializer.
+        Firewall Rule class initializer.
 
-        :param      name: The name of the FirewallRule.
+        :param      name: The name of the Firewall Rule.
         :type       name: ``str``
 
         :param      protocol: Either TCP or UDP
@@ -2064,7 +2112,7 @@ class FirewallRule(ProfitBricksService):
 class IPBlock(ProfitBricksService):
     def __init__(self, name=None, location=None, size=None):
         """
-        IPBlock class initializer.
+        IP block class initializer.
 
         :param      name: The name of the IP Block.
         :type       name: ``str``
@@ -2086,9 +2134,9 @@ class IPBlock(ProfitBricksService):
 
 
 class LAN(ProfitBricksService):
-    '''
+    """
     This is the main class for managing LAN resources.
-    '''
+    """
 
     def __init__(self, name=None, public=None, nics=None):
         """
@@ -2116,27 +2164,27 @@ class LAN(ProfitBricksService):
 
 
 class LoadBalancer(ProfitBricksService):
-    '''
-    This is the main class for managing LoadBalancer resources.
-    '''
+    """
+    This is the main class for managing Load balancer resources.
+    """
 
     def __init__(self, name=None, ip=None,
                  dhcp=None, balancednics=None, **kwargs):
         """
-        LoadBalancer class initializer.
+        Load balancer class initializer.
 
-        :param      name: The name of the LoadBalancer.
+        :param      name: The name of the Load balancer.
         :type       name: ``str``
 
         :param      ip: The IP for the loadbalancer.
         :type       ip: ``str``
 
-        :param      dhcp: Indicates if the LoadBalancer
+        :param      dhcp: Indicates if the Load balancer
                           uses DHCP or not.
         :type       dhcp: ``bool``
 
         :param      balancednics: A list of NICs associated
-                                  with the LoadBalancer.
+                                  with the Load balancer.
         :type       balancednics: ``list``
 
         """
@@ -2201,9 +2249,9 @@ class NIC(ProfitBricksService):
 
 
 class Server(ProfitBricksService):
-    '''
+    """
     This is the main class for managing server resources.
-    '''
+    """
 
     def __init__(self, name=None, cores=None, ram=None, availability_zone=None,
                  boot_volume_id=None, boot_cdrom=None, cpu_family=None,
@@ -2321,7 +2369,7 @@ class Snapshot(ProfitBricksService):
     def __init__(self, name=None, description=None, licence_type='UNKNOWN', size=None,
                  location=None, **kwargs):
         """
-        Volume class initializer.
+        Snapshot class initializer.
 
         :param      name: The name of the snapshot.
         :type       name: ``str``
@@ -2345,4 +2393,4 @@ class Snapshot(ProfitBricksService):
 
     def __repr__(self):
         return ('<Snapshot: name={}, description={}, size={},location={}, ...>'.format(
-            self.name, self.description, str(self.size), self.locatoin))
+            self.name, self.description, str(self.size), self.location))

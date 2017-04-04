@@ -50,7 +50,7 @@ class TestLoadBalancer(unittest.TestCase):
 
         wait_for_completion(self.client, self.loadbalancer, 'create_loadbalancer')
 
-        # Create test LoadBalancer
+        # Create test LoadBalancer2
         loadbalancer2 = LoadBalancer(**self.resource['loadbalancer'])
         loadbalancer2.name = "Python SDK Test 2"
         self.loadbalancer2 = self.client.create_loadbalancer(
@@ -60,7 +60,7 @@ class TestLoadBalancer(unittest.TestCase):
 
         wait_for_completion(self.client, self.loadbalancer2, 'create_loadbalancer2')
 
-        # Create test LoadBalancer
+        # Create test LoadBalancer3
         loadbalancer3 = LoadBalancer(**self.resource['loadbalancer'])
         loadbalancer3.name = "Python SDK Test 3"
         self.loadbalancer3 = self.client.create_loadbalancer(
