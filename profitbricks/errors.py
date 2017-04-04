@@ -7,16 +7,16 @@ class PBError(Exception):
 
 
 class PBNotAuthorizedError(PBError):
-    """HTTP data was invalid or unexpected."""
+    """The authorization infromation provided were not correct"""
 
 
 class PBNotFoundError(PBError):
-    """HTTP data was invalid or unexpected."""
+    """The ProfitBricks entity was not found"""
 
 
 class PBValidationError(PBError):
-    """HTTP data was invalid or unexpected."""
+    """HTTP data provided is not valid"""
 
 
 class PBRateLimitExceededError(PBError):
-    """HTTP data was invalid or unexpected."""
+    """The amount of requests sent have exceeded the API allowed limit"""

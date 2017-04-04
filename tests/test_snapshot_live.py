@@ -38,7 +38,7 @@ class TestLan(unittest.TestCase):
 
         wait_for_completion(self.client, self.volume1, 'create_volume1')
 
-        # Create test snapshot1
+        # Create test snapshot
         snapshot = Snapshot(**self.resource['snapshot'])
         self.snapshot1 = self.client.create_snapshot(
             datacenter_id=self.datacenter['id'],
