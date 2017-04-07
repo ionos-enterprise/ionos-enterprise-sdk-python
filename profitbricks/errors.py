@@ -7,7 +7,7 @@ class PBError(Exception):
 
 
 class PBNotAuthorizedError(PBError):
-    """The authorization infromation provided were not correct"""
+    """The authorization information provided is not correct"""
 
 
 class PBNotFoundError(PBError):
@@ -15,8 +15,8 @@ class PBNotFoundError(PBError):
 
 
 class PBValidationError(PBError):
-    """HTTP data provided is not valid"""
+    """The HTTP data provided is not valid"""
 
 
 class PBRateLimitExceededError(PBError):
-    """The amount of requests sent have exceeded the API allowed limit"""
+    """The number of requests sent have exceeded the allowed API rate limit"""
