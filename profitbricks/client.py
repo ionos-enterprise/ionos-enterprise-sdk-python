@@ -36,6 +36,18 @@ class ProfitBricksService(object):
         self.verify = ssl_verify
         self.headers = headers
 
+    # Contract Resources Functions
+
+    def list_contracts(self, depth=1):
+        """
+        Retrieves information about the resource limits
+        for a particular contract and the current resource usage.
+
+        """
+        response = self._perform_request('/contracts?depth=' + str(depth))
+
+        return response
+
     # Data Center Functions
 
     def get_datacenter(self, datacenter_id, depth=1):

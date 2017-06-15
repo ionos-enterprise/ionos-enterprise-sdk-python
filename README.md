@@ -1,6 +1,6 @@
 # Python SDK
 
-Version: profitbricks-sdk-python **3.1.2**
+Version: profitbricks-sdk-python **4.0.0**
 
 ## Table of Contents
 
@@ -108,6 +108,8 @@ Version: profitbricks-sdk-python **3.1.2**
     * [Remove User from a Group](#remove-user-from-a-group)
     * [List Resources](#list-resources)
     * [Get a Resource](#get-a-resource)
+  * [Contract Resources](#contract-resources)
+    * [List Contract Resources](#list-contract-resources)
   * [Requests](#requests)
     * [List Requests](#list-requests)
     * [Get a Request](#get-a-request)
@@ -1986,6 +1988,20 @@ The following table describes the request arguments:
     response = client.get_resource(
         resource_type='datacenter',
         resource_id='UUID')
+
+---
+
+### Contract Resources
+
+#### List Contract Resources
+
+Retrieves information about the resource limits for a particular contract and the current resource usage.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| depth | no | int | An integer value of 0 - 5 that affects the amount of detail returned. |
+
+    response = client.list_contracts()
 
 ---
 
