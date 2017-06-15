@@ -87,6 +87,27 @@ Version: profitbricks-sdk-python **3.1.2**
     * [Get a Load Balanced NIC](#get-a-load-balanced-nic)
     * [Associate NIC to a Load Balancer](#associate-nic-to-a-load-balancer)
     * [Remove a NIC Association](#remove-a-nic-association)
+  * [User Management](#user-management)
+    * [List Groups](#list-groups)
+    * [Get a Group](#get-a-group)
+    * [Create a Group](#create-a-group)
+    * [Update a Group](#update-a-group)
+    * [Delete a Group](#delete-a-group)
+    * [List Shares](#list-shares)
+    * [Get a Share](#get-a-share)
+    * [Add a Share](#add-a-share)
+    * [Update a Share](#update-a-share)
+    * [Delete a Share](#delete-a-share)
+    * [List Users](#list-users)
+    * [Get a User](#get-a-user)
+    * [Create a User](#create-a-user)
+    * [Update a User](#update-a-user)
+    * [Delete a User](#delete-a-user)
+    * [List Users in a Group](#list-users-in-a-group)
+    * [Add User to Group](#add-user-to-group)
+    * [Remove User from a Group](#remove-user-from-a-group)
+    * [List Resources](#list-resources)
+    * [Get a Resource](#get-a-resource)
   * [Requests](#requests)
     * [List Requests](#list-requests)
     * [Get a Request](#get-a-request)
@@ -1613,6 +1634,358 @@ After retrieving a load balancer, either by ID or as a create response object, y
         datacenter_id='UUID',
         loadbalancer_id='UUID',
         nic_id='UUID')
+
+---
+
+### User Management
+
+#### List Groups
+
+Retrieves a list of all groups.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| depth | no | int | An integer value of 0 - 5 that affects the amount of detail returned. |
+
+    response = client.list_groups()
+
+---
+
+#### Get a Group
+
+Retrieves the attributes of a given group.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| group_id | **yes** | string | The ID of the group. |
+| depth | no | int | An integer value of 0 - 5 that affects the amount of detail returned. |
+
+    response = client.get_group(group_id='UUID')
+
+---
+
+#### Create a Group
+
+Creates a new group and set group privileges.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| name | **yes** | string | The ID of the group. |
+| create_datacenter | no | bool | Indicates if the group is allowed to create virtual data centers. |
+| create_snapshot | no | bool | Indicates if the group is allowed to create snapshots. |
+| reserve_ip | no | bool | Indicates if the group is allowed to reserve IP addresses. |
+| access_activity_log | no | bool | Indicates if the group is allowed to access activity log. |
+
+    group = Group(
+        name='my-group',
+        create_datacenter=True,
+        create_snapshot=False,
+        reserve_ip=True,
+        access_activity_log=False)
+
+    response = client.create_group(group)
+
+---
+
+#### Update a Group
+
+Updates a group's name or privileges.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| group_id | **yes** | string | The ID of the group. |
+| name | **yes** | string | The ID of the group. |
+| create_datacenter | no | bool | Indicates if the group is allowed to create virtual data centers. |
+| create_snapshot | no | bool | Indicates if the group is allowed to create snapshots. |
+| reserve_ip | no | bool | Indicates if the group is allowed to reserve IP addresses. |
+| access_activity_log | no | bool | Indicates if the group is allowed to access activity log. |
+
+    response = client.update_group(
+        group_id='UUID',
+        name='my-group',
+        create_datacenter=False,
+        create_snapshot=True,
+        reserve_ip=False,
+        access_activity_log=True)
+
+---
+
+#### Delete a Group
+
+Deletes the specified group.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| group_id | **yes** | string | The ID of the group. |
+
+    response = client.delete_group(group_id='UUID')
+
+---
+
+#### List Shares
+
+Retrieves a list of all shares though a group.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| group_id | **yes** | string | The ID of the group. |
+| depth | no | int | An integer value of 0 - 5 that affects the amount of detail returned. |
+
+    response = client.list_shares(group_id='UUID')
+
+---
+
+#### Get a Share
+
+Retrieves a specific resource share available to a group.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| group_id | **yes** | string | The ID of the group. |
+| resource_id | **yes** | string | The ID of the resource. |
+| depth | no | int | An integer value of 0 - 5 that affects the amount of detail returned. |
+
+    response = client.get_share(
+        group_id='UUID',
+        resource_id='UUID')
+
+---
+
+#### Add a Share
+
+Shares a resource through a group.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| group_id | **yes** | string | The ID of the group. |
+| resource_id | **yes** | string | The ID of the resource. |
+| edit_privilege | no | string | Indicates that the group has permission to edit privileges on the resource. |
+| share_privilege | no | string | Indicates that the group has permission to share the resource. |
+
+    response = client.add_share(
+        group_id='UUID',
+        resource_id='UUID',
+        edit_privilege=True,
+        share_privilege=True)
+
+---
+
+#### Update a Share
+
+Updates the permissions of a group for a resource share.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| group_id | **yes** | string | The ID of the group. |
+| resource_id | **yes** | string | The ID of the resource. |
+| edit_privilege | no | string | Indicates that the group has permission to edit privileges on the resource. |
+| share_privilege | no | string | Indicates that the group has permission to share the resource. |
+
+    response = client.update_share(
+        group_id='UUID',
+        resource_id='UUID',
+        edit_privilege=True,
+        share_privilege=True)
+
+---
+
+#### Delete a Share
+
+Removes a resource share from a group.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| group_id | **yes** | string | The ID of the group. |
+| resource_id | **yes** | string | The ID of the resource. |
+
+    response = client.delete_share(
+        group_id='UUID',
+        resource_id='UUID')
+
+---
+
+#### List Users
+
+Retrieves a list of all users.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| depth | no | int | An integer value of 0 - 5 that affects the amount of detail returned. |
+
+    response = client.list_users()
+
+---
+
+#### Get a User
+
+Retrieves a single user.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| user_id | **yes** | string | The ID of the user. |
+| depth | no | int | An integer value of 0 - 5 that affects the amount of detail returned. |
+
+    response = client.get_user(user_id='UUID')
+
+---
+
+#### Create a User
+
+Creates a new user.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| firstname | **yes** | string | A name for the user. |
+| lastname | **yes**  | bool | A name for the user. |
+| email | **yes**  | bool | An e-mail address for the user. |
+| password | **yes**  | bool | A password for the user. |
+| administrator | no | bool | Assigns the user have administrative rights. |
+| force_sec_auth | no | bool | Indicates if secure (two-factor) authentication should be forced for the user. |
+
+    user = User(
+        firstname='John',
+        lastname='Doe',
+        email='no-reply@example.com',
+        password='secretpassword123',
+        administrator=True,
+        force_sec_auth=False)
+
+    response = client.create_user(user)
+
+---
+
+#### Update a User
+
+Updates an existing user.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| user_id | **yes** | string | The ID of the user. |
+| firstname | **yes** | string | A name for the user. |
+| lastname | **yes**  | bool | A name for the user. |
+| email | **yes**  | bool | An e-mail address for the user. |
+| administrator | **yes** | bool | Assigns the user have administrative rights. |
+| force_sec_auth | **yes** | bool | Indicates if secure (two-factor) authentication should be forced for the user. |
+
+    response = client.update_user(
+        user_id='UUID',
+        firstname='John',
+        lastname='Doe',
+        email='no-reply@example.com',
+        administrator=True,
+        force_sec_auth=False)
+
+---
+
+#### Delete a User
+
+Removes a user.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| user_id | **yes** | string | The ID of the user. |
+
+    response = client.delete_user(user_id='UUID')
+
+---
+
+#### List Users in a Group
+
+Retrieves a list of all users that are members of a particular group.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| group_id | **yes** | string | The ID of the group. |
+| depth | no | int | An integer value of 0 - 5 that affects the amount of detail returned. |
+
+    response = client.list_group_users(group_id='UUID')
+
+---
+
+#### Add User to Group
+
+Adds an existing user to a group.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| group_id | **yes** | string | The ID of the group. |
+| user_id | **yes** | string | The ID of the user. |
+
+    response = client.add_group_user(
+        group_id='UUID',
+        user_id='UUID')
+
+---
+
+#### Remove User from a Group
+
+Removes a user from a group.
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| group_id | **yes** | string | The ID of the group. |
+| user_id | **yes** | string | The ID of the user. |
+
+    response = client.remove_group_user(
+        group_id='UUID',
+        user_id='UUID')
+
+---
+
+#### List Resources
+
+Retrieves a list of all resources. Alternatively, Retrieves all resources of a particular type.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| resource_type | no | string | The resource type: `datacenter`, `image`, `snapshot` or `ipblock`. |
+| depth | no | int | An integer value of 0 - 5 that affects the amount of detail returned. |
+
+    response = client.list_resources()
+
+    response = client.list_resources(resource_type='snapshot')
+
+---
+
+#### Get a Resource
+
+Retrieves a single resource of a particular type.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| resource_type | **yes** | string | The resource type: `datacenter`, `image`, `snapshot` or `ipblock`. |
+| resource_id | **yes** | string | The ID of the resource. |
+| depth | no | int | An integer value of 0 - 5 that affects the amount of detail returned. |
+
+    response = client.get_resource(resource_id='UUID')
+
+    response = client.get_resource(
+        resource_type='datacenter',
+        resource_id='UUID')
 
 ---
 
