@@ -794,6 +794,7 @@ The following table describes the request arguments:
 | size | **yes** | int | The size of the volume in GB. |
 | bus | no | string | The bus type of the volume (VIRTIO or IDE). Default: VIRTIO. |
 | image | **yes** | string | The image or snapshot ID. |
+| image_alias | **yes** | string | The alias of the image. |
 | type | **yes** | string | The volume type, HDD or SSD. |
 | licence_type | **yes** | string | The licence type of the volume. Options: LINUX, WINDOWS, WINDOWS2016, UNKNOWN, OTHER |
 | image_password | **yes** | string | One-time password is set on the Image for the appropriate root or administrative account. This field may only be set in creation requests. When reading, it always returns *null*. The password has to contain 8-50 characters. Only these characters are allowed: [abcdefghjkmnpqrstuvxABCDEFGHJKLMNPQRSTUVX23456789] |
@@ -819,7 +820,10 @@ The following table outlines the storage availability zones currently supported:
 | ZONE_2 | Fire Zone 2 |
 | ZONE_3 | Fire Zone 3 |
 
-**Note:** You will need to provide either the `image` or the `licence_type` parameters when creating a volume. A `licence_type` is required, but if `image` is supplied, it is already set and cannot be changed. Either the `image_password` or `ssh_keys` parameters need to be supplied when creating a volume using one of the official ProfitBricks images. Only official ProfitBricks provided images support the `ssh_keys` and `image_password` parameters.
+**Note:** You will need to provide either the `image`, `image_alias` or the `licence_type` parameters when creating a volume. A `licence_type` is required, but if `image` or `image_alias` is supplied, it is already set and cannot be changed.
+Obtain a proper image alias via [`list_locations`](#list-locations) operation.
+
+**Note:** Either the `image_password` or `ssh_keys` parameters need to be supplied when creating a volume using one of the official ProfitBricks images. Only official ProfitBricks provided images support the `ssh_keys` and `image_password` parameters.
 
     volume = Volume(
         name='name',

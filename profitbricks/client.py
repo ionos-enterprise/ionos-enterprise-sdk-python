@@ -2365,13 +2365,16 @@ class ProfitBricksService(object):
         if volume.image:
             properties['image'] = volume.image
 
+        if volume.image_alias:
+            properties['imageAlias'] = volume.image_alias
+
         if volume.bus:
             properties['bus'] = volume.bus
 
         if volume.disk_type:
             properties['type'] = volume.disk_type
 
-        if volume.image is None:
+        if volume.image is None and volume.image_alias is None:
             properties['licenceType'] = volume.licence_type
 
         # if volume.licence_type:
@@ -2755,8 +2758,9 @@ class Server(ProfitBricksService):
 
 class Volume(ProfitBricksService):
     def __init__(self, name=None, size=None, bus='VIRTIO', image=None,
-                 disk_type='HDD', licence_type='UNKNOWN', image_password=None,
-                 ssh_keys=None, availability_zone='AUTO', **kwargs):
+                 image_alias=None, disk_type='HDD', licence_type='UNKNOWN',
+                 image_password=None, ssh_keys=None, availability_zone='AUTO',
+                 **kwargs):
         """
         Volume class initializer.
 
@@ -2771,6 +2775,9 @@ class Volume(ProfitBricksService):
 
         :param      image: The image ID to use.
         :type       image: ``str``
+
+        :param      image_alias: An alias of the image to use.
+        :type       image_alias: ``str``
 
         :param      disk_type: The type of storage. Def. HDD
         :type       disk_type: ``str``
@@ -2791,6 +2798,7 @@ class Volume(ProfitBricksService):
         self.availability_zone = availability_zone
         self.size = int(size)
         self.image = image
+        self.image_alias = image_alias
         self.bus = bus
         self.disk_type = disk_type
         self.licence_type = licence_type
@@ -2798,9 +2806,10 @@ class Volume(ProfitBricksService):
         self.ssh_keys = ssh_keys
 
     def __repr__(self):
-        return (('<Volume: name=%s, size=%s, image=%s, bus=%s, disk_type=%s, ...>')
+        return (('<Volume: name=%s, size=%s, image=%s, image_alias=%s,'
+                 'bus=%s, disk_type=%s, ...>')
                 % (self.name, str(self.size), self.image,
-                   self.bus, self.disk_type))
+                   self.image_alias, self.bus, self.disk_type))
 
 
 class Snapshot(ProfitBricksService):
