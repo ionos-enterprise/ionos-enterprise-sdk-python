@@ -244,6 +244,7 @@ The following table outlines the locations currently supported:
 | Value| Country | City |
 |---|---|---|
 | us/las | United States | Las Vegas |
+| us/ewr | United States | Newark |
 | de/fra | Germany | Frankfurt |
 | de/fkb | Germany | Karlsruhe |
 
@@ -711,7 +712,7 @@ The following table describes the request arguments:
 | image_id | **yes** | string | The ID of the image. |
 | name | no | string | The name of the image. |
 | description | no | string | The description of the image. |
-| licence_type | no | string | The snapshot's licence type: LINUX, WINDOWS, WINDOWS2016, or OTHER. |
+| licence_type | no | string | The snapshot's licence type: LINUX, WINDOWS, WINDOWS2016, UNKNOWN or OTHER. |
 | cpu_hot_plug | no | bool | This volume is capable of CPU hot plug (no reboot required) |
 | cpu_hot_unplug | no | bool | This volume is capable of CPU hot unplug (no reboot required) |
 | ram_hot_plug | no | bool |  This volume is capable of memory hot plug (no reboot required) |
@@ -821,7 +822,7 @@ The following table outlines the storage availability zones currently supported:
 | ZONE_3 | Fire Zone 3 |
 
 **Note:** You will need to provide either the `image`, `image_alias` or the `licence_type` parameters when creating a volume. A `licence_type` is required, but if `image` or `image_alias` is supplied, it is already set and cannot be changed.
-Obtain a proper image alias via [`list_locations`](#list-locations) operation.
+Obtain a proper image alias via [List Locations](#list-locations) operation.
 
 **Note:** Either the `image_password` or `ssh_keys` parameters need to be supplied when creating a volume using one of the official ProfitBricks images. Only official ProfitBricks provided images support the `ssh_keys` and `image_password` parameters.
 
@@ -973,7 +974,7 @@ The following table describes the request arguments:
 | snapshot_id | **yes** | string | The ID of the snapshot. |
 | name | no | string | The name of the snapshot. |
 | description | no | string | The description of the snapshot. |
-| licence_type | no | string | The snapshot's licence type: LINUX, WINDOWS, WINDOWS2016, or OTHER. |
+| licence_type | no | string | The snapshot's licence type: LINUX, WINDOWS, WINDOWS2016, UNKNOWN or OTHER. |
 | cpu_hot_plug | no | bool | This volume is capable of CPU hot plug (no reboot required) |
 | cpu_hot_unplug | no | bool | This volume is capable of CPU hot unplug (no reboot required) |
 | ram_hot_plug | no | bool |  This volume is capable of memory hot plug (no reboot required) |
@@ -1050,7 +1051,7 @@ The following table describes the request arguments:
 
 | Name | Required | Type | Description |
 |---|:-:|---|---|
-| location | **yes** | string | This must be one of the locations: us/las, de/fra, de/fkb. |
+| location | **yes** | string | This must be one of the locations: us/las, us/ewr, de/fra, de/fkb. |
 | size | **yes** | int | The size of the IP block you want. |
 | name | no | string | A descriptive name for the IP block |
 
@@ -1059,6 +1060,7 @@ The following table outlines the locations currently supported:
 | Value| Country | City |
 |---|---|---|
 | us/las | United States | Las Vegas |
+| us/ewr | United States | Newark |
 | de/fra | Germany | Frankfurt |
 | de/fkb | Germany | Karlsruhe |
 
