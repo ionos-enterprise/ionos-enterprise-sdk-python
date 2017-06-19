@@ -1176,14 +1176,20 @@ The following table describes the request arguments:
 | lan_id | **yes** | int | The ID of the LAN. |
 | name | no | string | A descriptive name for the LAN. |
 | public | no | bool | Boolean indicating if the LAN faces the public Internet or not. |
+| ip_failover | no | list | A list of IP fail-over dicts. |
 
 After retrieving a LAN, either by ID or as a create response object, you can change its properties and call the `update_lan` method:
+
+    ip_failover = dict()
+    ip_failover['ip'] = 'IP_address'
+    ip_failover['nicUuid'] = 'UUID'
 
     response = client.update_lan(
         datacenter_id='UUID',
         lan_id=ID,
         name='New LAN Name',
-        public=False)
+        public=True,
+        ip_failover=[ip_failover])
 
 ---
 
