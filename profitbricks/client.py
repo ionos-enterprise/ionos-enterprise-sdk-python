@@ -103,9 +103,13 @@ class ProfitBricksService(object):
         entities = dict()
 
         properties = {
-            "name": datacenter.name,
-            "location": datacenter.location,
+            "name": datacenter.name
         }
+
+        # Omit 'location', if not provided, to receive
+        # a meaningful error message.
+        if datacenter.location:
+            properties['location'] = datacenter.location
 
         # Optional Properties
         if datacenter.description:
@@ -319,9 +323,11 @@ class ProfitBricksService(object):
 
         """
         properties = {
-            "name": firewall_rule.name,
-            "protocol": firewall_rule.protocol,
+            "name": firewall_rule.name
         }
+
+        if firewall_rule.protocol:
+            properties['protocol'] = firewall_rule.protocol
 
         # Optional Properties
         if firewall_rule.source_mac:
@@ -501,10 +507,14 @@ class ProfitBricksService(object):
 
         """
         properties = {
-            "name": ipblock.name,
-            "location": ipblock.location,
-            "size": str(ipblock.size).lower()
+            "name": ipblock.name
         }
+
+        if ipblock.location:
+            properties['location'] = ipblock.location
+
+        if ipblock.size:
+            properties['size'] = str(ipblock.size)
 
         raw = {
             "properties": properties,
@@ -1749,12 +1759,13 @@ class ProfitBricksService(object):
         :type       user: ``dict``
 
         """
-        data = json.dumps(self._create_user_dict(user=user))
+        # data = json.dumps(self._create_user_dict(user=user))
+        data = self._create_user_dict(user=user)
 
         response = self._perform_request(
             url='/um/users',
             type='POST',
-            data=data)
+            data=json.dumps(data))
 
         return response
 
@@ -2164,9 +2175,10 @@ class ProfitBricksService(object):
         items = []
         entities = dict()
 
-        properties = {
-            "name": loadbalancer.name
-        }
+        properties = {}
+
+        if loadbalancer.name:
+            properties['name'] = loadbalancer.name
 
         # Optional Properties
         if loadbalancer.ip:
@@ -2207,9 +2219,11 @@ class ProfitBricksService(object):
         items = []
 
         properties = {
-            "name": nic.name,
-            "lan": nic.lan,
+            "name": nic.name
         }
+
+        if nic.lan:
+            properties['lan'] = nic.lan
 
         # Optional Properties
         if nic.nat:
@@ -2290,10 +2304,16 @@ class ProfitBricksService(object):
         entities = dict()
 
         properties = {
-            "name": server.name,
-            "ram": server.ram,
-            "cores": server.cores
+            "name": server.name
         }
+
+        # Omit required attributes, if not provided,
+        # to receive a proper error message.
+        if server.ram:
+            properties['ram'] = server.ram
+
+        if server.cores:
+            properties['cores'] = server.cores
 
         # Optional Properties
         if server.availability_zone:
@@ -2370,9 +2390,13 @@ class ProfitBricksService(object):
 
     def _create_volume_dict(self, volume):
         properties = {
-            "name": volume.name,
-            "size": volume.size
+            "name": volume.name
         }
+
+        # Omit 'size' attributes, if not provided,
+        # to receive a proper error message.
+        if volume.size:
+            properties['size'] = int(volume.size)
 
         # Optional Properties
         if volume.availability_zone:
@@ -2409,9 +2433,10 @@ class ProfitBricksService(object):
         return raw
 
     def _create_group_dict(self, group):
-        properties = {
-            "name": group.name
-        }
+        properties = {}
+
+        if group.name:
+            properties['name'] = group.name
 
         # Optional Properties
         if group.reserve_ip:
@@ -2435,12 +2460,19 @@ class ProfitBricksService(object):
         return raw
 
     def _create_user_dict(self, user):
-        properties = {
-            "firstname": user.firstname,
-            "lastname": user.lastname,
-            "email": user.email,
-            "password": user.password
-        }
+        properties = {}
+
+        if user.firstname:
+            properties['firstname'] = user.firstname
+
+        if user.lastname:
+            properties['lastname'] = user.lastname
+
+        if user.email:
+            properties['email'] = user.email
+
+        if user.password:
+            properties['password'] = user.password
 
         # Optional Properties
         if user.administrator:
@@ -2812,7 +2844,7 @@ class Volume(ProfitBricksService):
             ssh_keys = []
         self.name = name
         self.availability_zone = availability_zone
-        self.size = int(size)
+        self.size = size
         self.image = image
         self.image_alias = image_alias
         self.bus = bus

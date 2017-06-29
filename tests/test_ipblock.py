@@ -4,6 +4,7 @@ from helpers import configuration
 from helpers.resources import resource
 from profitbricks.client import IPBlock
 from profitbricks.client import ProfitBricksService
+from profitbricks.errors import PBError, PBNotFoundError
 from six import assertRegex
 
 
@@ -17,6 +18,7 @@ class TestIPBlock(unittest.TestCase):
             headers=configuration.HEADERS)
 
         ipblock1 = IPBlock(**self.resource['ipblock'])
+        ipblock1.size = 2
         self.ipblock1 = self.client.reserve_ipblock(ipblock1)
 
         ipblock2 = IPBlock(**self.resource['ipblock'])
@@ -30,8 +32,8 @@ class TestIPBlock(unittest.TestCase):
         ipblocks = self.client.list_ipblocks()
 
         assertRegex(self, ipblocks['items'][0]['id'], self.resource['uuid_match'])
-        self.assertGreater(len(ipblocks), 0)
-        assertRegex(self, ipblocks['items'][0]['id'], self.resource['uuid_match'])
+        self.assertGreater(len(ipblocks['items']), 0)
+        self.assertEqual(ipblocks['items'][0]['type'], 'ipblock')
         self.assertGreater(ipblocks['items'][0]['properties']['size'], 0)
         self.assertIn(ipblocks['items'][0]['properties']['location'], self.resource['locations'])
 
@@ -40,8 +42,10 @@ class TestIPBlock(unittest.TestCase):
 
         assertRegex(self, ipblock['id'], self.resource['uuid_match'])
         self.assertEqual(ipblock['id'], self.ipblock1['id'])
+        self.assertEqual(ipblock['type'], 'ipblock')
         self.assertEqual(ipblock['properties']['name'], (self.resource['ipblock']['name']))
-        self.assertEqual(ipblock['properties']['size'], self.resource['ipblock']['size'])
+        self.assertEqual(ipblock['properties']['size'], 2)
+        self.assertEqual(len(ipblock['properties']['ips']), 2)
         self.assertEqual(ipblock['properties']['location'], self.resource['ipblock']['location'])
 
     def test_delete_ipblock(self):
@@ -58,6 +62,20 @@ class TestIPBlock(unittest.TestCase):
         self.assertEqual(ipblock['properties']['location'], self.resource['ipblock']['location'])
 
         self.client.delete_ipblock(ipblock['id'])
+
+    def test_get_failure(self):
+        try:
+            self.client.get_ipblock('00000000-0000-0000-0000-000000000000')
+        except PBNotFoundError as e:
+            self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
+
+    def test_reserve_failure(self):
+        try:
+            ipblock = IPBlock(name=self.resource['ipblock']['name'], size=1)
+            self.client.reserve_ipblock(ipblock)
+        except PBError as e:
+            self.assertIn(self.resource['missing_attribute_error'] % 'location',
+                          e.content[0]['message'])
 
 
 if __name__ == '__main__':

@@ -3,6 +3,7 @@ import unittest
 from helpers import configuration
 from helpers.resources import resource
 from profitbricks.client import ProfitBricksService
+from profitbricks.errors import PBNotFoundError
 
 
 class TestRequest(unittest.TestCase):
@@ -36,6 +37,12 @@ class TestRequest(unittest.TestCase):
         self.assertEqual(request['type'], 'request-status')
         self.assertEqual(request['id'], self.request['id'] + '/status')
         self.assertEqual(request['href'], self.request['href'] + '/status')
+
+    def test_get_failure(self):
+        try:
+            self.client.get_request(request_id='00000000-0000-0000-0000-000000000000', status=False)
+        except PBNotFoundError as e:
+            self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
 
 
 if __name__ == '__main__':

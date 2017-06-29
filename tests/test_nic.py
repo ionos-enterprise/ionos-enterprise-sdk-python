@@ -4,6 +4,8 @@ from helpers import configuration
 from helpers.resources import resource, wait_for_completion
 from profitbricks.client import ProfitBricksService
 from profitbricks.client import Datacenter, Server, LAN, NIC
+from profitbricks.errors import PBError, PBNotFoundError
+from six import assertRegex
 
 
 class TestNic(unittest.TestCase):
@@ -23,7 +25,7 @@ class TestNic(unittest.TestCase):
         # Create test LAN.
         self.lan = self.client.create_lan(
             datacenter_id=self.datacenter['id'],
-            lan=LAN(**self.resource['lan']))
+            lan=LAN(name=self.resource['lan']['name'], public=False))
         wait_for_completion(self.client, self.lan, 'create_lan')
 
         # Create test server.
@@ -35,6 +37,8 @@ class TestNic(unittest.TestCase):
         # Create test NIC1.
         nic1 = NIC(**self.resource['nic'])
         nic1.lan = self.lan['id']
+        self.ips = ['10.0.0.1']
+        nic1.ips = self.ips
         self.nic1 = self.client.create_nic(
             datacenter_id=self.datacenter['id'],
             server_id=self.server['id'],
@@ -70,7 +74,14 @@ class TestNic(unittest.TestCase):
 
         self.assertEqual(nic['type'], 'nic')
         self.assertEqual(nic['id'], self.nic1['id'])
-        self.assertEqual(nic['properties']['name'], self.nic1['properties']['name'])
+        assertRegex(self, nic['id'], self.resource['uuid_match'])
+        self.assertEqual(nic['properties']['name'], self.resource['nic']['name'])
+        self.assertEqual(nic['properties']['firewallActive'],
+                         self.resource['nic']['firewall_active'])
+        self.assertIsInstance(nic['properties']['ips'], list)
+        self.assertEqual(nic['properties']['dhcp'], self.resource['nic']['dhcp'])
+        self.assertEqual(nic['properties']['nat'], self.resource['nic']['nat'])
+        self.assertEqual(nic['properties']['lan'], self.resource['nic']['lan'])
 
     def test_delete_nic(self):
         nic2 = self.client.delete_nic(datacenter_id=self.datacenter['id'],
@@ -84,14 +95,41 @@ class TestNic(unittest.TestCase):
             datacenter_id=self.datacenter['id'],
             server_id=self.server['id'],
             nic_id=self.nic1['id'],
-            name=self.resource['nic']['name'] + ' RENAME')
+            name=self.resource['nic']['name'] + ' - RENAME')
 
+        self.assertEqual(nic['id'], self.nic1['id'])
         self.assertEqual(nic['type'], 'nic')
-        self.assertEqual(nic['properties']['name'], self.resource['nic']['name'] + ' RENAME')
+        self.assertEqual(nic['properties']['name'], self.resource['nic']['name'] + ' - RENAME')
 
     def test_create_nic(self):
         self.assertEqual(self.nic1['type'], 'nic')
         self.assertEqual(self.nic1['properties']['name'], self.resource['nic']['name'])
+        self.assertEqual(self.nic1['properties']['firewallActive'],
+                         self.resource['nic']['firewall_active'])
+        self.assertIsInstance(self.nic1['properties']['ips'], list)
+        self.assertEqual(self.nic1['properties']['dhcp'], self.resource['nic']['dhcp'])
+        self.assertIsNone(self.nic1['properties']['nat'])
+        self.assertEqual(str(self.nic1['properties']['lan']), self.lan['id'])
+
+    def test_get_failure(self):
+        try:
+            self.client.get_nic(
+                datacenter_id=self.datacenter['id'],
+                server_id=self.server['id'],
+                nic_id='00000000-0000-0000-0000-000000000000')
+        except PBNotFoundError as e:
+            self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
+
+    def test_create_failure(self):
+        try:
+            nic = NIC(name=self.resource['nic']['name'])
+            self.client.create_nic(
+                datacenter_id=self.datacenter['id'],
+                server_id=self.server['id'],
+                nic=nic)
+        except PBError as e:
+            self.assertIn(self.resource['missing_attribute_error'] % 'lan',
+                          e.content[0]['message'])
 
 
 if __name__ == '__main__':

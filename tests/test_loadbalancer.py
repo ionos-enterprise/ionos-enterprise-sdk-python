@@ -4,6 +4,8 @@ from helpers import configuration
 from helpers.resources import resource, wait_for_completion
 from profitbricks.client import ProfitBricksService
 from profitbricks.client import Datacenter, LoadBalancer, LAN, NIC, Server
+from profitbricks.errors import PBError, PBNotFoundError
+from six import assertRegex
 
 
 class TestLoadBalancer(unittest.TestCase):
@@ -41,8 +43,18 @@ class TestLoadBalancer(unittest.TestCase):
             nic=nic1)
         wait_for_completion(self.client, self.nic1, 'create_nic1')
 
+        # Create test NIC2.
+        # nic2 = NIC(**self.resource['nic'])
+        # nic2.lan = self.lan['id']
+        # self.nic2 = self.client.create_nic(
+        #     datacenter_id=self.datacenter['id'],
+        #     server_id=self.server['id'],
+        #     nic=nic2)
+        # wait_for_completion(self.client, self.nic2, 'create_nic2')
+
         # Create test LoadBalancer
         loadbalancer = LoadBalancer(**self.resource['loadbalancer'])
+        loadbalancer.balancednics = [self.nic1['id']]
         self.loadbalancer = self.client.create_loadbalancer(
             datacenter_id=self.datacenter['id'],
             loadbalancer=loadbalancer
@@ -62,6 +74,7 @@ class TestLoadBalancer(unittest.TestCase):
 
         # Create test LoadBalancer3
         loadbalancer3 = LoadBalancer(**self.resource['loadbalancer'])
+        loadbalancer3.balancednics = [self.nic1['id']]
         loadbalancer3.name = "Python SDK Test 3"
         self.loadbalancer3 = self.client.create_loadbalancer(
             datacenter_id=self.datacenter['id'],
@@ -69,30 +82,6 @@ class TestLoadBalancer(unittest.TestCase):
         )
 
         wait_for_completion(self.client, self.loadbalancer3, 'create_loadbalancer3')
-
-        # Associate nic to loadbalancer
-        self.associated_nic = self.client.add_loadbalanced_nics(
-            datacenter_id=self.datacenter['id'],
-            loadbalancer_id=self.loadbalancer['id'],
-            nic_id=self.nic1['id'])
-
-        wait_for_completion(self.client, self.associated_nic, 'associate_nic')
-
-        # Associate nic to loadbalancer2
-        self.associated_nic2 = self.client.add_loadbalanced_nics(
-            datacenter_id=self.datacenter['id'],
-            loadbalancer_id=self.loadbalancer2['id'],
-            nic_id=self.nic1['id'])
-
-        wait_for_completion(self.client, self.associated_nic2, 'associate_nic2')
-
-        # Associate nic to loadbalancer3
-        self.associated_nic3 = self.client.add_loadbalanced_nics(
-            datacenter_id=self.datacenter['id'],
-            loadbalancer_id=self.loadbalancer3['id'],
-            nic_id=self.nic1['id'])
-
-        wait_for_completion(self.client, self.associated_nic3, 'associate_nic3')
 
     @classmethod
     def tearDownClass(self):
@@ -116,8 +105,12 @@ class TestLoadBalancer(unittest.TestCase):
 
         self.assertEqual(loadbalancer['type'], 'loadbalancer')
         self.assertEqual(loadbalancer['id'], self.loadbalancer['id'])
+        assertRegex(self, loadbalancer['id'], self.resource['uuid_match'])
         self.assertEqual(loadbalancer['properties']['name'],
                          self.loadbalancer['properties']['name'])
+        self.assertEqual(loadbalancer['properties']['dhcp'],
+                         self.loadbalancer['properties']['dhcp'])
+        self.assertIsNotNone(loadbalancer['properties']['ip'])
 
     def test_delete_loadbalancer(self):
         loadbalancer = self.client.delete_loadbalancer(
@@ -130,25 +123,31 @@ class TestLoadBalancer(unittest.TestCase):
         loadbalancer = self.client.update_loadbalancer(
             datacenter_id=self.datacenter['id'],
             loadbalancer_id=self.loadbalancer['id'],
-            name="updated name")
+            name=self.resource['loadbalancer']['name']+' - RENAME')
 
         self.assertEqual(loadbalancer['type'], 'loadbalancer')
-        self.assertEqual(loadbalancer['properties']['name'], "updated name")
+        self.assertEqual(loadbalancer['properties']['name'],
+                         self.resource['loadbalancer']['name']+' - RENAME')
 
     def test_create_loadbalancer(self):
         self.assertEqual(self.loadbalancer['type'], 'loadbalancer')
+        self.assertIsNotNone(self.loadbalancer['entities']['balancednics'])
         self.assertEqual(self.loadbalancer['properties']['name'],
                          self.resource['loadbalancer']['name'])
+        self.assertEqual(self.loadbalancer['properties']['dhcp'],
+                         self.resource['loadbalancer']['dhcp'])
 
     def test_associate_nic(self):
-        associated_nic = self.client.get_loadbalanced_nic(
+        associated_nic = self.client.add_loadbalanced_nics(
             datacenter_id=self.datacenter['id'],
-            loadbalancer_id=self.loadbalancer['id'],
+            loadbalancer_id=self.loadbalancer2['id'],
             nic_id=self.nic1['id'])
 
-        self.assertEqual(associated_nic['id'], self.associated_nic['id'])
+        wait_for_completion(self.client, associated_nic, 'associate_nic')
+
+        self.assertEqual(associated_nic['id'], self.nic1['id'])
         self.assertEqual(associated_nic['properties']['name'],
-                         self.associated_nic['properties']['name'])
+                         self.nic1['properties']['name'])
 
     def test_remove_nic(self):
         remove_nic = self.client.remove_loadbalanced_nic(
@@ -163,7 +162,7 @@ class TestLoadBalancer(unittest.TestCase):
             loadbalancer_id=self.loadbalancer['id']
         )
 
-        self.assertGreater(len(balanced_nics), 0)
+        self.assertGreater(len(balanced_nics['items']), 0)
         self.assertEqual(balanced_nics['items'][0]['id'], self.nic1['id'])
         self.assertEqual(balanced_nics['items'][0]['type'], 'nic')
 
@@ -175,6 +174,30 @@ class TestLoadBalancer(unittest.TestCase):
 
         self.assertEqual(balanced_nic['id'], self.nic1['id'])
         self.assertEqual(balanced_nic['type'], 'nic')
+        self.assertEqual(balanced_nic['properties']['name'], self.nic1['properties']['name'])
+        self.assertEqual(balanced_nic['properties']['dhcp'], self.nic1['properties']['dhcp'])
+        self.assertIsInstance(balanced_nic['properties']['nat'], bool)
+        self.assertIsInstance(balanced_nic['properties']['firewallActive'], bool)
+        self.assertGreater(balanced_nic['properties']['ips'], 0)
+        self.assertIsInstance(balanced_nic['properties']['lan'], int)
+        assertRegex(self, balanced_nic['properties']['mac'], self.resource['mac_match'])
+
+    def test_get_failure(self):
+        try:
+            self.client.get_loadbalancer(
+                datacenter_id=self.datacenter['id'],
+                loadbalancer_id='00000000-0000-0000-0000-000000000000')
+        except PBNotFoundError as e:
+            self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
+
+    def test_create_failure(self):
+        try:
+            self.client.create_loadbalancer(
+                datacenter_id=self.datacenter['id'],
+                loadbalancer=LoadBalancer())
+        except PBError as e:
+            self.assertIn(self.resource['missing_attribute_error'] % 'lan',
+                          e.content[0]['message'])
 
 
 if __name__ == '__main__':
