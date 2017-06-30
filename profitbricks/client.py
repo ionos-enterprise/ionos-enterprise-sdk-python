@@ -1759,7 +1759,6 @@ class ProfitBricksService(object):
         :type       user: ``dict``
 
         """
-        # data = json.dumps(self._create_user_dict(user=user))
         data = self._create_user_dict(user=user)
 
         response = self._perform_request(
