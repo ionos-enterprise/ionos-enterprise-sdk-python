@@ -178,7 +178,7 @@ class TestLoadBalancer(unittest.TestCase):
         self.assertEqual(balanced_nic['properties']['dhcp'], self.nic1['properties']['dhcp'])
         self.assertIsInstance(balanced_nic['properties']['nat'], bool)
         self.assertIsInstance(balanced_nic['properties']['firewallActive'], bool)
-        self.assertGreater(balanced_nic['properties']['ips'], 0)
+        self.assertGreater(len(balanced_nic['properties']['ips']), 0)
         self.assertIsInstance(balanced_nic['properties']['lan'], int)
         assertRegex(self, balanced_nic['properties']['mac'], self.resource['mac_match'])
 

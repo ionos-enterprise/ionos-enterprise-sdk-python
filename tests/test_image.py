@@ -39,7 +39,7 @@ class TestImage(unittest.TestCase):
         self.assertGreater(len(image['properties']['name']), 0)
         self.assertIsNone(image['properties']['description'])
         self.assertGreater(image['properties']['size'], 0)
-        self.assertNotEquals(image['properties']['name'], "")
+        self.assertNotEqual(image['properties']['name'], "")
         self.assertIn(image['properties']['location'], self.resource['locations'])
         self.assertIn(image['properties']['licenceType'], self.resource['licence_type'])
         self.assertIn(image['properties']['imageType'], ['HDD', 'CDROM'])
