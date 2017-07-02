@@ -6,7 +6,8 @@ from helpers import configuration
 
 def resource():
     return {
-        'locations': ['us/las', 'de/fra', 'de/fkb'],
+        'locations': ['us/las', 'us/ewr', 'de/fra', 'de/fkb'],
+        'licence_type': ['LINUX', 'WINDOWS', 'WINDOWS2016', 'OTHER', 'UNKNOWN'],
         'vm_states': ['RUNNING', 'SHUTOFF'],
         'uuid_match':
             '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$',
@@ -18,15 +19,25 @@ def resource():
             'location': configuration.LOCATION
         },
 
-        'datacenter_complex': {
-            'name': 'Python SDK Test complex',
-            'description': 'Python SDK test datacenter',
+        'datacenter_composite': {
+            'name': 'Python SDK Test Composite',
+            'description': 'Python SDK test composite datacenter',
             'location': configuration.LOCATION
         },
         'server': {
             'name': 'Python SDK Test',
             'ram': 1024,
-            'cores': 1
+            'cores': 1,
+            'cpu_family': 'INTEL_XEON',
+            'availability_zone': 'ZONE_1'
+        },
+        'boot_volume': {
+            'name': 'Python SDK Test',
+            'size': 10,
+            'bus': 'VIRTIO',
+            'type': 'HDD',
+            'image_alias': 'ubuntu:latest',
+            'availability_zone': 'ZONE_1'
         },
         'volume': {
             'name': 'Python SDK Test',
@@ -34,14 +45,15 @@ def resource():
             'bus': 'VIRTIO',
             'type': 'HDD',
             'licence_type': 'UNKNOWN',
-            'availabilityZone': 'ZONE_3'
+            'availability_zone': 'ZONE_1'
         },
-        'volume_failure': {
-            'name': 'Negative Python SDK Test',
-            'size': 3,
+        'volume2': {
+            'name': 'Python SDK Test',
+            'size': 2,
             'bus': 'VIRTIO',
             'type': 'HDD',
-            'licence_type': 'UNKNOWN'
+            'availability_zone': 'ZONE_3',
+            'ssh_keys': ['ssh-rsa AAAAB3NzaC1']
         },
         'snapshot': {
             'name': 'Python SDK Test',
@@ -80,7 +92,17 @@ def resource():
             'name': 'python sdk test',
             'location': configuration.LOCATION,
             'size': 1
-        }
+        },
+        'group': {
+            'name': 'Python SDK Test',
+            'create_datacenter': True,
+            'create_snapshot': True,
+            'reserve_ip': True,
+            'access_activity_log': True
+        },
+
+        'not_found_error': 'Resource does not exist',
+        'missing_attribute_error': "Attribute '%s' is required"
     }
 
 

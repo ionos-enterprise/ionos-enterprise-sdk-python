@@ -1,5 +1,5 @@
 """ProfitBricks API Client Library for Python"""
-__version__ = '3.1.2'
+__version__ = '4.0.0'
 
-API_HOST = 'https://api.profitbricks.com/cloudapi/v3'
-API_VERSION = '3.0'
+API_HOST = 'https://api.profitbricks.com/cloudapi/v4'
+API_VERSION = '4.0'
