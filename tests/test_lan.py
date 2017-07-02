@@ -143,6 +143,13 @@ class TestLan(unittest.TestCase):
         except PBNotFoundError as e:
             self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
 
+    def test_create_failure(self):
+        try:
+            self.client.create_lan(
+                datacenter_id='00000000-0000-0000-0000-000000000000', lan=LAN())
+        except PBNotFoundError as e:
+            self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
+
 
 if __name__ == '__main__':
     unittest.main()

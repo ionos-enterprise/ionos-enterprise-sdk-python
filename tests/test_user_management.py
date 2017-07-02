@@ -269,6 +269,13 @@ class TestUserManagement(unittest.TestCase):
         except PBNotFoundError as e:
             self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
 
+    def test_create_share_failure(self):
+        try:
+            self.client.add_share(group_id=self.group3['id'],
+                                  resource_id='00000000-0000-0000-0000-000000000000')
+        except PBNotFoundError as e:
+            self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
+
     def test_list_group_users(self):
         users = self.client.list_group_users(group_id=self.group1['id'])
 

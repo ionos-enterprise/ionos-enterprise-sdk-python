@@ -53,8 +53,8 @@ class TestSnapshot(unittest.TestCase):
         self.snapshot2 = self.client.create_snapshot(
             datacenter_id=self.datacenter['id'],
             volume_id=self.volume['id'],
-            name="python sdk test volume",
-            description="volume test description")
+            name="python sdk test snapshot",
+            description="snapshot test description")
 
         wait_for_completion(self.client, self.snapshot2, 'create_snapshot2')
 
@@ -128,6 +128,15 @@ class TestSnapshot(unittest.TestCase):
     def test_get_failure(self):
         try:
             self.client.get_snapshot('00000000-0000-0000-0000-000000000000')
+        except PBNotFoundError as e:
+            self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
+
+    def test_create_failure(self):
+        try:
+            self.client.create_snapshot(
+                datacenter_id='00000000-0000-0000-0000-000000000000',
+                volume_id=self.volume['id'],
+                name=self.resource['snapshot']['name'])
         except PBNotFoundError as e:
             self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
 
