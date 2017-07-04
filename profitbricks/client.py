@@ -36,6 +36,18 @@ class ProfitBricksService(object):
         self.verify = ssl_verify
         self.headers = headers
 
+    # Contract Resources Functions
+
+    def list_contracts(self, depth=1):
+        """
+        Retrieves information about the resource limits
+        for a particular contract and the current resource usage.
+
+        """
+        response = self._perform_request('/contracts?depth=' + str(depth))
+
+        return response
+
     # Data Center Functions
 
     def get_datacenter(self, datacenter_id, depth=1):
@@ -91,9 +103,13 @@ class ProfitBricksService(object):
         entities = dict()
 
         properties = {
-            "name": datacenter.name,
-            "location": datacenter.location,
+            "name": datacenter.name
         }
+
+        # Omit 'location', if not provided, to receive
+        # a meaningful error message.
+        if datacenter.location:
+            properties['location'] = datacenter.location
 
         # Optional Properties
         if datacenter.description:
@@ -307,9 +323,11 @@ class ProfitBricksService(object):
 
         """
         properties = {
-            "name": firewall_rule.name,
-            "protocol": firewall_rule.protocol,
+            "name": firewall_rule.name
         }
+
+        if firewall_rule.protocol:
+            properties['protocol'] = firewall_rule.protocol
 
         # Optional Properties
         if firewall_rule.source_mac:
@@ -489,10 +507,14 @@ class ProfitBricksService(object):
 
         """
         properties = {
-            "name": ipblock.name,
-            "location": ipblock.location,
-            "size": str(ipblock.size).lower()
+            "name": ipblock.name
         }
+
+        if ipblock.location:
+            properties['location'] = ipblock.location
+
+        if ipblock.size:
+            properties['size'] = str(ipblock.size)
 
         raw = {
             "properties": properties,
@@ -588,7 +610,8 @@ class ProfitBricksService(object):
 
         return response
 
-    def update_lan(self, datacenter_id, lan_id, **kwargs):
+    def update_lan(self, datacenter_id, lan_id, name=None,
+                   public=None, ip_failover=None):
         """
         Updates a LAN
 
@@ -598,11 +621,26 @@ class ProfitBricksService(object):
         :param      lan_id: The unique ID of the LAN.
         :type       lan_id: ``str``
 
+        :param      name: The new name of the LAN.
+        :type       name: ``str``
+
+        :param      public: Indicates if the LAN is public.
+        :type       public: ``bool``
+
+        :param      ip_failover: A list of IP fail-over dicts.
+        :type       ip_failover: ``list``
+
         """
         data = {}
 
-        for attr in kwargs.keys():
-            data[self._underscore_to_camelcase(attr)] = kwargs[attr]
+        if name:
+            data['name'] = name
+
+        if public is not None:
+            data['public'] = public
+
+        if ip_failover:
+            data['ipFailover'] = ip_failover
 
         response = self._perform_request(
             url='/datacenters/%s/lans/%s' % (datacenter_id, lan_id),
@@ -1489,6 +1527,385 @@ class ProfitBricksService(object):
 
         return response
 
+    # User Management Functions
+
+    def list_groups(self, depth=1):
+        """
+        Retrieves a list of all groups.
+
+        :param      depth: The depth of the response data.
+        :type       depth: ``int``
+
+        """
+        response = self._perform_request('/um/groups?depth=' + str(depth))
+
+        return response
+
+    def get_group(self, group_id, depth=1):
+        """
+        Retrieves a single group by ID.
+
+        :param      group_id: The unique ID of the group.
+        :type       group_id: ``str``
+
+        :param      depth: The depth of the response data.
+        :type       depth: ``int``
+
+        """
+        response = self._perform_request(
+            '/um/groups/%s?depth=%s' % (group_id, str(depth)))
+
+        return response
+
+    def create_group(self, group):
+        """
+        Creates a new group and set group privileges.
+
+        :param      group: The group object to be created.
+        :type       group: ``dict``
+
+        """
+        data = json.dumps(self._create_group_dict(group))
+
+        response = self._perform_request(
+            url='/um/groups',
+            type='POST',
+            data=data)
+
+        return response
+
+    def update_group(self, group_id, **kwargs):
+        """
+        Updates a group.
+
+        :param      group_id: The unique ID of the group.
+        :type       group_id: ``str``
+
+        """
+        properties = {}
+
+        # make the key camel-case transformable
+        if 'create_datacenter' in kwargs:
+            kwargs['create_data_center'] = kwargs.pop('create_datacenter')
+
+        for attr in kwargs.keys():
+            properties[self._underscore_to_camelcase(attr)] = kwargs[attr]
+
+        data = {
+            "properties": properties
+        }
+
+        response = self._perform_request(
+            url='/um/groups/%s' % group_id,
+            type='PUT',
+            data=json.dumps(data))
+
+        return response
+
+    def delete_group(self, group_id):
+        """
+        Removes a group.
+
+        :param      group_id: The unique ID of the group.
+        :type       group_id: ``str``
+
+        """
+        response = self._perform_request(
+            url='/um/groups/%s' % group_id,
+            type='DELETE')
+
+        return response
+
+    def list_shares(self, group_id, depth=1):
+        """
+        Retrieves a list of all shares though a group.
+
+        :param      group_id: The unique ID of the group.
+        :type       group_id: ``str``
+
+        :param      depth: The depth of the response data.
+        :type       depth: ``int``
+
+        """
+        response = self._perform_request(
+            '/um/groups/%s/shares?depth=%s' % (group_id, str(depth)))
+
+        return response
+
+    def get_share(self, group_id, resource_id, depth=1):
+        """
+        Retrieves a specific resource share available to a group.
+
+        :param      group_id: The unique ID of the group.
+        :type       group_id: ``str``
+
+        :param      resource_id: The unique ID of the resource.
+        :type       resource_id: ``str``
+
+        :param      depth: The depth of the response data.
+        :type       depth: ``int``
+
+        """
+        response = self._perform_request(
+            '/um/groups/%s/shares/%s?depth=%s'
+            % (group_id, resource_id, str(depth)))
+
+        return response
+
+    def add_share(self, group_id, resource_id, **kwargs):
+        """
+        Shares a resource through a group.
+
+        :param      group_id: The unique ID of the group.
+        :type       group_id: ``str``
+
+        :param      resource_id: The unique ID of the resource.
+        :type       resource_id: ``str``
+
+        """
+        properties = {}
+
+        for attr in kwargs.keys():
+            properties[self._underscore_to_camelcase(attr)] = kwargs[attr]
+
+        data = {
+            "properties": properties
+        }
+
+        response = self._perform_request(
+            url='/um/groups/%s/shares/%s' % (group_id, resource_id),
+            type='POST',
+            data=json.dumps(data))
+
+        return response
+
+    def update_share(self, group_id, resource_id, **kwargs):
+        """
+        Updates the permissions of a group for a resource share.
+
+        :param      group_id: The unique ID of the group.
+        :type       group_id: ``str``
+
+        :param      resource_id: The unique ID of the resource.
+        :type       resource_id: ``str``
+
+        """
+        properties = {}
+
+        for attr in kwargs.keys():
+            properties[self._underscore_to_camelcase(attr)] = kwargs[attr]
+
+        data = {
+            "properties": properties
+        }
+
+        response = self._perform_request(
+            url='/um/groups/%s/shares/%s' % (group_id, resource_id),
+            type='PUT',
+            data=json.dumps(data))
+
+        return response
+
+    def delete_share(self, group_id, resource_id):
+        """
+        Removes a resource share from a group.
+
+        :param      group_id: The unique ID of the group.
+        :type       group_id: ``str``
+
+        :param      resource_id: The unique ID of the resource.
+        :type       resource_id: ``str``
+
+        """
+        response = self._perform_request(
+            url='/um/groups/%s/shares/%s' % (group_id, resource_id),
+            type='DELETE')
+
+        return response
+
+    def list_users(self, depth=1):
+        """
+        Retrieves a list of all users.
+
+        :param      depth: The depth of the response data.
+        :type       depth: ``int``
+
+        """
+        response = self._perform_request('/um/users?depth=' + str(depth))
+
+        return response
+
+    def get_user(self, user_id, depth=1):
+        """
+        Retrieves a single user by ID.
+
+        :param      user_id: The unique ID of the user.
+        :type       user_id: ``str``
+
+        :param      depth: The depth of the response data.
+        :type       depth: ``int``
+
+        """
+        response = self._perform_request(
+            '/um/users/%s?depth=%s' % (user_id, str(depth)))
+
+        return response
+
+    def create_user(self, user):
+        """
+        Creates a new user.
+
+        :param      user: The user object to be created.
+        :type       user: ``dict``
+
+        """
+        data = self._create_user_dict(user=user)
+
+        response = self._perform_request(
+            url='/um/users',
+            type='POST',
+            data=json.dumps(data))
+
+        return response
+
+    def update_user(self, user_id, **kwargs):
+        """
+        Updates a user.
+
+        :param      user_id: The unique ID of the user.
+        :type       user_id: ``str``
+
+        """
+        properties = {}
+
+        for attr in kwargs.keys():
+            properties[self._underscore_to_camelcase(attr)] = kwargs[attr]
+
+        data = {
+            "properties": properties
+        }
+
+        response = self._perform_request(
+            url='/um/users/%s' % user_id,
+            type='PUT',
+            data=json.dumps(data))
+
+        return response
+
+    def delete_user(self, user_id):
+        """
+        Removes a user.
+
+        :param      user_id: The unique ID of the user.
+        :type       user_id: ``str``
+
+        """
+        response = self._perform_request(
+            url='/um/users/%s' % user_id,
+            type='DELETE')
+
+        return response
+
+    def list_group_users(self, group_id, depth=1):
+        """
+        Retrieves a list of all users that are members of a particular group.
+
+        :param      group_id: The unique ID of the group.
+        :type       group_id: ``str``
+
+        :param      depth: The depth of the response data.
+        :type       depth: ``int``
+
+        """
+        response = self._perform_request(
+            '/um/groups/%s/users?depth=%s' % (group_id, str(depth)))
+
+        return response
+
+    def add_group_user(self, group_id, user_id):
+        """
+        Adds an existing user to a group.
+
+        :param      group_id: The unique ID of the group.
+        :type       group_id: ``str``
+
+        :param      user_id: The unique ID of the user.
+        :type       user_id: ``str``
+
+        """
+        data = {
+            "properties": {
+                "user": user_id
+            }
+        }
+
+        response = self._perform_request(
+            url='/um/groups/%s/users' % group_id,
+            type='POST',
+            data=json.dumps(data))
+
+        return response
+
+    def remove_group_user(self, group_id, user_id):
+        """
+        Removes a user from a group.
+
+        :param      group_id: The unique ID of the group.
+        :type       group_id: ``str``
+
+        :param      user_id: The unique ID of the user.
+        :type       user_id: ``str``
+
+        """
+        response = self._perform_request(
+            url='/um/groups/%s/users/%s' % (group_id, user_id),
+            type='DELETE')
+
+        return response
+
+    def list_resources(self, resource_type=None, depth=1):
+        """
+        Retrieves a list of all resources.
+
+        :param      resource_type: The resource type: datacenter, image,
+                                   snapshot or ipblock. Default is None,
+                                   i.e., all resources are listed.
+        :type       resource_type: ``str``
+
+        :param      depth: The depth of the response data.
+        :type       depth: ``int``
+
+        """
+        if resource_type is not None:
+            response = self._perform_request(
+                '/um/resources/%s?depth=%s' % (resource_type, str(depth)))
+        else:
+            response = self._perform_request(
+                '/um/resources?depth=' + str(depth))
+
+        return response
+
+    def get_resource(self, resource_type, resource_id, depth=1):
+        """
+        Retrieves a single resource of a particular type.
+
+        :param      resource_type: The resource type: datacenter, image,
+                                   snapshot or ipblock.
+        :type       resource_type: ``str``
+
+        :param      resource_id: The unique ID of the resource.
+        :type       resource_id: ``str``
+
+        :param      depth: The depth of the response data.
+        :type       depth: ``int``
+
+        """
+        response = self._perform_request(
+            '/um/resources/%s/%s?depth=%s' % (
+                resource_type, resource_id, str(depth)))
+
+        return response
+
     # Volume Functions
 
     def get_volume(self, datacenter_id, volume_id):
@@ -1757,9 +2174,10 @@ class ProfitBricksService(object):
         items = []
         entities = dict()
 
-        properties = {
-            "name": loadbalancer.name
-        }
+        properties = {}
+
+        if loadbalancer.name:
+            properties['name'] = loadbalancer.name
 
         # Optional Properties
         if loadbalancer.ip:
@@ -1800,9 +2218,11 @@ class ProfitBricksService(object):
         items = []
 
         properties = {
-            "name": nic.name,
-            "lan": nic.lan,
+            "name": nic.name
         }
+
+        if nic.lan:
+            properties['lan'] = nic.lan
 
         # Optional Properties
         if nic.nat:
@@ -1883,10 +2303,16 @@ class ProfitBricksService(object):
         entities = dict()
 
         properties = {
-            "name": server.name,
-            "ram": server.ram,
-            "cores": server.cores
+            "name": server.name
         }
+
+        # Omit required attributes, if not provided,
+        # to receive a proper error message.
+        if server.ram:
+            properties['ram'] = server.ram
+
+        if server.cores:
+            properties['cores'] = server.cores
 
         # Optional Properties
         if server.availability_zone:
@@ -1963,9 +2389,13 @@ class ProfitBricksService(object):
 
     def _create_volume_dict(self, volume):
         properties = {
-            "name": volume.name,
-            "size": volume.size
+            "name": volume.name
         }
+
+        # Omit 'size' attributes, if not provided,
+        # to receive a proper error message.
+        if volume.size:
+            properties['size'] = int(volume.size)
 
         # Optional Properties
         if volume.availability_zone:
@@ -1974,13 +2404,16 @@ class ProfitBricksService(object):
         if volume.image:
             properties['image'] = volume.image
 
+        if volume.image_alias:
+            properties['imageAlias'] = volume.image_alias
+
         if volume.bus:
             properties['bus'] = volume.bus
 
         if volume.disk_type:
             properties['type'] = volume.disk_type
 
-        if volume.image is None:
+        if volume.image is None and volume.image_alias is None:
             properties['licenceType'] = volume.licence_type
 
         # if volume.licence_type:
@@ -1998,6 +2431,60 @@ class ProfitBricksService(object):
 
         return raw
 
+    def _create_group_dict(self, group):
+        properties = {}
+
+        if group.name:
+            properties['name'] = group.name
+
+        # Optional Properties
+        if group.reserve_ip:
+            properties['reserveIp'] = group.reserve_ip
+
+        if group.create_snapshot:
+            properties['createSnapshot'] = group.create_snapshot
+
+        if group.create_datacenter:
+            properties['createDataCenter'] = \
+                group.create_datacenter
+
+        if group.access_activity_log:
+            properties['accessActivityLog'] = \
+                group.access_activity_log
+
+        raw = {
+            "properties": properties
+        }
+
+        return raw
+
+    def _create_user_dict(self, user):
+        properties = {}
+
+        if user.firstname:
+            properties['firstname'] = user.firstname
+
+        if user.lastname:
+            properties['lastname'] = user.lastname
+
+        if user.email:
+            properties['email'] = user.email
+
+        if user.password:
+            properties['password'] = user.password
+
+        # Optional Properties
+        if user.administrator:
+            properties['administrator'] = user.administrator
+
+        if user.force_sec_auth:
+            properties['forceSecAuth'] = user.force_sec_auth
+
+        raw = {
+            "properties": properties
+        }
+
+        return raw
 
 class Datacenter(ProfitBricksService):
     def __init__(self, name=None, location=None, description=None,
@@ -2318,8 +2805,9 @@ class Server(ProfitBricksService):
 
 class Volume(ProfitBricksService):
     def __init__(self, name=None, size=None, bus='VIRTIO', image=None,
-                 disk_type='HDD', licence_type='UNKNOWN', image_password=None,
-                 ssh_keys=None, availability_zone='AUTO', **kwargs):
+                 image_alias=None, disk_type='HDD', licence_type='UNKNOWN',
+                 image_password=None, ssh_keys=None, availability_zone='AUTO',
+                 **kwargs):
         """
         Volume class initializer.
 
@@ -2334,6 +2822,9 @@ class Volume(ProfitBricksService):
 
         :param      image: The image ID to use.
         :type       image: ``str``
+
+        :param      image_alias: An alias of the image to use.
+        :type       image_alias: ``str``
 
         :param      disk_type: The type of storage. Def. HDD
         :type       disk_type: ``str``
@@ -2352,8 +2843,9 @@ class Volume(ProfitBricksService):
             ssh_keys = []
         self.name = name
         self.availability_zone = availability_zone
-        self.size = int(size)
+        self.size = size
         self.image = image
+        self.image_alias = image_alias
         self.bus = bus
         self.disk_type = disk_type
         self.licence_type = licence_type
@@ -2361,9 +2853,10 @@ class Volume(ProfitBricksService):
         self.ssh_keys = ssh_keys
 
     def __repr__(self):
-        return (('<Volume: name=%s, size=%s, image=%s, bus=%s, disk_type=%s, ...>')
+        return (('<Volume: name=%s, size=%s, image=%s, image_alias=%s,'
+                 'bus=%s, disk_type=%s, ...>')
                 % (self.name, str(self.size), self.image,
-                   self.bus, self.disk_type))
+                   self.image_alias, self.bus, self.disk_type))
 
 
 class Snapshot(ProfitBricksService):
@@ -2395,3 +2888,90 @@ class Snapshot(ProfitBricksService):
     def __repr__(self):
         return ('<Snapshot: name={}, description={}, size={},location={}, ...>'.format(
             self.name, self.description, str(self.size), self.location))
+
+
+class Group(ProfitBricksService):
+    def __init__(self, name=None, create_datacenter=None,
+                 create_snapshot=None, reserve_ip=None,
+                 access_activity_log=None):
+        """
+        Group class initializer.
+
+        :param      name: The name of the group.
+        :type       name: ``str``
+
+        :param      create_datacenter: Indicates if the group is allowed
+                                       to create virtual data centers.
+        :type       create_datacenter: ``bool``
+
+        :param      create_snapshot: Indicates if the group is allowed
+                                     to create snapshots.
+        :type       create_snapshot: ``bool``
+
+        :param      reserve_ip: Indicates if the group is allowed
+                                to reserve IP addresses.
+        :type       reserve_ip: ``bool``
+
+        :param      access_activity_log: Indicates if the group is allowed
+                                         to access activity log.
+        :type       access_activity_log: ``bool``
+
+        """
+        self.name = name
+        self.create_datacenter = create_datacenter
+        self.create_snapshot = create_snapshot
+        self.reserve_ip = reserve_ip
+        self.access_activity_log = access_activity_log
+
+    def __repr__(self):
+        return ('<Group: name=%s, create_datacenter=%s, create_snapshot=%s, '
+                'reserve_ip=%s, access_activity_log=%s>'
+                % (self.name, str(self.create_datacenter),
+                   str(self.create_snapshot), str(self.reserve_ip),
+                   str(self.access_activity_log)))
+
+
+class User(ProfitBricksService):
+    def __init__(self, firstname=None, lastname=None,
+                 email=None, password=None,
+                 administrator=None,
+                 force_sec_auth=None):
+        """
+        User class initializer.
+
+        :param      firstname: The user's first name.
+        :type       firstname: ``str``
+
+        :param      lastname: The user's last name.
+        :type       lastname: ``str``
+
+        :param      email: The user's email.
+        :type       email: ``str``
+
+        :param      password: A password for the user.
+        :type       password: ``str``
+
+        :param      administrator: Indicates if the user have
+                                   administrative rights.
+        :type       administrator: ``bool``
+
+        :param      force_sec_auth: Indicates if secure (two-factor)
+                                    authentication should be forced
+                                    for the user.
+        :type       force_sec_auth: ``bool``
+
+        """
+        self.firstname = firstname
+        self.lastname = lastname
+        self.email = email
+        self.password = password
+        self.administrator = administrator
+        self.force_sec_auth = force_sec_auth
+
+    def __repr__(self):
+        return ('<Group: firstname=%s, lastname=%s, email=%s, '
+                'password=%s, administrator=%s, force_sec_auth=%s>'
+                % (self.firstname, self.lastname,
+                   self.email, self.password,
+                   str(self.administrator),
+                   str(self.force_sec_auth)))

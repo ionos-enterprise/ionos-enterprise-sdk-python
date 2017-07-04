@@ -4,6 +4,7 @@ from helpers import configuration
 from helpers.resources import resource, wait_for_completion
 from profitbricks.client import ProfitBricksService
 from profitbricks.client import Datacenter, Server, LAN, NIC
+from profitbricks.errors import PBNotFoundError
 from six import assertRegex
 
 
@@ -72,12 +73,12 @@ class TestLan(unittest.TestCase):
         self.assertEqual(lan['properties']['name'], self.resource['lan']['name'])
         self.assertTrue(lan['properties']['public'], self.resource['lan']['public'])
 
-    def test_delete_lan(self):
+    def test_remove_lan(self):
         lan = self.client.create_lan(
             datacenter_id=self.datacenter['id'],
             lan=LAN(**self.resource['lan']))
 
-        wait_for_completion(self.client, lan, 'create_lan')
+        wait_for_completion(self.client, lan, 'remove_lan')
 
         lan = self.client.delete_lan(datacenter_id=self.datacenter['id'], lan_id=lan['id'])
 
@@ -87,11 +88,11 @@ class TestLan(unittest.TestCase):
         lan = self.client.update_lan(
             datacenter_id=self.datacenter['id'],
             lan_id=self.lan['id'],
-            name=self.resource['lan']['name'] + ' RENAME',
+            name=self.resource['lan']['name'] + ' - RENAME',
             public=False)
 
         self.assertEqual(lan['type'], 'lan')
-        self.assertEqual(lan['properties']['name'], self.resource['lan']['name'] + ' RENAME')
+        self.assertEqual(lan['properties']['name'], self.resource['lan']['name'] + ' - RENAME')
         self.assertFalse(lan['properties']['public'])
 
     def test_create_lan(self):
@@ -135,6 +136,19 @@ class TestLan(unittest.TestCase):
         self.assertEqual(members['items'][0]['type'], 'nic')
         self.assertEqual(members['items'][0]['properties']['name'], self.resource['nic']['name'])
         assertRegex(self, members['items'][0]['properties']['mac'], self.resource['mac_match'])
+
+    def test_get_failure(self):
+        try:
+            self.client.get_lan(datacenter_id=self.datacenter['id'], lan_id=0)
+        except PBNotFoundError as e:
+            self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
+
+    def test_create_failure(self):
+        try:
+            self.client.create_lan(
+                datacenter_id='00000000-0000-0000-0000-000000000000', lan=LAN())
+        except PBNotFoundError as e:
+            self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
 
 
 if __name__ == '__main__':

@@ -4,6 +4,8 @@ from helpers import configuration
 from helpers.resources import resource, wait_for_completion
 from profitbricks.client import ProfitBricksService
 from profitbricks.client import Datacenter, Server, LAN, NIC, FirewallRule
+from profitbricks.errors import PBError, PBNotFoundError
+from six import assertRegex
 
 
 class TestFirewall(unittest.TestCase):
@@ -48,6 +50,7 @@ class TestFirewall(unittest.TestCase):
             server_id=self.server['id'],
             nic_id=self.nic1['id'],
             firewall_rule=fwrule)
+        wait_for_completion(self.client, self.fwrule, 'create_fwrule')
 
         # Create test Firewall Rule 2
         fwrule2 = FirewallRule(**self.resource['fwrule'])
@@ -80,18 +83,29 @@ class TestFirewall(unittest.TestCase):
             datacenter_id=self.datacenter['id'],
             server_id=self.server['id'],
             nic_id=self.nic1['id'],
-            firewall_rule_id=self.fwrule2['id'])
+            firewall_rule_id=self.fwrule['id'])
 
         self.assertEqual(fwrule['type'], 'firewall-rule')
-        self.assertEqual(fwrule['id'], self.fwrule2['id'])
-        self.assertEqual(fwrule['properties']['name'], self.fwrule2['properties']['name'])
+        self.assertEqual(fwrule['id'], self.fwrule['id'])
+        assertRegex(self, fwrule['id'], self.resource['uuid_match'])
+        self.assertEqual(fwrule['properties']['name'], self.fwrule['properties']['name'])
+        self.assertEqual(fwrule['properties']['protocol'], self.fwrule['properties']['protocol'])
+        self.assertEqual(fwrule['properties']['sourceMac'], self.fwrule['properties']['sourceMac'])
+        self.assertIsNone(fwrule['properties']['sourceIp'])
+        self.assertIsNone(fwrule['properties']['targetIp'])
+        self.assertIsNone(fwrule['properties']['icmpCode'])
+        self.assertIsNone(fwrule['properties']['icmpType'])
+        self.assertEqual(fwrule['properties']['portRangeStart'],
+                         self.fwrule['properties']['portRangeStart'])
+        self.assertEqual(fwrule['properties']['portRangeEnd'],
+                         self.fwrule['properties']['portRangeEnd'])
 
     def test_delete_fwrule(self):
         fwrule = self.client.delete_firewall_rule(
             datacenter_id=self.datacenter['id'],
             server_id=self.server['id'],
             nic_id=self.nic1['id'],
-            firewall_rule_id=self.fwrule['id'])
+            firewall_rule_id=self.fwrule2['id'])
 
         self.assertTrue(fwrule)
 
@@ -100,15 +114,48 @@ class TestFirewall(unittest.TestCase):
             datacenter_id=self.datacenter['id'],
             server_id=self.server['id'],
             nic_id=self.nic1['id'],
-            firewall_rule_id=self.fwrule2['id'],
-            name="updated name")
+            firewall_rule_id=self.fwrule['id'],
+            name=self.resource['fwrule']['name']+' - RENAME')
 
         self.assertEqual(fwrule['type'], 'firewall-rule')
-        self.assertEqual(fwrule['properties']['name'], "updated name")
+        self.assertEqual(fwrule['properties']['name'],
+                         self.resource['fwrule']['name']+' - RENAME')
 
     def test_create_fwrule(self):
         self.assertEqual(self.fwrule['type'], 'firewall-rule')
         self.assertEqual(self.fwrule['properties']['name'], self.resource['fwrule']['name'])
+        self.assertEqual(self.fwrule['properties']['protocol'], self.resource['fwrule']['protocol'])
+        self.assertEqual(self.fwrule['properties']['sourceMac'], self.resource['fwrule']['source_mac'])
+        self.assertIsNone(self.fwrule['properties']['sourceIp'])
+        self.assertIsNone(self.fwrule['properties']['targetIp'])
+        self.assertIsNone(self.fwrule['properties']['icmpCode'])
+        self.assertIsNone(self.fwrule['properties']['icmpType'])
+        self.assertEqual(self.fwrule['properties']['portRangeStart'],
+                         self.resource['fwrule']['port_range_start'])
+        self.assertEqual(self.fwrule['properties']['portRangeEnd'],
+                         self.resource['fwrule']['port_range_end'])
+
+    def test_get_failure(self):
+        try:
+            self.client.get_firewall_rule(
+                datacenter_id=self.datacenter['id'],
+                server_id=self.server['id'],
+                nic_id=self.nic1['id'],
+                firewall_rule_id='00000000-0000-0000-0000-000000000000')
+        except PBNotFoundError as e:
+            self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
+
+    def test_create_failure(self):
+        try:
+            fwrule = FirewallRule(name=self.resource['fwrule']['name'])
+            self.client.create_firewall_rule(
+                datacenter_id=self.datacenter['id'],
+                server_id=self.server['id'],
+                nic_id=self.nic1['id'],
+                firewall_rule=fwrule)
+        except PBError as e:
+            self.assertIn(self.resource['missing_attribute_error'] % 'protocol',
+                          e.content[0]['message'])
 
 
 if __name__ == '__main__':

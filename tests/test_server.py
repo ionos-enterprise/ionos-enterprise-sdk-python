@@ -2,13 +2,15 @@ import unittest
 import time
 
 from helpers import configuration
-from helpers.resources import resource, wait_for_completion
+from helpers.resources import (
+    resource,
+    wait_for_completion,
+    check_detached_cdrom_gone
+)
 from profitbricks.client import Datacenter, Server, Volume, NIC, FirewallRule
 from profitbricks.client import ProfitBricksService
+from profitbricks.errors import PBError, PBNotFoundError
 from six import assertRegex
-
-from profitbricks.errors import PBNotFoundError
-from tests.helpers.resources import check_detached_cdrom_gone
 
 
 class TestServer(unittest.TestCase):
@@ -83,7 +85,7 @@ class TestServer(unittest.TestCase):
     def tearDownClass(self):
         self.client.delete_datacenter(datacenter_id=self.datacenter['id'])
 
-    def test_list(self):
+    def test_list_servers(self):
         servers = self.client.list_servers(datacenter_id=self.datacenter['id'])
 
         self.assertGreater(len(servers), 0)
@@ -91,7 +93,7 @@ class TestServer(unittest.TestCase):
         self.assertTrue(self, len(servers['items']) > 0)
         assertRegex(self, servers['items'][0]['id'], self.resource['uuid_match'])
 
-    def test_get(self):
+    def test_get_server(self):
         server = self.client.get_server(
             datacenter_id=self.datacenter['id'],
             server_id=self.server['id']
@@ -102,13 +104,24 @@ class TestServer(unittest.TestCase):
         self.assertEqual(server['properties']['name'], self.resource['server']['name'])
         self.assertEqual(server['properties']['cores'], self.resource['server']['cores'])
         self.assertEqual(server['properties']['ram'], self.resource['server']['ram'])
+        self.assertEqual(server['properties']['availabilityZone'], self.resource['server']['availability_zone'])
+        self.assertEqual(server['properties']['cpuFamily'], self.resource['server']['cpu_family'])
+        # assertRegex(self, server['properties']['bootVolume']['id'], self.resource['uuid_match'])
 
-    def test_delete(self):
+    def test_get_failure(self):
+        try:
+            self.client.get_server(
+                datacenter_id=self.datacenter['id'],
+                server_id='00000000-0000-0000-0000-000000000000')
+        except PBNotFoundError as e:
+            self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
+
+    def test_delete_server(self):
         server = self.client.create_server(
             datacenter_id=self.datacenter['id'],
             server=Server(**self.resource['server'])
         )
-        wait_for_completion(self.client, server, 'create_server')
+        wait_for_completion(self.client, server, 'delete_server')
 
         response = self.client.delete_server(
             datacenter_id=self.datacenter['id'],
@@ -117,7 +130,7 @@ class TestServer(unittest.TestCase):
 
         self.assertTrue(response)
 
-    def test_update(self):
+    def test_update_server(self):
         server = self.client.update_server(
             datacenter_id=self.datacenter['id'],
             server_id=self.server['id'],
@@ -133,23 +146,38 @@ class TestServer(unittest.TestCase):
         self.assertEqual(server['properties']['cores'], self.resource['server']['cores'])
         self.assertEqual(server['properties']['ram'], self.resource['server']['ram'])
 
-    def test_create_simple(self):
-        # Use server created dring server test setup
+    def test_create_server(self):
+        # Use server created during server test setup
         assertRegex(self, self.server['id'], self.resource['uuid_match'])
         self.assertEqual(self.server['type'], 'server')
         self.assertEqual(self.server['properties']['name'], self.resource['server']['name'])
         self.assertEqual(self.server['properties']['cores'], self.resource['server']['cores'])
         self.assertEqual(self.server['properties']['ram'], self.resource['server']['ram'])
-        self.assertIsNone(self.server['properties']['availabilityZone'])
+        self.assertEqual(self.server['properties']['availabilityZone'], self.resource['server']['availability_zone'])
+        self.assertEqual(self.server['properties']['cpuFamily'], self.resource['server']['cpu_family'])
+        # assertRegex(self, server['properties']['bootVolume']['id'], self.resource['uuid_match'])
+        # self.assertIsNone(self.server['properties']['availabilityZone'])
         self.assertIsNone(self.server['properties']['vmState'])
 
-    def test_create_complex(self):
+    def test_create_failure(self):
+        try:
+            server = Server(
+                name=self.resource['server']['name'],
+                ram=self.resource['server']['ram']
+            )
+            self.client.create_server(datacenter_id=self.datacenter['id'], server=server)
+        except PBError as e:
+            self.assertIn(self.resource['missing_attribute_error'] % 'cores',
+                          e.content[0]['message'])
+
+    def test_create_composite(self):
         fwrule = FirewallRule(**self.resource['fwrule'])
         nic = NIC(firewall_rules=[fwrule], **self.resource['nic'])
         volume = Volume(image=self.image['id'],
                         image_password='secretpassword123',
                         ssh_keys=['ssh-rsa AAAAB3NzaC1'],
                         **self.resource['volume'])
+        volume.availability_zone = 'ZONE_3'
 
         server = Server(
             nics=[nic],
@@ -159,7 +187,7 @@ class TestServer(unittest.TestCase):
         composite_server = self.client.create_server(
             datacenter_id=self.datacenter['id'],
             server=server)
-        wait_for_completion(self.client, composite_server, 'create_server', wait_timeout=600)
+        wait_for_completion(self.client, composite_server, 'create_composite', wait_timeout=600)
 
         composite_server = self.client.get_server(
             datacenter_id=self.datacenter['id'],
@@ -169,8 +197,10 @@ class TestServer(unittest.TestCase):
         self.assertEqual(composite_server['properties']['name'], self.resource['server']['name'])
         self.assertEqual(composite_server['properties']['cores'], self.resource['server']['cores'])
         self.assertEqual(composite_server['properties']['ram'], self.resource['server']['ram'])
-        self.assertEqual(composite_server['properties']['availabilityZone'], 'AUTO')
+        self.assertEqual(composite_server['properties']['availabilityZone'], 'ZONE_1')
         self.assertIn(composite_server['properties']['vmState'], self.resource['vm_states'])
+        self.assertGreater(len(composite_server['entities']['volumes']['items']), 0)
+        self.assertGreater(len(composite_server['entities']['nics']['items']), 0)
 
     def test_start_server(self):
         server = self.client.start_server(
@@ -194,59 +224,60 @@ class TestServer(unittest.TestCase):
         self.assertTrue(server)
 
     def test_get_attached_volumes(self):
-        servers = self.client.get_attached_volumes(
+        volumes = self.client.get_attached_volumes(
             datacenter_id=self.datacenter['id'],
             server_id=self.server['id'])
 
-        self.assertGreater(len(servers), 0)
-        self.assertEqual(servers['items'][0]['id'], self.volume1['id'])
-        self.assertEqual(servers['items'][0]['properties']['name'],
+        self.assertGreater(len(volumes['items']), 0)
+        self.assertEqual(volumes['items'][0]['type'], 'volume')
+        self.assertEqual(volumes['items'][0]['id'], self.volume1['id'])
+        self.assertEqual(volumes['items'][0]['properties']['name'],
                          self.resource['volume']['name'])
-        self.assertEqual(servers['items'][0]['properties']['size'],
+        self.assertEqual(volumes['items'][0]['properties']['size'],
                          self.resource['volume']['size'])
-        self.assertEqual(servers['items'][0]['properties']['bus'],
+        self.assertEqual(volumes['items'][0]['properties']['bus'],
                          self.resource['volume']['bus'])
-        self.assertEqual(servers['items'][0]['properties']['type'],
+        self.assertEqual(volumes['items'][0]['properties']['type'],
                          self.resource['volume']['type'])
-        self.assertEqual(servers['items'][0]['properties']['licenceType'], 'UNKNOWN')
-        self.assertIsNone(servers['items'][0]['properties']['image'])
-        self.assertIsNone(servers['items'][0]['properties']['imagePassword'])
-        self.assertFalse(servers['items'][0]['properties']['cpuHotPlug'])
-        self.assertFalse(servers['items'][0]['properties']['cpuHotUnplug'])
-        self.assertFalse(servers['items'][0]['properties']['ramHotPlug'])
-        self.assertFalse(servers['items'][0]['properties']['ramHotUnplug'])
-        self.assertFalse(servers['items'][0]['properties']['nicHotPlug'])
-        self.assertFalse(servers['items'][0]['properties']['nicHotUnplug'])
-        self.assertFalse(servers['items'][0]['properties']['discVirtioHotPlug'])
-        self.assertFalse(servers['items'][0]['properties']['discVirtioHotUnplug'])
-        self.assertFalse(servers['items'][0]['properties']['discScsiHotPlug'])
-        self.assertFalse(servers['items'][0]['properties']['discScsiHotUnplug'])
+        self.assertEqual(volumes['items'][0]['properties']['licenceType'], 'UNKNOWN')
+        self.assertIsNone(volumes['items'][0]['properties']['image'])
+        self.assertIsNone(volumes['items'][0]['properties']['imagePassword'])
+        self.assertFalse(volumes['items'][0]['properties']['cpuHotPlug'])
+        self.assertFalse(volumes['items'][0]['properties']['cpuHotUnplug'])
+        self.assertFalse(volumes['items'][0]['properties']['ramHotPlug'])
+        self.assertFalse(volumes['items'][0]['properties']['ramHotUnplug'])
+        self.assertFalse(volumes['items'][0]['properties']['nicHotPlug'])
+        self.assertFalse(volumes['items'][0]['properties']['nicHotUnplug'])
+        self.assertFalse(volumes['items'][0]['properties']['discVirtioHotPlug'])
+        self.assertFalse(volumes['items'][0]['properties']['discVirtioHotUnplug'])
+        self.assertFalse(volumes['items'][0]['properties']['discScsiHotPlug'])
+        self.assertFalse(volumes['items'][0]['properties']['discScsiHotUnplug'])
 
     def test_get_attached_volume(self):
-        server = self.client.get_attached_volume(
+        volume = self.client.get_attached_volume(
             datacenter_id=self.datacenter['id'],
             server_id=self.server['id'],
             volume_id=self.volume1['id'])
 
-        self.assertEqual(server['id'], self.volume1['id'])
-        self.assertEqual(server['properties']['name'], self.resource['volume']['name'])
-        self.assertEqual(server['properties']['size'], self.resource['volume']['size'])
-        self.assertEqual(server['properties']['bus'], self.resource['volume']['bus'])
-        self.assertEqual(server['properties']['type'], self.resource['volume']['type'])
-        self.assertEqual(server['properties']['licenceType'],
+        self.assertEqual(volume['id'], self.volume1['id'])
+        self.assertEqual(volume['properties']['name'], self.resource['volume']['name'])
+        self.assertEqual(volume['properties']['size'], self.resource['volume']['size'])
+        self.assertEqual(volume['properties']['bus'], self.resource['volume']['bus'])
+        self.assertEqual(volume['properties']['type'], self.resource['volume']['type'])
+        self.assertEqual(volume['properties']['licenceType'],
                          self.resource['volume']['licence_type'])
-        self.assertIsNone(server['properties']['image'])
-        self.assertIsNone(server['properties']['imagePassword'])
-        self.assertFalse(server['properties']['cpuHotPlug'])
-        self.assertFalse(server['properties']['cpuHotUnplug'])
-        self.assertFalse(server['properties']['ramHotPlug'])
-        self.assertFalse(server['properties']['ramHotUnplug'])
-        self.assertFalse(server['properties']['nicHotPlug'])
-        self.assertFalse(server['properties']['nicHotUnplug'])
-        self.assertFalse(server['properties']['discVirtioHotPlug'])
-        self.assertFalse(server['properties']['discVirtioHotUnplug'])
-        self.assertFalse(server['properties']['discScsiHotPlug'])
-        self.assertFalse(server['properties']['discScsiHotUnplug'])
+        self.assertIsNone(volume['properties']['image'])
+        self.assertIsNone(volume['properties']['imagePassword'])
+        self.assertFalse(volume['properties']['cpuHotPlug'])
+        self.assertFalse(volume['properties']['cpuHotUnplug'])
+        self.assertFalse(volume['properties']['ramHotPlug'])
+        self.assertFalse(volume['properties']['ramHotUnplug'])
+        self.assertFalse(volume['properties']['nicHotPlug'])
+        self.assertFalse(volume['properties']['nicHotUnplug'])
+        self.assertFalse(volume['properties']['discVirtioHotPlug'])
+        self.assertFalse(volume['properties']['discVirtioHotUnplug'])
+        self.assertFalse(volume['properties']['discScsiHotPlug'])
+        self.assertFalse(volume['properties']['discScsiHotUnplug'])
 
     def test_attach_volume(self):
         volume = self.client.attach_volume(
