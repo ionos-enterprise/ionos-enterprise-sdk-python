@@ -133,8 +133,10 @@ class TestUserManagement(unittest.TestCase):
         self.assertEqual(user['properties']['firstname'], self.user1['properties']['firstname'])
         self.assertEqual(user['properties']['lastname'], self.user1['properties']['lastname'])
         self.assertEqual(user['properties']['email'], self.user1['properties']['email'])
-        self.assertEqual(user['properties']['administrator'], self.user1['properties']['administrator'])
-        self.assertEqual(user['properties']['forceSecAuth'], self.user1['properties']['forceSecAuth'])
+        self.assertEqual(user['properties']['administrator'],
+                         self.user1['properties']['administrator'])
+        self.assertEqual(user['properties']['forceSecAuth'],
+                         self.user1['properties']['forceSecAuth'])
         self.assertFalse(user['properties']['secAuthActive'])
 
     def test_delete_user(self):
@@ -158,7 +160,8 @@ class TestUserManagement(unittest.TestCase):
         self.assertEqual(user['properties']['lastname'], self.user1['properties']['lastname'])
         self.assertEqual(user['properties']['email'], self.user1['properties']['email'])
         self.assertFalse(user['properties']['administrator'])
-        self.assertEqual(user['properties']['forceSecAuth'], self.user1['properties']['forceSecAuth'])
+        self.assertEqual(user['properties']['forceSecAuth'],
+                         self.user1['properties']['forceSecAuth'])
 
     def test_create_user_failure(self):
         try:
@@ -298,7 +301,7 @@ class TestUserManagement(unittest.TestCase):
 
     def test_add_group_user(self):
         user = self.client.add_group_user(group_id=self.group1['id'],
-                                           user_id=self.user1['id'])
+                                          user_id=self.user1['id'])
 
         self.assertEqual(user['id'], self.user1['id'])
         self.assertEqual(user['type'], 'user')
@@ -371,7 +374,7 @@ class TestUserManagement(unittest.TestCase):
         self.assertEqual(resource['id'], self.snapshot['id'])
         self.assertEqual(resource['type'], 'snapshot')
 
-    def test_list_ipblock_resources(self):
+    def test_list_ipblock_resources2(self):
         resource = self.client.get_resource(resource_type='ipblock',
                                             resource_id=self.ipblock['id'])
 

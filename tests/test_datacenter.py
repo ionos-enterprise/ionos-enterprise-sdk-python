@@ -74,7 +74,6 @@ class TestDatacenter(unittest.TestCase):
             self.assertIn(self.resource['missing_attribute_error'] % 'location',
                           e.content[0]['message'])
 
-
     def test_remove_datacenter(self):
         datacenter = self.client.create_datacenter(
             datacenter=Datacenter(**self.resource['datacenter']))

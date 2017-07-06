@@ -116,7 +116,8 @@ class TestVolume(unittest.TestCase):
             volume_id=self.volume['id'])
 
         self.assertEqual(volume['id'], self.volume['id'])
-        self.assertEqual(volume['properties']['name'], self.resource['volume2']['name'] + ' - RENAME')
+        self.assertEqual(volume['properties']['name'],
+                         self.resource['volume2']['name'] + ' - RENAME')
         self.assertEqual(volume['properties']['size'], 6)
 
     def test_create_volume(self):
@@ -126,7 +127,8 @@ class TestVolume(unittest.TestCase):
         self.assertEqual(self.volume['properties']['bus'], self.resource['volume2']['bus'])
         self.assertEqual(self.volume['properties']['type'], self.resource['volume2']['type'])
         self.assertEqual(self.volume['properties']['size'], self.resource['volume2']['size'])
-        self.assertEqual(self.volume['properties']['sshKeys'], self.resource['volume2']['ssh_keys'])
+        self.assertEqual(self.volume['properties']['sshKeys'],
+                         self.resource['volume2']['ssh_keys'])
         self.assertEqual(self.volume['properties']['availabilityZone'],
                          self.resource['volume2']['availability_zone'])
 

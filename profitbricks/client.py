@@ -2500,6 +2500,7 @@ class ProfitBricksService(object):
 
         return raw
 
+
 class Datacenter(ProfitBricksService):
     def __init__(self, name=None, location=None, description=None,
                  volumes=None, servers=None, lans=None, loadbalancers=None,

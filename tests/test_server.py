@@ -118,7 +118,8 @@ class TestServer(unittest.TestCase):
         self.assertEqual(server['properties']['name'], self.resource['server']['name'])
         self.assertEqual(server['properties']['cores'], self.resource['server']['cores'])
         self.assertEqual(server['properties']['ram'], self.resource['server']['ram'])
-        self.assertEqual(server['properties']['availabilityZone'], self.resource['server']['availability_zone'])
+        self.assertEqual(server['properties']['availabilityZone'],
+                         self.resource['server']['availability_zone'])
         self.assertEqual(server['properties']['cpuFamily'], self.resource['server']['cpu_family'])
         # assertRegex(self, server['properties']['bootVolume']['id'], self.resource['uuid_match'])
 
@@ -167,8 +168,10 @@ class TestServer(unittest.TestCase):
         self.assertEqual(self.server['properties']['name'], self.resource['server']['name'])
         self.assertEqual(self.server['properties']['cores'], self.resource['server']['cores'])
         self.assertEqual(self.server['properties']['ram'], self.resource['server']['ram'])
-        self.assertEqual(self.server['properties']['availabilityZone'], self.resource['server']['availability_zone'])
-        self.assertEqual(self.server['properties']['cpuFamily'], self.resource['server']['cpu_family'])
+        self.assertEqual(self.server['properties']['availabilityZone'],
+                         self.resource['server']['availability_zone'])
+        self.assertEqual(self.server['properties']['cpuFamily'],
+                         self.resource['server']['cpu_family'])
         # assertRegex(self, server['properties']['bootVolume']['id'], self.resource['uuid_match'])
         # self.assertIsNone(self.server['properties']['availabilityZone'])
         self.assertIsNone(self.server['properties']['vmState'])
