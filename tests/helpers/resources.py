@@ -155,8 +155,8 @@ def wait_for_completion(conn, promise, msg, wait_timeout=300):
             return
         elif operation_result['metadata']['status'] == "FAILED":
             raise Exception(
-                'Request failed to complete'.format(
-                    msg, str(promise['requestId']))
+                'Request {0} failed to complete: {1}'.format(
+                    str(promise['requestId']), msg)
             )
 
     raise Exception(
