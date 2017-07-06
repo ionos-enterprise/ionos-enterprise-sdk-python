@@ -2514,8 +2514,7 @@ class ProfitBricksService(object):
 
 class Datacenter(object):
     def __init__(self, name=None, location=None, description=None,
-                 volumes=None, servers=None, lans=None, loadbalancers=None,
-                 **kwargs):
+                 volumes=None, servers=None, lans=None, loadbalancers=None):
         """
         The Datacenter class initializer.
 
@@ -2567,7 +2566,7 @@ class FirewallRule(object):
                  source_mac=None, source_ip=None,
                  target_ip=None, port_range_start=None,
                  port_range_end=None, icmp_type=None,
-                 icmp_code=None, **kwargs):
+                 icmp_code=None):
         """
         FirewallRule class initializer.
 
@@ -2684,7 +2683,7 @@ class LoadBalancer(object):
     """
 
     def __init__(self, name=None, ip=None,
-                 dhcp=None, balancednics=None, **kwargs):
+                 dhcp=None, balancednics=None):
         """
         LoadBalancer class initializer.
 
@@ -2718,7 +2717,7 @@ class LoadBalancer(object):
 class NIC(object):
     def __init__(self, name=None, ips=None,
                  dhcp=None, lan=None, firewall_active=None,
-                 firewall_rules=None, nat=None, **kwargs):
+                 firewall_rules=None, nat=None):
         """
         NIC class initializer.
 
@@ -2832,8 +2831,7 @@ class Server(object):
 class Volume(object):
     def __init__(self, name=None, size=None, bus='VIRTIO', image=None,
                  image_alias=None, disk_type='HDD', licence_type='UNKNOWN',
-                 image_password=None, ssh_keys=None, availability_zone='AUTO',
-                 **kwargs):
+                 image_password=None, ssh_keys=None, availability_zone='AUTO'):
         """
         Volume class initializer.
 
@@ -2887,7 +2885,7 @@ class Volume(object):
 
 class Snapshot(object):
     def __init__(self, name=None, description=None, licence_type='UNKNOWN', size=None,
-                 location=None, **kwargs):
+                 location=None):
         """
         Snapshot class initializer.
 
