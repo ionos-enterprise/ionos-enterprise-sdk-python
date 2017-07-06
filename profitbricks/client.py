@@ -42,7 +42,7 @@ class ProfitBricksService(object):
     """
 
     def __init__(self, username=None, password=None, host_base=API_HOST,
-                 host_cert=None, ssl_verify=True, headers=None):
+                 host_cert=None, ssl_verify=True, headers=None, client_user_agent=None):
         if headers is None:
             headers = dict()
         self.username = username
@@ -51,6 +51,9 @@ class ProfitBricksService(object):
         self.host_cert = host_cert
         self.verify = ssl_verify
         self.headers = headers
+        self.user_agent = 'profitbricks-sdk-python/' + __version__
+        if client_user_agent:
+            self.user_agent = client_user_agent + ' ' + self.user_agent
 
     # Contract Resources Functions
 
@@ -2082,7 +2085,7 @@ class ProfitBricksService(object):
                                self.password))).decode('utf-8'))})
 
         url = self._build_url(url)
-        headers.update({'User-Agent': 'profitbricks-sdk-python/' + __version__})
+        headers.update({'User-Agent': self.user_agent})
         if method == 'POST' or method == 'PUT':
             response = self._wrapped_request(method, url, data=data,
                                              headers=headers)
