@@ -2095,7 +2095,8 @@ class ProfitBricksService(object):
 
         return json_response
 
-    def _request_id(self, headers):
+    @staticmethod
+    def _request_id(headers):
         # The request URL has currently the format:
         # {host_base}/requests/{request ID}/status
         # Thus search for a UUID.
@@ -2110,7 +2111,8 @@ class ProfitBricksService(object):
         url = self.host_base + uri
         return url
 
-    def _b(self, s, encoding='utf-8'):
+    @staticmethod
+    def _b(s, encoding='utf-8'):
         """
         Returns the given string as a string of bytes. That means in
         Python2 as a str object, and in Python3 as a bytes object.
@@ -2131,7 +2133,8 @@ class ProfitBricksService(object):
 
         raise TypeError("Invalid argument %r for _b()" % (s,))
 
-    def _underscore_to_camelcase(self, value):
+    @staticmethod
+    def _underscore_to_camelcase(value):
         """
         Convert Python snake case back to mixed case.
         """
@@ -2143,7 +2146,8 @@ class ProfitBricksService(object):
         c = camelcase()
         return "".join(next(c)(x) if x else '_' for x in value.split("_"))
 
-    def _create_lan_dict(self, lan):
+    @staticmethod
+    def _create_lan_dict(lan):
         items = []
         entities = dict()
 
@@ -2184,7 +2188,8 @@ class ProfitBricksService(object):
 
         return raw
 
-    def _create_loadbalancer_dict(self, loadbalancer):
+    @staticmethod
+    def _create_loadbalancer_dict(loadbalancer):
         items = []
         entities = dict()
 
@@ -2275,7 +2280,8 @@ class ProfitBricksService(object):
 
         return raw
 
-    def _create_firewallrules_dict(self, rule):
+    @staticmethod
+    def _create_firewallrules_dict(rule):
         properties = {}
 
         if rule.name:
@@ -2401,7 +2407,8 @@ class ProfitBricksService(object):
 
         return raw
 
-    def _create_volume_dict(self, volume):
+    @staticmethod
+    def _create_volume_dict(volume):
         properties = {
             "name": volume.name
         }
@@ -2445,7 +2452,8 @@ class ProfitBricksService(object):
 
         return raw
 
-    def _create_group_dict(self, group):
+    @staticmethod
+    def _create_group_dict(group):
         properties = {}
 
         if group.name:
@@ -2472,7 +2480,8 @@ class ProfitBricksService(object):
 
         return raw
 
-    def _create_user_dict(self, user):
+    @staticmethod
+    def _create_user_dict(user):
         properties = {}
 
         if user.firstname:
