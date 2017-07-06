@@ -2038,7 +2038,9 @@ class ProfitBricksService(object):
                                files, auth, timeout, allow_redirects, proxies,
                                hooks, stream, self.verify, self.host_cert)
 
-    def _perform_request(self, url, type='GET', data=None, headers=dict()):
+    def _perform_request(self, url, type='GET', data=None, headers=None):
+        if headers is None:
+            headers = dict()
         headers.update({'Authorization': 'Basic %s' % (base64.b64encode(
             self._b('%s:%s' % (self.username,
                                self.password))).decode('utf-8'))})
