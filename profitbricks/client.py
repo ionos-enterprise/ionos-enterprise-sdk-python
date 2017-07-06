@@ -100,7 +100,7 @@ class ProfitBricksService(object):
         """
         response = self._perform_request(
             url='/datacenters/%s' % (datacenter_id),
-            type='DELETE')
+            method='DELETE')
 
         return response
 
@@ -209,7 +209,7 @@ class ProfitBricksService(object):
 
         response = self._perform_request(
             url='/datacenters',
-            type='POST',
+            method='POST',
             data=data)
 
         return response
@@ -230,7 +230,7 @@ class ProfitBricksService(object):
         response = self._perform_request(
             url='/datacenters/%s' % (
                 datacenter_id),
-            type='PATCH',
+            method='PATCH',
             data=json.dumps(data))
 
         return response
@@ -314,7 +314,7 @@ class ProfitBricksService(object):
                 server_id,
                 nic_id,
                 firewall_rule_id),
-            type='DELETE')
+            method='DELETE')
 
         return response
 
@@ -374,7 +374,7 @@ class ProfitBricksService(object):
                 datacenter_id,
                 server_id,
                 nic_id),
-            type='POST',
+            method='POST',
             data=json.dumps(data))
 
         return response
@@ -425,7 +425,7 @@ class ProfitBricksService(object):
                 server_id,
                 nic_id,
                 firewall_rule_id),
-            type='PATCH',
+            method='PATCH',
             data=json.dumps(data))
 
         return response
@@ -463,7 +463,7 @@ class ProfitBricksService(object):
 
         """
         response = self._perform_request(url='/images/' + image_id,
-                                         type='DELETE')
+                                         method='DELETE')
         return response
 
     def update_image(self, image_id, **kwargs):
@@ -477,7 +477,7 @@ class ProfitBricksService(object):
             data[self._underscore_to_camelcase(attr)] = kwargs[attr]
 
         response = self._perform_request(url='/images/' + image_id,
-                                         type='PATCH',
+                                         method='PATCH',
                                          data=json.dumps(data))
         return response
 
@@ -511,7 +511,7 @@ class ProfitBricksService(object):
 
         """
         response = self._perform_request(
-            url='/ipblocks/' + ipblock_id, type='DELETE')
+            url='/ipblocks/' + ipblock_id, method='DELETE')
 
         return response
 
@@ -537,7 +537,7 @@ class ProfitBricksService(object):
         data = self._underscore_to_camelcase(json.dumps(raw))
 
         response = self._perform_request(
-            url='/ipblocks', type='POST', data=data)
+            url='/ipblocks', method='POST', data=data)
 
         return response
 
@@ -596,7 +596,7 @@ class ProfitBricksService(object):
         """
         response = self._perform_request(
             url='/datacenters/%s/lans/%s' % (
-                datacenter_id, lan_id), type='DELETE')
+                datacenter_id, lan_id), method='DELETE')
 
         return response
 
@@ -619,7 +619,7 @@ class ProfitBricksService(object):
 
         response = self._perform_request(
             url='/datacenters/%s/lans' % datacenter_id,
-            type='POST',
+            method='POST',
             data=data)
 
         return response
@@ -658,7 +658,7 @@ class ProfitBricksService(object):
 
         response = self._perform_request(
             url='/datacenters/%s/lans/%s' % (datacenter_id, lan_id),
-            type='PATCH',
+            method='PATCH',
             data=json.dumps(data))
 
         return response
@@ -731,7 +731,7 @@ class ProfitBricksService(object):
         """
         response = self._perform_request(
             url='/datacenters/%s/loadbalancers/%s' % (
-                datacenter_id, loadbalancer_id), type='DELETE')
+                datacenter_id, loadbalancer_id), method='DELETE')
 
         return response
 
@@ -754,7 +754,7 @@ class ProfitBricksService(object):
 
         response = self._perform_request(
             url='/datacenters/%s/loadbalancers' % datacenter_id,
-            type='POST',
+            method='POST',
             data=data)
 
         return response
@@ -779,7 +779,7 @@ class ProfitBricksService(object):
         response = self._perform_request(
             url='/datacenters/%s/loadbalancers/%s' % (datacenter_id,
                                                       loadbalancer_id),
-            type='PATCH',
+            method='PATCH',
             data=json.dumps(data))
 
         return response
@@ -826,7 +826,7 @@ class ProfitBricksService(object):
             url='/datacenters/%s/loadbalancers/%s/balancednics' % (
                 datacenter_id,
                 loadbalancer_id),
-            type='POST',
+            method='POST',
             data=data)
 
         return response
@@ -878,7 +878,7 @@ class ProfitBricksService(object):
                 datacenter_id,
                 loadbalancer_id,
                 nic_id),
-            type='DELETE')
+            method='DELETE')
 
         return response
 
@@ -973,7 +973,7 @@ class ProfitBricksService(object):
                 datacenter_id,
                 server_id,
                 nic_id),
-            type='DELETE')
+            method='DELETE')
 
         return response
 
@@ -998,7 +998,7 @@ class ProfitBricksService(object):
             url='/datacenters/%s/servers/%s/nics' % (
                 datacenter_id,
                 server_id),
-            type='POST',
+            method='POST',
             data=data)
 
         return response
@@ -1028,7 +1028,7 @@ class ProfitBricksService(object):
                 datacenter_id,
                 server_id,
                 nic_id),
-            type='PATCH',
+            method='PATCH',
             data=json.dumps(data))
 
         return response
@@ -1120,7 +1120,7 @@ class ProfitBricksService(object):
             url='/datacenters/%s/servers/%s' % (
                 datacenter_id,
                 server_id),
-            type='DELETE')
+            method='DELETE')
 
         return response
 
@@ -1140,7 +1140,7 @@ class ProfitBricksService(object):
 
         response = self._perform_request(
             url='/datacenters/%s/servers' % (datacenter_id),
-            type='POST',
+            method='POST',
             data=data)
 
         return response
@@ -1174,7 +1174,7 @@ class ProfitBricksService(object):
             url='/datacenters/%s/servers/%s' % (
                 datacenter_id,
                 server_id),
-            type='PATCH',
+            method='PATCH',
             data=json.dumps(data))
 
         return response
@@ -1243,7 +1243,7 @@ class ProfitBricksService(object):
             url='/datacenters/%s/servers/%s/volumes' % (
                 datacenter_id,
                 server_id),
-            type='POST',
+            method='POST',
             data=data)
 
         return response
@@ -1267,7 +1267,7 @@ class ProfitBricksService(object):
                 datacenter_id,
                 server_id,
                 volume_id),
-            type='DELETE')
+            method='DELETE')
 
         return response
 
@@ -1335,7 +1335,7 @@ class ProfitBricksService(object):
             url='/datacenters/%s/servers/%s/cdroms' % (
                 datacenter_id,
                 server_id),
-            type='POST',
+            method='POST',
             data=data)
 
         return response
@@ -1359,7 +1359,7 @@ class ProfitBricksService(object):
                 datacenter_id,
                 server_id,
                 cdrom_id),
-            type='DELETE')
+            method='DELETE')
 
         return response
 
@@ -1378,7 +1378,7 @@ class ProfitBricksService(object):
             url='/datacenters/%s/servers/%s/start' % (
                 datacenter_id,
                 server_id),
-            type='POST-ACTION')
+            method='POST-ACTION')
 
         return response
 
@@ -1397,7 +1397,7 @@ class ProfitBricksService(object):
             url='/datacenters/%s/servers/%s/stop' % (
                 datacenter_id,
                 server_id),
-            type='POST-ACTION')
+            method='POST-ACTION')
 
         return response
 
@@ -1416,7 +1416,7 @@ class ProfitBricksService(object):
             url='/datacenters/%s/servers/%s/reboot' % (
                 datacenter_id,
                 server_id),
-            type='POST-ACTION')
+            method='POST-ACTION')
 
         return response
 
@@ -1452,7 +1452,7 @@ class ProfitBricksService(object):
 
         """
         response = self._perform_request(
-            url='/snapshots/' + snapshot_id, type='DELETE')
+            url='/snapshots/' + snapshot_id, method='DELETE')
 
         return response
 
@@ -1469,7 +1469,7 @@ class ProfitBricksService(object):
             data[self._underscore_to_camelcase(attr)] = kwargs[attr]
 
         response = self._perform_request(
-            url='/snapshots/' + snapshot_id, type='PATCH', data=json.dumps(data))
+            url='/snapshots/' + snapshot_id, method='PATCH', data=json.dumps(data))
 
         return response
 
@@ -1497,7 +1497,7 @@ class ProfitBricksService(object):
         response = self._perform_request(
             '/datacenters/%s/volumes/%s/create-snapshot' % (
                 datacenter_id, volume_id),
-            type='POST-ACTION-JSON',
+            method='POST-ACTION-JSON',
             data=urlencode(data))
 
         return response
@@ -1522,7 +1522,7 @@ class ProfitBricksService(object):
             url='/datacenters/%s/volumes/%s/restore-snapshot' % (
                 datacenter_id,
                 volume_id),
-            type='POST-ACTION',
+            method='POST-ACTION',
             data=urlencode(data))
 
         return response
@@ -1537,7 +1537,7 @@ class ProfitBricksService(object):
 
         """
         response = self._perform_request(
-            url='/snapshots/' + snapshot_id, type='DELETE')
+            url='/snapshots/' + snapshot_id, method='DELETE')
 
         return response
 
@@ -1583,7 +1583,7 @@ class ProfitBricksService(object):
 
         response = self._perform_request(
             url='/um/groups',
-            type='POST',
+            method='POST',
             data=data)
 
         return response
@@ -1611,7 +1611,7 @@ class ProfitBricksService(object):
 
         response = self._perform_request(
             url='/um/groups/%s' % group_id,
-            type='PUT',
+            method='PUT',
             data=json.dumps(data))
 
         return response
@@ -1626,7 +1626,7 @@ class ProfitBricksService(object):
         """
         response = self._perform_request(
             url='/um/groups/%s' % group_id,
-            type='DELETE')
+            method='DELETE')
 
         return response
 
@@ -1688,7 +1688,7 @@ class ProfitBricksService(object):
 
         response = self._perform_request(
             url='/um/groups/%s/shares/%s' % (group_id, resource_id),
-            type='POST',
+            method='POST',
             data=json.dumps(data))
 
         return response
@@ -1715,7 +1715,7 @@ class ProfitBricksService(object):
 
         response = self._perform_request(
             url='/um/groups/%s/shares/%s' % (group_id, resource_id),
-            type='PUT',
+            method='PUT',
             data=json.dumps(data))
 
         return response
@@ -1733,7 +1733,7 @@ class ProfitBricksService(object):
         """
         response = self._perform_request(
             url='/um/groups/%s/shares/%s' % (group_id, resource_id),
-            type='DELETE')
+            method='DELETE')
 
         return response
 
@@ -1777,7 +1777,7 @@ class ProfitBricksService(object):
 
         response = self._perform_request(
             url='/um/users',
-            type='POST',
+            method='POST',
             data=json.dumps(data))
 
         return response
@@ -1801,7 +1801,7 @@ class ProfitBricksService(object):
 
         response = self._perform_request(
             url='/um/users/%s' % user_id,
-            type='PUT',
+            method='PUT',
             data=json.dumps(data))
 
         return response
@@ -1816,7 +1816,7 @@ class ProfitBricksService(object):
         """
         response = self._perform_request(
             url='/um/users/%s' % user_id,
-            type='DELETE')
+            method='DELETE')
 
         return response
 
@@ -1855,7 +1855,7 @@ class ProfitBricksService(object):
 
         response = self._perform_request(
             url='/um/groups/%s/users' % group_id,
-            type='POST',
+            method='POST',
             data=json.dumps(data))
 
         return response
@@ -1873,7 +1873,7 @@ class ProfitBricksService(object):
         """
         response = self._perform_request(
             url='/um/groups/%s/users/%s' % (group_id, user_id),
-            type='DELETE')
+            method='DELETE')
 
         return response
 
@@ -1967,7 +1967,7 @@ class ProfitBricksService(object):
         """
         response = self._perform_request(
             url='/datacenters/%s/volumes/%s' % (
-                datacenter_id, volume_id), type='DELETE')
+                datacenter_id, volume_id), method='DELETE')
 
         return response
 
@@ -1987,7 +1987,7 @@ class ProfitBricksService(object):
 
         response = self._perform_request(
             url='/datacenters/%s/volumes' % datacenter_id,
-            type='POST',
+            method='POST',
             data=data)
 
         return response
@@ -2012,7 +2012,7 @@ class ProfitBricksService(object):
             url='/datacenters/%s/volumes/%s' % (
                 datacenter_id,
                 volume_id),
-            type='PATCH',
+            method='PATCH',
             data=json.dumps(data))
 
         return response
@@ -2038,7 +2038,7 @@ class ProfitBricksService(object):
                                files, auth, timeout, allow_redirects, proxies,
                                hooks, stream, self.verify, self.host_cert)
 
-    def _perform_request(self, url, type='GET', data=None, headers=None):
+    def _perform_request(self, url, method='GET', data=None, headers=None):
         if headers is None:
             headers = dict()
         headers.update({'Authorization': 'Basic %s' % (base64.b64encode(
@@ -2047,27 +2047,27 @@ class ProfitBricksService(object):
 
         url = self._build_url(url)
         headers.update({'User-Agent': 'profitbricks-sdk-python/' + __version__})
-        if type == 'POST' or type == 'PUT':
-            response = self._wrapped_request(type, url, data=data,
+        if method == 'POST' or method == 'PUT':
+            response = self._wrapped_request(method, url, data=data,
                                              headers=headers)
             headers.update({'Content-Type': 'application/json'})
-        elif type == 'POST-ACTION-JSON' or type == 'POST-ACTION':
+        elif method == 'POST-ACTION-JSON' or method == 'POST-ACTION':
             headers.update({'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'})
             response = self._wrapped_request('POST', url, data=data,
                                              headers=headers)
-            if response.status_code == 202 and type == 'POST-ACTION':
+            if response.status_code == 202 and method == 'POST-ACTION':
                 return True
             elif response.status_code == 401:
                 raise response.raise_for_status()
-        elif type == 'PATCH':
+        elif method == 'PATCH':
             headers.update({'Content-Type': 'application/json'})
-            response = self._wrapped_request(type, url, data=data,
+            response = self._wrapped_request(method, url, data=data,
                                              headers=headers)
         else:
             headers.update({'Content-Type': 'application/json'})
-            response = self._wrapped_request(type, url, params=data,
+            response = self._wrapped_request(method, url, params=data,
                                              headers=headers)
-            if type == 'DELETE':
+            if method == 'DELETE':
                 if response.status_code == 202:
                     return True
 
