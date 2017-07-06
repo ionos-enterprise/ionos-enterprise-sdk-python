@@ -2510,7 +2510,7 @@ class ProfitBricksService(object):
         return raw
 
 
-class Datacenter(ProfitBricksService):
+class Datacenter(object):
     def __init__(self, name=None, location=None, description=None,
                  volumes=None, servers=None, lans=None, loadbalancers=None,
                  **kwargs):
@@ -2560,7 +2560,7 @@ class Datacenter(ProfitBricksService):
                 % (self.name, self.location, self.description))
 
 
-class FirewallRule(ProfitBricksService):
+class FirewallRule(object):
     def __init__(self, name=None, protocol=None,
                  source_mac=None, source_ip=None,
                  target_ip=None, port_range_start=None,
@@ -2622,7 +2622,7 @@ class FirewallRule(ProfitBricksService):
                    self.port_range_end, self.icmp_type, self.icmp_code))
 
 
-class IPBlock(ProfitBricksService):
+class IPBlock(object):
     def __init__(self, name=None, location=None, size=None):
         """
         IPBlock class initializer.
@@ -2646,7 +2646,7 @@ class IPBlock(ProfitBricksService):
                 % (self.location, self.size))
 
 
-class LAN(ProfitBricksService):
+class LAN(object):
     """
     This is the main class for managing LAN resources.
     """
@@ -2676,7 +2676,7 @@ class LAN(ProfitBricksService):
                 % (self.name, str(self.public)))
 
 
-class LoadBalancer(ProfitBricksService):
+class LoadBalancer(object):
     """
     This is the main class for managing load balancer resources.
     """
@@ -2713,7 +2713,7 @@ class LoadBalancer(ProfitBricksService):
                 % (self.name, self.ip, str(self.dhcp)))
 
 
-class NIC(ProfitBricksService):
+class NIC(object):
     def __init__(self, name=None, ips=None,
                  dhcp=None, lan=None, firewall_active=None,
                  firewall_rules=None, nat=None, **kwargs):
@@ -2760,7 +2760,7 @@ class NIC(ProfitBricksService):
                    self.lan, str(self.firewall_active)))
 
 
-class Server(ProfitBricksService):
+class Server(object):
     """
     This is the main class for managing server resources.
     """
@@ -2827,7 +2827,7 @@ class Server(ProfitBricksService):
                    self.availability_zone, self.boot_volume_id, self.boot_cdrom))
 
 
-class Volume(ProfitBricksService):
+class Volume(object):
     def __init__(self, name=None, size=None, bus='VIRTIO', image=None,
                  image_alias=None, disk_type='HDD', licence_type='UNKNOWN',
                  image_password=None, ssh_keys=None, availability_zone='AUTO',
@@ -2883,7 +2883,7 @@ class Volume(ProfitBricksService):
                    self.image_alias, self.bus, self.disk_type))
 
 
-class Snapshot(ProfitBricksService):
+class Snapshot(object):
     def __init__(self, name=None, description=None, licence_type='UNKNOWN', size=None,
                  location=None, **kwargs):
         """
@@ -2914,7 +2914,7 @@ class Snapshot(ProfitBricksService):
             self.name, self.description, str(self.size), self.location))
 
 
-class Group(ProfitBricksService):
+class Group(object):
     def __init__(self, name=None, create_datacenter=None,
                  create_snapshot=None, reserve_ip=None,
                  access_activity_log=None):
@@ -2955,7 +2955,7 @@ class Group(ProfitBricksService):
                    str(self.access_activity_log)))
 
 
-class User(ProfitBricksService):
+class User(object):
     def __init__(self, firstname=None, lastname=None,
                  email=None, password=None,
                  administrator=None,
