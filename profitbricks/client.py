@@ -2120,7 +2120,7 @@ class ProfitBricksService(object):
             # This is Python2
             if isinstance(s, str):
                 return s
-            elif isinstance(s, unicode):  # noqa
+            elif isinstance(s, unicode):  # noqa, pylint: disable=undefined-variable
                 return s.encode(encoding)
         else:
             # And this is Python3
