@@ -35,3 +35,18 @@ class PBValidationError(PBError):
 
 class PBRateLimitExceededError(PBError):
     """The number of requests sent have exceeded the allowed API rate limit"""
+
+
+class PBRequestError(Exception):
+    """Base error for request failures"""
+    def __init__(self, msg, request_id):
+        self.msg = msg
+        self.request_id = request_id
+
+
+class PBFailedRequest(PBRequestError):
+    """Raised when a provisioning request failed."""
+
+
+class PBTimeoutError(PBRequestError):
+    """Raised when a request does not finish in the given time span."""
