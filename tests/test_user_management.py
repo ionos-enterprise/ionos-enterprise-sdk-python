@@ -16,7 +16,7 @@ import unittest
 from random import randint
 
 from helpers import configuration
-from helpers.resources import resource, wait_for_completion, find_image
+from helpers.resources import resource, find_image
 from profitbricks.client import ProfitBricksService
 from profitbricks.client import Datacenter, IPBlock, User, Group, Volume
 from profitbricks.errors import PBError, PBNotFoundError
@@ -34,7 +34,7 @@ class TestUserManagement(unittest.TestCase):
         # Create datacenter resource
         self.datacenter = self.client.create_datacenter(
             datacenter=Datacenter(**self.resource['datacenter']))
-        wait_for_completion(self.client, self.datacenter, 'create_datacenter')
+        self.client.wait_for_completion(self.datacenter)
 
         # Create volume resource
         volume = Volume(**self.resource['volume'])
@@ -43,7 +43,7 @@ class TestUserManagement(unittest.TestCase):
             volume=volume
         )
 
-        wait_for_completion(self.client, self.volume, 'create_volume')
+        self.client.wait_for_completion(self.volume)
 
         self.image = find_image(self.client, configuration.IMAGE_NAME)
 
@@ -53,7 +53,7 @@ class TestUserManagement(unittest.TestCase):
             volume_id=self.volume['id'],
             name=self.resource['snapshot']['name'])
 
-        wait_for_completion(self.client, self.snapshot, 'create_snapshot')
+        self.client.wait_for_completion(self.snapshot)
 
         # Reserve IP block resource
         self.ipblock = self.client.reserve_ipblock(IPBlock(**self.resource['ipblock']))

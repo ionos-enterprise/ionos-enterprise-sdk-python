@@ -15,7 +15,7 @@
 import unittest
 
 from helpers import configuration
-from helpers.resources import resource, wait_for_completion
+from helpers.resources import resource
 from profitbricks.client import ProfitBricksService
 from profitbricks.client import Datacenter, Server, LAN, NIC
 from profitbricks.errors import PBNotFoundError
@@ -34,19 +34,19 @@ class TestLan(unittest.TestCase):
         # Create test datacenter.
         self.datacenter = self.client.create_datacenter(
             datacenter=Datacenter(**self.resource['datacenter']))
-        wait_for_completion(self.client, self.datacenter, 'create_datacenter')
+        self.client.wait_for_completion(self.datacenter)
 
         # Create test LAN.
         self.lan = self.client.create_lan(
             datacenter_id=self.datacenter['id'],
             lan=LAN(**self.resource['lan']))
-        wait_for_completion(self.client, self.lan, 'create_lan')
+        self.client.wait_for_completion(self.lan)
 
         # Create test server.
         self.server = self.client.create_server(
             datacenter_id=self.datacenter['id'],
             server=Server(**self.resource['server']))
-        wait_for_completion(self.client, self.server, 'create_server')
+        self.client.wait_for_completion(self.server)
 
         # Create test NIC1.
         nic1 = NIC(**self.resource['nic'])
@@ -55,7 +55,7 @@ class TestLan(unittest.TestCase):
             datacenter_id=self.datacenter['id'],
             server_id=self.server['id'],
             nic=nic1)
-        wait_for_completion(self.client, self.nic1, 'create_nic1')
+        self.client.wait_for_completion(self.nic1)
 
         # Create test NIC2.
         nic2 = NIC(**self.resource['nic'])
@@ -64,7 +64,7 @@ class TestLan(unittest.TestCase):
             datacenter_id=self.datacenter['id'],
             server_id=self.server['id'],
             nic=nic2)
-        wait_for_completion(self.client, self.nic2, 'create_nic2')
+        self.client.wait_for_completion(self.nic2)
 
     @classmethod
     def tearDownClass(self):
@@ -92,7 +92,7 @@ class TestLan(unittest.TestCase):
             datacenter_id=self.datacenter['id'],
             lan=LAN(**self.resource['lan']))
 
-        wait_for_completion(self.client, lan, 'remove_lan')
+        self.client.wait_for_completion(lan)
 
         lan = self.client.delete_lan(datacenter_id=self.datacenter['id'], lan_id=lan['id'])
 
@@ -122,7 +122,7 @@ class TestLan(unittest.TestCase):
             datacenter_id=self.datacenter['id'],
             server_id=self.server['id'],
             nic=resource)
-        wait_for_completion(self.client, nic1, 'create_nic1')
+        self.client.wait_for_completion(nic1)
         self.assertFalse(nic1['properties']['nat'])
         self.assertEqual(nic1['properties']['name'], 'Python SDK Test')
         self.assertTrue(nic1['properties']['dhcp'])
@@ -135,7 +135,7 @@ class TestLan(unittest.TestCase):
         response = self.client.create_lan(
             datacenter_id=self.datacenter['id'],
             lan=lan)
-        wait_for_completion(self.client, response, 'create_lan')
+        self.client.wait_for_completion(response)
 
         self.assertEqual(response['type'], 'lan')
         self.assertEqual(response['properties']['name'], self.resource['lan']['name'])

@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import re
-import time
 
 from helpers import configuration
 
@@ -139,28 +138,3 @@ def check_detached_cdrom_gone(parent):
             datacenter_id=parent.datacenter['id'],
             server_id=parent.server['id'],
             cdrom_id=parent.test_image1['id'])
-
-
-def wait_for_completion(conn, promise, msg, wait_timeout=300):
-    if not promise:
-        return
-    wait_timeout = time.time() + wait_timeout
-    while wait_timeout > time.time():
-        time.sleep(1)
-        operation_result = conn.get_request(
-            request_id=promise['requestId'],
-            status=True)
-
-        if operation_result['metadata']['status'] == "DONE":
-            return
-        elif operation_result['metadata']['status'] == "FAILED":
-            raise Exception(
-                'Request {0} failed to complete: {1}'.format(
-                    str(promise['requestId']), msg)
-            )
-
-    raise Exception(
-        'Timed out waiting for async operation {0} msg {1} to '
-        'complete'.format(
-            msg, str(promise['requestId']))
-    )
