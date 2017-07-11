@@ -49,7 +49,7 @@ def resource():
             'name': 'Python SDK Test',
             'size': 10,
             'bus': 'VIRTIO',
-            'type': 'HDD',
+            'disk_type': 'HDD',
             'image_alias': 'ubuntu:latest',
             'availability_zone': 'ZONE_1'
         },
@@ -57,7 +57,7 @@ def resource():
             'name': 'Python SDK Test',
             'size': 2,
             'bus': 'VIRTIO',
-            'type': 'HDD',
+            'disk_type': 'HDD',
             'licence_type': 'UNKNOWN',
             'availability_zone': 'ZONE_1'
         },
@@ -65,7 +65,7 @@ def resource():
             'name': 'Python SDK Test',
             'size': 2,
             'bus': 'VIRTIO',
-            'type': 'HDD',
+            'disk_type': 'HDD',
             'availability_zone': 'ZONE_3',
             'ssh_keys': ['ssh-rsa AAAAB3NzaC1']
         },

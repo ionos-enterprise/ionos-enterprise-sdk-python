@@ -72,7 +72,7 @@ class TestVolume(unittest.TestCase):
         self.assertEqual(volumes['items'][0]['properties']['size'],
                          self.resource['volume2']['size'])
         self.assertEqual(volumes['items'][0]['properties']['type'],
-                         self.resource['volume2']['type'])
+                         self.resource['volume2']['disk_type'])
         self.assertIsNone(volumes['items'][0]['properties']['bus'])
 
     def test_get_volume(self):
@@ -86,7 +86,7 @@ class TestVolume(unittest.TestCase):
         self.assertEqual(volume['properties']['size'], self.resource['volume2']['size'])
         self.assertEqual(volume['properties']['licenceType'],
                          self.image['properties']['licenceType'])
-        self.assertEqual(volume['properties']['type'], self.resource['volume2']['type'])
+        self.assertEqual(volume['properties']['type'], self.resource['volume2']['disk_type'])
         self.assertIsNone(volume['properties']['bus'])
         self.assertEqual(volume['properties']['availabilityZone'],
                          self.resource['volume2']['availability_zone'])
@@ -125,7 +125,7 @@ class TestVolume(unittest.TestCase):
         assertRegex(self, self.volume['id'], self.resource['uuid_match'])
         self.assertEqual(self.volume['properties']['name'], self.resource['volume2']['name'])
         self.assertEqual(self.volume['properties']['bus'], self.resource['volume2']['bus'])
-        self.assertEqual(self.volume['properties']['type'], self.resource['volume2']['type'])
+        self.assertEqual(self.volume['properties']['type'], self.resource['volume2']['disk_type'])
         self.assertEqual(self.volume['properties']['size'], self.resource['volume2']['size'])
         self.assertEqual(self.volume['properties']['sshKeys'],
                          self.resource['volume2']['ssh_keys'])
