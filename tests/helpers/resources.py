@@ -49,7 +49,7 @@ def resource():
             'name': 'Python SDK Test',
             'size': 10,
             'bus': 'VIRTIO',
-            'type': 'HDD',
+            'disk_type': 'HDD',
             'image_alias': 'ubuntu:latest',
             'availability_zone': 'ZONE_1'
         },
@@ -57,7 +57,7 @@ def resource():
             'name': 'Python SDK Test',
             'size': 2,
             'bus': 'VIRTIO',
-            'type': 'HDD',
+            'disk_type': 'HDD',
             'licence_type': 'UNKNOWN',
             'availability_zone': 'ZONE_1'
         },
@@ -65,7 +65,7 @@ def resource():
             'name': 'Python SDK Test',
             'size': 2,
             'bus': 'VIRTIO',
-            'type': 'HDD',
+            'disk_type': 'HDD',
             'availability_zone': 'ZONE_3',
             'ssh_keys': ['ssh-rsa AAAAB3NzaC1']
         },
@@ -155,8 +155,8 @@ def wait_for_completion(conn, promise, msg, wait_timeout=300):
             return
         elif operation_result['metadata']['status'] == "FAILED":
             raise Exception(
-                'Request failed to complete'.format(
-                    msg, str(promise['requestId']))
+                'Request {0} failed to complete: {1}'.format(
+                    str(promise['requestId']), msg)
             )
 
     raise Exception(

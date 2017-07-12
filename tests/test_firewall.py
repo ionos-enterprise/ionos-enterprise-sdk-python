@@ -138,8 +138,10 @@ class TestFirewall(unittest.TestCase):
     def test_create_fwrule(self):
         self.assertEqual(self.fwrule['type'], 'firewall-rule')
         self.assertEqual(self.fwrule['properties']['name'], self.resource['fwrule']['name'])
-        self.assertEqual(self.fwrule['properties']['protocol'], self.resource['fwrule']['protocol'])
-        self.assertEqual(self.fwrule['properties']['sourceMac'], self.resource['fwrule']['source_mac'])
+        self.assertEqual(self.fwrule['properties']['protocol'],
+                         self.resource['fwrule']['protocol'])
+        self.assertEqual(self.fwrule['properties']['sourceMac'],
+                         self.resource['fwrule']['source_mac'])
         self.assertIsNone(self.fwrule['properties']['sourceIp'])
         self.assertIsNone(self.fwrule['properties']['targetIp'])
         self.assertIsNone(self.fwrule['properties']['icmpCode'])

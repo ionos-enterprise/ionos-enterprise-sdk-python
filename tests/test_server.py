@@ -118,7 +118,8 @@ class TestServer(unittest.TestCase):
         self.assertEqual(server['properties']['name'], self.resource['server']['name'])
         self.assertEqual(server['properties']['cores'], self.resource['server']['cores'])
         self.assertEqual(server['properties']['ram'], self.resource['server']['ram'])
-        self.assertEqual(server['properties']['availabilityZone'], self.resource['server']['availability_zone'])
+        self.assertEqual(server['properties']['availabilityZone'],
+                         self.resource['server']['availability_zone'])
         self.assertEqual(server['properties']['cpuFamily'], self.resource['server']['cpu_family'])
         # assertRegex(self, server['properties']['bootVolume']['id'], self.resource['uuid_match'])
 
@@ -167,8 +168,10 @@ class TestServer(unittest.TestCase):
         self.assertEqual(self.server['properties']['name'], self.resource['server']['name'])
         self.assertEqual(self.server['properties']['cores'], self.resource['server']['cores'])
         self.assertEqual(self.server['properties']['ram'], self.resource['server']['ram'])
-        self.assertEqual(self.server['properties']['availabilityZone'], self.resource['server']['availability_zone'])
-        self.assertEqual(self.server['properties']['cpuFamily'], self.resource['server']['cpu_family'])
+        self.assertEqual(self.server['properties']['availabilityZone'],
+                         self.resource['server']['availability_zone'])
+        self.assertEqual(self.server['properties']['cpuFamily'],
+                         self.resource['server']['cpu_family'])
         # assertRegex(self, server['properties']['bootVolume']['id'], self.resource['uuid_match'])
         # self.assertIsNone(self.server['properties']['availabilityZone'])
         self.assertIsNone(self.server['properties']['vmState'])
@@ -252,7 +255,7 @@ class TestServer(unittest.TestCase):
         self.assertEqual(volumes['items'][0]['properties']['bus'],
                          self.resource['volume']['bus'])
         self.assertEqual(volumes['items'][0]['properties']['type'],
-                         self.resource['volume']['type'])
+                         self.resource['volume']['disk_type'])
         self.assertEqual(volumes['items'][0]['properties']['licenceType'], 'UNKNOWN')
         self.assertIsNone(volumes['items'][0]['properties']['image'])
         self.assertIsNone(volumes['items'][0]['properties']['imagePassword'])
@@ -277,7 +280,7 @@ class TestServer(unittest.TestCase):
         self.assertEqual(volume['properties']['name'], self.resource['volume']['name'])
         self.assertEqual(volume['properties']['size'], self.resource['volume']['size'])
         self.assertEqual(volume['properties']['bus'], self.resource['volume']['bus'])
-        self.assertEqual(volume['properties']['type'], self.resource['volume']['type'])
+        self.assertEqual(volume['properties']['type'], self.resource['volume']['disk_type'])
         self.assertEqual(volume['properties']['licenceType'],
                          self.resource['volume']['licence_type'])
         self.assertIsNone(volume['properties']['image'])
@@ -303,7 +306,7 @@ class TestServer(unittest.TestCase):
         self.assertEqual(volume['id'], self.volume2['id'])
         self.assertEqual(volume['properties']['name'], self.resource['volume']['name'])
         self.assertEqual(volume['properties']['size'], self.resource['volume']['size'])
-        self.assertEqual(volume['properties']['type'], self.resource['volume']['type'])
+        self.assertEqual(volume['properties']['type'], self.resource['volume']['disk_type'])
         self.assertEqual(volume['properties']['licenceType'],
                          self.resource['volume']['licence_type'])
         self.assertIsNone(volume['properties']['bus'])

@@ -54,7 +54,8 @@ class TestRequest(unittest.TestCase):
 
     def test_get_failure(self):
         try:
-            self.client.get_request(request_id='00000000-0000-0000-0000-000000000000', status=False)
+            self.client.get_request(request_id='00000000-0000-0000-0000-000000000000',
+                                    status=False)
         except PBNotFoundError as e:
             self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
 

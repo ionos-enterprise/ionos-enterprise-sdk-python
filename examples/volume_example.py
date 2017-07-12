@@ -47,8 +47,8 @@ client = ProfitBricksService(
 volume = client.create_snapshot(
     datacenter_id=datacenter_id,
     volume_id=volume_id,
-    snapshot_name='<URLENCODED_SNAPSHOT_NAME>',
-    snapshot_description='<URLENCODED_SNAPSHOT_DESCRIPTION>')
+    name='<URLENCODED_SNAPSHOT_NAME>',
+    description='<URLENCODED_SNAPSHOT_DESCRIPTION>')
 
 """Restore Snapshot
 """
