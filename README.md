@@ -2158,36 +2158,7 @@ Here we will reserve a public IP block.
 
 ### Wait for Resources
 
-The remaining examples will require dependent resources. A volume cannot be attached to a server before the server and volume are finished provisioning. Therefore, we require a `wait_for_completion` method that will stop and wait for the server and volume to finish provisioning before attaching the volume to the server.
-
-The below `wait_for_completion` method example will utilize the `Request` operation to poll the status until a request is finished. This method will be called in additional examples.
-
-    #!/usr/bin/python
-
-    import time
-
-
-    def wait_for_completion(conn, response, timeout):
-        '''
-        Poll resource request status until resource is provisioned.
-        '''
-        if not response:
-            return
-        timeout = time.time() + timeout
-        while timeout > time.time():
-            time.sleep(5)
-            request = conn.get_request(
-                request_id=response['requestId'],
-                status=True)
-
-            if request['metadata']['status'] == 'DONE':
-                return
-            elif request['metadata']['status'] == 'FAILED':
-                raise Exception('Request {0} failed to complete: {1}'.format(
-                    response['requestId'], request['metadata']['message']))
-
-        raise Exception('Timed out waiting for request {0}.'.format(
-            response['requestId']))
+The remaining examples will require dependent resources. A volume cannot be attached to a server before the server and volume are finished provisioning. Therefore, we require the `wait_for_completion` method that will stop and wait for the server and volume to finish provisioning before attaching the volume to the server.
 
 ### Component Build
 
@@ -2200,7 +2171,6 @@ It is important to note that you will need to wait for each individual component
     import json
     import os
 
-    from common import wait_for_completion
     from profitbricks.client import ProfitBricksService
     from profitbricks.client import (
         Datacenter, LAN, Server, NIC, Volume, FirewallRule)
@@ -2218,14 +2188,14 @@ It is important to note that you will need to wait for each individual component
         location='us/las')
 
     response = client.create_datacenter(datacenter=datacenter)
-    wait_for_completion(client, response, timeout)
+    client.wait_for_completion(response, timeout)
     datacenter_id = response['id']
 
     # Create public LAN
     lan = LAN(name="Public LAN", public=True)
 
     response = client.create_lan(datacenter_id, lan=lan)
-    wait_for_completion(client, response, timeout)
+    client.wait_for_completion(response, timeout)
     lan_id = response['id']
 
     # Create server
@@ -2236,7 +2206,7 @@ It is important to note that you will need to wait for each individual component
         cpu_family='INTEL_XEON')
 
     response = client.create_server(datacenter_id=datacenter_id, server=server)
-    wait_for_completion(client, response, timeout)
+    client.wait_for_completion(response, timeout)
     server_id = response['id']
 
     # Create public NIC
@@ -2251,7 +2221,7 @@ It is important to note that you will need to wait for each individual component
         datacenter_id=datacenter_id,
         server_id=server_id,
         nic=nic)
-    wait_for_completion(client, response, timeout)
+    client.wait_for_completion(response, timeout)
     nic_id = response['id']
 
     # Create firwall rule
@@ -2268,7 +2238,7 @@ It is important to note that you will need to wait for each individual component
         server_id=server_id,
         nic_id=nic_id,
         firewall_rule=fwrule)
-    wait_for_completion(client, response, timeout)
+    client.wait_for_completion(response, timeout)
 
     # Create system volume
     volume1 = Volume(
@@ -2284,7 +2254,7 @@ It is important to note that you will need to wait for each individual component
     response = client.create_volume(
         datacenter_id=datacenter_id,
         volume=volume1)
-    wait_for_completion(client, response, timeout)
+    client.wait_for_completion(response, timeout)
     volume1_id = response['id']
 
     # Attach system volume
@@ -2292,7 +2262,7 @@ It is important to note that you will need to wait for each individual component
         datacenter_id=datacenter_id,
         server_id=server_id,
         volume_id=volume1_id)
-    wait_for_completion(client, response, timeout)
+    client.wait_for_completion(response, timeout)
 
     # Create data volume
     volume2 = Volume(
@@ -2305,7 +2275,7 @@ It is important to note that you will need to wait for each individual component
     response = client.create_volume(
         datacenter_id=datacenter_id,
         volume=volume2)
-    wait_for_completion(client, response, timeout)
+    client.wait_for_completion(response, timeout)
     volume2_id = response['id']
 
     # Attach data volume
@@ -2313,7 +2283,7 @@ It is important to note that you will need to wait for each individual component
         datacenter_id=datacenter_id,
         server_id=server_id,
         volume_id=volume2_id)
-    wait_for_completion(client, response, timeout)
+    client.wait_for_completion(response, timeout)
 
     live_datacenter = client.get_datacenter(datacenter_id=datacenter_id, depth=5)
     print json.dumps(live_datacenter, indent=4)
@@ -2331,7 +2301,6 @@ This example will demonstrate composite resources.
     import json
     import os
 
-    from common import wait_for_completion
     from profitbricks.client import ProfitBricksService
     from profitbricks.client import Datacenter, Server, NIC, Volume, FirewallRule
 
@@ -2403,7 +2372,7 @@ This example will demonstrate composite resources.
     response = client.create_datacenter(datacenter)
 
     # Wait for the data center and nested resources to finish provisioning
-    wait_for_completion(client, response, 1800)
+    client.wait_for_completion(response)
 
     datacenter_id = response['id']
 
@@ -2414,7 +2383,7 @@ This example will demonstrate composite resources.
         name='Public LAN',
         public=True)
 
-    wait_for_completion(client, response, 1800)
+    client.wait_for_completion(response)
 
     # Print the data center properties and nested resources
     response = client.get_datacenter(datacenter_id=datacenter_id, depth=5)

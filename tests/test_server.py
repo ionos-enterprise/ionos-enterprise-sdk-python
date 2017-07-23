@@ -16,11 +16,7 @@ import unittest
 import time
 
 from helpers import configuration
-from helpers.resources import (
-    resource,
-    wait_for_completion,
-    check_detached_cdrom_gone
-)
+from helpers.resources import resource, check_detached_cdrom_gone
 from profitbricks.client import Datacenter, Server, Volume, NIC, FirewallRule
 from profitbricks.client import ProfitBricksService
 from profitbricks.errors import PBError, PBNotFoundError
@@ -39,19 +35,19 @@ class TestServer(unittest.TestCase):
         # Create test datacenter.
         self.datacenter = self.client.create_datacenter(
             datacenter=Datacenter(**self.resource['datacenter']))
-        wait_for_completion(self.client, self.datacenter, 'create_datacenter')
+        self.client.wait_for_completion(self.datacenter)
 
         # Create test volume1.
         self.volume1 = self.client.create_volume(
             datacenter_id=self.datacenter['id'],
             volume=Volume(**self.resource['volume']))
-        wait_for_completion(self.client, self.volume1, 'create_volume')
+        self.client.wait_for_completion(self.volume1)
 
         # Create test volume2 (attach volume test).
         self.volume2 = self.client.create_volume(
             datacenter_id=self.datacenter['id'],
             volume=Volume(**self.resource['volume']))
-        wait_for_completion(self.client, self.volume2, 'create_volume')
+        self.client.wait_for_completion(self.volume2)
 
         # Create test server.
         server = Server(**self.resource['server'])
@@ -59,14 +55,14 @@ class TestServer(unittest.TestCase):
         self.server = self.client.create_server(
             datacenter_id=self.datacenter['id'],
             server=server)
-        wait_for_completion(self.client, self.server, 'create_server')
+        self.client.wait_for_completion(self.server)
 
         # Create test NIC.
         self.nic = self.client.create_nic(
             datacenter_id=self.datacenter['id'],
             server_id=self.server['id'],
             nic=NIC(**self.resource['nic']))
-        wait_for_completion(self.client, self.nic, 'create_nic')
+        self.client.wait_for_completion(self.nic)
 
         # Find an Ubuntu image for testing.
         for item in self.client.list_images()['items']:
@@ -93,7 +89,7 @@ class TestServer(unittest.TestCase):
             datacenter_id=self.datacenter['id'],
             server_id=self.server['id'],
             cdrom_id=self.test_image1['id'])
-        wait_for_completion(self.client, self.cdrom, 'attach_cdrom')
+        self.client.wait_for_completion(self.cdrom)
 
     @classmethod
     def tearDownClass(self):
@@ -136,7 +132,7 @@ class TestServer(unittest.TestCase):
             datacenter_id=self.datacenter['id'],
             server=Server(**self.resource['server'])
         )
-        wait_for_completion(self.client, server, 'delete_server')
+        self.client.wait_for_completion(server)
 
         response = self.client.delete_server(
             datacenter_id=self.datacenter['id'],
@@ -150,7 +146,7 @@ class TestServer(unittest.TestCase):
             datacenter_id=self.datacenter['id'],
             server_id=self.server['id'],
             name=self.resource['server']['name'] + ' RENAME')
-        wait_for_completion(self.client, server, 'update_server')
+        self.client.wait_for_completion(server)
         server = self.client.get_server(
             datacenter_id=self.datacenter['id'],
             server_id=self.server['id']
@@ -204,7 +200,7 @@ class TestServer(unittest.TestCase):
         composite_server = self.client.create_server(
             datacenter_id=self.datacenter['id'],
             server=server)
-        wait_for_completion(self.client, composite_server, 'create_composite', wait_timeout=600)
+        self.client.wait_for_completion(composite_server, timeout=600)
 
         composite_server = self.client.get_server(
             datacenter_id=self.datacenter['id'],
@@ -301,7 +297,7 @@ class TestServer(unittest.TestCase):
             datacenter_id=self.datacenter['id'],
             server_id=self.server['id'],
             volume_id=self.volume2['id'])
-        wait_for_completion(self.client, volume, 'attach_volume')
+        self.client.wait_for_completion(volume)
 
         self.assertEqual(volume['id'], self.volume2['id'])
         self.assertEqual(volume['properties']['name'], self.resource['volume']['name'])
@@ -349,7 +345,7 @@ class TestServer(unittest.TestCase):
             server_id=self.server['id'],
             cdrom_id=self.test_image2['id'])
 
-        wait_for_completion(self.client, attached_cdrom, 'attach_cdrom', wait_timeout=600)
+        self.client.wait_for_completion(attached_cdrom, timeout=600)
         self.assertEqual(attached_cdrom['id'], self.test_image2['id'])
         self.assertEqual(attached_cdrom['properties']['name'],
                          self.test_image2['properties']['name'])
@@ -360,7 +356,7 @@ class TestServer(unittest.TestCase):
             server_id=self.server['id'],
             cdrom_id=self.test_image1['id'])
 
-        wait_for_completion(self.client, attached_cdrom, 'attach_cdrom', wait_timeout=600)
+        self.client.wait_for_completion(attached_cdrom, timeout=600)
         cdrom = self.client.get_attached_cdrom(
             datacenter_id=self.datacenter['id'],
             server_id=self.server['id'],

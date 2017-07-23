@@ -15,7 +15,7 @@
 import unittest
 
 from helpers import configuration
-from helpers.resources import resource, wait_for_completion
+from helpers.resources import resource
 from profitbricks.client import Server, Volume
 from six import assertRegex
 
@@ -77,7 +77,7 @@ class TestDatacenter(unittest.TestCase):
     def test_remove_datacenter(self):
         datacenter = self.client.create_datacenter(
             datacenter=Datacenter(**self.resource['datacenter']))
-        wait_for_completion(self.client, datacenter, 'remove_datacenter')
+        self.client.wait_for_completion(datacenter)
 
         response = self.client.delete_datacenter(
             datacenter_id=datacenter['id'])
@@ -88,7 +88,7 @@ class TestDatacenter(unittest.TestCase):
         datacenter = self.client.update_datacenter(
             datacenter_id=self.datacenter['id'],
             description=self.resource['datacenter']['name']+' - RENAME')
-        wait_for_completion(self.client, datacenter, 'update_datacenter')
+        self.client.wait_for_completion(datacenter)
         datacenter = self.client.get_datacenter(datacenter_id=self.datacenter['id'])
 
         assertRegex(self, datacenter['id'], self.resource['uuid_match'])
@@ -103,7 +103,7 @@ class TestDatacenter(unittest.TestCase):
     def test_create_simple(self):
         datacenter = self.client.create_datacenter(
             datacenter=Datacenter(**self.resource['datacenter']))
-        wait_for_completion(self.client, datacenter, 'create_datacenter')
+        self.client.wait_for_completion(datacenter)
 
         self.assertEqual(datacenter['type'], 'datacenter')
         self.assertEqual(datacenter['properties']['name'], self.resource['datacenter']['name'])
@@ -123,7 +123,7 @@ class TestDatacenter(unittest.TestCase):
 
         datacenter = self.client.create_datacenter(
             datacenter=datacenter_resource)
-        wait_for_completion(self.client, datacenter, 'create_datacenter_composite')
+        self.client.wait_for_completion(datacenter)
 
         self.assertEqual(datacenter['type'], 'datacenter')
         self.assertEqual(datacenter['properties']['name'],

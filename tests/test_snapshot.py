@@ -15,7 +15,7 @@
 import unittest
 
 from helpers import configuration
-from helpers.resources import resource, wait_for_completion
+from helpers.resources import resource
 from profitbricks.client import ProfitBricksService
 from profitbricks.client import Datacenter, Volume, Snapshot
 from profitbricks.errors import PBNotFoundError
@@ -33,7 +33,7 @@ class TestSnapshot(unittest.TestCase):
         # Create test datacenter.
         self.datacenter = self.client.create_datacenter(
             datacenter=Datacenter(**self.resource['datacenter']))
-        wait_for_completion(self.client, self.datacenter, 'create_datacenter')
+        self.client.wait_for_completion(self.datacenter)
 
         # Create test volume
         volume = Volume(**self.resource['volume'])
@@ -42,7 +42,7 @@ class TestSnapshot(unittest.TestCase):
             volume=volume
         )
 
-        wait_for_completion(self.client, self.volume, 'create_volume')
+        self.client.wait_for_completion(self.volume)
 
         # Create test volume1
         volume1 = Volume(**self.resource['volume'])
@@ -51,7 +51,7 @@ class TestSnapshot(unittest.TestCase):
             volume=volume1
         )
 
-        wait_for_completion(self.client, self.volume1, 'create_volume1')
+        self.client.wait_for_completion(self.volume1)
 
         # Create test snapshot
         snapshot = Snapshot(**self.resource['snapshot'])
@@ -61,7 +61,7 @@ class TestSnapshot(unittest.TestCase):
             name=snapshot.name,
             description=snapshot.description)
 
-        wait_for_completion(self.client, self.snapshot1, 'create_snapshot1')
+        self.client.wait_for_completion(self.snapshot1)
 
         # Create test snapshot2
         self.snapshot2 = self.client.create_snapshot(
@@ -70,7 +70,7 @@ class TestSnapshot(unittest.TestCase):
             name="python sdk test snapshot",
             description="snapshot test description")
 
-        wait_for_completion(self.client, self.snapshot2, 'create_snapshot2')
+        self.client.wait_for_completion(self.snapshot2)
 
     @classmethod
     def tearDownClass(self):
@@ -127,7 +127,7 @@ class TestSnapshot(unittest.TestCase):
             name=self.resource['snapshot']['name'] + ' - RENAME',
             description=self.resource['snapshot']['description'] + ' - RENAME')
 
-        wait_for_completion(self.client, snapshot, 'update_snapshot2')
+        self.client.wait_for_completion(snapshot)
 
         self.assertEqual(snapshot['type'], 'snapshot')
         self.assertEqual(snapshot['properties']['name'],

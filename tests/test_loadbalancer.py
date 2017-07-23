@@ -15,7 +15,7 @@
 import unittest
 
 from helpers import configuration
-from helpers.resources import resource, wait_for_completion
+from helpers.resources import resource
 from profitbricks.client import ProfitBricksService
 from profitbricks.client import Datacenter, LoadBalancer, LAN, NIC, Server
 from profitbricks.errors import PBError, PBNotFoundError
@@ -34,19 +34,19 @@ class TestLoadBalancer(unittest.TestCase):
         # Create test datacenter.
         self.datacenter = self.client.create_datacenter(
             datacenter=Datacenter(**self.resource['datacenter']))
-        wait_for_completion(self.client, self.datacenter, 'create_datacenter')
+        self.client.wait_for_completion(self.datacenter)
 
         # Create test LAN.
         self.lan = self.client.create_lan(
             datacenter_id=self.datacenter['id'],
             lan=LAN(**self.resource['lan']))
-        wait_for_completion(self.client, self.lan, 'create_lan')
+        self.client.wait_for_completion(self.lan)
 
         # Create test server.
         self.server = self.client.create_server(
             datacenter_id=self.datacenter['id'],
             server=Server(**self.resource['server']))
-        wait_for_completion(self.client, self.server, 'create_server')
+        self.client.wait_for_completion(self.server)
 
         # Create test NIC1.
         nic1 = NIC(**self.resource['nic'])
@@ -55,7 +55,7 @@ class TestLoadBalancer(unittest.TestCase):
             datacenter_id=self.datacenter['id'],
             server_id=self.server['id'],
             nic=nic1)
-        wait_for_completion(self.client, self.nic1, 'create_nic1')
+        self.client.wait_for_completion(self.nic1)
 
         # Create test NIC2.
         # nic2 = NIC(**self.resource['nic'])
@@ -64,7 +64,7 @@ class TestLoadBalancer(unittest.TestCase):
         #     datacenter_id=self.datacenter['id'],
         #     server_id=self.server['id'],
         #     nic=nic2)
-        # wait_for_completion(self.client, self.nic2, 'create_nic2')
+        # self.client.wait_for_completion(self.nic2)
 
         # Create test LoadBalancer
         loadbalancer = LoadBalancer(**self.resource['loadbalancer'])
@@ -74,7 +74,7 @@ class TestLoadBalancer(unittest.TestCase):
             loadbalancer=loadbalancer
         )
 
-        wait_for_completion(self.client, self.loadbalancer, 'create_loadbalancer')
+        self.client.wait_for_completion(self.loadbalancer)
 
         # Create test LoadBalancer2
         loadbalancer2 = LoadBalancer(**self.resource['loadbalancer'])
@@ -84,7 +84,7 @@ class TestLoadBalancer(unittest.TestCase):
             loadbalancer=loadbalancer2
         )
 
-        wait_for_completion(self.client, self.loadbalancer2, 'create_loadbalancer2')
+        self.client.wait_for_completion(self.loadbalancer2)
 
         # Create test LoadBalancer3
         loadbalancer3 = LoadBalancer(**self.resource['loadbalancer'])
@@ -95,7 +95,7 @@ class TestLoadBalancer(unittest.TestCase):
             loadbalancer=loadbalancer3
         )
 
-        wait_for_completion(self.client, self.loadbalancer3, 'create_loadbalancer3')
+        self.client.wait_for_completion(self.loadbalancer3)
 
     @classmethod
     def tearDownClass(self):
@@ -157,7 +157,7 @@ class TestLoadBalancer(unittest.TestCase):
             loadbalancer_id=self.loadbalancer2['id'],
             nic_id=self.nic1['id'])
 
-        wait_for_completion(self.client, associated_nic, 'associate_nic')
+        self.client.wait_for_completion(associated_nic)
 
         self.assertEqual(associated_nic['id'], self.nic1['id'])
         self.assertEqual(associated_nic['properties']['name'],

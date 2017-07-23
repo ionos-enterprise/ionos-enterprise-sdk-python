@@ -1,0 +1,90 @@
+#!/usr/bin/python3
+
+# Copyright (C) 2015-2017, ProfitBricks GmbH
+# Authors: Benjamin Drung <benjamin.drung@profitbricks.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# pylint: disable=invalid-name
+
+"""Interactive Python shell for the ProfitBricks REST API"""
+
+import argparse
+import code
+import logging
+
+import profitbricks
+import profitbricks.client
+
+
+def main():
+    """Main function of the interactive Python shell for the ProfitBricks REST API"""
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-b', '--base-uri', default=profitbricks.API_HOST,
+                        help="Base URI for the REST API (default: %(default)s)")
+    parser.add_argument('-c', dest="cmd", help="program passed in as string")
+    parser.add_argument('-u', '--username',
+                        help="ProfitBricks user name (i.e. email address, "
+                             "default: read from config)")
+    args = parser.parse_args()
+
+    logging.getLogger("requests").setLevel(logging.WARNING)
+    logger = logging.getLogger("pb-api-shell")
+    client = profitbricks.client.ProfitBricksService(
+        username=args.username, host_base=args.base_uri, client_user_agent='pb-api-shell/1.0')
+
+    if args.cmd is None:
+        banner = ("The ProfitBricks client can be accessed through the 'client' object.\n"
+                  "Other available objects: Datacenter, FirewallRule, Group, IPBlock, LAN,\n"
+                  "                         LoadBalancer, NIC, Server, Snapshot, User, Volume")
+        variables = {
+            'client': client,
+            'Datacenter': profitbricks.client.Datacenter,
+            'FirewallRule': profitbricks.client.FirewallRule,
+            'Group': profitbricks.client.Group,
+            'IPBlock': profitbricks.client.IPBlock,
+            'LAN': profitbricks.client.LAN,
+            'LoadBalancer': profitbricks.client.LoadBalancer,
+            'NIC': profitbricks.client.NIC,
+            'Server': profitbricks.client.Server,
+            'Snapshot': profitbricks.client.Snapshot,
+            'User': profitbricks.client.User,
+            'Volume': profitbricks.client.Volume,
+        }
+
+        shell = None
+        try:
+            from IPython.terminal.embed import InteractiveShellEmbed
+            shell = InteractiveShellEmbed(banner2=banner, user_ns=variables)
+
+        except ImportError:
+            logger.warning("IPython not available. Using normal Python shell.")
+
+        if shell:
+            shell()
+        else:
+            try:
+                import readline
+            except ImportError:
+                logger.info("readline module not available. No tab-completion enabled.")
+            else:
+                import rlcompleter  # noqa, pylint: disable=unused-variable
+                readline.parse_and_bind("tab: complete")
+            console = code.InteractiveConsole(locals=variables)
+            console.interact(banner)
+    else:
+        eval(args.cmd)  # pylint: disable=eval-used
+
+
+if __name__ == '__main__':
+    main()

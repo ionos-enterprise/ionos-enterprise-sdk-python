@@ -15,7 +15,7 @@
 import unittest
 
 from helpers import configuration
-from helpers.resources import resource, wait_for_completion, find_image
+from helpers.resources import resource, find_image
 from profitbricks.client import Datacenter, Volume
 from profitbricks.client import ProfitBricksService
 from profitbricks.errors import PBError, PBNotFoundError
@@ -34,7 +34,7 @@ class TestVolume(unittest.TestCase):
         # Create test datacenter
         self.datacenter = self.client.create_datacenter(
             datacenter=Datacenter(**self.resource['datacenter']))
-        wait_for_completion(self.client, self.datacenter, 'create_datacenter')
+        self.client.wait_for_completion(self.datacenter)
 
         self.image = find_image(self.client, configuration.IMAGE_NAME)
 
@@ -45,7 +45,7 @@ class TestVolume(unittest.TestCase):
         self.volume = self.client.create_volume(
             datacenter_id=self.datacenter['id'],
             volume=vol)
-        wait_for_completion(self.client, self.volume, 'create_volume')
+        self.client.wait_for_completion(self.volume)
 
         # Create snapshot1
         self.snapshot1 = self.client.create_snapshot(
@@ -53,8 +53,7 @@ class TestVolume(unittest.TestCase):
             volume_id=self.volume['id'],
             name=self.resource['snapshot']['name'],
             description=self.resource['snapshot']['description'])
-        wait_for_completion(self.client, self.snapshot1, 'create_snapshot1',
-                            wait_timeout=600)
+        self.client.wait_for_completion(self.snapshot1, timeout=600)
 
     @classmethod
     def tearDownClass(self):
@@ -95,7 +94,7 @@ class TestVolume(unittest.TestCase):
         volume = self.client.create_volume(
             datacenter_id=self.datacenter['id'],
             volume=Volume(**self.resource['volume']))
-        wait_for_completion(self.client, volume, 'create_volume')
+        self.client.wait_for_completion(volume)
 
         volume = self.client.delete_volume(
             datacenter_id=self.datacenter['id'],
@@ -109,7 +108,7 @@ class TestVolume(unittest.TestCase):
             volume_id=self.volume['id'],
             size=6,
             name=self.resource['volume2']['name'] + ' - RENAME')
-        wait_for_completion(self.client, volume, 'update_volume')
+        self.client.wait_for_completion(volume)
 
         volume = self.client.get_volume(
             datacenter_id=self.datacenter['id'],
