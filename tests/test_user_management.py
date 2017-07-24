@@ -76,6 +76,14 @@ class TestUserManagement(unittest.TestCase):
             password='secretpassword123%s' % randint(0, 99999999))
         self.user2 = self.client.create_user(user=self.user_dict2)
 
+        # Create User 3
+        self.user_dict3 = User(
+            firstname='John',
+            lastname='Doe',
+            email='no-reply%s@example.com' % randint(0, 9999999999999),
+            password='secretpassword123%s' % randint(0, 99999999))
+        self.user3 = self.client.create_user(user=self.user_dict3)
+
         # Create Group 1
         group = Group(**self.resource['group'])
         self.group1 = self.client.create_group(group)
@@ -106,6 +114,7 @@ class TestUserManagement(unittest.TestCase):
     def tearDownClass(self):
         self.client.delete_snapshot(snapshot_id=self.snapshot['id'])
         self.client.delete_user(user_id=self.user1['id'])
+        self.client.delete_user(user_id=self.user3['id'])
         self.client.delete_group(group_id=self.group1['id'])
         self.client.delete_group(group_id=self.group3['id'])
         self.client.delete_ipblock(ipblock_id=self.ipblock['id'])
@@ -294,21 +303,21 @@ class TestUserManagement(unittest.TestCase):
             self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
 
     def test_list_group_users(self):
-        users = self.client.list_group_users(group_id=self.group1['id'])
+        users = self.client.list_group_users(group_id=self.group3['id'])
 
         self.assertGreater(len(users['items']), 0)
         self.assertEqual(users['items'][0]['type'], 'user')
 
     def test_add_group_user(self):
-        user = self.client.add_group_user(group_id=self.group1['id'],
-                                          user_id=self.user1['id'])
+        user = self.client.add_group_user(group_id=self.group3['id'],
+                                          user_id=self.user3['id'])
 
-        self.assertEqual(user['id'], self.user1['id'])
+        self.assertEqual(user['id'], self.user3['id'])
         self.assertEqual(user['type'], 'user')
 
     def test_remove_group_user(self):
-        user = self.client.remove_group_user(group_id=self.group1['id'],
-                                             user_id=self.user1['id'])
+        user = self.client.remove_group_user(group_id=self.group3['id'],
+                                             user_id=self.user3['id'])
 
         self.assertTrue(user)
 

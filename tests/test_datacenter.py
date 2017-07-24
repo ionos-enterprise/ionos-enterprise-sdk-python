@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import unittest
+import time
 
 from helpers import configuration
 from helpers.resources import resource
@@ -89,6 +90,7 @@ class TestDatacenter(unittest.TestCase):
             datacenter_id=self.datacenter['id'],
             description=self.resource['datacenter']['name']+' - RENAME')
         self.client.wait_for_completion(datacenter)
+        time.sleep(10)
         datacenter = self.client.get_datacenter(datacenter_id=self.datacenter['id'])
 
         assertRegex(self, datacenter['id'], self.resource['uuid_match'])

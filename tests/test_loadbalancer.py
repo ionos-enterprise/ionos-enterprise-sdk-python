@@ -20,6 +20,7 @@ from profitbricks.client import ProfitBricksService
 from profitbricks.client import Datacenter, LoadBalancer, LAN, NIC, Server
 from profitbricks.errors import PBError, PBNotFoundError
 from six import assertRegex
+from time import sleep
 
 
 class TestLoadBalancer(unittest.TestCase):
@@ -169,6 +170,7 @@ class TestLoadBalancer(unittest.TestCase):
             loadbalancer_id=self.loadbalancer3['id'],
             nic_id=self.nic1['id'])
         self.assertTrue(remove_nic)
+        sleep(30)
 
     def test_list_balanced_nics(self):
         balanced_nics = self.client.get_loadbalancer_members(
