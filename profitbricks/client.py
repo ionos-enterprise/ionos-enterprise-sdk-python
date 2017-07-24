@@ -2032,9 +2032,7 @@ class ProfitBricksService(object):
 
         """
         data = {
-            "properties": {
-                "user": user_id
-            }
+            "id": user_id
         }
 
         response = self._perform_request(

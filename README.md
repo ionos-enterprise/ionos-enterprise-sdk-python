@@ -1,6 +1,6 @@
 # Python SDK
 
-Version: profitbricks-sdk-python **4.0.0**
+Version: profitbricks-sdk-python **4.1.0**
 
 ## Table of Contents
 

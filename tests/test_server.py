@@ -369,10 +369,14 @@ class TestServer(unittest.TestCase):
             datacenter_id=self.datacenter['id'],
             server_id=self.server['id'],
             cdrom_id=self.cdrom['id'])
-        time.sleep(5)
+        time.sleep(15)
 
         self.assertTrue(detached_cd)
-        self.assertRaises(PBNotFoundError, check_detached_cdrom_gone(self))
+
+        try:
+            check_detached_cdrom_gone(self)
+        except PBNotFoundError as e:
+            self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
 
 
 if __name__ == '__main__':
