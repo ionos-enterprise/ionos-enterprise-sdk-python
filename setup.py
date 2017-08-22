@@ -32,7 +32,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 
 
 def read(*parts):
-    return codecs.open(os.path.join(here, *parts), 'r').read()
+    return codecs.open(os.path.join(here, *parts), 'r', 'utf-8').read()
 
 
 def find_version(*file_paths):
