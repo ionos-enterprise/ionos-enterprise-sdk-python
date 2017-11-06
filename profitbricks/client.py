@@ -1076,7 +1076,7 @@ class ProfitBricksService(object):
         :type       location_id: ``str``
 
         """
-        response = self._perform_request('/locations/%s?depth=%s' % (location_id,depth))
+        response = self._perform_request('/locations/%s?depth=%s' % (location_id, depth))
         return response
 
     def list_locations(self, depth=0):
@@ -1084,7 +1084,7 @@ class ProfitBricksService(object):
         Retrieves a list of locations available in the account.
 
         """
-        response = self._perform_request('/locations?depth=%s'% (depth))
+        response = self._perform_request('/locations?depth=%s' % (depth))
 
         return response
 
@@ -2153,8 +2153,7 @@ class ProfitBricksService(object):
 
         return response
 
-    def create_vol
-ume(self, datacenter_id, volume):
+    def create_volume(self, datacenter_id, volume):
         """
         Creates a volume within the specified data center.
 
