@@ -1068,7 +1068,7 @@ class ProfitBricksService(object):
 
     # Location Functions
 
-    def get_location(self, location_id):
+    def get_location(self, location_id, depth=0):
         """
         Retrieves a single location by ID.
 
@@ -1076,15 +1076,15 @@ class ProfitBricksService(object):
         :type       location_id: ``str``
 
         """
-        response = self._perform_request('/locations/' + location_id)
+        response = self._perform_request('/locations/%s?depth=%s' % (location_id,depth))
         return response
 
-    def list_locations(self):
+    def list_locations(self, depth=0):
         """
         Retrieves a list of locations available in the account.
 
         """
-        response = self._perform_request('/locations')
+        response = self._perform_request('/locations?depth=%s'% (depth))
 
         return response
 
