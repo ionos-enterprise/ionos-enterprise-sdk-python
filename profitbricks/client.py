@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import base64
 import getpass
 import json
 import logging
@@ -2271,19 +2270,18 @@ class ProfitBricksService(object):
     def _perform_request(self, url, method='GET', data=None, headers=None):
         if headers is None:
             headers = dict()
-        headers.update({'Authorization': 'Basic %s' % (base64.b64encode(
-            self._b('%s:%s' % (self.username,
-                               self.password))).decode('utf-8'))})
+
+        auth = (self.username, self.password)
 
         url = self._build_url(url)
         headers.update({'User-Agent': self.user_agent})
         if method == 'POST' or method == 'PUT':
-            response = self._wrapped_request(method, url, data=data,
+            response = self._wrapped_request(method, url, auth=auth, data=data,
                                              headers=headers)
             headers.update({'Content-Type': 'application/json'})
         elif method == 'POST-ACTION-JSON' or method == 'POST-ACTION':
             headers.update({'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'})
-            response = self._wrapped_request('POST', url, data=data,
+            response = self._wrapped_request('POST', url, auth=auth, data=data,
                                              headers=headers)
             if response.status_code == 202 and method == 'POST-ACTION':
                 return True
@@ -2291,11 +2289,11 @@ class ProfitBricksService(object):
                 raise response.raise_for_status()
         elif method == 'PATCH':
             headers.update({'Content-Type': 'application/json'})
-            response = self._wrapped_request(method, url, data=data,
+            response = self._wrapped_request(method, url, auth=auth, data=data,
                                              headers=headers)
         else:
             headers.update({'Content-Type': 'application/json'})
-            response = self._wrapped_request(method, url, params=data,
+            response = self._wrapped_request(method, url, auth=auth, params=data,
                                              headers=headers)
             if method == 'DELETE':
                 if response.status_code == 202:
