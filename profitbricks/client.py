@@ -66,12 +66,13 @@ class ProfitBricksService(object):
             headers = dict()
         self._config = None
         self._config_filename = None
-        self.username = self._get_username(username, use_config, config_filename)
-        self.password = self._get_password(password, use_config, config_filename, use_keyring)
+        self.keyring_identificator = '%s (%s)' % (re.sub("/v\d+$", '', host_base), _LIBRARY_NAME)
         self.host_base = host_base
         self.host_cert = host_cert
         self.verify = ssl_verify
         self.headers = headers
+        self.username = self._get_username(username, use_config, config_filename)
+        self.password = self._get_password(password, use_config, config_filename, use_keyring)
         self.user_agent = '{}/{}'.format(_LIBRARY_NAME, __version__)
         if client_user_agent:
             self.user_agent = client_user_agent + ' ' + self.user_agent
@@ -166,16 +167,16 @@ class ProfitBricksService(object):
 
         if not password and use_keyring:
             logger = logging.getLogger(__name__)
-            question = ("Please enter your password for {}: ".format(self.username))
+            question = ("Please enter your password for {} on {}: ".format(self.username, self.host_base))
             if HAS_KEYRING:
-                password = keyring.get_password(_LIBRARY_NAME, self.username)
+                password = keyring.get_password(self.keyring_identificator, self.username)
                 if password is None:
                     password = getpass.getpass(question)
                     try:
-                        keyring.set_password(_LIBRARY_NAME, self.username, password)
+                        keyring.set_password(self.keyring_identificator, self.username, password)
                     except keyring.errors.PasswordSetError as error:
                         logger.warning("Storing password in keyring '%s' failed: %s",
-                                       _LIBRARY_NAME, error)
+                                       self.keyring_identificator, error)
             else:
                 logger.warning("Install the 'keyring' Python module to store your password "
                                "securely in your keyring!")
