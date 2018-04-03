@@ -103,15 +103,10 @@ class TestUserManagement(unittest.TestCase):
             edit_privilege=True,
             share_privilege=True)
 
-        # Create Share 2
-        self.share2 = self.client.add_share(
-            group_id=self.group3['id'],
-            resource_id=self.ipblock['id'],
-            edit_privilege=True,
-            share_privilege=True)
-
     @classmethod
     def tearDownClass(self):
+        self.client.delete_share(group_id=self.group3['id'],
+                                 resource_id=self.datacenter['id'])
         self.client.delete_snapshot(snapshot_id=self.snapshot['id'])
         self.client.delete_user(user_id=self.user1['id'])
         self.client.delete_user(user_id=self.user3['id'])
@@ -222,11 +217,6 @@ class TestUserManagement(unittest.TestCase):
         self.assertEqual(group['properties']['accessActivityLog'],
                          self.group1['properties']['accessActivityLog'])
 
-    def test_delete_group(self):
-        group = self.client.delete_group(group_id=self.group2['id'])
-
-        self.assertTrue(group)
-
     def test_update_group(self):
         group = self.client.update_group(
             group_id=self.group1['id'],
@@ -239,6 +229,12 @@ class TestUserManagement(unittest.TestCase):
         self.assertEqual(group['properties']['name'],
                          self.resource['group']['name'] + ' - RENAME')
         self.assertFalse(group['properties']['createDataCenter'])
+
+    
+    def test_delete_group(self):
+        group = self.client.delete_group(group_id=self.group2['id'])
+
+        self.assertTrue(group)
 
     def test_create_group_failure(self):
         try:
@@ -275,19 +271,13 @@ class TestUserManagement(unittest.TestCase):
 
     def test_update_share(self):
         share = self.client.update_share(group_id=self.group3['id'],
-                                         resource_id=self.ipblock['id'],
-                                         edit_privilege=False)
+                                    resource_id=self.datacenter['id'],
+                                    share_privilege=False)
 
-        self.assertEqual(share['id'], self.ipblock['id'])
+        self.assertEqual(share['id'], self.datacenter['id'])
         self.assertEqual(share['type'], 'resource')
-        self.assertFalse(share['properties']['editPrivilege'])
-
-    def test_remove_share(self):
-        share = self.client.delete_share(group_id=self.group3['id'],
-                                         resource_id=self.datacenter['id'])
-
-        self.assertTrue(share)
-
+        self.assertFalse(share['properties']['sharePrivilege'])
+        
     def test_get_share_failure(self):
         try:
             self.client.get_share(group_id=self.group3['id'],
