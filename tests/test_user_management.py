@@ -230,7 +230,6 @@ class TestUserManagement(unittest.TestCase):
                          self.resource['group']['name'] + ' - RENAME')
         self.assertFalse(group['properties']['createDataCenter'])
 
-    
     def test_delete_group(self):
         group = self.client.delete_group(group_id=self.group2['id'])
 
@@ -271,13 +270,13 @@ class TestUserManagement(unittest.TestCase):
 
     def test_update_share(self):
         share = self.client.update_share(group_id=self.group3['id'],
-                                    resource_id=self.datacenter['id'],
-                                    share_privilege=False)
+                                         resource_id=self.datacenter['id'],
+                                         share_privilege=False)
 
         self.assertEqual(share['id'], self.datacenter['id'])
         self.assertEqual(share['type'], 'resource')
         self.assertFalse(share['properties']['sharePrivilege'])
-        
+
     def test_get_share_failure(self):
         try:
             self.client.get_share(group_id=self.group3['id'],
