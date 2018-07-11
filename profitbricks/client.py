@@ -718,10 +718,8 @@ class ProfitBricksService(object):
             "properties": properties,
         }
 
-        data = self._underscore_to_camelcase(json.dumps(raw))
-
         response = self._perform_request(
-            url='/ipblocks', method='POST', data=data)
+            url='/ipblocks', method='POST', data=json.dumps(raw))
 
         return response
 
@@ -795,11 +793,7 @@ class ProfitBricksService(object):
         :type       lan: ``dict``
 
         """
-        data = self._underscore_to_camelcase(
-            json.dumps(
-                self._create_lan_dict(lan)
-            )
-        )
+        data = json.dumps(self._create_lan_dict(lan))
 
         response = self._perform_request(
             url='/datacenters/%s/lans' % datacenter_id,
@@ -930,11 +924,7 @@ class ProfitBricksService(object):
         :type       loadbalancer: ``dict``
 
         """
-        data = self._underscore_to_camelcase(
-            json.dumps(
-                self._create_loadbalancer_dict(loadbalancer)
-            )
-        )
+        data = json.dumps(self._create_loadbalancer_dict(loadbalancer))
 
         response = self._perform_request(
             url='/datacenters/%s/loadbalancers' % datacenter_id,
