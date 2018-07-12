@@ -167,7 +167,8 @@ class ProfitBricksService(object):
 
         if not password and use_keyring:
             logger = logging.getLogger(__name__)
-            question = ("Please enter your password for {} on {}: ".format(self.username, self.host_base))
+            question = ("Please enter your password for {} on {}: "
+                        .format(self.username, self.host_base))
             if HAS_KEYRING:
                 password = keyring.get_password(self.keyring_identificator, self.username)
                 if password is None:
