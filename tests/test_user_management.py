@@ -20,6 +20,7 @@ from helpers.resources import resource, find_image
 from profitbricks.client import ProfitBricksService
 from profitbricks.client import Datacenter, IPBlock, User, Group, Volume
 from profitbricks.errors import PBError, PBNotFoundError
+from six import assertRegex
 
 
 class TestUserManagement(unittest.TestCase):
@@ -147,6 +148,7 @@ class TestUserManagement(unittest.TestCase):
         user = self.client.delete_user(user_id=self.user2['id'])
 
         self.assertTrue(user)
+        assertRegex(self, user['requestId'], self.resource['uuid_match'])
 
     def test_update_user(self):
         user = self.client.update_user(
@@ -234,6 +236,7 @@ class TestUserManagement(unittest.TestCase):
         group = self.client.delete_group(group_id=self.group2['id'])
 
         self.assertTrue(group)
+        assertRegex(self, group['requestId'], self.resource['uuid_match'])
 
     def test_create_group_failure(self):
         try:

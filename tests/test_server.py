@@ -140,6 +140,7 @@ class TestServer(unittest.TestCase):
         )
 
         self.assertTrue(response)
+        assertRegex(self, response['requestId'], self.resource['uuid_match'])
 
     def test_update_server(self):
         server = self.client.update_server(
