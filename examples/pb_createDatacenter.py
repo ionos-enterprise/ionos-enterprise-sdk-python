@@ -201,11 +201,11 @@ def create_datacenter_dict(pbclient, datacenter):
         "name": datacenter.name,
         "location": datacenter.location,
     }
-    ' Optional Properties'
+    # Optional Properties
     if datacenter.description:
         properties['description'] = datacenter.description
 
-    ' Servers '
+    # Servers
     if datacenter.servers:
         for server in datacenter.servers:
             server_items.append(pbclient._create_server_dict(server))
@@ -217,7 +217,7 @@ def create_datacenter_dict(pbclient, datacenter):
         }
         entities.update(server_entities)
 
-    ' Volumes '
+    # Volumes
     if datacenter.volumes:
         for volume in datacenter.volumes:
             volume_items.append(pbclient._create_volume_dict(volume))
@@ -229,7 +229,7 @@ def create_datacenter_dict(pbclient, datacenter):
         }
         entities.update(volume_entities)
 
-    ' Load Balancers '
+    # Load Balancers
     if datacenter.loadbalancers:
         for loadbalancer in datacenter.loadbalancers:
             loadbalancer_items.append(
@@ -245,7 +245,7 @@ def create_datacenter_dict(pbclient, datacenter):
         }
         entities.update(loadbalancer_entities)
 
-    ' LANs '
+    # LANs
     if datacenter.lans:
         for lan in datacenter.lans:
             lan_items.append(
