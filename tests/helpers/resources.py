@@ -136,6 +136,6 @@ def check_detached_cdrom_gone(parent):
     Check if an attached cdrom is not attached anymore and it throws a PBNotFoundError
     '''
     parent.client.get_attached_cdrom(
-            datacenter_id=parent.datacenter['id'],
-            server_id=parent.server['id'],
-            cdrom_id=parent.test_image1['id'])
+        datacenter_id=parent.datacenter['id'],
+        server_id=parent.server['id'],
+        cdrom_id=parent.test_image1['id'])
