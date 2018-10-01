@@ -128,6 +128,7 @@ def find_image(conn, name):
                 item['properties']['imageType'] == 'HDD' and
                 name in item['properties']['name']):
             return item
+    return None
 
 
 def check_detached_cdrom_gone(parent):

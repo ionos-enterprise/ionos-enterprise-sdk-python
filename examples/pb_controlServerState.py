@@ -344,11 +344,12 @@ USAGE
                       server['vmstate']))
     except KeyboardInterrupt:
         # handle keyboard interrupt #
-        return 0
+        pass
     except Exception:
         traceback.print_exc()
         sys.stderr.write("\n" + program_name + ":  for help use --help\n")
         return 2
+    return 0
 # end main()
 
 
