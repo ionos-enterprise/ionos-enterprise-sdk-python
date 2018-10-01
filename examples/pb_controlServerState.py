@@ -116,7 +116,7 @@ def getServerInfo(pbclient=None, dc_id=None):
 def select_where(info=None, select=None, **where):
     if info is None:
         raise ValueError("argument 'info' must not be None")
-    if len(info) == 0:
+    if not info:
         return []
     if select is None:
         select = info[0].keys()
@@ -124,7 +124,7 @@ def select_where(info=None, select=None, **where):
     for old_si in info:
         w_matches = all(old_si[wk] == wv for (wk, wv) in where.items())
         new_si = {k: v for (k, v) in old_si.items() if k in select and w_matches}
-        if len(new_si) > 0:
+        if new_si:
             server_info.append(new_si)
     # end for(info)
     return(server_info)

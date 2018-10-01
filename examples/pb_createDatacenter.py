@@ -138,7 +138,7 @@ def wait_for_requests(pbclient, request_ids=[],
     running requests.
     '''
     done = dict()
-    if len(request_ids) == 0:
+    if not request_ids:
         print("empty request list")
         return done
     total_wait = 0
@@ -206,7 +206,7 @@ def create_datacenter_dict(pbclient, datacenter):
         properties['description'] = datacenter.description
 
     ' Servers '
-    if len(datacenter.servers) > 0:
+    if datacenter.servers:
         for server in datacenter.servers:
             server_items.append(pbclient._create_server_dict(server))
         servers = {
@@ -218,7 +218,7 @@ def create_datacenter_dict(pbclient, datacenter):
         entities.update(server_entities)
 
     ' Volumes '
-    if len(datacenter.volumes) > 0:
+    if datacenter.volumes:
         for volume in datacenter.volumes:
             volume_items.append(pbclient._create_volume_dict(volume))
         volumes = {
@@ -230,7 +230,7 @@ def create_datacenter_dict(pbclient, datacenter):
         entities.update(volume_entities)
 
     ' Load Balancers '
-    if len(datacenter.loadbalancers) > 0:
+    if datacenter.loadbalancers:
         for loadbalancer in datacenter.loadbalancers:
             loadbalancer_items.append(
                 pbclient._create_loadbalancer_dict(
@@ -246,7 +246,7 @@ def create_datacenter_dict(pbclient, datacenter):
         entities.update(loadbalancer_entities)
 
     ' LANs '
-    if len(datacenter.lans) > 0:
+    if datacenter.lans:
         for lan in datacenter.lans:
             lan_items.append(
                 pbclient._create_lan_dict(lan)
@@ -259,7 +259,7 @@ def create_datacenter_dict(pbclient, datacenter):
         }
         entities.update(lan_entities)
 
-    if len(entities) == 0:
+    if not entities:
         raw = {
             "properties": properties,
         }
@@ -290,7 +290,7 @@ def read_dc_definition(pbclient, filename=None):
 # -- build objects from internal dict structures --
 
 def getDatacenterObject(defdict=None):
-    if defdict is None or not type(defdict) is dict or len(defdict.keys()) == 0:
+    if not defdict or not type(defdict) is dict:
         raise ValueError("argument 'defdict' must be non-empty dict")
     props = dict()
     for k, v in defdict['properties'].items():
@@ -302,7 +302,7 @@ def getDatacenterObject(defdict=None):
 
 
 def getVolumeObject(defdict=None):
-    if defdict is None or not type(defdict) is dict or len(defdict.keys()) == 0:
+    if not defdict or not type(defdict) is dict:
         raise ValueError("argument 'defdict' must be non-empty dict")
     # TODO: can we set deviceNumber too? Nope, not supported in Volume()
     # AARGH! some of Volume's fields have different names -> need to convert
@@ -329,7 +329,7 @@ def getVolumeObject(defdict=None):
 
 
 def getServerObject(defdict=None):
-    if defdict is None or not type(defdict) is dict or len(defdict.keys()) == 0:
+    if not defdict or not type(defdict) is dict:
         raise ValueError("argument 'defdict' must be non-empty dict")
     # AARGH! some of Servers's fields have different names -> need to convert manually
     # so make a copy and let source as is
@@ -364,7 +364,7 @@ def getServerObject(defdict=None):
 
 
 def getNICObject(defdict=None):
-    if defdict is None or not type(defdict) is dict or len(defdict.keys()) == 0:
+    if not defdict or not type(defdict) is dict:
         raise ValueError("argument 'defdict' must be non-empty dict")
     # AARGH! some of NIC's fields have different names -> need to convert manually
     # so make a copy and let source as is
@@ -376,7 +376,7 @@ def getNICObject(defdict=None):
         if k == 'firewallrules':
             # this needs more to do:
             # if we have rules we must get rules objects too, irrespective of being active
-            if len(v) != 0:
+            if v:
                 rules = [getFwRuleObject(rule) for rule in v]
                 props['firewall_rules'] = rules
                 continue
@@ -388,7 +388,7 @@ def getNICObject(defdict=None):
 
 
 def getFwRuleObject(defdict=None):
-    if defdict is None or not type(defdict) is dict or len(defdict.keys()) == 0:
+    if not defdict or not type(defdict) is dict:
         raise ValueError("argument 'defdict' must be non-empty dict")
     # AARGH! some of NIC's fields have different names -> need to convert manually
     # so make a copy and let source as is
@@ -423,7 +423,7 @@ def getFwRuleObject(defdict=None):
 
 
 def getLANObject(defdict=None):
-    if defdict is None or not type(defdict) is dict or len(defdict.keys()) == 0:
+    if not defdict or not type(defdict) is dict:
         raise ValueError("argument 'defdict' must be non-empty dict")
     props = dict()
     for k, v in defdict['properties'].items():
@@ -550,7 +550,7 @@ USAGE
                 requests.append(response['requestId'])
         # end for(volume)
     # end for(server)
-    if len(requests) != 0:
+    if requests:
         result = wait_for_requests(pbclient, requests, initial_wait=10, scaleup=15)
         print("wait loop returned {}".format(str(result)))
         tmpfile = usefile+".tmp_postvol"
@@ -573,7 +573,7 @@ USAGE
             server.update({'custom': {'id': response['id']}})
             requests.append(response['requestId'])
     # end for(server)
-    if len(requests) != 0:
+    if requests:
         result = wait_for_requests(pbclient, requests, initial_wait=10, scaleup=15)
         print("wait loop returned {}".format(str(result)))
         tmpfile = usefile+".tmp_postsrv"

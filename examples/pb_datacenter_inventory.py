@@ -280,7 +280,7 @@ def get_dc_network(pbclient, dc=None):
         ]
         nics = lan['entities']['nics']['items']
         lan_data.append(len(nics))
-        if len(nics) > 0:
+        if nics:
             for nic in nics:
                 nic_props = nic['properties']
                 # get the serverid of this nic by href

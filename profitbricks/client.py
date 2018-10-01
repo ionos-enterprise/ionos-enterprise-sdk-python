@@ -254,7 +254,7 @@ class ProfitBricksService(object):
         """
         all_data_centers = self.list_datacenters(depth=depth)['items']
         data_center = find_item_by_name(all_data_centers, lambda i: i['properties']['name'], name)
-        if len(data_center) == 0:
+        if not data_center:
             raise NameError("No data center found with name "
                             "containing '{name}'.".format(name=name))
         if len(data_center) > 1:
@@ -315,7 +315,7 @@ class ProfitBricksService(object):
             properties['description'] = datacenter.description
 
         # Servers
-        if len(datacenter.servers) > 0:
+        if datacenter.servers:
             for server in datacenter.servers:
                 server_items.append(self._create_server_dict(server))
 
@@ -330,7 +330,7 @@ class ProfitBricksService(object):
             entities.update(server_entities)
 
         # Volumes
-        if len(datacenter.volumes) > 0:
+        if datacenter.volumes:
             for volume in datacenter.volumes:
                 volume_items.append(self._create_volume_dict(volume))
 
@@ -345,7 +345,7 @@ class ProfitBricksService(object):
             entities.update(volume_entities)
 
         # Load Balancers
-        if len(datacenter.loadbalancers) > 0:
+        if datacenter.loadbalancers:
             for loadbalancer in datacenter.loadbalancers:
                 loadbalancer_items.append(
                     self._create_loadbalancer_dict(
@@ -364,7 +364,7 @@ class ProfitBricksService(object):
             entities.update(loadbalancer_entities)
 
         # LANs
-        if len(datacenter.lans) > 0:
+        if datacenter.lans:
             for lan in datacenter.lans:
                 lan_items.append(
                     self._create_lan_dict(lan)
@@ -380,7 +380,7 @@ class ProfitBricksService(object):
 
             entities.update(lan_entities)
 
-        if len(entities) == 0:
+        if not entities:
             raw = {
                 "properties": properties,
             }
@@ -2383,7 +2383,7 @@ class ProfitBricksService(object):
         if lan.public is not None:
             properties['public'] = str(lan.public).lower()
 
-        if len(lan.nics) > 0:
+        if lan.nics:
             for nic in lan.nics:
                 nics_properties = {
                     "id": nic
@@ -2400,7 +2400,7 @@ class ProfitBricksService(object):
 
             entities.update(nics_entities)
 
-        if len(entities) == 0:
+        if not entities:
             raw = {
                 "properties": properties,
             }
@@ -2428,7 +2428,7 @@ class ProfitBricksService(object):
         if loadbalancer.dhcp is not None:
             properties['dhcp'] = str(loadbalancer.dhcp).lower()
 
-        if len(loadbalancer.balancednics) > 0:
+        if loadbalancer.balancednics:
             for nic in loadbalancer.balancednics:
                 balancednic_properties = {
                     "id": nic
@@ -2445,7 +2445,7 @@ class ProfitBricksService(object):
 
             entities.update(balancednics_entities)
 
-        if len(loadbalancer.balancednics) == 0:
+        if not loadbalancer.balancednics:
             raw = {
                 "properties": properties,
             }
@@ -2480,7 +2480,7 @@ class ProfitBricksService(object):
         if nic.firewall_active is not None:
             properties['firewallActive'] = nic.firewall_active
 
-        if len(nic.firewall_rules) > 0:
+        if nic.firewall_rules:
             for rule in nic.firewall_rules:
                 items.append(self._create_firewallrules_dict(rule))
 
@@ -2492,7 +2492,7 @@ class ProfitBricksService(object):
             "firewallrules": rules
         }
 
-        if len(nic.firewall_rules) == 0:
+        if not nic.firewall_rules:
             raw = {
                 "properties": properties,
             }
@@ -2574,7 +2574,7 @@ class ProfitBricksService(object):
         if server.cpu_family:
             properties['cpuFamily'] = server.cpu_family
 
-        if len(server.create_volumes) > 0:
+        if server.create_volumes:
             for volume in server.create_volumes:
                 volume_items.append(self._create_volume_dict(volume))
 
@@ -2588,7 +2588,7 @@ class ProfitBricksService(object):
 
             entities.update(volume_entities)
 
-        if len(server.nics) > 0:
+        if server.nics:
             for nic in server.nics:
                 nic_items.append(self._create_nic_dict(nic))
 
@@ -2602,7 +2602,7 @@ class ProfitBricksService(object):
             entities.update(nic_entities)
 
         # Attach Existing Volume(s)
-        if len(server.attach_volumes) > 0:
+        if server.attach_volumes:
             for volume in server.attach_volumes:
                 volume_properties = {
                     "id": volume
@@ -2619,7 +2619,7 @@ class ProfitBricksService(object):
 
             entities.update(volume_entities)
 
-        if len(entities) == 0:
+        if not entities:
             raw = {
                 "properties": properties,
             }

@@ -159,7 +159,7 @@ def wait_for_requests(pbclient, request_ids=[],
     running requests.
     '''
     done = dict()
-    if len(request_ids) == 0:
+    if not request_ids:
         print("empty request list")
         return done
     total_wait = 0
@@ -645,7 +645,7 @@ USAGE
         for disk in metadata.disks:
             disk_name = disk['file']
             images = get_disk_image_by_name(pbclient, location, disk_name)
-            if len(images) == 0:
+            if not images:
                 raise ValueError("No HDD image with name '{}' found in location {}"
                                  .format(disk_name, location))
             if len(images) > 1:
@@ -685,7 +685,7 @@ USAGE
             requests.append(response['requestId'])
             disk['volume_id'] = response['id']
         # end for(disks)
-        if len(requests) != 0:
+        if requests:
             result = wait_for_requests(pbclient, requests, initial_wait=10, scaleup=15)
             print("wait loop returned {}".format(str(result)))
         for disk in metadata.disks:

@@ -77,19 +77,19 @@ def find_item_by_name(list_, namegetter, name):
 
     """
     matching_items = [i for i in list_ if namegetter(i) == name]
-    if len(matching_items) == 0:
+    if not matching_items:
         prog = re.compile(re.escape(name) + '$', re.IGNORECASE)
         matching_items = [i for i in list_ if prog.match(namegetter(i))]
-    if len(matching_items) == 0:
+    if not matching_items:
         prog = re.compile(re.escape(name))
         matching_items = [i for i in list_ if prog.match(namegetter(i))]
-    if len(matching_items) == 0:
+    if not matching_items:
         prog = re.compile(re.escape(name), re.IGNORECASE)
         matching_items = [i for i in list_ if prog.match(namegetter(i))]
-    if len(matching_items) == 0:
+    if not matching_items:
         prog = re.compile(re.escape(name))
         matching_items = [i for i in list_ if prog.search(namegetter(i))]
-    if len(matching_items) == 0:
+    if not matching_items:
         prog = re.compile(re.escape(name), re.IGNORECASE)
         matching_items = [i for i in list_ if prog.search(namegetter(i))]
     return matching_items

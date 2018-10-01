@@ -239,7 +239,7 @@ USAGE
         print("Server provisioned with ID {}".format(server_id))
         nics = pbclient.list_nics(dc_id, server_id, 1)
         # server should have exactly one nic, but we only test empty nic list
-        if len(nics['items']) == 0:
+        if not nics['items']:
             raise CLIError("No NICs found for newly created server {}"
                            .format(server_id))
         nic0 = nics['items'][0]
