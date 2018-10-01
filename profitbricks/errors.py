@@ -15,7 +15,7 @@
 
 class PBError(Exception):
     """Base error for this module."""
-    def __init__(self, resp, content, uri=None):
+    def __init__(self, resp, content, uri=None):  # pylint: disable=super-init-not-called
         self.resp = resp
         self.content = content
         self.uri = uri
@@ -39,7 +39,7 @@ class PBRateLimitExceededError(PBError):
 
 class PBRequestError(Exception):
     """Base error for request failures"""
-    def __init__(self, msg, request_id):
+    def __init__(self, msg, request_id):  # pylint: disable=super-init-not-called
         self.msg = msg
         self.request_id = request_id
 

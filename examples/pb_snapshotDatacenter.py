@@ -15,6 +15,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# pylint: disable=broad-except,global-variable-undefined
+
 '''
 pb_snapshotDatacenter is a sample script to make a snapshot of a complete datacenter.
 pb_snapshotDatacenter

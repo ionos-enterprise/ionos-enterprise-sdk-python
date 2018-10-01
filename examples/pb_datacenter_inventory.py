@@ -15,6 +15,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# pylint: disable=broad-except,global-statement
+
 '''
 pb_datacenter_inventory -- dump inventory of your Profitbricks data centers to CSV files
 

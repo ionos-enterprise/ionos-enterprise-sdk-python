@@ -26,7 +26,7 @@ try:
 except ImportError:
     import ConfigParser as configparser
 
-from six.moves.urllib.parse import urlencode
+from six.moves.urllib.parse import urlencode  # false positive, pylint: disable=import-error
 
 try:
     import keyring

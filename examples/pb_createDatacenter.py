@@ -15,6 +15,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# pylint: disable=global-variable-undefined
+
 '''
 pb_createDatacenter is a sample script to create a complex datacenter.
 
@@ -190,6 +192,7 @@ def create_datacenter_dict(pbclient, datacenter):
     This is copied from createDatacenter() and uses private methods.
 
     """
+    # pylint: disable=protected-access
     server_items = []
     volume_items = []
     lan_items = []

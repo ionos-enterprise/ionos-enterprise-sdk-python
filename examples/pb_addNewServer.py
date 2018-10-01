@@ -15,6 +15,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# pylint: disable=broad-except,global-variable-undefined
+
 '''
 pb_addNewServer -- adds a new server to a data center
 
