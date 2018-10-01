@@ -118,12 +118,12 @@ class TestLan(unittest.TestCase):
         self.assertEqual(self.lan['properties']['public'], self.resource['lan']['public'])
 
     def test_create_complex_lan(self):
-        resource = NIC(**self.resource['nic'])
+        nic_resource = NIC(**self.resource['nic'])
 
         nic1 = self.client.create_nic(
             datacenter_id=self.datacenter['id'],
             server_id=self.server['id'],
-            nic=resource)
+            nic=nic_resource)
         self.client.wait_for_completion(nic1)
         self.assertFalse(nic1['properties']['nat'])
         self.assertEqual(nic1['properties']['name'], 'Python SDK Test')

@@ -355,32 +355,32 @@ class TestUserManagement(unittest.TestCase):
             self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
 
     def test_get_datacenter_resource(self):
-        resource = self.client.get_resource(resource_type='datacenter',
-                                            resource_id=self.datacenter['id'])
+        data_center = self.client.get_resource(resource_type='datacenter',
+                                               resource_id=self.datacenter['id'])
 
-        self.assertEqual(resource['id'], self.datacenter['id'])
-        self.assertEqual(resource['type'], 'datacenter')
+        self.assertEqual(data_center['id'], self.datacenter['id'])
+        self.assertEqual(data_center['type'], 'datacenter')
 
     def test_get_image_resource(self):
-        resource = self.client.get_resource(resource_type='image',
-                                            resource_id=self.image['id'])
+        image = self.client.get_resource(resource_type='image',
+                                         resource_id=self.image['id'])
 
-        self.assertEqual(resource['id'], self.image['id'])
-        self.assertEqual(resource['type'], 'image')
+        self.assertEqual(image['id'], self.image['id'])
+        self.assertEqual(image['type'], 'image')
 
     def test_get_snapshot_resource(self):
-        resource = self.client.get_resource(resource_type='snapshot',
+        snapshot = self.client.get_resource(resource_type='snapshot',
                                             resource_id=self.snapshot['id'])
 
-        self.assertEqual(resource['id'], self.snapshot['id'])
-        self.assertEqual(resource['type'], 'snapshot')
+        self.assertEqual(snapshot['id'], self.snapshot['id'])
+        self.assertEqual(snapshot['type'], 'snapshot')
 
     def test_list_ipblock_resources2(self):
-        resource = self.client.get_resource(resource_type='ipblock',
-                                            resource_id=self.ipblock['id'])
+        ipblock = self.client.get_resource(resource_type='ipblock',
+                                           resource_id=self.ipblock['id'])
 
-        self.assertEqual(resource['id'], self.ipblock['id'])
-        self.assertEqual(resource['type'], 'ipblock')
+        self.assertEqual(ipblock['id'], self.ipblock['id'])
+        self.assertEqual(ipblock['type'], 'ipblock')
 
     def test_get_resource_failure(self):
         try:
