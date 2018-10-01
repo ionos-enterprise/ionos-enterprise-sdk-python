@@ -241,7 +241,7 @@ def getServerInfo(pbclient=None, dc_id=None):
                     vmstate=props['vmState'])
         server_info.append(info)
     # end for(servers)
-    return(server_info)
+    return server_info
 # end getServerInfo()
 
 
@@ -259,7 +259,7 @@ def select_where(info=None, select=None, **where):
         if new_si:
             server_info.append(new_si)
     # end for(info)
-    return(server_info)
+    return server_info
 # end select_where()
 
 

@@ -78,7 +78,7 @@ class TestServer(unittest.TestCase):
                     and image['properties']['imageType'] == "CDROM"
                     and image['properties']['location'] == configuration.LOCATION
                     and image['properties']['licenceType'] == "LINUX"):
-                if(usedIndex == 0):
+                if usedIndex == 0:
                     self.test_image1 = image
                     usedIndex = index
                 else:

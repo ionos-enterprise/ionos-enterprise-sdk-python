@@ -120,7 +120,7 @@ def wait_for_request(pbclient, request_id,
             print("scaling up wait_period to {}, next change in {} seconds"
                   .format(wait_period, next_scaleup))
     # end while(wait)
-    return(-1, state, "request not finished before timeout")
+    return (-1, state, "request not finished before timeout")
 # end wait_for_request()
 
 
@@ -297,7 +297,7 @@ def getDatacenterObject(defdict=None):
         # no renaming needed here, but this accounts for optional props too
         props[k] = v
     apiobj = Datacenter(**props)
-    return(apiobj)
+    return apiobj
 # end getDatacenterObject()
 
 
@@ -324,7 +324,7 @@ def getVolumeObject(defdict=None):
         props[k] = v
     # end for(defdict)
     apiobj = Volume(**props)
-    return(apiobj)
+    return apiobj
 # end getVolumeObject()
 
 
@@ -359,7 +359,7 @@ def getServerObject(defdict=None):
             props[k] = v
     # end for(defdict)
     apiobj = Server(**props)
-    return(apiobj)
+    return apiobj
 # end getServerObject()
 
 
@@ -383,7 +383,7 @@ def getNICObject(defdict=None):
         props[k] = v
     # end for(defdict)
     apiobj = NIC(**props)
-    return(apiobj)
+    return apiobj
 # end getNICObject()
 
 
@@ -418,7 +418,7 @@ def getFwRuleObject(defdict=None):
         props[k] = v
     # end for(defdict)
     apiobj = FirewallRule(**props)
-    return(apiobj)
+    return apiobj
 # end getFwRuleObject()
 
 
@@ -431,7 +431,7 @@ def getLANObject(defdict=None):
         props[k] = v
     # end for(defdict)
     apiobj = LAN(**props)
-    return(apiobj)
+    return apiobj
 # end getLANObject()
 
 
