@@ -409,8 +409,8 @@ class ProfitBricksService(object):
         """
         data = {}
 
-        for attr in kwargs.keys():
-            data[self._underscore_to_camelcase(attr)] = kwargs[attr]
+        for attr, value in kwargs.items():
+            data[self._underscore_to_camelcase(attr)] = value
 
         response = self._perform_request(
             url='/datacenters/%s' % (
@@ -584,25 +584,25 @@ class ProfitBricksService(object):
         """
         data = {}
 
-        for attr in kwargs.keys():
-            data[self._underscore_to_camelcase(attr)] = kwargs[attr]
+        for attr, value in kwargs.items():
+            data[self._underscore_to_camelcase(attr)] = value
 
             if attr == 'source_mac':
-                data['sourceMac'] = kwargs[attr]
+                data['sourceMac'] = value
             elif attr == 'source_ip':
-                data['sourceIp'] = kwargs[attr]
+                data['sourceIp'] = value
             elif attr == 'target_ip':
-                data['targetIp'] = kwargs[attr]
+                data['targetIp'] = value
             elif attr == 'port_range_start':
-                data['portRangeStart'] = kwargs[attr]
+                data['portRangeStart'] = value
             elif attr == 'port_range_end':
-                data['portRangeEnd'] = kwargs[attr]
+                data['portRangeEnd'] = value
             elif attr == 'icmp_type':
-                data['icmpType'] = kwargs[attr]
+                data['icmpType'] = value
             elif attr == 'icmp_code':
-                data['icmpCode'] = kwargs[attr]
+                data['icmpCode'] = value
             else:
-                data[self._underscore_to_camelcase(attr)] = kwargs[attr]
+                data[self._underscore_to_camelcase(attr)] = value
 
         response = self._perform_request(
             url='/datacenters/%s/servers/%s/nics/%s/firewallrules/%s' % (
@@ -658,8 +658,8 @@ class ProfitBricksService(object):
         """
         data = {}
 
-        for attr in kwargs.keys():
-            data[self._underscore_to_camelcase(attr)] = kwargs[attr]
+        for attr, value in kwargs.items():
+            data[self._underscore_to_camelcase(attr)] = value
 
         response = self._perform_request(url='/images/' + image_id,
                                          method='PATCH',
@@ -948,8 +948,8 @@ class ProfitBricksService(object):
         """
         data = {}
 
-        for attr in kwargs.keys():
-            data[self._underscore_to_camelcase(attr)] = kwargs[attr]
+        for attr, value in kwargs.items():
+            data[self._underscore_to_camelcase(attr)] = value
 
         response = self._perform_request(
             url='/datacenters/%s/loadbalancers/%s' % (datacenter_id,
@@ -1195,8 +1195,8 @@ class ProfitBricksService(object):
         """
         data = {}
 
-        for attr in kwargs.keys():
-            data[self._underscore_to_camelcase(attr)] = kwargs[attr]
+        for attr, value in kwargs.items():
+            data[self._underscore_to_camelcase(attr)] = value
 
         response = self._perform_request(
             url='/datacenters/%s/servers/%s/nics/%s' % (
@@ -1333,17 +1333,17 @@ class ProfitBricksService(object):
         """
         data = {}
 
-        for attr in kwargs.keys():
+        for attr, value in kwargs.items():
             if attr == 'boot_volume':
                 boot_volume_properties = {
-                    "id": kwargs[attr]
+                    "id": value
                 }
                 boot_volume_entities = {
                     "bootVolume": boot_volume_properties
                 }
                 data.update(boot_volume_entities)
             else:
-                data[self._underscore_to_camelcase(attr)] = kwargs[attr]
+                data[self._underscore_to_camelcase(attr)] = value
 
         response = self._perform_request(
             url='/datacenters/%s/servers/%s' % (
@@ -1640,8 +1640,8 @@ class ProfitBricksService(object):
         """
         data = {}
 
-        for attr in kwargs.keys():
-            data[self._underscore_to_camelcase(attr)] = kwargs[attr]
+        for attr, value in kwargs.items():
+            data[self._underscore_to_camelcase(attr)] = value
 
         response = self._perform_request(
             url='/snapshots/' + snapshot_id, method='PATCH', data=json.dumps(data))
@@ -1777,8 +1777,8 @@ class ProfitBricksService(object):
         if 'create_datacenter' in kwargs:
             kwargs['create_data_center'] = kwargs.pop('create_datacenter')
 
-        for attr in kwargs.keys():
-            properties[self._underscore_to_camelcase(attr)] = kwargs[attr]
+        for attr, value in kwargs.items():
+            properties[self._underscore_to_camelcase(attr)] = value
 
         data = {
             "properties": properties
@@ -1854,8 +1854,8 @@ class ProfitBricksService(object):
         """
         properties = {}
 
-        for attr in kwargs.keys():
-            properties[self._underscore_to_camelcase(attr)] = kwargs[attr]
+        for attr, value in kwargs.items():
+            properties[self._underscore_to_camelcase(attr)] = value
 
         data = {
             "properties": properties
@@ -1881,8 +1881,8 @@ class ProfitBricksService(object):
         """
         properties = {}
 
-        for attr in kwargs.keys():
-            properties[self._underscore_to_camelcase(attr)] = kwargs[attr]
+        for attr, value in kwargs.items():
+            properties[self._underscore_to_camelcase(attr)] = value
 
         data = {
             "properties": properties
@@ -1967,8 +1967,8 @@ class ProfitBricksService(object):
         """
         properties = {}
 
-        for attr in kwargs.keys():
-            properties[self._underscore_to_camelcase(attr)] = kwargs[attr]
+        for attr, value in kwargs.items():
+            properties[self._underscore_to_camelcase(attr)] = value
 
         data = {
             "properties": properties
@@ -2178,8 +2178,8 @@ class ProfitBricksService(object):
         """
         data = {}
 
-        for attr in kwargs.keys():
-            data[self._underscore_to_camelcase(attr)] = kwargs[attr]
+        for attr, value in kwargs.items():
+            data[self._underscore_to_camelcase(attr)] = value
 
         response = self._perform_request(
             url='/datacenters/%s/volumes/%s' % (
