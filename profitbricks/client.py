@@ -66,7 +66,7 @@ class ProfitBricksService(object):
             headers = dict()
         self._config = None
         self._config_filename = None
-        self.keyring_identificator = '%s (%s)' % (re.sub("/v\d+$", '', host_base), _LIBRARY_NAME)
+        self.keyring_identificator = '%s (%s)' % (re.sub(r"/v\d+$", '', host_base), _LIBRARY_NAME)
         self.host_base = host_base
         self.host_cert = host_cert
         self.verify = ssl_verify
