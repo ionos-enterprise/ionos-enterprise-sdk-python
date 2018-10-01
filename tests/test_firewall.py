@@ -14,12 +14,13 @@
 
 import unittest
 
-from helpers import configuration
-from helpers.resources import resource
-from profitbricks.client import ProfitBricksService
-from profitbricks.client import Datacenter, Server, LAN, NIC, FirewallRule
-from profitbricks.errors import PBError, PBNotFoundError
 from six import assertRegex
+
+from profitbricks.client import Datacenter, ProfitBricksService, Server, LAN, NIC, FirewallRule
+from profitbricks.errors import PBError, PBNotFoundError
+
+from .helpers import configuration
+from .helpers.resources import resource
 
 
 class TestFirewall(unittest.TestCase):

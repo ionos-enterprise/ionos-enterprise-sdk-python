@@ -14,12 +14,13 @@
 
 import unittest
 
-from helpers import configuration
-from helpers.resources import resource
-from profitbricks.client import IPBlock
-from profitbricks.client import ProfitBricksService
-from profitbricks.errors import PBError, PBNotFoundError
 from six import assertRegex
+
+from profitbricks.client import IPBlock, ProfitBricksService
+from profitbricks.errors import PBError, PBNotFoundError
+
+from .helpers import configuration
+from .helpers.resources import resource
 
 
 class TestIPBlock(unittest.TestCase):

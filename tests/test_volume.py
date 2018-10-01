@@ -14,12 +14,13 @@
 
 import unittest
 
-from helpers import configuration
-from helpers.resources import resource, find_image
-from profitbricks.client import Datacenter, Volume
-from profitbricks.client import ProfitBricksService
-from profitbricks.errors import PBError, PBNotFoundError
 from six import assertRegex
+
+from profitbricks.client import Datacenter, ProfitBricksService, Volume
+from profitbricks.errors import PBError, PBNotFoundError
+
+from .helpers import configuration
+from .helpers.resources import resource, find_image
 
 
 class TestVolume(unittest.TestCase):

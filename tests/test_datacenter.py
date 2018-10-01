@@ -15,14 +15,13 @@
 import unittest
 import time
 
-from helpers import configuration
-from helpers.resources import resource
-from profitbricks.client import Server, Volume
 from six import assertRegex
 
-from profitbricks.client import Datacenter
-from profitbricks.client import ProfitBricksService
+from profitbricks.client import Datacenter, ProfitBricksService, Server, Volume
 from profitbricks.errors import PBError, PBNotFoundError
+
+from .helpers import configuration
+from .helpers.resources import resource
 
 
 class TestDatacenter(unittest.TestCase):

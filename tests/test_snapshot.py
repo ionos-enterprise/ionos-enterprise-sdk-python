@@ -14,12 +14,12 @@
 
 import unittest
 
-from helpers import configuration
-from helpers.resources import resource
-from profitbricks.client import ProfitBricksService
-from profitbricks.client import Datacenter, Volume, Snapshot
+from profitbricks.client import Datacenter, Volume, Snapshot, ProfitBricksService
 from profitbricks.errors import PBNotFoundError
 from six import assertRegex
+
+from .helpers import configuration
+from .helpers.resources import resource
 
 
 class TestSnapshot(unittest.TestCase):

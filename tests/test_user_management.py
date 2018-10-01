@@ -15,12 +15,12 @@
 import unittest
 from random import randint
 
-from helpers import configuration
-from helpers.resources import resource, find_image
-from profitbricks.client import ProfitBricksService
-from profitbricks.client import Datacenter, IPBlock, User, Group, Volume
+from profitbricks.client import Datacenter, IPBlock, User, Group, Volume, ProfitBricksService
 from profitbricks.errors import PBError, PBNotFoundError
 from six import assertRegex
+
+from .helpers import configuration
+from .helpers.resources import resource, find_image
 
 
 class TestUserManagement(unittest.TestCase):

@@ -12,15 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from time import sleep
 import unittest
 
-from helpers import configuration
-from helpers.resources import resource
-from profitbricks.client import ProfitBricksService
-from profitbricks.client import Datacenter, LoadBalancer, LAN, NIC, Server
-from profitbricks.errors import PBError, PBNotFoundError
 from six import assertRegex
-from time import sleep
+
+from profitbricks.client import Datacenter, LoadBalancer, LAN, NIC, Server, ProfitBricksService
+from profitbricks.errors import PBError, PBNotFoundError
+
+from .helpers import configuration
+from .helpers.resources import resource
 
 
 class TestLoadBalancer(unittest.TestCase):

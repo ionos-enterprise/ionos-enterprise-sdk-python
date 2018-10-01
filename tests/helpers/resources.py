@@ -14,7 +14,7 @@
 
 import re
 
-from helpers import configuration
+from . import configuration
 
 
 def resource():

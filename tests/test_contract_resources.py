@@ -14,8 +14,9 @@
 
 import unittest
 
-from helpers import configuration
 from profitbricks.client import ProfitBricksService
+
+from .helpers import configuration
 
 
 class TestContractResources(unittest.TestCase):
