@@ -290,7 +290,7 @@ def read_dc_definition(pbclient, filename=None):
 # -- build objects from internal dict structures --
 
 def getDatacenterObject(defdict=None):
-    if not defdict or not type(defdict) is dict:
+    if not defdict or not isinstance(defdict, dict):
         raise ValueError("argument 'defdict' must be non-empty dict")
     props = dict()
     for k, v in defdict['properties'].items():
@@ -302,7 +302,7 @@ def getDatacenterObject(defdict=None):
 
 
 def getVolumeObject(defdict=None):
-    if not defdict or not type(defdict) is dict:
+    if not defdict or not isinstance(defdict, dict):
         raise ValueError("argument 'defdict' must be non-empty dict")
     # TODO: can we set deviceNumber too? Nope, not supported in Volume()
     # AARGH! some of Volume's fields have different names -> need to convert
@@ -329,7 +329,7 @@ def getVolumeObject(defdict=None):
 
 
 def getServerObject(defdict=None):
-    if not defdict or not type(defdict) is dict:
+    if not defdict or not isinstance(defdict, dict):
         raise ValueError("argument 'defdict' must be non-empty dict")
     # AARGH! some of Servers's fields have different names -> need to convert manually
     # so make a copy and let source as is
@@ -364,7 +364,7 @@ def getServerObject(defdict=None):
 
 
 def getNICObject(defdict=None):
-    if not defdict or not type(defdict) is dict:
+    if not defdict or not isinstance(defdict, dict):
         raise ValueError("argument 'defdict' must be non-empty dict")
     # AARGH! some of NIC's fields have different names -> need to convert manually
     # so make a copy and let source as is
@@ -388,7 +388,7 @@ def getNICObject(defdict=None):
 
 
 def getFwRuleObject(defdict=None):
-    if not defdict or not type(defdict) is dict:
+    if not defdict or not isinstance(defdict, dict):
         raise ValueError("argument 'defdict' must be non-empty dict")
     # AARGH! some of NIC's fields have different names -> need to convert manually
     # so make a copy and let source as is
@@ -423,7 +423,7 @@ def getFwRuleObject(defdict=None):
 
 
 def getLANObject(defdict=None):
-    if not defdict or not type(defdict) is dict:
+    if not defdict or not isinstance(defdict, dict):
         raise ValueError("argument 'defdict' must be non-empty dict")
     props = dict()
     for k, v in defdict['properties'].items():
