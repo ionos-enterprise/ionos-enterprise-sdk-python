@@ -424,8 +424,7 @@ class OFVData():
         ''' returns an attribute name w/ namespace prefix'''
         if ns is None:
             return attr
-        else:
-            return '{'+self._ns[ns]+'}'+attr
+        return '{' + self._ns[ns] + '}' + attr
     # end _nsattr()
 
     def _collect_system_data(self):
