@@ -124,7 +124,7 @@ def wait_for_request(pbclient, request_id,
 # end wait_for_request()
 
 
-def wait_for_requests(pbclient, request_ids=[],
+def wait_for_requests(pbclient, request_ids=None,
                       timeout=0, initial_wait=5, scaleup=10):
     '''
     Waits for a list of requests to finish until timeout.
