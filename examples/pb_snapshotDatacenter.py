@@ -105,14 +105,14 @@ def getLogin(filename, user, passwd):
 # end getLogin()
 
 
-def write_dc_definition(pbclient, dcdef=None, filename=None):
+def write_dc_definition(dcdef=None, filename=None):
     with open(filename, 'w') as outfile:
         json.dump(dcdef, outfile, indent=2)
     return 0
 # end write_dc_definition()
 
 
-def read_dc_definition(pbclient, filename=None):
+def read_dc_definition(filename=None):
     with open(filename) as infile:
         dcdef = json.load(infile)
     return dcdef
@@ -479,7 +479,7 @@ USAGE
         print("starting dump of datacenter {}".format(dcdef['properties']['name']))
         dcdef_file = outfile+'_source.json'
         print("write source dc to {}".format(dcdef_file))
-        write_dc_definition(pbclient, dcdef, dcdef_file)
+        write_dc_definition(dcdef, dcdef_file)
         print("get existing Snapshots")
         # first get existing snapshots
         known_snapshots = dict()
@@ -573,7 +573,7 @@ USAGE
         # end for(server)
         dcdef_file = outfile+'.json'
         print("write snapshot dc to {}".format(dcdef_file))
-        write_dc_definition(pbclient, dcdef, dcdef_file)
+        write_dc_definition(dcdef, dcdef_file)
 
         return 0
 

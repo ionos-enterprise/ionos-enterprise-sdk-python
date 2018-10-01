@@ -273,14 +273,14 @@ def create_datacenter_dict(pbclient, datacenter):
 # end create_datacenter_dict()
 
 
-def write_dc_definition(pbclient, dcdef=None, filename=None):
+def write_dc_definition(dcdef=None, filename=None):
     with open(filename, 'w') as outfile:
         json.dump(dcdef, outfile, indent=2)
     return 0
 # end write_dc_definition()
 
 
-def read_dc_definition(pbclient, filename=None):
+def read_dc_definition(filename=None):
     with open(filename) as infile:
         dcdef = json.load(infile)
     return dcdef
@@ -500,7 +500,7 @@ USAGE
 
     usefile = args.infile
     print("read dc from {}".format(usefile))
-    dcdef = read_dc_definition(pbclient, usefile)
+    dcdef = read_dc_definition(usefile)
     if verbose > 0:
         print("using DC-DEF {}".format(json.dumps(dcdef)))
 
@@ -528,7 +528,7 @@ USAGE
         result = wait_for_request(pbclient, response['requestId'])
         print("wait loop returned {}".format(result))
         tmpfile = usefile+".tmp_postdc"
-        write_dc_definition(pbclient, dcdef, tmpfile)
+        write_dc_definition(dcdef, tmpfile)
 
     requests = []
     print("create Volumes {}".format(str(dc)))
@@ -554,7 +554,7 @@ USAGE
         result = wait_for_requests(pbclient, requests, initial_wait=10, scaleup=15)
         print("wait loop returned {}".format(str(result)))
         tmpfile = usefile+".tmp_postvol"
-        write_dc_definition(pbclient, dcdef, tmpfile)
+        write_dc_definition(dcdef, tmpfile)
     else:
         print("all volumes existed already")
 
@@ -577,7 +577,7 @@ USAGE
         result = wait_for_requests(pbclient, requests, initial_wait=10, scaleup=15)
         print("wait loop returned {}".format(str(result)))
         tmpfile = usefile+".tmp_postsrv"
-        write_dc_definition(pbclient, dcdef, tmpfile)
+        write_dc_definition(dcdef, tmpfile)
     else:
         print("all servers existed already")
 
@@ -597,7 +597,7 @@ USAGE
         print("wait loop returned {}".format(str(result)))
     # end for(lan)
     tmpfile = usefile+".tmp_postlan"
-    write_dc_definition(pbclient, dcdef, tmpfile)
+    write_dc_definition(dcdef, tmpfile)
 
     requests = []
     # Attention:
@@ -633,7 +633,7 @@ USAGE
             print("mac {} -> id{}".format(mac, macmap[mac]))
     # end for(server)
     tmpfile = usefile+".tmp_postnic"
-    write_dc_definition(pbclient, dcdef, tmpfile)
+    write_dc_definition(dcdef, tmpfile)
 
     requests = []
     # don't know if we get a race here too, so better wait for each request :-/
@@ -652,7 +652,7 @@ USAGE
         # end for(volume)
     # end for(server)
     tmpfile = usefile+".tmp_postatt"
-    write_dc_definition(pbclient, dcdef, tmpfile)
+    write_dc_definition(dcdef, tmpfile)
 
     # TODO: do we need to set boot volume for each server?
     # looks like it's working without
