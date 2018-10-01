@@ -26,82 +26,82 @@ from .helpers.resources import resource
 
 class TestLoadBalancer(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
-        self.resource = resource()
-        self.client = ProfitBricksService(
+    def setUpClass(cls):
+        cls.resource = resource()
+        cls.client = ProfitBricksService(
             username=configuration.USERNAME,
             password=configuration.PASSWORD,
             headers=configuration.HEADERS)
 
         # Create test datacenter.
-        self.datacenter = self.client.create_datacenter(
-            datacenter=Datacenter(**self.resource['datacenter']))
-        self.client.wait_for_completion(self.datacenter)
+        cls.datacenter = cls.client.create_datacenter(
+            datacenter=Datacenter(**cls.resource['datacenter']))
+        cls.client.wait_for_completion(cls.datacenter)
 
         # Create test LAN.
-        self.lan = self.client.create_lan(
-            datacenter_id=self.datacenter['id'],
-            lan=LAN(**self.resource['lan']))
-        self.client.wait_for_completion(self.lan)
+        cls.lan = cls.client.create_lan(
+            datacenter_id=cls.datacenter['id'],
+            lan=LAN(**cls.resource['lan']))
+        cls.client.wait_for_completion(cls.lan)
 
         # Create test server.
-        self.server = self.client.create_server(
-            datacenter_id=self.datacenter['id'],
-            server=Server(**self.resource['server']))
-        self.client.wait_for_completion(self.server)
+        cls.server = cls.client.create_server(
+            datacenter_id=cls.datacenter['id'],
+            server=Server(**cls.resource['server']))
+        cls.client.wait_for_completion(cls.server)
 
         # Create test NIC1.
-        nic1 = NIC(**self.resource['nic'])
-        nic1.lan = self.lan['id']
-        self.nic1 = self.client.create_nic(
-            datacenter_id=self.datacenter['id'],
-            server_id=self.server['id'],
+        nic1 = NIC(**cls.resource['nic'])
+        nic1.lan = cls.lan['id']
+        cls.nic1 = cls.client.create_nic(
+            datacenter_id=cls.datacenter['id'],
+            server_id=cls.server['id'],
             nic=nic1)
-        self.client.wait_for_completion(self.nic1)
+        cls.client.wait_for_completion(cls.nic1)
 
         # Create test NIC2.
-        # nic2 = NIC(**self.resource['nic'])
-        # nic2.lan = self.lan['id']
-        # self.nic2 = self.client.create_nic(
-        #     datacenter_id=self.datacenter['id'],
-        #     server_id=self.server['id'],
+        # nic2 = NIC(**cls.resource['nic'])
+        # nic2.lan = cls.lan['id']
+        # cls.nic2 = cls.client.create_nic(
+        #     datacenter_id=cls.datacenter['id'],
+        #     server_id=cls.server['id'],
         #     nic=nic2)
-        # self.client.wait_for_completion(self.nic2)
+        # cls.client.wait_for_completion(cls.nic2)
 
         # Create test LoadBalancer
-        loadbalancer = LoadBalancer(**self.resource['loadbalancer'])
-        loadbalancer.balancednics = [self.nic1['id']]
-        self.loadbalancer = self.client.create_loadbalancer(
-            datacenter_id=self.datacenter['id'],
+        loadbalancer = LoadBalancer(**cls.resource['loadbalancer'])
+        loadbalancer.balancednics = [cls.nic1['id']]
+        cls.loadbalancer = cls.client.create_loadbalancer(
+            datacenter_id=cls.datacenter['id'],
             loadbalancer=loadbalancer
         )
 
-        self.client.wait_for_completion(self.loadbalancer)
+        cls.client.wait_for_completion(cls.loadbalancer)
 
         # Create test LoadBalancer2
-        loadbalancer2 = LoadBalancer(**self.resource['loadbalancer'])
+        loadbalancer2 = LoadBalancer(**cls.resource['loadbalancer'])
         loadbalancer2.name = "Python SDK Test 2"
-        self.loadbalancer2 = self.client.create_loadbalancer(
-            datacenter_id=self.datacenter['id'],
+        cls.loadbalancer2 = cls.client.create_loadbalancer(
+            datacenter_id=cls.datacenter['id'],
             loadbalancer=loadbalancer2
         )
 
-        self.client.wait_for_completion(self.loadbalancer2)
+        cls.client.wait_for_completion(cls.loadbalancer2)
 
         # Create test LoadBalancer3
-        loadbalancer3 = LoadBalancer(**self.resource['loadbalancer'])
-        loadbalancer3.balancednics = [self.nic1['id']]
+        loadbalancer3 = LoadBalancer(**cls.resource['loadbalancer'])
+        loadbalancer3.balancednics = [cls.nic1['id']]
         loadbalancer3.name = "Python SDK Test 3"
-        self.loadbalancer3 = self.client.create_loadbalancer(
-            datacenter_id=self.datacenter['id'],
+        cls.loadbalancer3 = cls.client.create_loadbalancer(
+            datacenter_id=cls.datacenter['id'],
             loadbalancer=loadbalancer3
         )
 
-        self.client.wait_for_completion(self.loadbalancer3)
+        cls.client.wait_for_completion(cls.loadbalancer3)
 
     @classmethod
-    def tearDownClass(self):
-        self.client.delete_datacenter(datacenter_id=self.datacenter['id'])
+    def tearDownClass(cls):
+        cls.client.delete_datacenter(datacenter_id=cls.datacenter['id'])
 
     def test_list_loadbalancers(self):
         loadbalancers = self.client.list_loadbalancers(

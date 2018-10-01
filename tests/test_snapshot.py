@@ -24,59 +24,59 @@ from .helpers.resources import resource
 
 class TestSnapshot(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
-        self.resource = resource()
-        self.client = ProfitBricksService(
+    def setUpClass(cls):
+        cls.resource = resource()
+        cls.client = ProfitBricksService(
             username=configuration.USERNAME,
             password=configuration.PASSWORD,
             headers=configuration.HEADERS)
 
         # Create test datacenter.
-        self.datacenter = self.client.create_datacenter(
-            datacenter=Datacenter(**self.resource['datacenter']))
-        self.client.wait_for_completion(self.datacenter)
+        cls.datacenter = cls.client.create_datacenter(
+            datacenter=Datacenter(**cls.resource['datacenter']))
+        cls.client.wait_for_completion(cls.datacenter)
 
         # Create test volume
-        volume = Volume(**self.resource['volume'])
-        self.volume = self.client.create_volume(
-            datacenter_id=self.datacenter['id'],
+        volume = Volume(**cls.resource['volume'])
+        cls.volume = cls.client.create_volume(
+            datacenter_id=cls.datacenter['id'],
             volume=volume
         )
 
-        self.client.wait_for_completion(self.volume)
+        cls.client.wait_for_completion(cls.volume)
 
         # Create test volume1
-        volume1 = Volume(**self.resource['volume'])
-        self.volume1 = self.client.create_volume(
-            datacenter_id=self.datacenter['id'],
+        volume1 = Volume(**cls.resource['volume'])
+        cls.volume1 = cls.client.create_volume(
+            datacenter_id=cls.datacenter['id'],
             volume=volume1
         )
 
-        self.client.wait_for_completion(self.volume1)
+        cls.client.wait_for_completion(cls.volume1)
 
         # Create test snapshot
-        snapshot = Snapshot(**self.resource['snapshot'])
-        self.snapshot1 = self.client.create_snapshot(
-            datacenter_id=self.datacenter['id'],
-            volume_id=self.volume['id'],
+        snapshot = Snapshot(**cls.resource['snapshot'])
+        cls.snapshot1 = cls.client.create_snapshot(
+            datacenter_id=cls.datacenter['id'],
+            volume_id=cls.volume['id'],
             name=snapshot.name,
             description=snapshot.description)
 
-        self.client.wait_for_completion(self.snapshot1)
+        cls.client.wait_for_completion(cls.snapshot1)
 
         # Create test snapshot2
-        self.snapshot2 = self.client.create_snapshot(
-            datacenter_id=self.datacenter['id'],
-            volume_id=self.volume['id'],
+        cls.snapshot2 = cls.client.create_snapshot(
+            datacenter_id=cls.datacenter['id'],
+            volume_id=cls.volume['id'],
             name="python sdk test snapshot",
             description="snapshot test description")
 
-        self.client.wait_for_completion(self.snapshot2)
+        cls.client.wait_for_completion(cls.snapshot2)
 
     @classmethod
-    def tearDownClass(self):
-        self.client.delete_snapshot(snapshot_id=self.snapshot1['id'])
-        self.client.delete_datacenter(datacenter_id=self.datacenter['id'])
+    def tearDownClass(cls):
+        cls.client.delete_snapshot(snapshot_id=cls.snapshot1['id'])
+        cls.client.delete_datacenter(datacenter_id=cls.datacenter['id'])
 
     def test_list_snapshots(self):
         snapshots = self.client.list_snapshots()

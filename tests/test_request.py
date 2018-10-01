@@ -23,15 +23,15 @@ from .helpers.resources import resource
 
 class TestRequest(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
-        self.resource = resource()
-        self.client = ProfitBricksService(
+    def setUpClass(cls):
+        cls.resource = resource()
+        cls.client = ProfitBricksService(
             username=configuration.USERNAME,
             password=configuration.PASSWORD,
             headers=configuration.HEADERS)
 
-        self.requests = self.client.list_requests()
-        self.request = self.requests['items'][0]
+        cls.requests = cls.client.list_requests()
+        cls.request = cls.requests['items'][0]
 
     def test_list_requests(self):
         requests = self.client.list_requests()

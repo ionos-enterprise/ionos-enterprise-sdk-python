@@ -25,53 +25,53 @@ from .helpers.resources import resource
 
 class TestNic(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
-        self.resource = resource()
-        self.client = ProfitBricksService(
+    def setUpClass(cls):
+        cls.resource = resource()
+        cls.client = ProfitBricksService(
             username=configuration.USERNAME,
             password=configuration.PASSWORD,
             headers=configuration.HEADERS)
 
         # Create test datacenter.
-        self.datacenter = self.client.create_datacenter(
-            datacenter=Datacenter(**self.resource['datacenter']))
-        self.client.wait_for_completion(self.datacenter)
+        cls.datacenter = cls.client.create_datacenter(
+            datacenter=Datacenter(**cls.resource['datacenter']))
+        cls.client.wait_for_completion(cls.datacenter)
 
         # Create test LAN.
-        self.lan = self.client.create_lan(
-            datacenter_id=self.datacenter['id'],
-            lan=LAN(name=self.resource['lan']['name'], public=False))
-        self.client.wait_for_completion(self.lan)
+        cls.lan = cls.client.create_lan(
+            datacenter_id=cls.datacenter['id'],
+            lan=LAN(name=cls.resource['lan']['name'], public=False))
+        cls.client.wait_for_completion(cls.lan)
 
         # Create test server.
-        self.server = self.client.create_server(
-            datacenter_id=self.datacenter['id'],
-            server=Server(**self.resource['server']))
-        self.client.wait_for_completion(self.server)
+        cls.server = cls.client.create_server(
+            datacenter_id=cls.datacenter['id'],
+            server=Server(**cls.resource['server']))
+        cls.client.wait_for_completion(cls.server)
 
         # Create test NIC1.
-        nic1 = NIC(**self.resource['nic'])
-        nic1.lan = self.lan['id']
-        self.ips = ['10.0.0.1']
-        nic1.ips = self.ips
-        self.nic1 = self.client.create_nic(
-            datacenter_id=self.datacenter['id'],
-            server_id=self.server['id'],
+        nic1 = NIC(**cls.resource['nic'])
+        nic1.lan = cls.lan['id']
+        cls.ips = ['10.0.0.1']
+        nic1.ips = cls.ips
+        cls.nic1 = cls.client.create_nic(
+            datacenter_id=cls.datacenter['id'],
+            server_id=cls.server['id'],
             nic=nic1)
-        self.client.wait_for_completion(self.nic1)
+        cls.client.wait_for_completion(cls.nic1)
 
         # Create test NIC2.
-        nic2 = NIC(**self.resource['nic'])
-        nic2.lan = self.lan['id']
-        self.nic2 = self.client.create_nic(
-            datacenter_id=self.datacenter['id'],
-            server_id=self.server['id'],
+        nic2 = NIC(**cls.resource['nic'])
+        nic2.lan = cls.lan['id']
+        cls.nic2 = cls.client.create_nic(
+            datacenter_id=cls.datacenter['id'],
+            server_id=cls.server['id'],
             nic=nic2)
-        self.client.wait_for_completion(self.nic2)
+        cls.client.wait_for_completion(cls.nic2)
 
     @classmethod
-    def tearDownClass(self):
-        self.client.delete_datacenter(datacenter_id=self.datacenter['id'])
+    def tearDownClass(cls):
+        cls.client.delete_datacenter(datacenter_id=cls.datacenter['id'])
 
     def test_list_nics(self):
         nics = self.client.list_nics(

@@ -21,8 +21,8 @@ from .helpers import configuration
 
 class TestContractResources(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
-        self.client = ProfitBricksService(
+    def setUpClass(cls):
+        cls.client = ProfitBricksService(
             username=configuration.USERNAME,
             password=configuration.PASSWORD,
             headers=configuration.HEADERS)

@@ -25,23 +25,23 @@ from .helpers.resources import resource
 
 class TestIPBlock(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
-        self.resource = resource()
-        self.client = ProfitBricksService(
+    def setUpClass(cls):
+        cls.resource = resource()
+        cls.client = ProfitBricksService(
             username=configuration.USERNAME,
             password=configuration.PASSWORD,
             headers=configuration.HEADERS)
 
-        ipblock1 = IPBlock(**self.resource['ipblock'])
+        ipblock1 = IPBlock(**cls.resource['ipblock'])
         ipblock1.size = 2
-        self.ipblock1 = self.client.reserve_ipblock(ipblock1)
+        cls.ipblock1 = cls.client.reserve_ipblock(ipblock1)
 
-        ipblock2 = IPBlock(**self.resource['ipblock'])
-        self.ipblock2 = self.client.reserve_ipblock(ipblock2)
+        ipblock2 = IPBlock(**cls.resource['ipblock'])
+        cls.ipblock2 = cls.client.reserve_ipblock(ipblock2)
 
     @classmethod
-    def tearDownClass(self):
-        self.client.delete_ipblock(self.ipblock1['id'])
+    def tearDownClass(cls):
+        cls.client.delete_ipblock(cls.ipblock1['id'])
 
     def test_list_ipblocks(self):
         ipblocks = self.client.list_ipblocks()

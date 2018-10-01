@@ -25,18 +25,18 @@ from .helpers.resources import resource
 
 class TestImage(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
-        self.resource = resource()
-        self.client = ProfitBricksService(
+    def setUpClass(cls):
+        cls.resource = resource()
+        cls.client = ProfitBricksService(
             username=configuration.USERNAME,
             password=configuration.PASSWORD,
             headers=configuration.HEADERS)
 
         # Find an Ubuntu image for testing.
-        for item in self.client.list_images()['items']:
+        for item in cls.client.list_images()['items']:
             if (configuration.IMAGE_NAME in item['properties']['name'] and
                     item['properties']['location'] == configuration.LOCATION):
-                self.image = item
+                cls.image = item
 
     def test_list_images(self):
         images = self.client.list_images()

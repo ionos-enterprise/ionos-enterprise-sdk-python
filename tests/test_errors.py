@@ -23,18 +23,18 @@ from .helpers.resources import resource
 
 class TestErrors(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
-        self.resource = resource()
-        self.client = ProfitBricksService(
+    def setUpClass(cls):
+        cls.resource = resource()
+        cls.client = ProfitBricksService(
             username=configuration.USERNAME,
             password=configuration.PASSWORD,
             headers=configuration.HEADERS)
-        self.datacenter = self.client.create_datacenter(
-            datacenter=Datacenter(**self.resource['datacenter']))
+        cls.datacenter = cls.client.create_datacenter(
+            datacenter=Datacenter(**cls.resource['datacenter']))
 
     @classmethod
-    def tearDownClass(self):
-        self.client.delete_datacenter(datacenter_id=self.datacenter['id'])
+    def tearDownClass(cls):
+        cls.client.delete_datacenter(datacenter_id=cls.datacenter['id'])
 
     def test_pb_not_found(self):
         try:

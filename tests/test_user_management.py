@@ -25,96 +25,96 @@ from .helpers.resources import resource, find_image
 
 class TestUserManagement(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
-        self.resource = resource()
-        self.client = ProfitBricksService(
+    def setUpClass(cls):
+        cls.resource = resource()
+        cls.client = ProfitBricksService(
             username=configuration.USERNAME,
             password=configuration.PASSWORD,
             headers=configuration.HEADERS)
 
         # Create datacenter resource
-        self.datacenter = self.client.create_datacenter(
-            datacenter=Datacenter(**self.resource['datacenter']))
-        self.client.wait_for_completion(self.datacenter)
+        cls.datacenter = cls.client.create_datacenter(
+            datacenter=Datacenter(**cls.resource['datacenter']))
+        cls.client.wait_for_completion(cls.datacenter)
 
         # Create volume resource
-        volume = Volume(**self.resource['volume'])
-        self.volume = self.client.create_volume(
-            datacenter_id=self.datacenter['id'],
+        volume = Volume(**cls.resource['volume'])
+        cls.volume = cls.client.create_volume(
+            datacenter_id=cls.datacenter['id'],
             volume=volume
         )
 
-        self.client.wait_for_completion(self.volume)
+        cls.client.wait_for_completion(cls.volume)
 
-        self.image = find_image(self.client, configuration.IMAGE_NAME)
+        cls.image = find_image(cls.client, configuration.IMAGE_NAME)
 
         # Create snapshot resource
-        self.snapshot = self.client.create_snapshot(
-            datacenter_id=self.datacenter['id'],
-            volume_id=self.volume['id'],
-            name=self.resource['snapshot']['name'])
+        cls.snapshot = cls.client.create_snapshot(
+            datacenter_id=cls.datacenter['id'],
+            volume_id=cls.volume['id'],
+            name=cls.resource['snapshot']['name'])
 
-        self.client.wait_for_completion(self.snapshot)
+        cls.client.wait_for_completion(cls.snapshot)
 
         # Reserve IP block resource
-        self.ipblock = self.client.reserve_ipblock(IPBlock(**self.resource['ipblock']))
+        cls.ipblock = cls.client.reserve_ipblock(IPBlock(**cls.resource['ipblock']))
 
         # Create User 1
-        self.user_dict1 = User(
+        cls.user_dict1 = User(
             firstname='John',
             lastname='Doe',
             email='no-reply%s@example.com' % randint(0, 9999999999999),
             password='secretpassword123%s' % randint(0, 99999999),
             administrator=True,
             force_sec_auth=False)
-        self.user1 = self.client.create_user(user=self.user_dict1)
+        cls.user1 = cls.client.create_user(user=cls.user_dict1)
 
         # Create User 2
-        self.user_dict2 = User(
+        cls.user_dict2 = User(
             firstname='John',
             lastname='Doe',
             email='no-reply%s@example.com' % randint(0, 9999999999999),
             password='secretpassword123%s' % randint(0, 99999999))
-        self.user2 = self.client.create_user(user=self.user_dict2)
+        cls.user2 = cls.client.create_user(user=cls.user_dict2)
 
         # Create User 3
-        self.user_dict3 = User(
+        cls.user_dict3 = User(
             firstname='John',
             lastname='Doe',
             email='no-reply%s@example.com' % randint(0, 9999999999999),
             password='secretpassword123%s' % randint(0, 99999999))
-        self.user3 = self.client.create_user(user=self.user_dict3)
+        cls.user3 = cls.client.create_user(user=cls.user_dict3)
 
         # Create Group 1
-        group = Group(**self.resource['group'])
-        self.group1 = self.client.create_group(group)
+        group = Group(**cls.resource['group'])
+        cls.group1 = cls.client.create_group(group)
 
         # Create Group 2
-        group.name = self.resource['group']['name'] + ' 2'
-        self.group2 = self.client.create_group(group)
+        group.name = cls.resource['group']['name'] + ' 2'
+        cls.group2 = cls.client.create_group(group)
 
         # Create Group 3
-        group.name = self.resource['group']['name'] + ' 3'
-        self.group3 = self.client.create_group(group)
+        group.name = cls.resource['group']['name'] + ' 3'
+        cls.group3 = cls.client.create_group(group)
 
         # Create Share 1
-        self.share1 = self.client.add_share(
-            group_id=self.group3['id'],
-            resource_id=self.datacenter['id'],
+        cls.share1 = cls.client.add_share(
+            group_id=cls.group3['id'],
+            resource_id=cls.datacenter['id'],
             edit_privilege=True,
             share_privilege=True)
 
     @classmethod
-    def tearDownClass(self):
-        self.client.delete_share(group_id=self.group3['id'],
-                                 resource_id=self.datacenter['id'])
-        self.client.delete_snapshot(snapshot_id=self.snapshot['id'])
-        self.client.delete_user(user_id=self.user1['id'])
-        self.client.delete_user(user_id=self.user3['id'])
-        self.client.delete_group(group_id=self.group1['id'])
-        self.client.delete_group(group_id=self.group3['id'])
-        self.client.delete_ipblock(ipblock_id=self.ipblock['id'])
-        self.client.delete_datacenter(datacenter_id=self.datacenter['id'])
+    def tearDownClass(cls):
+        cls.client.delete_share(group_id=cls.group3['id'],
+                                resource_id=cls.datacenter['id'])
+        cls.client.delete_snapshot(snapshot_id=cls.snapshot['id'])
+        cls.client.delete_user(user_id=cls.user1['id'])
+        cls.client.delete_user(user_id=cls.user3['id'])
+        cls.client.delete_group(group_id=cls.group1['id'])
+        cls.client.delete_group(group_id=cls.group3['id'])
+        cls.client.delete_ipblock(ipblock_id=cls.ipblock['id'])
+        cls.client.delete_datacenter(datacenter_id=cls.datacenter['id'])
 
     def test_create_user(self):
         self.assertEqual(self.user1['type'], 'user')

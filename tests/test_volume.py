@@ -25,40 +25,40 @@ from .helpers.resources import resource, find_image
 
 class TestVolume(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
-        self.resource = resource()
-        self.client = ProfitBricksService(
+    def setUpClass(cls):
+        cls.resource = resource()
+        cls.client = ProfitBricksService(
             username=configuration.USERNAME,
             password=configuration.PASSWORD,
             headers=configuration.HEADERS)
 
         # Create test datacenter
-        self.datacenter = self.client.create_datacenter(
-            datacenter=Datacenter(**self.resource['datacenter']))
-        self.client.wait_for_completion(self.datacenter)
+        cls.datacenter = cls.client.create_datacenter(
+            datacenter=Datacenter(**cls.resource['datacenter']))
+        cls.client.wait_for_completion(cls.datacenter)
 
-        self.image = find_image(self.client, configuration.IMAGE_NAME)
+        cls.image = find_image(cls.client, configuration.IMAGE_NAME)
 
         # Create test volume
-        vol = Volume(**self.resource['volume2'])
-        vol.image = self.image['id']
+        vol = Volume(**cls.resource['volume2'])
+        vol.image = cls.image['id']
 
-        self.volume = self.client.create_volume(
-            datacenter_id=self.datacenter['id'],
+        cls.volume = cls.client.create_volume(
+            datacenter_id=cls.datacenter['id'],
             volume=vol)
-        self.client.wait_for_completion(self.volume)
+        cls.client.wait_for_completion(cls.volume)
 
         # Create snapshot1
-        self.snapshot1 = self.client.create_snapshot(
-            datacenter_id=self.datacenter['id'],
-            volume_id=self.volume['id'],
-            name=self.resource['snapshot']['name'],
-            description=self.resource['snapshot']['description'])
-        self.client.wait_for_completion(self.snapshot1, timeout=600)
+        cls.snapshot1 = cls.client.create_snapshot(
+            datacenter_id=cls.datacenter['id'],
+            volume_id=cls.volume['id'],
+            name=cls.resource['snapshot']['name'],
+            description=cls.resource['snapshot']['description'])
+        cls.client.wait_for_completion(cls.snapshot1, timeout=600)
 
     @classmethod
-    def tearDownClass(self):
-        self.client.delete_datacenter(datacenter_id=self.datacenter['id'])
+    def tearDownClass(cls):
+        cls.client.delete_datacenter(datacenter_id=cls.datacenter['id'])
 
     def test_list_volumes(self):
         volumes = self.client.list_volumes(

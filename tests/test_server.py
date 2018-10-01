@@ -26,52 +26,52 @@ from .helpers.resources import resource, check_detached_cdrom_gone
 
 class TestServer(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
-        self.resource = resource()
-        self.client = ProfitBricksService(
+    def setUpClass(cls):
+        cls.resource = resource()
+        cls.client = ProfitBricksService(
             username=configuration.USERNAME,
             password=configuration.PASSWORD,
             headers=configuration.HEADERS)
 
         # Create test datacenter.
-        self.datacenter = self.client.create_datacenter(
-            datacenter=Datacenter(**self.resource['datacenter']))
-        self.client.wait_for_completion(self.datacenter)
+        cls.datacenter = cls.client.create_datacenter(
+            datacenter=Datacenter(**cls.resource['datacenter']))
+        cls.client.wait_for_completion(cls.datacenter)
 
         # Create test volume1.
-        self.volume1 = self.client.create_volume(
-            datacenter_id=self.datacenter['id'],
-            volume=Volume(**self.resource['volume']))
-        self.client.wait_for_completion(self.volume1)
+        cls.volume1 = cls.client.create_volume(
+            datacenter_id=cls.datacenter['id'],
+            volume=Volume(**cls.resource['volume']))
+        cls.client.wait_for_completion(cls.volume1)
 
         # Create test volume2 (attach volume test).
-        self.volume2 = self.client.create_volume(
-            datacenter_id=self.datacenter['id'],
-            volume=Volume(**self.resource['volume']))
-        self.client.wait_for_completion(self.volume2)
+        cls.volume2 = cls.client.create_volume(
+            datacenter_id=cls.datacenter['id'],
+            volume=Volume(**cls.resource['volume']))
+        cls.client.wait_for_completion(cls.volume2)
 
         # Create test server.
-        server = Server(**self.resource['server'])
-        server.attach_volumes = [self.volume1['id']]
-        self.server = self.client.create_server(
-            datacenter_id=self.datacenter['id'],
+        server = Server(**cls.resource['server'])
+        server.attach_volumes = [cls.volume1['id']]
+        cls.server = cls.client.create_server(
+            datacenter_id=cls.datacenter['id'],
             server=server)
-        self.client.wait_for_completion(self.server)
+        cls.client.wait_for_completion(cls.server)
 
         # Create test NIC.
-        self.nic = self.client.create_nic(
-            datacenter_id=self.datacenter['id'],
-            server_id=self.server['id'],
-            nic=NIC(**self.resource['nic']))
-        self.client.wait_for_completion(self.nic)
+        cls.nic = cls.client.create_nic(
+            datacenter_id=cls.datacenter['id'],
+            server_id=cls.server['id'],
+            nic=NIC(**cls.resource['nic']))
+        cls.client.wait_for_completion(cls.nic)
 
         # Find an Ubuntu image for testing.
-        for item in self.client.list_images()['items']:
+        for item in cls.client.list_images()['items']:
             if (configuration.IMAGE_NAME in item['properties']['name'] and
                     item['properties']['location'] == configuration.LOCATION):
-                self.image = item
+                cls.image = item
         # Find a cdrom image
-        images = self.client.list_images(depth=5)
+        images = cls.client.list_images(depth=5)
         usedIndex = 0
         for index, image in enumerate(images['items']):
             if (image['metadata']['state'] == "AVAILABLE"
@@ -80,21 +80,21 @@ class TestServer(unittest.TestCase):
                     and image['properties']['location'] == configuration.LOCATION
                     and image['properties']['licenceType'] == "LINUX"):
                 if usedIndex == 0:
-                    self.test_image1 = image
+                    cls.test_image1 = image
                     usedIndex = index
                 else:
-                    self.test_image2 = image
+                    cls.test_image2 = image
                     break
         # Create test cdrom
-        self.cdrom = self.client.attach_cdrom(
-            datacenter_id=self.datacenter['id'],
-            server_id=self.server['id'],
-            cdrom_id=self.test_image1['id'])
-        self.client.wait_for_completion(self.cdrom)
+        cls.cdrom = cls.client.attach_cdrom(
+            datacenter_id=cls.datacenter['id'],
+            server_id=cls.server['id'],
+            cdrom_id=cls.test_image1['id'])
+        cls.client.wait_for_completion(cls.cdrom)
 
     @classmethod
-    def tearDownClass(self):
-        self.client.delete_datacenter(datacenter_id=self.datacenter['id'])
+    def tearDownClass(cls):
+        cls.client.delete_datacenter(datacenter_id=cls.datacenter['id'])
 
     def test_list_servers(self):
         servers = self.client.list_servers(datacenter_id=self.datacenter['id'])
