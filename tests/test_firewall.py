@@ -122,6 +122,7 @@ class TestFirewall(unittest.TestCase):
             firewall_rule_id=self.fwrule2['id'])
 
         self.assertTrue(fwrule)
+        assertRegex(self, fwrule['requestId'], self.resource['uuid_match'])
 
     def test_update_fwrule(self):
         fwrule = self.client.update_firewall_rule(

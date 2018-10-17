@@ -66,6 +66,7 @@ class TestIPBlock(unittest.TestCase):
         ipblock = self.client.delete_ipblock(self.ipblock2['id'])
 
         self.assertTrue(ipblock)
+        assertRegex(self, ipblock['requestId'], self.resource['uuid_match'])
 
     def test_reserve_ipblock(self):
         ipblock = self.client.reserve_ipblock(IPBlock(**self.resource['ipblock']))

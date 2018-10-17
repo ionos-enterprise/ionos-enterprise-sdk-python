@@ -2287,9 +2287,6 @@ class ProfitBricksService(object):
             headers.update({'Content-Type': 'application/json'})
             response = self._wrapped_request(method, url, auth=auth, params=data,
                                              headers=headers)
-            if method == 'DELETE':
-                if response.status_code == 202:
-                    return True
 
         try:
             if not response.ok:
@@ -2310,7 +2307,12 @@ class ProfitBricksService(object):
         except ValueError:
             raise Exception('Failed to parse the response', response.text)
 
-        json_response = response.json()
+        if method == 'DELETE':
+            # response content is empty for DELETE
+            # set json_response to dict to return the request ID
+            json_response = dict()
+        else:
+            json_response = response.json()
 
         if 'location' in response.headers:
             json_response['requestId'] = self._request_id(response.headers)

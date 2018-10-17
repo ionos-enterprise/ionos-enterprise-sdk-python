@@ -84,6 +84,7 @@ class TestDatacenter(unittest.TestCase):
             datacenter_id=datacenter['id'])
 
         self.assertTrue(response)
+        assertRegex(self, response['requestId'], self.resource['uuid_match'])
 
     def test_update_datacenter(self):
         datacenter = self.client.update_datacenter(
