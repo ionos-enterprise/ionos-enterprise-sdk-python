@@ -19,6 +19,7 @@ from helpers.resources import resource
 from profitbricks.client import ProfitBricksService
 from profitbricks.client import Datacenter, Volume, Snapshot
 from profitbricks.errors import PBNotFoundError
+from six import assertRegex
 
 
 class TestSnapshot(unittest.TestCase):
@@ -120,6 +121,7 @@ class TestSnapshot(unittest.TestCase):
         snapshot = self.client.delete_snapshot(snapshot_id=self.snapshot2['id'])
 
         self.assertTrue(snapshot)
+        assertRegex(self, snapshot['requestId'], self.resource['uuid_match'])
 
     def test_update_snapshot(self):
         snapshot = self.client.update_snapshot(

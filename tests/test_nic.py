@@ -103,6 +103,7 @@ class TestNic(unittest.TestCase):
                                       nic_id=self.nic2['id'])
 
         self.assertTrue(nic2)
+        assertRegex(self, nic2['requestId'], self.resource['uuid_match'])
 
     def test_update_nic(self):
         nic = self.client.update_nic(

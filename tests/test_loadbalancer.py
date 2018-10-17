@@ -133,6 +133,7 @@ class TestLoadBalancer(unittest.TestCase):
             loadbalancer_id=self.loadbalancer2['id'])
 
         self.assertTrue(loadbalancer)
+        assertRegex(self, loadbalancer['requestId'], self.resource['uuid_match'])
 
     def test_update_loadbalancer(self):
         loadbalancer = self.client.update_loadbalancer(

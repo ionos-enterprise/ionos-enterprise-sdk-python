@@ -97,6 +97,7 @@ class TestLan(unittest.TestCase):
         lan = self.client.delete_lan(datacenter_id=self.datacenter['id'], lan_id=lan['id'])
 
         self.assertTrue(lan)
+        assertRegex(self, lan['requestId'], self.resource['uuid_match'])
 
     def test_update_lan(self):
         lan = self.client.update_lan(
