@@ -141,7 +141,8 @@ class TestVolume(unittest.TestCase):
                          self.resource['snapshot']['description'])
         self.assertEqual(self.snapshot1['properties']['location'], configuration.LOCATION)
         self.assertIsNone(self.snapshot1['properties']['size'])
-        self.assertEqual(self.snapshot1['properties']['licenceType'], self.image['properties']['licenceType'])
+        self.assertEqual(self.snapshot1['properties']['licenceType'],
+                         self.image['properties']['licenceType'])
 
     def test_restore_snapshot(self):
         response = self.client.restore_snapshot(
