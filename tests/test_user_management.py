@@ -20,8 +20,8 @@ from six import assertRegex
 from profitbricks.client import Datacenter, IPBlock, User, Group, Volume, ProfitBricksService
 from profitbricks.errors import PBError, PBNotFoundError
 
-from .helpers import configuration
-from .helpers.resources import resource, find_image
+from helpers import configuration
+from helpers.resources import resource, find_image
 
 
 class TestUserManagement(unittest.TestCase):

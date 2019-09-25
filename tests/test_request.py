@@ -17,8 +17,8 @@ import unittest
 from profitbricks.client import ProfitBricksService
 from profitbricks.errors import PBNotFoundError
 
-from .helpers import configuration
-from .helpers.resources import resource
+from helpers import configuration
+from helpers.resources import resource
 
 
 class TestRequest(unittest.TestCase):

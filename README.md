@@ -1,3 +1,4 @@
+
 # Python SDK
 
 Version: profitbricks-sdk-python **4.2.0**
@@ -114,6 +115,16 @@ Version: profitbricks-sdk-python **4.2.0**
         * [List Requests](#list-requests)
         * [Get a Request](#get-a-request)
         * [Get a Request Status](#get-a-request-status)
+    * [Kubernetes](#kubernetes)
+        * [List Kubernetes Clusters](#list-kubernetes-clusters)
+        * [Create a Kubernetes Cluster](#create-a-kubernetes-cluster)
+        * [Retrieve a Kubernetes Cluster](#retrieve-a-kubernetes-cluster)
+        * [Delete a Kubernetes Cluster](#delete-a-kubernetes-cluster)
+        * [Retrieve a Kubernetes Cluster KubeConfig](#retrieve-a-kubernetes-cluster-kubeconfig)
+        * [List Kubernetes NodePools](#list-kubernetes-nodepools)
+        * [Create a NodePool for a Kubernetes Cluster](#create-a-nodepool-for-a-kubernetes-cluster)
+        * [Retrieve a NodePool](#retrieve-a-nodepool)
+        * [Delete a NodePool](#delete-a-nodepool)
 * [Examples](#examples)
     * [List All Data Centers](#list-all-data-centers)
     * [Search for Images](#search-for-images)
@@ -2200,6 +2211,213 @@ Pass the arguments to `get_request`:
     response = client.get_request(
         request_id='UUID',
         status=True)
+
+---
+
+## Kubernetes
+
+#### List Kubernetes Clusters
+
+Retrieve the list of Kubernetes clusters.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| depth | no | int | An integer value of 0 - 5 that affects the amount of detail returned.  See the [Depth](#depth) section. |
+
+    response = client.list_k8s_clusters()
+
+---
+
+#### Create a Kubernetes Cluster
+
+This will create a new Kubernetes Cluster.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| name | **yes** | string | The Kubernetes Cluster Name. |
+
+Create the Kubernetes Cluster:
+
+```python
+my_cluster = client.create_k8s_cluster(cluster_name)
+```
+
+Wait for the cluster to be active:
+
+```python
+client.wait_for(
+  fn_request=lambda: client.list_k8s_clusters(),
+  fn_check=lambda r: list(filter(
+      lambda e: e['properties']['name'] == cluster_name,
+      r['items']
+    ))[0]['metadata']['state'] == 'ACTIVE',
+  console_print='.',
+  scaleup=10000
+)
+```
+
+---
+
+#### Retrieve a Kubernetes Cluster
+
+This will retrieve a Kubernetes Cluster.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| k8s_cluster_id | **yes** | string | The ID of the Kubernetes Cluster. |
+
+Retrieve the Kubernetes Cluster:
+
+```python
+client.get_k8s_cluster(my_cluster['id'])
+```
+
+---
+
+#### Delete a Kubernetes Cluster
+
+This will delete a Kubernetes Cluster.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| k8s_cluster_id | **yes** | string | The ID of the Kubernetes Cluster. |
+
+Delete the Kubernetes Cluster:
+
+```python
+client.delete_k8s_cluster(my_cluster['id'])
+```
+
+---
+
+#### Retrieve a Kubernetes Cluster KubeConfig
+
+This will retrieve the KubeConfig for a Kubernetes Cluster.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| k8s_cluster_id | **yes** | string | The ID of the Kubernetes Cluster. |
+
+Retrieve the Kubeconfig for a Kubernetes Cluster:
+
+```python
+client.get_k8s_config(my_cluster['id'])
+```
+
+---
+
+#### List Kubernetes NodePools
+
+Retrieve the list of nodepools for a Kubernetes cluster.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| k8s_cluster_id | **yes** | string | The ID of the Kubernetes Cluster. |
+| depth | no | int | An integer value of 0 - 5 that affects the amount of detail returned.  See the [Depth](#depth) section. |
+
+    response = client.list_k8s_cluster_nodepools(k8s_cluster_id)
+
+---
+
+#### Create a NodePool for a Kubernetes Cluster
+
+This will create a new NodePool for a Kubernetes Cluster.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| k8s_cluster_id | **yes** | string | The ID of the Kubernetes Cluster |
+| name | **yes** | string | The NodePool Name |
+| datacenter_id | **yes** | string | The ID of the Datacenter to place the NodePool in |
+| node_count | **yes** | int |  Number of nodes part of the Node Pool |
+| cpu_family | **yes** | string | A valid cpu family name |
+| cores_count | **yes** | int | Number of cores for node |
+| ram_size | **yes** | int | RAM size for node, minimum size 2048MB is recommended |
+| availability_zone | **yes** | string | The availability zone in which the server should exist |
+| storage_type | **yes** | string | Hardware type of the volume |
+| storage_size | **yes** | int | The size of the volume in GB. The size should be greater than 10GB |
+
+Create the NodePool:
+
+```python
+my_nodepool = client.create_k8s_cluster_nodepool(
+  my_cluster['id'],
+  name='my_demo_pool_name',
+  datacenter_id=datacenter_id,
+  node_count=4,
+  cpu_family='AMD_OPTERON',
+  cores_count=2,
+  ram_size=4096,
+  availability_zone='AUTO',
+  storage_type='SSD',
+  storage_size=100
+)
+```
+
+Wait for the nodepool to be active:
+
+```python
+client.wait_for(
+  fn_request=lambda: client.list_k8s_cluster_nodepools(my_cluster['id']),
+  fn_check=lambda r: list(filter(
+      lambda e: e['properties']['name'] == pool_name,
+      r['items']
+    ))[0]['metadata']['state'] == 'ACTIVE',
+  console_print='.',
+  scaleup=10000
+)
+```
+
+---
+
+#### Retrieve a NodePool
+
+This will retrieve a NodePool.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| k8s_cluster_id | **yes** | string | The ID of the Kubernetes Cluster. |
+| nodepool_id | **yes** | string | The ID of the NodePool. |
+
+Retrieve the NodePool:
+
+```python
+client.get_k8s_cluster_nodepool(my_cluster['id'], my_nodepool['id'])
+```
+
+---
+
+#### Delete a NodePool
+
+This will delete a NodePool.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| k8s_cluster_id | **yes** | string | The ID of the Kubernetes Cluster. |
+| nodepool_id | **yes** | string | The ID of the NodePool. |
+
+Delete the NodePool:
+
+```python
+client.delete_k8s_cluster_nodepool(my_cluster['id'], my_nodepool['id'])
+```
 
 ---
 

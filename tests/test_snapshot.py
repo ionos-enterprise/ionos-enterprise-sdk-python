@@ -19,8 +19,8 @@ from six import assertRegex
 from profitbricks.client import Datacenter, Volume, Snapshot, ProfitBricksService
 from profitbricks.errors import PBNotFoundError
 
-from .helpers import configuration
-from .helpers.resources import resource
+from helpers import configuration
+from helpers.resources import resource
 
 
 class TestSnapshot(unittest.TestCase):

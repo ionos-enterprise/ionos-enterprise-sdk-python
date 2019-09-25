@@ -17,8 +17,8 @@ import unittest
 from profitbricks.client import ProfitBricksService, Datacenter, Volume
 from profitbricks.errors import PBError, PBNotAuthorizedError, PBNotFoundError, PBValidationError
 
-from .helpers import configuration
-from .helpers.resources import resource
+from helpers import configuration
+from helpers.resources import resource
 
 
 class TestErrors(unittest.TestCase):

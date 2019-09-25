@@ -13,7 +13,7 @@
 # limitations under the License.
 
 """ProfitBricks API Client Library for Python"""
-__version__ = '4.2.0'
+__version__ = '5.0.0'
 
-API_HOST = 'https://api.profitbricks.com/cloudapi/v4'
-API_VERSION = '4.0'
+API_HOST = 'https://api.profitbricks.com/cloudapi/v5'
+API_VERSION = '5.0'

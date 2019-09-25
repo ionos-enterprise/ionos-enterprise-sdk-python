@@ -20,8 +20,8 @@ from six import assertRegex
 from profitbricks.client import Datacenter, Server, Volume, NIC, FirewallRule, ProfitBricksService
 from profitbricks.errors import PBError, PBNotFoundError
 
-from .helpers import configuration
-from .helpers.resources import resource, check_detached_cdrom_gone
+from helpers import configuration
+from helpers.resources import resource, check_detached_cdrom_gone
 
 
 class TestServer(unittest.TestCase):

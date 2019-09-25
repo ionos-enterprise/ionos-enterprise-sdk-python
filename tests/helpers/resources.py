@@ -32,6 +32,27 @@ def resource():
             'location': configuration.LOCATION
         },
 
+        'k8s_datacenter': {
+            'name': 'MySDKDemoK8SDatacenter',
+            'description': 'SDK demo datacenter for K8S',
+            'location': configuration.LOCATION
+        },
+
+        'k8s_cluster': {
+            'name': 'MySDKDemoK8SCluster'
+        },
+
+        'k8s_nodepool': {
+            'name': 'MySDKDemoK8SPool',
+            'node_count': 4,
+            'cpu_family': 'AMD_OPTERON',
+            'cores_count': 2,
+            'ram_size': 4096,
+            'availability_zone': 'AUTO',
+            'storage_type': 'SSD',
+            'storage_size': 100
+        },
+
         'datacenter_composite': {
             'name': 'Python SDK Test Composite',
             'description': 'Python SDK test composite datacenter',
