@@ -1,4 +1,4 @@
-# Copyright 2015-2017 ProfitBricks GmbH
+# Copyright 2015-2017 IONOS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@ import unittest
 
 from six import assertRegex
 
-from profitbricks.client import Datacenter, ProfitBricksService, Server, LAN, NIC, FirewallRule
-from profitbricks.errors import PBError, PBNotFoundError
+from ionoscloud.client import Datacenter, IonosCloudService, Server, LAN, NIC, FirewallRule
+from ionoscloud.errors import ICError, ICNotFoundError
 
 from helpers import configuration
 from helpers.resources import resource
@@ -27,7 +27,7 @@ class TestFirewall(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.resource = resource()
-        cls.client = ProfitBricksService(
+        cls.client = IonosCloudService(
             username=configuration.USERNAME,
             password=configuration.PASSWORD,
             headers=configuration.HEADERS)
@@ -160,7 +160,7 @@ class TestFirewall(unittest.TestCase):
                 server_id=self.server['id'],
                 nic_id=self.nic1['id'],
                 firewall_rule_id='00000000-0000-0000-0000-000000000000')
-        except PBNotFoundError as e:
+        except ICNotFoundError as e:
             self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
 
     def test_create_failure(self):
@@ -171,7 +171,7 @@ class TestFirewall(unittest.TestCase):
                 server_id=self.server['id'],
                 nic_id=self.nic1['id'],
                 firewall_rule=fwrule)
-        except PBError as e:
+        except ICError as e:
             self.assertIn(self.resource['missing_attribute_error'] % 'protocol',
                           e.content[0]['message'])
 

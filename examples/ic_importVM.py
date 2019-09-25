@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # encoding: utf-8
 
-# Copyright 2016-2017 ProfitBricks GmbH
+# Copyright 2016-2017 IONOS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,11 +28,10 @@ a VM out of it. The disk images must be uploaded already.
 
 @author:     Jürgen Buchhammer
 
-@copyright:  2016 ProfitBricks GmbH. All rights reserved.
+@copyright:  2016 IONOS. All rights reserved.
 
 @license:    Apache License 2.0
 
-@contact:    juergen.buchhammer@profitbricks.com
 @deffield    updated: Updated
 '''
 
@@ -48,9 +47,9 @@ from base64 import b64decode, b64encode
 
 import xml.etree.ElementTree as ET
 
-from profitbricks.client import ProfitBricksService
-from profitbricks.client import Datacenter, Volume, Server
-from profitbricks.client import NIC
+from ionoscloud.client import IonosCloudService
+from ionoscloud.client import Datacenter, Volume, Server
+from ionoscloud.client import NIC
 
 __all__ = []
 __version__ = 0.1
@@ -556,7 +555,7 @@ def main(argv=None):
     program_license = '''%s
 
   Created by Jürgen Buchhammer on %s.
-  Copyright 2016 ProfitBricks GmbH. All rights reserved.
+  Copyright 2016 IONOS. All rights reserved.
 
   Licensed under the Apache License 2.0
   http://www.apache.org/licenses/LICENSE-2.0
@@ -607,7 +606,7 @@ USAGE
         (user, password) = getLogin(args.loginfile, args.user, args.password)
         if user is None or password is None:
             raise ValueError("user or password resolved to None")
-        pbclient = ProfitBricksService(user, password)
+        pbclient = IonosCloudService(user, password)
 
         if args.metatype == 'OVF':
             metadata = OFVData(args.metafile)

@@ -1,7 +1,7 @@
 
 # Python SDK
 
-Version: profitbricks-sdk-python **4.2.0**
+Version: ionoscloud-sdk-python **5.0.0**
 
 ## Table of Contents
 
@@ -138,34 +138,34 @@ Version: profitbricks-sdk-python **4.2.0**
 
 ## Description
 
-The ProfitBricks SDK for Python provides you with access to the ProfitBricks Cloud API. The client library supports both simple and complex requests. It is designed for developers who are building applications in Python.
+The IonosCloud SDK for Python provides you with access to the IonosCloud Cloud API. The client library supports both simple and complex requests. It is designed for developers who are building applications in Python.
 
 This guide will walk you through getting setup with the library and performing various actions against the API.
 
-The SDK for Python wraps the ProfitBricks Cloud API. All API operations are performed over SSL and authenticated using your ProfitBricks portal credentials. The API can be accessed within an instance running in ProfitBricks or directly over the Internet from any application that can send an HTTPS request and receive an HTTPS response.
+The SDK for Python wraps the IonosCloud Cloud API. All API operations are performed over SSL and authenticated using your IonosCloud portal credentials. The API can be accessed within an instance running in IonosCloud or directly over the Internet from any application that can send an HTTPS request and receive an HTTPS response.
 
 ## Getting Started
 
-Before you begin you will need to have [signed-up](https://www.profitbricks.com/signup) for a ProfitBricks account. The credentials you setup during sign-up will be used to authenticate against the Cloud API.
+Before you begin you will need to have [signed-up](https://www.ionos.com/enterprise-cloud/signup) for a IonosCloud account. The credentials you setup during sign-up will be used to authenticate against the Cloud API.
 
 #### Installation
 
-The ProfitBricks SDK for Python is available on [PyPi](https://pypi.python.org/pypi/profitbricks). You can install the latest stable version using `pip`:
+The IonosCloud SDK for Python is available on [PyPi](https://pypi.python.org/pypi/ionoscloudsdk). You can install the latest stable version using `pip`:
 
-    pip install profitbricks
+    pip install ionoscloudsdk
 
 Done!
 
 #### Authenticating
 
-Connecting to ProfitBricks is handled by first setting up your authentication credentials.
+Connecting to IonosCloud is handled by first setting up your authentication credentials.
 
-    from profitbricks.client import ProfitBricksService
+    from ionoscloud.client import IonosCloudService
 
-    client = ProfitBricksService(
+    client = IonosCloudService(
         username='YOUR_USERNAME', password='YOUR_PASSWORD')
 
-Replace the values for *YOUR_USERNAME* and *YOUR_PASSWORD* with the ProfitBricks credentials you established during sign-up.
+Replace the values for *YOUR_USERNAME* and *YOUR_PASSWORD* with the IonosCloud credentials you established during sign-up.
 
 You can now use `client` for any future request.
 
@@ -175,17 +175,17 @@ The SDK will raise custom exceptions when the Cloud API returns an error. There 
 
 | Exception | HTTP Code | Description |
 |---|:-:|---|
-| PBNotAuthorizedError | 401 | The supplied user credentials are invalid. |
-| PBNotFoundError | 404 | The requested resource cannot be found. |
-| PBValidationError | 422 | The request body includes invalid JSON. |
-| PBRateLimitExceededError | 429 | The Cloud API rate limit has been exceeded. |
-| PBError | Other | A generic exception for all other status codes. |
+| ICNotAuthorizedError | 401 | The supplied user credentials are invalid. |
+| ICNotFoundError | 404 | The requested resource cannot be found. |
+| ICValidationError | 422 | The request body includes invalid JSON. |
+| ICRateLimitExceededError | 429 | The Cloud API rate limit has been exceeded. |
+| ICError | Other | A generic exception for all other status codes. |
 
 ## Reference
 
 This section provides details on all the available operations and the arguments they accept. Brief code snippets demonstrating usage are also included.
 
-`client` is the `ProfitBricksService` class imported `from profitbricks.client import ProfitBricksService`
+`client` is the `IonosCloudService` class imported `from ionoscloud.client import IonosCloudService`
 
 #### Depth
 
@@ -204,7 +204,7 @@ This SDK sets the *depth=1* by default as that works well in the majority of cas
 
 ## Data Centers
 
-Virtual Data Centers (VDCs) are the foundation of the ProfitBricks platform. VDCs act as logical containers for all other objects you will be creating, e.g., servers. You can provision as many VDCs as you want. VDCs have their own private network and are logically segmented from each other to create isolation.
+Virtual Data Centers (VDCs) are the foundation of the IonosCloud platform. VDCs act as logical containers for all other objects you will be creating, e.g., servers. You can provision as many VDCs as you want. VDCs have their own private network and are logically segmented from each other to create isolation.
 
 #### List Data Centers
 
@@ -265,7 +265,7 @@ Pass the object to `create_datacenter`:
 | Name | Required | Type | Description |
 |---|:-:|---|---|
 | name | **yes** | string | The name of the VDC. |
-| location | **yes** | string | The physical ProfitBricks location where the VDC will be created. |
+| location | **yes** | string | The physical IonosCloud location where the VDC will be created. |
 | description | no | string | A description for the VDC, e.g. staging, production. |
 | servers | no | list | A list of one or more [Server objects](#server-resource-object) to be created. |
 | volumes | no | list | A list of one or more [Volume objects](#volume-resource-object) to be created. |
@@ -329,7 +329,7 @@ Pass the argument to `delete_datacenter`:
 
 ## Locations
 
-Locations are the physical ProfitBricks data centers where you can provision your VDCs.
+Locations are the physical IonosCloud data centers where you can provision your VDCs.
 
 #### List Locations
 
@@ -754,7 +754,7 @@ Pass the arguments to `get_image`:
 
 #### Update an Image
 
-Updates the attributes of a specific user created image. You **CANNOT** update the properties of a public image supplied by ProfitBricks.
+Updates the attributes of a specific user created image. You **CANNOT** update the properties of a public image supplied by IonosCloud.
 
 The following table describes the request arguments:
 
@@ -787,7 +787,7 @@ You can change an image's properties by calling the `update_image` method:
 
 #### Delete an Image
 
-Deletes a specific user created image. You cannot delete public images supplied by ProfitBricks.
+Deletes a specific user created image. You cannot delete public images supplied by IonosCloud.
 
 The following table describes the request arguments:
 
@@ -900,7 +900,7 @@ The following table outlines the storage availability zones currently supported:
 | ZONE_2 | Fire Zone 2 |
 | ZONE_3 | Fire Zone 3 |
 
-**Note:** You will need to provide either the `image` or the `licence_type` arguments when creating a volume. A `licence_type` is required, but if `image` is supplied, it is already set and cannot be changed. Either the `image_password` or `ssh_keys` arguments need to be supplied when creating a volume using one of the official ProfitBricks images. Only official ProfitBricks provided images support the `ssh_keys` and `image_password` arguments.
+**Note:** You will need to provide either the `image` or the `licence_type` arguments when creating a volume. A `licence_type` is required, but if `image` is supplied, it is already set and cannot be changed. Either the `image_password` or `ssh_keys` arguments need to be supplied when creating a volume using one of the official IonosCloud images. Only official IonosCloud provided images support the `ssh_keys` and `image_password` arguments.
 
 ---
 
@@ -921,7 +921,7 @@ The following table describes the request arguments:
 | name | no | string | The name of the volume. |
 | size | no | int | The size of the volume in GB. You may only increase the `size` when updating. |
 | bus | no | string | The bus type of the volume (VIRTIO or IDE). Default: VIRTIO. |
-| licence_type | no | string | The licence type of the volume. Options: LINUX, WINDOWS, WINDOWS2016, UNKNOWN, OTHER. You may get an error trying to update `licence_type` depending on the `image` that was used to create the volume. For example, you cannot update the `licence_type` for a volume created from a ProfitBricks supplied OS image. |
+| licence_type | no | string | The licence type of the volume. Options: LINUX, WINDOWS, WINDOWS2016, UNKNOWN, OTHER. You may get an error trying to update `licence_type` depending on the `image` that was used to create the volume. For example, you cannot update the `licence_type` for a volume created from a IonosCloud supplied OS image. |
 
 **Note**: Trying to change the `image`, `type`, or `availability_zone` in an update request will result in an error.
 
@@ -1391,7 +1391,7 @@ Pass the object and arguments to `create_nic`:
 | dhcp | no | bool | Set to *false* if you wish to disable DHCP on the NIC. Default: *true*. |
 | lan | **yes** | int | The LAN ID the NIC will sit on. If the LAN ID does not exist it will be created. |
 | nat | no | bool | Indicates the private IP address has outbound access to the public internet. |
-| firewall_active | no | bool | Set this to *true* to enable the ProfitBricks firewall, *false* to disable. |
+| firewall_active | no | bool | Set this to *true* to enable the IonosCloud firewall, *false* to disable. |
 | firewall_rules | no | list | A list of [FirewallRule objects](#firewall-rule-resource-object) to be created with the NIC. |
 
 ---
@@ -1416,7 +1416,7 @@ The following table describes the request arguments:
 | dhcp | no | bool | Boolean value that indicates if the NIC is using DHCP or not. |
 | lan | no | int | The LAN ID the NIC sits on. |
 | nat | no | bool | Indicates the private IP address has outbound access to the public internet. |
-| firewall_active | no | bool | Set this to *true* to enable the ProfitBricks firewall, *false* to disable. |
+| firewall_active | no | bool | Set this to *true* to enable the IonosCloud firewall, *false* to disable. |
 
 Pass the arguments to `update_nic`:
 
@@ -2160,7 +2160,7 @@ Retrieves information about the resource limits for a particular contract and th
 
 ## Requests
 
-Each call to the ProfitBricks Cloud API is assigned a request ID. These operations can be used to get information about the requests that have been submitted and their current status.
+Each call to the IonosCloud Cloud API is assigned a request ID. These operations can be used to get information about the requests that have been submitted and their current status.
 
 #### List Requests
 
@@ -2425,8 +2425,8 @@ client.delete_k8s_cluster_nodepool(my_cluster['id'], my_nodepool['id'])
 
 Below are some examples using the SDK for Python. These examples will assume credentials are being set with environment variables:
 
-    export PROFITBRICKS_USERNAME=username
-    export PROFITBRICKS_PASSWORD=password
+    export IONOS_USERNAME=username
+    export IONOS_PASSWORD=password
 
 #### List All Data Centers
 
@@ -2437,12 +2437,12 @@ This simple example will list all data centers under an account.
     import json
     import os
 
-    from profitbricks.client import ProfitBricksService
+    from ionoscloud.client import IonosCloudService
 
-    # Instatiate ProfitBricks connection
-    client = ProfitBricksService(
-        username=os.getenv('PROFITBRICKS_USERNAME'),
-        password=os.getenv('PROFITBRICKS_PASSWORD'))
+    # Instatiate IonosCloud connection
+    client = IonosCloudService(
+        username=os.getenv('IONOS_USERNAME'),
+        password=os.getenv('IONOS_PASSWORD'))
 
     # List data centers
     datacenters = client.list_datacenters()
@@ -2456,7 +2456,7 @@ The following example will provide a method for retrieving a list of images base
 
     import os
 
-    from profitbricks.client import ProfitBricksService
+    from ionoscloud.client import IonosCloudService
 
 
     def find_image(conn, name, location):
@@ -2471,10 +2471,10 @@ The following example will provide a method for retrieving a list of images base
                 images.append(item)
         return images
 
-    # Instantiate ProfitBricks connection
-    client = ProfitBricksService(
-        username=os.getenv('PROFITBRICKS_USERNAME'),
-        password=os.getenv('PROFITBRICKS_PASSWORD'))
+    # Instantiate IonosCloud connection
+    client = IonosCloudService(
+        username=os.getenv('IONOS_USERNAME'),
+        password=os.getenv('IONOS_PASSWORD'))
 
     # Search criteria based on partial case-insensitive name and location
     name = 'Ubuntu'
@@ -2496,13 +2496,13 @@ Here we will reserve a public IP block.
     import json
     import os
 
-    from profitbricks.client import ProfitBricksService, IPBlock
+    from ionoscloud.client import IonosCloudService, IPBlock
 
 
-    # Instatiate ProfitBricks connection
-    client = ProfitBricksService(
-        username=os.getenv('PROFITBRICKS_USERNAME'),
-        password=os.getenv('PROFITBRICKS_PASSWORD'))
+    # Instatiate IonosCloud connection
+    client = IonosCloudService(
+        username=os.getenv('IONOS_USERNAME'),
+        password=os.getenv('IONOS_PASSWORD'))
 
     ipblock = IPBlock(location='us/las', size=5)
 
@@ -2516,7 +2516,7 @@ The remaining examples will require dependent resources. A volume cannot be atta
 
 #### Component Build
 
-ProfitBricks allows servers to be built by their individual components. That is, by connecting customized components such as servers, volumes, and NICs together. For example, a server can be provisioned in one request followed by one or more NICs and volumes in following requests. The volumes can then be attached separately to the server.
+IonosCloud allows servers to be built by their individual components. That is, by connecting customized components such as servers, volumes, and NICs together. For example, a server can be provisioned in one request followed by one or more NICs and volumes in following requests. The volumes can then be attached separately to the server.
 
 It is important to note that you will need to wait for each individual component to finish provisioning before it can be used in subsequent operations. This behavior is demonstrated below.
 
@@ -2525,13 +2525,13 @@ It is important to note that you will need to wait for each individual component
     import json
     import os
 
-    from profitbricks.client import ProfitBricksService
-    from profitbricks.client import (
+    from ionoscloud.client import IonosCloudService
+    from ionoscloud.client import (
         Datacenter, LAN, Server, NIC, Volume, FirewallRule)
 
-    client = ProfitBricksService(
-        username=os.getenv('PROFITBRICKS_USERNAME'),
-        password=os.getenv('PROFITBRICKS_PASSWORD'))
+    client = IonosCloudService(
+        username=os.getenv('IONOS_USERNAME'),
+        password=os.getenv('IONOS_PASSWORD'))
 
     timeout = 1800
 
@@ -2644,7 +2644,7 @@ It is important to note that you will need to wait for each individual component
 
 #### Composite Build
 
-The ProfitBricks platform also allows fully operational servers to be provisioned with a single request. This is accomplished by nesting related resources.
+The IonosCloud platform also allows fully operational servers to be provisioned with a single request. This is accomplished by nesting related resources.
 
 Multiple servers, volumes, LANs, and load balancers can be nested under a data center, multiple NICs and volumes can be nested under servers, and firewall rules under NICs.
 
@@ -2655,13 +2655,13 @@ This example will demonstrate composite resources.
     import json
     import os
 
-    from profitbricks.client import ProfitBricksService
-    from profitbricks.client import Datacenter, Server, NIC, Volume, FirewallRule
+    from ionoscloud.client import IonosCloudService
+    from ionoscloud.client import Datacenter, Server, NIC, Volume, FirewallRule
 
-    # Instatiate ProfitBricks connection
-    client = ProfitBricksService(
-        username=os.getenv('PROFITBRICKS_USERNAME'),
-        password=os.getenv('PROFITBRICKS_PASSWORD'))
+    # Instatiate IonosCloud connection
+    client = IonosCloudService(
+        username=os.getenv('IONOS_USERNAME'),
+        password=os.getenv('IONOS_PASSWORD'))
 
     # Define a firewall rule
     fwrule1 = FirewallRule(
@@ -2745,14 +2745,14 @@ This example will demonstrate composite resources.
 
 ## Support
 
-You can find additional examples in the repository `examples` directory. If you find any issues, please let us know via the [DevOps Central community](https://devops.profitbricks.com) or [GitHub's issue system](https://github.com/profitbricks/profitbricks-sdk-python/issues) and we'll check it out.
+You can find additional examples in the repository `examples` directory. If you find any issues, please let us know via the [DevOps Central community](https://devops.ionos.com/) or [GitHub's issue system](https://github.com/ionos-enterprise/ionos-enterprise-sdk-python/issues) and we'll check it out.
 
 ## Testing
 
 You can find a full list of tests inside the `tests` folder. To run all available tests:
 
-    export PROFITBRICKS_USERNAME=username
-    export PROFITBRICKS_PASSWORD=password
+    export IONOS_USERNAME=username
+    export IONOS_PASSWORD=password
 
     pip install -r requirements.txt
     python -m unittest discover tests
@@ -2763,7 +2763,7 @@ To run a single test:
 
 ## Contributing
 
-1. Fork it ( https://github.com/profitbricks/profitbricks-sdk-python/fork )
+1. Fork it ( https://github.com/ionos-enterprise/ionos-enterprise-sdk-python/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)

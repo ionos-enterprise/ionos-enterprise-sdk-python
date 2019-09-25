@@ -1,4 +1,4 @@
-# Copyright 2015-2017 ProfitBricks GmbH
+# Copyright 2015-2017 IONOS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@ import unittest
 
 from six import assertRegex
 
-from profitbricks.client import Datacenter, Server, LAN, NIC, ProfitBricksService
-from profitbricks.errors import PBNotFoundError
+from ionoscloud.client import Datacenter, Server, LAN, NIC, IonosCloudService
+from ionoscloud.errors import ICNotFoundError
 
 from helpers import configuration
 from helpers.resources import resource
@@ -27,7 +27,7 @@ class TestLan(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.resource = resource()
-        cls.client = ProfitBricksService(
+        cls.client = IonosCloudService(
             username=configuration.USERNAME,
             password=configuration.PASSWORD,
             headers=configuration.HEADERS)
@@ -156,14 +156,14 @@ class TestLan(unittest.TestCase):
     def test_get_failure(self):
         try:
             self.client.get_lan(datacenter_id=self.datacenter['id'], lan_id=0)
-        except PBNotFoundError as e:
+        except ICNotFoundError as e:
             self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
 
     def test_create_failure(self):
         try:
             self.client.create_lan(
                 datacenter_id='00000000-0000-0000-0000-000000000000', lan=LAN())
-        except PBNotFoundError as e:
+        except ICNotFoundError as e:
             self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
 
 

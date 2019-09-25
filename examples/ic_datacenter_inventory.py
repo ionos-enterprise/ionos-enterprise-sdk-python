@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # encoding: utf-8
 
-# Copyright 2016-2017 ProfitBricks GmbH
+# Copyright 2016-2017 IONOS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,10 +18,10 @@
 # pylint: disable=broad-except,global-statement
 
 '''
-pb_datacenter_inventory -- dump inventory of your Profitbricks data centers to CSV files
+pb_datacenter_inventory -- dump inventory of your Ionos Cloud data centers to CSV files
 
 pb_datacenter_inventory is a sample script to get an inventory overview
-of your data centers via Profitbricks REST-API.
+of your data centers via Ionos Cloud REST-API.
 
 It collects some basic information on
 - reserved ip blocks:
@@ -46,11 +46,10 @@ for reports or automatic post processing.
 
 @author:     Jürgen Buchhammer
 
-@copyright:  2016 ProfitBricks GmbH. All rights reserved.
+@copyright:  2016 IONOS. All rights reserved.
 
 @license:    license
 
-@contact:    juergen.buchhammer@profitbricks.com
 @deffield    updated: Updated
 '''
 
@@ -66,7 +65,7 @@ from getpass import getpass
 
 import csv
 
-from profitbricks.client import ProfitBricksService
+from ionoscloud.client import IonosCloudService
 
 __all__ = []
 __version__ = 0.2
@@ -358,7 +357,7 @@ def main(argv=None):                # IGNORE:C0111
     program_license = '''%s
 
   Created by J.Buchhammer on %s.
-  Copyright 2016 ProfitBricks GmbH. All rights reserved.
+  Copyright 2016 IONOS. All rights reserved.
 
   Licensed under the Apache License 2.0
   http://www.apache.org/licenses/LICENSE-2.0
@@ -414,7 +413,7 @@ USAGE
             print("Verbose mode on")
             print("using python ", sys.version_info)
 
-        pbclient = ProfitBricksService(user, password)
+        pbclient = IonosCloudService(user, password)
 
         if datacenterid is not None:
             datacenters = {}

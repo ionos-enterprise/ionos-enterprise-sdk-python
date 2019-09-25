@@ -1,4 +1,4 @@
-# Copyright 2015-2017 ProfitBricks GmbH
+# Copyright 2015-2017 IONOS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@ import unittest
 
 from six import assertRegex
 
-from profitbricks.client import Datacenter, LoadBalancer, LAN, NIC, Server, ProfitBricksService
-from profitbricks.errors import PBError, PBNotFoundError
+from ionoscloud.client import Datacenter, LoadBalancer, LAN, NIC, Server, IonosCloudService
+from ionoscloud.errors import ICError, ICNotFoundError
 
 from helpers import configuration
 from helpers.resources import resource
@@ -28,7 +28,7 @@ class TestLoadBalancer(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.resource = resource()
-        cls.client = ProfitBricksService(
+        cls.client = IonosCloudService(
             username=configuration.USERNAME,
             password=configuration.PASSWORD,
             headers=configuration.HEADERS)
@@ -205,7 +205,7 @@ class TestLoadBalancer(unittest.TestCase):
             self.client.get_loadbalancer(
                 datacenter_id=self.datacenter['id'],
                 loadbalancer_id='00000000-0000-0000-0000-000000000000')
-        except PBNotFoundError as e:
+        except ICNotFoundError as e:
             self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
 
     def test_create_failure(self):
@@ -213,7 +213,7 @@ class TestLoadBalancer(unittest.TestCase):
             self.client.create_loadbalancer(
                 datacenter_id=self.datacenter['id'],
                 loadbalancer=LoadBalancer())
-        except PBError as e:
+        except ICError as e:
             self.assertIn(self.resource['missing_attribute_error'] % 'lan',
                           e.content[0]['message'])
 

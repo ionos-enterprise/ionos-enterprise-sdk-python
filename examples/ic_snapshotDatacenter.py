@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # encoding: utf-8
 
-# Copyright 2016-2017 ProfitBricks GmbH
+# Copyright 2016-2017 IONOS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,11 +29,10 @@ or use it as a starting point for new data centers.
 
 @author:     Jürgen Buchhammer
 
-@copyright:  2016 ProfitBricks GmbH. All rights reserved.
+@copyright:  2016 IONOS. All rights reserved.
 
 @license:    Apache License 2.0
 
-@contact:    juergen.buchhammer@profitbricks.com
 @deffield    updated: Updated
 '''
 
@@ -49,7 +48,7 @@ from time import sleep
 import json
 from base64 import b64decode, b64encode
 
-from profitbricks.client import ProfitBricksService
+from ionoscloud.client import IonosCloudService
 
 
 __all__ = []
@@ -406,7 +405,7 @@ def main(argv=None):
     program_license = '''%s
 
   Created by J. Buchhammer on %s.
-  Copyright 2016 ProfitBricks GmbH. All rights reserved.
+  Copyright 2016 IONOS. All rights reserved.
 
   Licensed under the Apache License 2.0
   http://www.apache.org/licenses/LICENSE-2.0
@@ -456,7 +455,7 @@ USAGE
         (user, password) = getLogin(args.loginfile, args.user, args.password)
         if user is None or password is None:
             raise ValueError("user or password resolved to None")
-        pbclient = ProfitBricksService(user, password)
+        pbclient = IonosCloudService(user, password)
 
         dc_id = args.dc_id
 

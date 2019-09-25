@@ -1,5 +1,4 @@
-# Copyright 2015-2017 ProfitBricks GmbH
-# Author: Benjamin Drung <benjamin.drung@profitbricks.com>
+# Copyright 2015-2017 IONOS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

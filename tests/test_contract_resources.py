@@ -1,4 +1,4 @@
-# Copyright 2015-2017 ProfitBricks GmbH
+# Copyright 2015-2017 IONOS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 import unittest
 
-from profitbricks.client import ProfitBricksService
+from ionoscloud.client import IonosCloudService
 
 from helpers import configuration
 
@@ -22,7 +22,7 @@ from helpers import configuration
 class TestContractResources(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.client = ProfitBricksService(
+        cls.client = IonosCloudService(
             username=configuration.USERNAME,
             password=configuration.PASSWORD,
             headers=configuration.HEADERS)

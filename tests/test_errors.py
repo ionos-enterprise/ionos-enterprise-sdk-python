@@ -1,4 +1,4 @@
-# Copyright 2015-2017 ProfitBricks GmbH
+# Copyright 2015-2017 IONOS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
 
 import unittest
 
-from profitbricks.client import ProfitBricksService, Datacenter, Volume
-from profitbricks.errors import PBError, PBNotAuthorizedError, PBNotFoundError, PBValidationError
+from ionoscloud.client import IonosCloudService, Datacenter, Volume
+from ionoscloud.errors import ICError, ICNotAuthorizedError, ICNotFoundError, ICValidationError
 
 from helpers import configuration
 from helpers.resources import resource
@@ -25,7 +25,7 @@ class TestErrors(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.resource = resource()
-        cls.client = ProfitBricksService(
+        cls.client = IonosCloudService(
             username=configuration.USERNAME,
             password=configuration.PASSWORD,
             headers=configuration.HEADERS)
@@ -36,24 +36,24 @@ class TestErrors(unittest.TestCase):
     def tearDownClass(cls):
         cls.client.delete_datacenter(datacenter_id=cls.datacenter['id'])
 
-    def test_pb_not_found(self):
+    def test_ic_not_found(self):
         try:
             self.client.get_datacenter("fake_id")
-        except PBError as err:
-            self.assertTrue(isinstance(err, PBNotFoundError))
+        except ICError as err:
+            self.assertTrue(isinstance(err, ICNotFoundError))
 
-    def test_pb_unauthorized_error(self):
+    def test_ic_unauthorized_error(self):
         try:
-            self.client = ProfitBricksService(
+            self.client = IonosCloudService(
                 username=configuration.USERNAME + "1",
                 password=configuration.PASSWORD,
                 headers=configuration.HEADERS)
             self.client.list_datacenters()
 
-        except PBError as err:
-            self.assertTrue(isinstance(err, PBNotAuthorizedError))
+        except ICError as err:
+            self.assertTrue(isinstance(err, ICNotAuthorizedError))
 
-    def test_pb_validation_error(self):
+    def test_ic_validation_error(self):
         try:
             i = Volume(
                 name='Explicitly created volume',
@@ -62,8 +62,8 @@ class TestErrors(unittest.TestCase):
                 image='fake_image_id',
                 bus='VIRTIO')
             self.client.create_volume(datacenter_id=self.datacenter['id'], volume=i)
-        except PBError as err:
-            self.assertTrue(isinstance(err, PBValidationError))
+        except ICError as err:
+            self.assertTrue(isinstance(err, ICValidationError))
 
 
 if __name__ == '__main__':

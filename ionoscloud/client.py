@@ -1,4 +1,4 @@
-# Copyright 2015-2017 ProfitBricks GmbH
+# Copyright 2015-2017 IONOS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,33 +32,33 @@ try:
 except ImportError:
     HAS_KEYRING = False
 
-from profitbricks import (
+from ionoscloud import (
     API_HOST, __version__
 )
 
-from profitbricks.errors import (
-    PBNotAuthorizedError,
-    PBNotFoundError,
-    PBValidationError,
-    PBRateLimitExceededError,
-    PBError,
-    PBFailedRequest,
-    PBTimeoutError,
+from ionoscloud.errors import (
+    ICNotAuthorizedError,
+    ICNotFoundError,
+    ICValidationError,
+    ICRateLimitExceededError,
+    ICError,
+    ICFailedRequest,
+    ICTimeoutError,
 )
 
 from .utils import ask
 
-from .requests import ProfitBricksRequests
+from .requests import IonosCloudRequests
 
 from .items import * # NOQA
 
-_LIBRARY_NAME = "profitbricks-sdk-python"
+_LIBRARY_NAME = "ionoscloud-sdk-python"
 
 
-# ProfitBricks Object Classes
-class ProfitBricksService(ProfitBricksRequests):
+# IonosCloud Object Classes
+class IonosCloudService(IonosCloudRequests):
     """
-        ProfitBricksClient Base Class
+        IonosCloudClient Base Class
     """
 
     def __init__(self, username=None, password=None, host_base=API_HOST,
@@ -91,7 +91,7 @@ class ProfitBricksService(ProfitBricksRequests):
             except ImportError:
                 raise Exception("Missing dependency for determining config path. Please install "
                                 "the 'appdirs' Python module.")
-            self._config_filename = appdirs.user_config_dir(_LIBRARY_NAME, "ProfitBricks") + ".ini"
+            self._config_filename = appdirs.user_config_dir(_LIBRARY_NAME, "IonosCloud") + ".ini"
         if not self._config:
             self._config = configparser.ConfigParser()
             self._config.optionxform = str
@@ -244,7 +244,7 @@ class ProfitBricksService(ProfitBricksRequests):
 
             current_time = time.time()
             if timeout and current_time > timeout:
-                raise PBTimeoutError('Timed out waiting for request {0}.'.format(
+                raise ICTimeoutError('Timed out waiting for request {0}.'.format(
                     resp['requestId']), resp['requestId'])
 
             if current_time > next_increase:
@@ -290,7 +290,7 @@ class ProfitBricksService(ProfitBricksRequests):
             if request['metadata']['status'] == 'DONE':
                 break
             elif request['metadata']['status'] == 'FAILED':
-                raise PBFailedRequest(
+                raise ICFailedRequest(
                     'Request {0} failed to complete: {1}'.format(
                         response['requestId'], request['metadata']['message']),
                     response['requestId']
@@ -298,7 +298,7 @@ class ProfitBricksService(ProfitBricksRequests):
 
             current_time = time.time()
             if timeout and current_time > timeout:
-                raise PBTimeoutError('Timed out waiting for request {0}.'.format(
+                raise ICTimeoutError('Timed out waiting for request {0}.'.format(
                     response['requestId']), response['requestId'])
 
             if current_time > next_increase:
@@ -364,15 +364,15 @@ class ProfitBricksService(ProfitBricksRequests):
                 code = err['httpStatus']
                 msg = err['messages']
                 if response.status_code == 401:
-                    raise PBNotAuthorizedError(code, msg, url)
+                    raise ICNotAuthorizedError(code, msg, url)
                 if response.status_code == 404:
-                    raise PBNotFoundError(code, msg, url)
+                    raise ICNotFoundError(code, msg, url)
                 if response.status_code == 422:
-                    raise PBValidationError(code, msg, url)
+                    raise ICValidationError(code, msg, url)
                 if response.status_code == 429:
-                    raise PBRateLimitExceededError(code, msg, url)
+                    raise ICRateLimitExceededError(code, msg, url)
                 else:
-                    raise PBError(code, msg, url)
+                    raise ICError(code, msg, url)
 
         except ValueError:
             raise Exception('Failed to parse the response', response.text)

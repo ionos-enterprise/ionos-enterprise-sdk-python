@@ -1,4 +1,4 @@
-# Copyright 2015-2017 ProfitBricks GmbH
+# Copyright 2015-2017 IONOS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@ from random import randint
 
 from six import assertRegex
 
-from profitbricks.client import Datacenter, IPBlock, User, Group, Volume, ProfitBricksService
-from profitbricks.errors import PBError, PBNotFoundError
+from ionoscloud.client import Datacenter, IPBlock, User, Group, Volume, IonosCloudService
+from ionoscloud.errors import ICError, ICNotFoundError
 
 from helpers import configuration
 from helpers.resources import resource, find_image
@@ -28,7 +28,7 @@ class TestUserManagement(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.resource = resource()
-        cls.client = ProfitBricksService(
+        cls.client = IonosCloudService(
             username=configuration.USERNAME,
             password=configuration.PASSWORD,
             headers=configuration.HEADERS)
@@ -177,14 +177,14 @@ class TestUserManagement(unittest.TestCase):
                 lastname='Doe',
                 password='secretpassword123')
             self.client.create_user(user)
-        except PBError as e:
+        except ICError as e:
             self.assertIn(self.resource['missing_attribute_error'] % 'email',
                           e.content[0]['message'])
 
     def test_get_user_failure(self):
         try:
             self.client.get_user('00000000-0000-0000-0000-000000000000')
-        except PBNotFoundError as e:
+        except ICNotFoundError as e:
             self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
 
     def test_create_group(self):
@@ -242,14 +242,14 @@ class TestUserManagement(unittest.TestCase):
     def test_create_group_failure(self):
         try:
             self.client.create_group(Group(create_datacenter=True))
-        except PBError as e:
+        except ICError as e:
             self.assertIn(self.resource['missing_attribute_error'] % 'name',
                           e.content[0]['message'])
 
     def test_get_group_failure(self):
         try:
             self.client.get_group('00000000-0000-0000-0000-000000000000')
-        except PBNotFoundError as e:
+        except ICNotFoundError as e:
             self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
 
     def test_add_share(self):
@@ -285,14 +285,14 @@ class TestUserManagement(unittest.TestCase):
         try:
             self.client.get_share(group_id=self.group3['id'],
                                   resource_id='00000000-0000-0000-0000-000000000000')
-        except PBNotFoundError as e:
+        except ICNotFoundError as e:
             self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
 
     def test_create_share_failure(self):
         try:
             self.client.add_share(group_id=self.group3['id'],
                                   resource_id='00000000-0000-0000-0000-000000000000')
-        except PBNotFoundError as e:
+        except ICNotFoundError as e:
             self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
 
     def test_list_group_users(self):
@@ -352,7 +352,7 @@ class TestUserManagement(unittest.TestCase):
     def test_list_resources_failure(self):
         try:
             self.client.list_resources(resource_type='unknown')
-        except PBNotFoundError as e:
+        except ICNotFoundError as e:
             self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
 
     def test_get_datacenter_resource(self):
@@ -387,7 +387,7 @@ class TestUserManagement(unittest.TestCase):
         try:
             self.client.get_resource(resource_type='datacenter',
                                      resource_id='00000000-0000-0000-0000-000000000000')
-        except PBNotFoundError as e:
+        except ICNotFoundError as e:
             self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
 
 

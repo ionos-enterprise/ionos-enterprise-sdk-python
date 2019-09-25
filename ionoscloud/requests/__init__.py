@@ -22,7 +22,7 @@ from .k8s_config import k8s_config
 from .k8s_nodepools import k8s_nodepools
 
 
-class ProfitBricksRequests(
+class IonosCloudRequests(
     dicts,
 
     datacenter,
@@ -50,4 +50,4 @@ class ProfitBricksRequests(
     pass
 
 
-__all__ = ['ProfitBricksRequests']
+__all__ = ['IonosCloudRequests']

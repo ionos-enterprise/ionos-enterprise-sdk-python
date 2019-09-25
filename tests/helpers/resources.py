@@ -1,4 +1,4 @@
-# Copyright 2015-2017 ProfitBricks GmbH
+# Copyright 2015-2017 IONOS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ from . import configuration
 
 def resource():
     return {
-        'locations': ['us/las', 'us/ewr', 'de/fra', 'de/fkb'],
+        'locations': ['us/las', 'us/ewr', 'de/fra', 'de/fkb', 'de/txl', 'gb/lhr'],
         'licence_type': ['LINUX', 'WINDOWS', 'WINDOWS2016', 'OTHER', 'UNKNOWN'],
         'vm_states': ['RUNNING', 'SHUTOFF'],
         'uuid_match':

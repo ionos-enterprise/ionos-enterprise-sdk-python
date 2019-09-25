@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-# Copyright 2015-2017 ProfitBricks GmbH
+# Copyright 2015-2017 IONOS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,7 +24,8 @@ This example will do the following:
 - create a k8s cluster (cluster name in variable cluster_name)
 - wait for the k8s cluster to be active
 - retrieve the k8s cluster configuration
-- create a k8s nodepool in the newly created k8s cluster (name and properties in variables pool_name and pool_properties)
+- create a k8s nodepool in the newly created k8s cluster
+  (name and properties in variables pool_name and pool_properties)
 - wait for the k8s nodepool to be active
 - delete the k8s nodepool
 - wait for the k8s nodepool to be deleted
@@ -34,8 +35,9 @@ This example will do the following:
 - wait for the datacenter to be deleted
 '''
 
-import os, sys, json
-from profitbricks.client import ProfitBricksService, Datacenter
+import os
+import json
+from ionoscloud.client import IonosCloudService, Datacenter
 
 
 # ************* START CONFIG used for test **************
@@ -60,7 +62,7 @@ pool_properties = {
 username = os.getenv('IONOS_USERNAME', 'my_username')
 password = os.getenv('IONOS_PASSWORD', 'my_password')
 
-client = ProfitBricksService(
+client = IonosCloudService(
   username=username,
   password=password,
 )
@@ -76,7 +78,10 @@ print('Request completed!')
 print('Waiting for the datacenter to be active!')
 datacenters = client.wait_for(
   fn_request=lambda: client.list_datacenters(),
-  fn_check=lambda r: list(filter(lambda e: e['properties']['name'] == datacenter_name, r['items']))[0]['metadata']['state'] == 'AVAILABLE',
+  fn_check=lambda r: list(filter(
+      lambda e: e['properties']['name'] == datacenter_name,
+      r['items']
+    ))[0]['metadata']['state'] == 'AVAILABLE',
   console_print='.',
   scaleup=10000
 )
@@ -93,7 +98,10 @@ print('Request completed!')
 print('Waiting for the cluster to be active!')
 clusters = client.wait_for(
   fn_request=lambda: client.list_k8s_clusters(),
-  fn_check=lambda r: list(filter(lambda e: e['properties']['name'] == cluster_name, r['items']))[0]['metadata']['state'] == 'ACTIVE',
+  fn_check=lambda r: list(filter(
+      lambda e: e['properties']['name'] == cluster_name,
+      r['items']
+    ))[0]['metadata']['state'] == 'ACTIVE',
   console_print='.',
   scaleup=10000
 )
@@ -120,7 +128,10 @@ print('Request completed!')
 print('Waiting for the nodepool to be active!')
 pools = client.wait_for(
   fn_request=lambda: client.list_k8s_cluster_nodepools(my_cluster['id']),
-  fn_check=lambda r: list(filter(lambda e: e['properties']['name'] == pool_name, r['items']))[0]['metadata']['state'] == 'ACTIVE',
+  fn_check=lambda r: list(filter(
+      lambda e: e['properties']['name'] == pool_name,
+      r['items']
+    ))[0]['metadata']['state'] == 'ACTIVE',
   console_print='.',
   scaleup=10000
 )
@@ -136,7 +147,10 @@ print('Request completed!')
 print('Waiting for the nodepool to be deleted!')
 clusters = client.wait_for(
   fn_request=lambda: client.list_k8s_cluster_nodepools(my_cluster['id']),
-  fn_check=lambda r: len(list(filter(lambda e: e['properties']['name'] == pool_name, r['items']))) == 0,
+  fn_check=lambda r: len(list(filter(
+      lambda e: e['properties']['name'] == pool_name,
+      r['items']
+    ))) == 0,
   console_print='.',
   scaleup=10000
 )
@@ -149,7 +163,10 @@ print('Request completed!')
 print('Waiting for the cluster to be deleted!')
 clusters = client.wait_for(
   fn_request=lambda: client.list_k8s_clusters(),
-  fn_check=lambda r: len(list(filter(lambda e: e['properties']['name'] == cluster_name, r['items']))) == 0,
+  fn_check=lambda r: len(list(filter(
+      lambda e: e['properties']['name'] == cluster_name,
+      r['items']
+    ))) == 0,
   console_print='.',
   scaleup=10000
 )
@@ -162,7 +179,10 @@ print('Request completed!')
 print('Waiting for the datacenter to be deleted!')
 clusters = client.wait_for(
   fn_request=lambda: client.list_datacenters(),
-  fn_check=lambda r: len(list(filter(lambda e: e['properties']['name'] == datacenter_name, r['items']))) == 0,
+  fn_check=lambda r: len(list(filter(
+      lambda e: e['properties']['name'] == datacenter_name,
+      r['items']
+    ))) == 0,
   console_print='.',
   scaleup=10000
 )

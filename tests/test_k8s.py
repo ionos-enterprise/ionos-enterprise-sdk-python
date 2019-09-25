@@ -1,4 +1,4 @@
-# Copyright 2015-2017 ProfitBricks GmbH
+# Copyright 2015-2017 IONOS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,21 +13,18 @@
 # limitations under the License.
 
 import unittest
-import time, sys
 
-from six import assertRegex
-
-from profitbricks.client import Datacenter, Server, Volume, NIC, FirewallRule, ProfitBricksService
-from profitbricks.errors import PBError, PBNotFoundError
+from ionoscloud.client import Datacenter, IonosCloudService
 
 from helpers import configuration
-from helpers.resources import resource, check_detached_cdrom_gone
+from helpers.resources import resource
+
 
 class TestK8S(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.resource = resource()
-        cls.client = ProfitBricksService(
+        cls.client = IonosCloudService(
             username=configuration.USERNAME,
             password=configuration.PASSWORD,
             headers=configuration.HEADERS)
@@ -48,7 +45,10 @@ class TestK8S(unittest.TestCase):
         # Wait for k8s cluster to be active
         cls.client.wait_for(
             fn_request=lambda: cls.client.list_k8s_clusters(),
-            fn_check=lambda r: list(filter(lambda e: e['properties']['name'] == cls.resource['k8s_cluster']['name'], r['items']))[0]['metadata']['state'] == 'ACTIVE',
+            fn_check=lambda r: list(filter(
+                lambda e: e['properties']['name'] == cls.resource['k8s_cluster']['name'],
+                r['items']
+              ))[0]['metadata']['state'] == 'ACTIVE',
             scaleup=10000
         )
 
@@ -67,7 +67,10 @@ class TestK8S(unittest.TestCase):
         # Wait for k8s nodepool to be active
         cls.client.wait_for(
             fn_request=lambda: cls.client.list_k8s_cluster_nodepools(cls.k8s_cluster['id']),
-            fn_check=lambda r: list(filter(lambda e: e['properties']['name'] == cls.resource['k8s_nodepool']['name'], r['items']))[0]['metadata']['state'] == 'ACTIVE',
+            fn_check=lambda r: list(filter(
+                lambda e: e['properties']['name'] == cls.resource['k8s_nodepool']['name'],
+                r['items']
+              ))[0]['metadata']['state'] == 'ACTIVE',
             scaleup=10000
         )
 
@@ -76,27 +79,37 @@ class TestK8S(unittest.TestCase):
         cls.client.delete_k8s_cluster_nodepool(cls.k8s_cluster['id'], cls.k8s_nodepool['id'])
         cls.client.wait_for(
             fn_request=lambda: cls.client.list_k8s_cluster_nodepools(cls.k8s_cluster['id']),
-            fn_check=lambda r: len(list(filter(lambda e: e['properties']['name'] == cls.resource['k8s_nodepool']['name'], r['items']))) == 0,
+            fn_check=lambda r: len(list(filter(
+                lambda e: e['properties']['name'] == cls.resource['k8s_nodepool']['name'],
+                r['items']
+              ))) == 0,
             scaleup=10000
         )
 
         cls.client.delete_k8s_cluster(cls.k8s_cluster['id'])
         cls.client.wait_for(
             fn_request=lambda: cls.client.list_k8s_clusters(),
-            fn_check=lambda r: len(list(filter(lambda e: e['properties']['name'] == cls.resource['k8s_cluster']['name'], r['items']))) == 0,
+            fn_check=lambda r: len(list(filter(
+                lambda e: e['properties']['name'] == cls.resource['k8s_cluster']['name'],
+                r['items']
+              ))) == 0,
             scaleup=10000
         )
 
         cls.client.delete_datacenter(datacenter_id=cls.datacenter['id'])
         cls.client.wait_for(
             fn_request=lambda: cls.client.list_datacenters(),
-            fn_check=lambda r: len(list(filter(lambda e: e['properties']['name'] == cls.resource['k8s_datacenter']['name'], r['items']))) == 0,
+            fn_check=lambda r: len(list(filter(
+                lambda e: e['properties']['name'] == cls.resource['k8s_datacenter']['name'],
+                r['items']
+              ))) == 0,
             scaleup=10000
         )
 
     def test_get_config(self):
         self.assertEqual(self.k8s_config['type'], 'kubeconfig')
         # self.assertEqual(self.k8s_config['properties'], 'kubeconfig')
+
 
 if __name__ == '__main__':
     unittest.main()

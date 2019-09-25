@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-# Copyright 2015-2017 ProfitBricks GmbH
+# Copyright 2015-2017 IONOS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,9 +18,9 @@
 
 """List Images
 """
-from profitbricks.client import ProfitBricksService
+from ionoscloud.client import IonosCloudService
 
-client = ProfitBricksService(
+client = IonosCloudService(
     username='username', password='password')
 
 images = client.list_images()
@@ -45,9 +45,9 @@ Valid image parameters are:
 * disc_scsi_hot_unplug (bool)
 
 """
-from profitbricks.client import ProfitBricksService  # noqa
+from ionoscloud.client import IonosCloudService  # noqa
 
-client = ProfitBricksService(
+client = IonosCloudService(
     username='username', password='password')
 
 image_id = '7df81087-5835-41c6-a10b-3e098593bbd2'
@@ -65,9 +65,9 @@ image = client.update_image(
 
 """Delete Image
 """
-from profitbricks.client import ProfitBricksService  # noqa
+from ionoscloud.client import IonosCloudService  # noqa
 
-client = ProfitBricksService(
+client = IonosCloudService(
     username='username', password='password')
 
 image_id = '7df81087-5835-41c6-a10b-3e098593bbd2'
