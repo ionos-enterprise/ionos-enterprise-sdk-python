@@ -15,5 +15,5 @@
 """Ionos Cloud API Client Library for Python"""
 __version__ = '5.0.0'
 
-API_HOST = 'https://api.profitbricks.com/cloudapi/v5'
+API_HOST = 'https://api.ionos.com/cloudapi/v5'
 API_VERSION = '5.0'

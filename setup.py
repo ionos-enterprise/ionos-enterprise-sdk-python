@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-# Copyright 2015-2017 ProfitBricks GmbH
+# Copyright 2015-2017 IONOS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 # limitations under the License.
 
 """
-Setup script for the ProfitBricks API Python client.
+Setup script for the IONOSCloud API Python client.
 
 """
 from __future__ import print_function
@@ -47,7 +47,7 @@ def find_version(*file_paths):
 if os.path.isfile("README.md"):
     long_desc = read('README.md')
 else:
-    long_desc = "ProfitBricks API Client Library for Python"
+    long_desc = "IonosCloud API Client Library for Python"
 
 
 class PyTest(TestCommand):
@@ -63,22 +63,22 @@ class PyTest(TestCommand):
 
 
 setup(
-    name='profitbricks',
-    version=find_version('profitbricks', '__init__.py'),
-    description='ProfitBricks API Client Library for Python',
+    name='ionoscloud',
+    version=find_version('ionoscloud', '__init__.py'),
+    description='IonosCloud API Client Library for Python',
     long_description=long_desc,
     author='Matt Baldwin (stackpointcloud.com)',
     author_email='baldwin@stackpointcloud.com',
-    url='https://github.com/profitbricks/profitbricks-sdk-python',
+    url='https://github.com/ionos-enterprise/ionos-enterprise-sdk-python',
     install_requires=['requests>=2.0.0', 'six>=1.10.0', 'appdirs>=1.4.3'],
     # include_package_data=True,
-    packages=['profitbricks', 'profitbricks.requests', 'profitbricks.items'],
+    packages=['ionoscloud', 'ionoscloud.requests', 'ionoscloud.items'],
     platforms='any',
-    test_suite='profitbricks.test.test_profitbricks',
+    test_suite='ionoscloud.test.test_ionoscloud',
     cmdclass={'test': PyTest},
     tests_require=['pytest'],
     license='Apache 2.0',
-    keywords='profitbricks api client cloud',
+    keywords='ionos api client cloud',
     classifiers=['Development Status :: 5 - Production/Stable',
                  'Natural Language :: English',
                  'Environment :: Web Environment',
