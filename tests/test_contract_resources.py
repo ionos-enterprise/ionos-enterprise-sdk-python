@@ -14,7 +14,7 @@
 
 import unittest
 
-from ionoscloud.client import IonosCloudService
+from ionosenterprise.client import IonosEnterpriseService
 
 from helpers import configuration
 
@@ -22,7 +22,7 @@ from helpers import configuration
 class TestContractResources(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.client = IonosCloudService(
+        cls.client = IonosEnterpriseService(
             username=configuration.USERNAME,
             password=configuration.PASSWORD,
             headers=configuration.HEADERS)

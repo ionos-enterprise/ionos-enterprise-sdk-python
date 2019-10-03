@@ -18,10 +18,10 @@
 # pylint: disable=broad-except,global-statement
 
 '''
-pb_datacenter_inventory -- dump inventory of your Ionos Cloud data centers to CSV files
+pb_datacenter_inventory -- dump inventory of your Ionos Enterprise data centers to CSV files
 
 pb_datacenter_inventory is a sample script to get an inventory overview
-of your data centers via Ionos Cloud REST-API.
+of your data centers via Ionos Enterprise REST-API.
 
 It collects some basic information on
 - reserved ip blocks:
@@ -65,7 +65,7 @@ from getpass import getpass
 
 import csv
 
-from ionoscloud.client import IonosCloudService
+from ionosenterprise.client import IonosEnterpriseService
 
 __all__ = []
 __version__ = 0.2
@@ -413,7 +413,7 @@ USAGE
             print("Verbose mode on")
             print("using python ", sys.version_info)
 
-        pbclient = IonosCloudService(user, password)
+        pbclient = IonosEnterpriseService(user, password)
 
         if datacenterid is not None:
             datacenters = {}

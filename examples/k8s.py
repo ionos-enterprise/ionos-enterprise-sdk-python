@@ -37,7 +37,7 @@ This example will do the following:
 
 import os
 import json
-from ionoscloud.client import IonosCloudService, Datacenter
+from ionosenterprise.client import IonosEnterpriseService, Datacenter
 
 
 # ************* START CONFIG used for test **************
@@ -62,7 +62,7 @@ pool_properties = {
 username = os.getenv('IONOS_USERNAME', 'my_username')
 password = os.getenv('IONOS_PASSWORD', 'my_password')
 
-client = IonosCloudService(
+client = IonosEnterpriseService(
   username=username,
   password=password,
 )

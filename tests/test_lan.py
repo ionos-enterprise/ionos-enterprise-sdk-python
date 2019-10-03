@@ -16,8 +16,8 @@ import unittest
 
 from six import assertRegex
 
-from ionoscloud.client import Datacenter, Server, LAN, NIC, IonosCloudService
-from ionoscloud.errors import ICNotFoundError
+from ionosenterprise.client import Datacenter, Server, LAN, NIC, IonosEnterpriseService
+from ionosenterprise.errors import ICNotFoundError
 
 from helpers import configuration
 from helpers.resources import resource
@@ -27,7 +27,7 @@ class TestLan(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.resource = resource()
-        cls.client = IonosCloudService(
+        cls.client = IonosEnterpriseService(
             username=configuration.USERNAME,
             password=configuration.PASSWORD,
             headers=configuration.HEADERS)

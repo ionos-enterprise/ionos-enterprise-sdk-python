@@ -19,11 +19,11 @@
 """Create volume
 """
 
-from ionoscloud.client import IonosCloudService, Volume
+from ionosenterprise.client import IonosEnterpriseService, Volume
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 
-client = IonosCloudService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 i = Volume(
@@ -38,12 +38,12 @@ response = client.create_volume(
 """Create snapshot
 """
 
-from ionoscloud.client import IonosCloudService  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 volume_id = '700e1cab-99b2-4c30-ba8c-1d273ddba025'
 
-client = IonosCloudService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 volume = client.create_snapshot(
@@ -54,14 +54,14 @@ volume = client.create_snapshot(
 
 """Restore Snapshot
 """
-from ionoscloud.client import IonosCloudService  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 volume_id = '700e1cab-99b2-4c30-ba8c-1d273ddba025'
 snapshot_id = '7df81087-5835-41c6-a10b-3e098593bba4'
 
 
-client = IonosCloudService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 response = client.restore_snapshot(
@@ -72,12 +72,12 @@ response = client.restore_snapshot(
 """Update Volume
 """
 
-from ionoscloud.client import IonosCloudService  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 volume_id = '700e1cab-99b2-4c30-ba8c-1d273ddba025'
 
-client = IonosCloudService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 volume = client.update_volume(

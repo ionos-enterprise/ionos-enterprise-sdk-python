@@ -48,7 +48,7 @@ from time import sleep
 import json
 from base64 import b64decode, b64encode
 
-from ionoscloud.client import IonosCloudService
+from ionosenterprise.client import IonosEnterpriseService
 
 
 __all__ = []
@@ -455,7 +455,7 @@ USAGE
         (user, password) = getLogin(args.loginfile, args.user, args.password)
         if user is None or password is None:
             raise ValueError("user or password resolved to None")
-        pbclient = IonosCloudService(user, password)
+        pbclient = IonosEnterpriseService(user, password)
 
         dc_id = args.dc_id
 

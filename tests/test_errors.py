@@ -14,8 +14,8 @@
 
 import unittest
 
-from ionoscloud.client import IonosCloudService, Datacenter, Volume
-from ionoscloud.errors import ICError, ICNotAuthorizedError, ICNotFoundError, ICValidationError
+from ionosenterprise.client import IonosEnterpriseService, Datacenter, Volume
+from ionosenterprise.errors import ICError, ICNotAuthorizedError, ICNotFoundError, ICValidationError
 
 from helpers import configuration
 from helpers.resources import resource
@@ -25,7 +25,7 @@ class TestErrors(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.resource = resource()
-        cls.client = IonosCloudService(
+        cls.client = IonosEnterpriseService(
             username=configuration.USERNAME,
             password=configuration.PASSWORD,
             headers=configuration.HEADERS)
@@ -44,7 +44,7 @@ class TestErrors(unittest.TestCase):
 
     def test_ic_unauthorized_error(self):
         try:
-            self.client = IonosCloudService(
+            self.client = IonosEnterpriseService(
                 username=configuration.USERNAME + "1",
                 password=configuration.PASSWORD,
                 headers=configuration.HEADERS)

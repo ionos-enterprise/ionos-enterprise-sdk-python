@@ -16,8 +16,8 @@ import unittest
 
 from six import assertRegex
 
-from ionoscloud.client import IPBlock, IonosCloudService
-from ionoscloud.errors import ICError, ICNotFoundError
+from ionosenterprise.client import IPBlock, IonosEnterpriseService
+from ionosenterprise.errors import ICError, ICNotFoundError
 
 from helpers import configuration
 from helpers.resources import resource
@@ -27,7 +27,7 @@ class TestIPBlock(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.resource = resource()
-        cls.client = IonosCloudService(
+        cls.client = IonosEnterpriseService(
             username=configuration.USERNAME,
             password=configuration.PASSWORD,
             headers=configuration.HEADERS)

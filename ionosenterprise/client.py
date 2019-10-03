@@ -32,11 +32,11 @@ try:
 except ImportError:
     HAS_KEYRING = False
 
-from ionoscloud import (
+from ionosenterprise import (
     API_HOST, __version__
 )
 
-from ionoscloud.errors import (
+from ionosenterprise.errors import (
     ICNotAuthorizedError,
     ICNotFoundError,
     ICValidationError,
@@ -48,17 +48,17 @@ from ionoscloud.errors import (
 
 from .utils import ask
 
-from .requests import IonosCloudRequests
+from .requests import IonosEnterpriseRequests
 
 from .items import * # NOQA
 
-_LIBRARY_NAME = "ionoscloud-sdk-python"
+_LIBRARY_NAME = "ionosenterprise-sdk-python"
 
 
-# IonosCloud Object Classes
-class IonosCloudService(IonosCloudRequests):
+# IonosEnterprise Object Classes
+class IonosEnterpriseService(IonosEnterpriseRequests):
     """
-        IonosCloudClient Base Class
+        IonosEnterpriseClient Base Class
     """
 
     def __init__(self, username=None, password=None, host_base=API_HOST,
@@ -91,7 +91,7 @@ class IonosCloudService(IonosCloudRequests):
             except ImportError:
                 raise Exception("Missing dependency for determining config path. Please install "
                                 "the 'appdirs' Python module.")
-            self._config_filename = appdirs.user_config_dir(_LIBRARY_NAME, "IonosCloud") + ".ini"
+            self._config_filename = appdirs.user_config_dir(_LIBRARY_NAME, "IonosEnterprise") + ".ini"
         if not self._config:
             self._config = configparser.ConfigParser()
             self._config.optionxform = str

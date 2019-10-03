@@ -16,49 +16,49 @@
 
 # pylint: disable=invalid-name
 
-"""Interactive Python shell for the IonosCloud REST API"""
+"""Interactive Python shell for the IonosEnterprise REST API"""
 
 import argparse
 import code
 import logging
 
-import ionoscloud
-import ionoscloud.client
+import ionosenterprise
+import ionosenterprise.client
 
 
 def main():
-    """Main function of the interactive Python shell for the IonosCloud REST API"""
+    """Main function of the interactive Python shell for the IonosEnterprise REST API"""
     parser = argparse.ArgumentParser()
-    parser.add_argument('-b', '--base-uri', default=ionoscloud.API_HOST,
+    parser.add_argument('-b', '--base-uri', default=ionosenterprise.API_HOST,
                         help="Base URI for the REST API (default: %(default)s)")
     parser.add_argument('-c', dest="cmd", help="program passed in as string")
     parser.add_argument('-u', '--username',
-                        help="IonosCloud user name (i.e. email address, "
+                        help="IonosEnterprise user name (i.e. email address, "
                              "default: read from config)")
     args = parser.parse_args()
 
     logging.getLogger("requests").setLevel(logging.WARNING)
     logger = logging.getLogger("pb-api-shell")
-    client = ionoscloud.client.IonosCloudService(
+    client = ionosenterprise.client.IonosEnterpriseService(
         username=args.username, host_base=args.base_uri, client_user_agent='pb-api-shell/1.0')
 
     if args.cmd is None:
-        banner = ("The IonosCloud client can be accessed through the 'client' object.\n"
+        banner = ("The IonosEnterprise client can be accessed through the 'client' object.\n"
                   "Other available objects: Datacenter, FirewallRule, Group, IPBlock, LAN,\n"
                   "                         LoadBalancer, NIC, Server, Snapshot, User, Volume")
         variables = {
             'client': client,
-            'Datacenter': ionoscloud.client.Datacenter,
-            'FirewallRule': ionoscloud.client.FirewallRule,
-            'Group': ionoscloud.client.Group,
-            'IPBlock': ionoscloud.client.IPBlock,
-            'LAN': ionoscloud.client.LAN,
-            'LoadBalancer': ionoscloud.client.LoadBalancer,
-            'NIC': ionoscloud.client.NIC,
-            'Server': ionoscloud.client.Server,
-            'Snapshot': ionoscloud.client.Snapshot,
-            'User': ionoscloud.client.User,
-            'Volume': ionoscloud.client.Volume,
+            'Datacenter': ionosenterprise.client.Datacenter,
+            'FirewallRule': ionosenterprise.client.FirewallRule,
+            'Group': ionosenterprise.client.Group,
+            'IPBlock': ionosenterprise.client.IPBlock,
+            'LAN': ionosenterprise.client.LAN,
+            'LoadBalancer': ionosenterprise.client.LoadBalancer,
+            'NIC': ionosenterprise.client.NIC,
+            'Server': ionosenterprise.client.Server,
+            'Snapshot': ionosenterprise.client.Snapshot,
+            'User': ionosenterprise.client.User,
+            'Volume': ionosenterprise.client.Volume,
         }
 
         shell = None

@@ -18,11 +18,11 @@
 
 """List LANs
 """
-from ionoscloud.client import IonosCloudService
+from ionosenterprise.client import IonosEnterpriseService
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 
-client = IonosCloudService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 lans = client.list_lans(datacenter_id=datacenter_id)
@@ -31,12 +31,12 @@ print(lans)
 
 """Create Complex LAN
 """
-from ionoscloud.client import IonosCloudService, LAN  # noqa
+from ionosenterprise.client import IonosEnterpriseService, LAN  # noqa
 
 lan_id = '4'
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 
-client = IonosCloudService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 nics = ['<NIC-ID-1>', '<NIC-ID-2>']
@@ -50,12 +50,12 @@ response = client.create_lan(datacenter_id=datacenter_id, lan=i)
 
 """Create LAN
 """
-from ionoscloud.client import IonosCloudService, LAN  # noqa
+from ionosenterprise.client import IonosEnterpriseService, LAN  # noqa
 
 lan_id = '4'
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 
-client = IonosCloudService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 i = LAN(
@@ -66,12 +66,12 @@ response = client.create_lan(datacenter_id=datacenter_id, lan=i)
 
 """Get LAN Members
 """
-from ionoscloud.client import IonosCloudService  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
 
 lan_id = '4'
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 
-client = IonosCloudService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 members = client.get_lan_members(datacenter_id=datacenter_id,

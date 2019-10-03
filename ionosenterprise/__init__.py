@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Ionos Cloud API Client Library for Python"""
+"""Ionos Enterprise API Client Library for Python"""
 __version__ = '5.0.0'
 
 API_HOST = 'https://api.ionos.com/cloudapi/v5'

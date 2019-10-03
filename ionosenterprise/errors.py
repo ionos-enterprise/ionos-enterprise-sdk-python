@@ -26,7 +26,7 @@ class ICNotAuthorizedError(ICError):
 
 
 class ICNotFoundError(ICError):
-    """The IonosCloud entity was not found"""
+    """The IonosEnterprise entity was not found"""
 
 
 class ICValidationError(ICError):

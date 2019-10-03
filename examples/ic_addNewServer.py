@@ -44,7 +44,7 @@ from argparse import ArgumentParser
 from argparse import RawDescriptionHelpFormatter
 from base64 import b64encode, b64decode
 
-from ionoscloud.client import IonosCloudService, Server, Volume, NIC
+from ionosenterprise.client import IonosEnterpriseService, Server, Volume, NIC
 
 
 __all__ = []
@@ -222,7 +222,7 @@ USAGE
         (user, password) = getLogin(args.loginfile, args.user, args.password)
         if user is None or password is None:
             raise ValueError("user or password resolved to None")
-        pbclient = IonosCloudService(user, password)
+        pbclient = IonosEnterpriseService(user, password)
 
         first_nic = NIC(name="local", ips=[], dhcp=True, lan=lan_id)
         volume = Volume(name=servername+"-Disk", size=args.storage,

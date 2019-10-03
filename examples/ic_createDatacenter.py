@@ -40,9 +40,9 @@ from time import sleep
 import json
 from base64 import b64decode, b64encode
 
-from ionoscloud.client import IonosCloudService
-from ionoscloud.client import Datacenter, Volume, Server
-from ionoscloud.client import LAN, NIC, FirewallRule
+from ionosenterprise.client import IonosEnterpriseService
+from ionosenterprise.client import Datacenter, Volume, Server
+from ionosenterprise.client import LAN, NIC, FirewallRule
 
 
 __version__ = 0.2
@@ -498,7 +498,7 @@ USAGE
     (user, password) = getLogin(args.loginfile, args.user, args.password)
     if user is None or password is None:
         raise ValueError("user or password resolved to None")
-    pbclient = IonosCloudService(user, password)
+    pbclient = IonosEnterpriseService(user, password)
 
     usefile = args.infile
     print("read dc from {}".format(usefile))

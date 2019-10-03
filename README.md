@@ -1,7 +1,7 @@
 
 # Python SDK
 
-Version: ionoscloud-sdk-python **5.0.0**
+Version: ionosenterprise-sdk-python **5.0.0**
 
 ## Table of Contents
 
@@ -138,54 +138,54 @@ Version: ionoscloud-sdk-python **5.0.0**
 
 ## Description
 
-The IonosCloud SDK for Python provides you with access to the IonosCloud Cloud API. The client library supports both simple and complex requests. It is designed for developers who are building applications in Python.
+The IonosEnterprise SDK for Python provides you with access to the IonosEnterprise API. The client library supports both simple and complex requests. It is designed for developers who are building applications in Python.
 
 This guide will walk you through getting setup with the library and performing various actions against the API.
 
-The SDK for Python wraps the IonosCloud Cloud API. All API operations are performed over SSL and authenticated using your IonosCloud portal credentials. The API can be accessed within an instance running in IonosCloud or directly over the Internet from any application that can send an HTTPS request and receive an HTTPS response.
+The SDK for Python wraps the IonosEnterprise API. All API operations are performed over SSL and authenticated using your IonosEnterprise portal credentials. The API can be accessed within an instance running in IonosEnterprise or directly over the Internet from any application that can send an HTTPS request and receive an HTTPS response.
 
 ## Getting Started
 
-Before you begin you will need to have [signed-up](https://www.ionos.com/enterprise-cloud/signup) for a IonosCloud account. The credentials you setup during sign-up will be used to authenticate against the Cloud API.
+Before you begin you will need to have [signed-up](https://www.ionos.com/enterprise-cloud/signup) for a IonosEnterprise account. The credentials you setup during sign-up will be used to authenticate against the IonosEnterprise API.
 
 #### Installation
 
-The IonosCloud SDK for Python is available on [PyPi](https://pypi.python.org/pypi/ionoscloudsdk). You can install the latest stable version using `pip`:
+The IonosEnterprise SDK for Python is available on [PyPi](https://pypi.python.org/pypi/ionosenterprise). You can install the latest stable version using `pip`:
 
-    pip install ionoscloudsdk
+    pip install ionosenterprise
 
 Done!
 
 #### Authenticating
 
-Connecting to IonosCloud is handled by first setting up your authentication credentials.
+Connecting to IonosEnterprise is handled by first setting up your authentication credentials.
 
-    from ionoscloud.client import IonosCloudService
+    from ionosenterprise.client import IonosEnterpriseService
 
-    client = IonosCloudService(
+    client = IonosEnterpriseService(
         username='YOUR_USERNAME', password='YOUR_PASSWORD')
 
-Replace the values for *YOUR_USERNAME* and *YOUR_PASSWORD* with the IonosCloud credentials you established during sign-up.
+Replace the values for *YOUR_USERNAME* and *YOUR_PASSWORD* with the IonosEnterprise credentials you established during sign-up.
 
 You can now use `client` for any future request.
 
 #### Error Handling
 
-The SDK will raise custom exceptions when the Cloud API returns an error. There are five exception types:
+The SDK will raise custom exceptions when the IonosEnterprise API returns an error. There are five exception types:
 
 | Exception | HTTP Code | Description |
 |---|:-:|---|
 | ICNotAuthorizedError | 401 | The supplied user credentials are invalid. |
 | ICNotFoundError | 404 | The requested resource cannot be found. |
 | ICValidationError | 422 | The request body includes invalid JSON. |
-| ICRateLimitExceededError | 429 | The Cloud API rate limit has been exceeded. |
+| ICRateLimitExceededError | 429 | The API rate limit has been exceeded. |
 | ICError | Other | A generic exception for all other status codes. |
 
 ## Reference
 
 This section provides details on all the available operations and the arguments they accept. Brief code snippets demonstrating usage are also included.
 
-`client` is the `IonosCloudService` class imported `from ionoscloud.client import IonosCloudService`
+`client` is the `IonosEnterpriseService` class imported `from ionosenterprise.client import IonosEnterpriseService`
 
 #### Depth
 
@@ -204,7 +204,7 @@ This SDK sets the *depth=1* by default as that works well in the majority of cas
 
 ## Data Centers
 
-Virtual Data Centers (VDCs) are the foundation of the IonosCloud platform. VDCs act as logical containers for all other objects you will be creating, e.g., servers. You can provision as many VDCs as you want. VDCs have their own private network and are logically segmented from each other to create isolation.
+Virtual Data Centers (VDCs) are the foundation of the IonosEnterprise platform. VDCs act as logical containers for all other objects you will be creating, e.g., servers. You can provision as many VDCs as you want. VDCs have their own private network and are logically segmented from each other to create isolation.
 
 #### List Data Centers
 
@@ -265,7 +265,7 @@ Pass the object to `create_datacenter`:
 | Name | Required | Type | Description |
 |---|:-:|---|---|
 | name | **yes** | string | The name of the VDC. |
-| location | **yes** | string | The physical IonosCloud location where the VDC will be created. |
+| location | **yes** | string | The physical IonosEnterprise location where the VDC will be created. |
 | description | no | string | A description for the VDC, e.g. staging, production. |
 | servers | no | list | A list of one or more [Server objects](#server-resource-object) to be created. |
 | volumes | no | list | A list of one or more [Volume objects](#volume-resource-object) to be created. |
@@ -329,7 +329,7 @@ Pass the argument to `delete_datacenter`:
 
 ## Locations
 
-Locations are the physical IonosCloud data centers where you can provision your VDCs.
+Locations are the physical IonosEnterprise data centers where you can provision your VDCs.
 
 #### List Locations
 
@@ -754,7 +754,7 @@ Pass the arguments to `get_image`:
 
 #### Update an Image
 
-Updates the attributes of a specific user created image. You **CANNOT** update the properties of a public image supplied by IonosCloud.
+Updates the attributes of a specific user created image. You **CANNOT** update the properties of a public image supplied by IonosEnterprise.
 
 The following table describes the request arguments:
 
@@ -787,7 +787,7 @@ You can change an image's properties by calling the `update_image` method:
 
 #### Delete an Image
 
-Deletes a specific user created image. You cannot delete public images supplied by IonosCloud.
+Deletes a specific user created image. You cannot delete public images supplied by IonosEnterprise.
 
 The following table describes the request arguments:
 
@@ -900,7 +900,7 @@ The following table outlines the storage availability zones currently supported:
 | ZONE_2 | Fire Zone 2 |
 | ZONE_3 | Fire Zone 3 |
 
-**Note:** You will need to provide either the `image` or the `licence_type` arguments when creating a volume. A `licence_type` is required, but if `image` is supplied, it is already set and cannot be changed. Either the `image_password` or `ssh_keys` arguments need to be supplied when creating a volume using one of the official IonosCloud images. Only official IonosCloud provided images support the `ssh_keys` and `image_password` arguments.
+**Note:** You will need to provide either the `image` or the `licence_type` arguments when creating a volume. A `licence_type` is required, but if `image` is supplied, it is already set and cannot be changed. Either the `image_password` or `ssh_keys` arguments need to be supplied when creating a volume using one of the official IonosEnterprise images. Only official IonosEnterprise provided images support the `ssh_keys` and `image_password` arguments.
 
 ---
 
@@ -921,7 +921,7 @@ The following table describes the request arguments:
 | name | no | string | The name of the volume. |
 | size | no | int | The size of the volume in GB. You may only increase the `size` when updating. |
 | bus | no | string | The bus type of the volume (VIRTIO or IDE). Default: VIRTIO. |
-| licence_type | no | string | The licence type of the volume. Options: LINUX, WINDOWS, WINDOWS2016, UNKNOWN, OTHER. You may get an error trying to update `licence_type` depending on the `image` that was used to create the volume. For example, you cannot update the `licence_type` for a volume created from a IonosCloud supplied OS image. |
+| licence_type | no | string | The licence type of the volume. Options: LINUX, WINDOWS, WINDOWS2016, UNKNOWN, OTHER. You may get an error trying to update `licence_type` depending on the `image` that was used to create the volume. For example, you cannot update the `licence_type` for a volume created from a IonosEnterprise supplied OS image. |
 
 **Note**: Trying to change the `image`, `type`, or `availability_zone` in an update request will result in an error.
 
@@ -1391,7 +1391,7 @@ Pass the object and arguments to `create_nic`:
 | dhcp | no | bool | Set to *false* if you wish to disable DHCP on the NIC. Default: *true*. |
 | lan | **yes** | int | The LAN ID the NIC will sit on. If the LAN ID does not exist it will be created. |
 | nat | no | bool | Indicates the private IP address has outbound access to the public internet. |
-| firewall_active | no | bool | Set this to *true* to enable the IonosCloud firewall, *false* to disable. |
+| firewall_active | no | bool | Set this to *true* to enable the IonosEnterprise firewall, *false* to disable. |
 | firewall_rules | no | list | A list of [FirewallRule objects](#firewall-rule-resource-object) to be created with the NIC. |
 
 ---
@@ -1416,7 +1416,7 @@ The following table describes the request arguments:
 | dhcp | no | bool | Boolean value that indicates if the NIC is using DHCP or not. |
 | lan | no | int | The LAN ID the NIC sits on. |
 | nat | no | bool | Indicates the private IP address has outbound access to the public internet. |
-| firewall_active | no | bool | Set this to *true* to enable the IonosCloud firewall, *false* to disable. |
+| firewall_active | no | bool | Set this to *true* to enable the IonosEnterprise firewall, *false* to disable. |
 
 Pass the arguments to `update_nic`:
 
@@ -2160,7 +2160,7 @@ Retrieves information about the resource limits for a particular contract and th
 
 ## Requests
 
-Each call to the IonosCloud Cloud API is assigned a request ID. These operations can be used to get information about the requests that have been submitted and their current status.
+Each call to the IonosEnterprise API is assigned a request ID. These operations can be used to get information about the requests that have been submitted and their current status.
 
 #### List Requests
 
@@ -2437,10 +2437,10 @@ This simple example will list all data centers under an account.
     import json
     import os
 
-    from ionoscloud.client import IonosCloudService
+    from ionosenterprise.client import IonosEnterpriseService
 
-    # Instatiate IonosCloud connection
-    client = IonosCloudService(
+    # Instatiate IonosEnterprise connection
+    client = IonosEnterpriseService(
         username=os.getenv('IONOS_USERNAME'),
         password=os.getenv('IONOS_PASSWORD'))
 
@@ -2456,7 +2456,7 @@ The following example will provide a method for retrieving a list of images base
 
     import os
 
-    from ionoscloud.client import IonosCloudService
+    from ionosenterprise.client import IonosEnterpriseService
 
 
     def find_image(conn, name, location):
@@ -2471,8 +2471,8 @@ The following example will provide a method for retrieving a list of images base
                 images.append(item)
         return images
 
-    # Instantiate IonosCloud connection
-    client = IonosCloudService(
+    # Instantiate IonosEnterprise connection
+    client = IonosEnterpriseService(
         username=os.getenv('IONOS_USERNAME'),
         password=os.getenv('IONOS_PASSWORD'))
 
@@ -2496,11 +2496,11 @@ Here we will reserve a public IP block.
     import json
     import os
 
-    from ionoscloud.client import IonosCloudService, IPBlock
+    from ionosenterprise.client import IonosEnterpriseService, IPBlock
 
 
-    # Instatiate IonosCloud connection
-    client = IonosCloudService(
+    # Instatiate IonosEnterprise connection
+    client = IonosEnterpriseService(
         username=os.getenv('IONOS_USERNAME'),
         password=os.getenv('IONOS_PASSWORD'))
 
@@ -2516,7 +2516,7 @@ The remaining examples will require dependent resources. A volume cannot be atta
 
 #### Component Build
 
-IonosCloud allows servers to be built by their individual components. That is, by connecting customized components such as servers, volumes, and NICs together. For example, a server can be provisioned in one request followed by one or more NICs and volumes in following requests. The volumes can then be attached separately to the server.
+IonosEnterprise allows servers to be built by their individual components. That is, by connecting customized components such as servers, volumes, and NICs together. For example, a server can be provisioned in one request followed by one or more NICs and volumes in following requests. The volumes can then be attached separately to the server.
 
 It is important to note that you will need to wait for each individual component to finish provisioning before it can be used in subsequent operations. This behavior is demonstrated below.
 
@@ -2525,11 +2525,11 @@ It is important to note that you will need to wait for each individual component
     import json
     import os
 
-    from ionoscloud.client import IonosCloudService
-    from ionoscloud.client import (
+    from ionosenterprise.client import IonosEnterpriseService
+    from ionosenterprise.client import (
         Datacenter, LAN, Server, NIC, Volume, FirewallRule)
 
-    client = IonosCloudService(
+    client = IonosEnterpriseService(
         username=os.getenv('IONOS_USERNAME'),
         password=os.getenv('IONOS_PASSWORD'))
 
@@ -2644,7 +2644,7 @@ It is important to note that you will need to wait for each individual component
 
 #### Composite Build
 
-The IonosCloud platform also allows fully operational servers to be provisioned with a single request. This is accomplished by nesting related resources.
+The IonosEnterprise platform also allows fully operational servers to be provisioned with a single request. This is accomplished by nesting related resources.
 
 Multiple servers, volumes, LANs, and load balancers can be nested under a data center, multiple NICs and volumes can be nested under servers, and firewall rules under NICs.
 
@@ -2655,11 +2655,11 @@ This example will demonstrate composite resources.
     import json
     import os
 
-    from ionoscloud.client import IonosCloudService
-    from ionoscloud.client import Datacenter, Server, NIC, Volume, FirewallRule
+    from ionosenterprise.client import IonosEnterpriseService
+    from ionosenterprise.client import Datacenter, Server, NIC, Volume, FirewallRule
 
-    # Instatiate IonosCloud connection
-    client = IonosCloudService(
+    # Instatiate IonosEnterprise connection
+    client = IonosEnterpriseService(
         username=os.getenv('IONOS_USERNAME'),
         password=os.getenv('IONOS_PASSWORD'))
 

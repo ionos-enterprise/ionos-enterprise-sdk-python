@@ -19,9 +19,9 @@
 import os
 """List IPBlocks
 """
-from ionoscloud.client import IonosCloudService
+from ionosenterprise.client import IonosEnterpriseService
 
-client = IonosCloudService(
+client = IonosEnterpriseService(
     username=os.getenv('IONOS_USERNAME'), password=os.getenv('IONOS_PASSWORD'))
 
 ipblocks = client.list_ipblocks()
@@ -30,7 +30,7 @@ print(ipblocks)
 
 """Reserve IPBlock
 """
-from ionoscloud.client import IonosCloudService, IPBlock  # noqa
+from ionosenterprise.client import IonosEnterpriseService, IPBlock  # noqa
 
 i = IPBlock(name='py-test', location='de/fra', size=1)
 
@@ -38,7 +38,7 @@ ipblock = client.reserve_ipblock(i)
 
 """Release IPBlock
 """
-from ionoscloud.client import IonosCloudService  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
 
 ipblock_id = ipblock['id']
 

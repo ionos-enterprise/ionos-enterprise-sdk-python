@@ -17,8 +17,8 @@ from random import randint
 
 from six import assertRegex
 
-from ionoscloud.client import Datacenter, IPBlock, User, Group, Volume, IonosCloudService
-from ionoscloud.errors import ICError, ICNotFoundError
+from ionosenterprise.client import Datacenter, IPBlock, User, Group, Volume, IonosEnterpriseService
+from ionosenterprise.errors import ICError, ICNotFoundError
 
 from helpers import configuration
 from helpers.resources import resource, find_image
@@ -28,7 +28,7 @@ class TestUserManagement(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.resource = resource()
-        cls.client = IonosCloudService(
+        cls.client = IonosEnterpriseService(
             username=configuration.USERNAME,
             password=configuration.PASSWORD,
             headers=configuration.HEADERS)

@@ -14,7 +14,7 @@
 
 import unittest
 
-from ionoscloud.client import Datacenter, IonosCloudService
+from ionosenterprise.client import Datacenter, IonosEnterpriseService
 
 from helpers import configuration
 from helpers.resources import resource
@@ -24,7 +24,7 @@ class TestK8S(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.resource = resource()
-        cls.client = IonosCloudService(
+        cls.client = IonosEnterpriseService(
             username=configuration.USERNAME,
             password=configuration.PASSWORD,
             headers=configuration.HEADERS)

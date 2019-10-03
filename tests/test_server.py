@@ -17,8 +17,8 @@ import time
 
 from six import assertRegex
 
-from ionoscloud.client import Datacenter, Server, Volume, NIC, FirewallRule, IonosCloudService
-from ionoscloud.errors import ICError, ICNotFoundError
+from ionosenterprise.client import Datacenter, Server, Volume, NIC, FirewallRule, IonosEnterpriseService
+from ionosenterprise.errors import ICError, ICNotFoundError
 
 from helpers import configuration
 from helpers.resources import resource, check_detached_cdrom_gone
@@ -28,7 +28,7 @@ class TestServer(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.resource = resource()
-        cls.client = IonosCloudService(
+        cls.client = IonosEnterpriseService(
             username=configuration.USERNAME,
             password=configuration.PASSWORD,
             headers=configuration.HEADERS)

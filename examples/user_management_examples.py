@@ -16,10 +16,10 @@
 
 import os
 
-from ionoscloud.client import IonosCloudService, Group, User
+from ionosenterprise.client import IonosEnterpriseService, Group, User
 
-# Instantiate IonosCloud connection
-client = IonosCloudService(
+# Instantiate IonosEnterprise connection
+client = IonosEnterpriseService(
     username=os.getenv('IONOS_USERNAME'),
     password=os.getenv('IONOS_PASSWORD'))
 

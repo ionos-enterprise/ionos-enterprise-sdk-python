@@ -19,9 +19,9 @@
 import os
 """List Datacenters
 """
-from ionoscloud.client import IonosCloudService
+from ionosenterprise.client import IonosEnterpriseService
 
-client = IonosCloudService(
+client = IonosEnterpriseService(
     username=os.getenv('IONOS_USERNAME'), password=os.getenv('IONOS_PASSWORD'))
 
 datacenters = client.list_datacenters()
@@ -34,11 +34,11 @@ for d in datacenters['items']:
 
 """Get Datacenter
 """
-from ionoscloud.client import IonosCloudService  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 
-client = IonosCloudService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 datacenter = client.get_datacenter(
@@ -46,8 +46,8 @@ datacenter = client.get_datacenter(
 
 """Create Simple Datacenter
 """
-from ionoscloud.client import IonosCloudService  # noqa
-from ionoscloud.client import Datacenter, Volume, Server  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
+from ionosenterprise.client import Datacenter, Volume, Server  # noqa
 
 i = Datacenter(
     name='dc1',
@@ -60,8 +60,8 @@ response = client.create_datacenter(datacenter=i)
 """Create Complex Datacenter
 """
 
-from ionoscloud.client import IonosCloudService  # noqa
-from ionoscloud.client import Datacenter, LAN, NIC, LoadBalancer, FirewallRule  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
+from ionosenterprise.client import Datacenter, LAN, NIC, LoadBalancer, FirewallRule  # noqa
 
 image_id = 'df8382a1-0f40-11e6-ab6b-52540005ab80'
 

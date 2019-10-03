@@ -21,9 +21,9 @@
 
 from __future__ import print_function
 
-from ionoscloud.client import IonosCloudService
+from ionosenterprise.client import IonosEnterpriseService
 
-client = IonosCloudService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 snapshots = client.list_snapshots()
@@ -33,11 +33,11 @@ for s in snapshots['items']:
 
 """Get Snapshot
 """
-from ionoscloud.client import IonosCloudService  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
 
 snapshot_id = '7df81087-5835-41c6-a10b-3e098593bba4'
 
-client = IonosCloudService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 snapshot = client.get_snapshot(
@@ -61,9 +61,9 @@ Valid snapshot parameters are:
 * disc_scsi_hot_unplug (bool)
 
 """
-from ionoscloud.client import IonosCloudService  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
 
-client = IonosCloudService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 snapshot_id = 'd084aa0a-f9ab-41d5-9316-18163bc416ef'
@@ -82,11 +82,11 @@ image = client.update_snapshot(
 """Remove Snapshot
 """
 
-from ionoscloud.client import IonosCloudService  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
 
 snapshot_id = '7df81087-5835-41c6-a10b-3e098593bba4'
 
-client = IonosCloudService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 snapshot = client.delete_snapshot(

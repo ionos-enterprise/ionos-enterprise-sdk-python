@@ -17,8 +17,8 @@ import unittest
 
 from six import assertRegex
 
-from ionoscloud.client import Datacenter, LoadBalancer, LAN, NIC, Server, IonosCloudService
-from ionoscloud.errors import ICError, ICNotFoundError
+from ionosenterprise.client import Datacenter, LoadBalancer, LAN, NIC, Server, IonosEnterpriseService
+from ionosenterprise.errors import ICError, ICNotFoundError
 
 from helpers import configuration
 from helpers.resources import resource
@@ -28,7 +28,7 @@ class TestLoadBalancer(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.resource = resource()
-        cls.client = IonosCloudService(
+        cls.client = IonosEnterpriseService(
             username=configuration.USERNAME,
             password=configuration.PASSWORD,
             headers=configuration.HEADERS)

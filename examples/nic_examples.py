@@ -18,12 +18,12 @@
 
 """List NICs
 """
-from ionoscloud.client import IonosCloudService
+from ionosenterprise.client import IonosEnterpriseService
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 server_id = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
 
-client = IonosCloudService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 nics = client.list_nics(
@@ -35,12 +35,12 @@ for n in nics['items']:
 
 """Create NIC
 """
-from ionoscloud.client import IonosCloudService, NIC  # noqa
+from ionosenterprise.client import IonosEnterpriseService, NIC  # noqa
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 server_id = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
 
-client = IonosCloudService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 i = NIC(
@@ -58,13 +58,13 @@ response = client.create_nic(
 
 """Create NIC with FirewallRules
 """
-from ionoscloud.client import IonosCloudService, FirewallRule, NIC  # noqa
+from ionosenterprise.client import IonosEnterpriseService, FirewallRule, NIC  # noqa
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 server_id = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
 nic_id = '<NIC-ID>'
 
-client = IonosCloudService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 fwrule1 = FirewallRule(

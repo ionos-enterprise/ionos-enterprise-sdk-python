@@ -7,7 +7,7 @@ import unittest
 def get_source_files():
     """Return a list of sources files/directories (to check with flake8/pylint)"""
     scripts = []
-    modules = ["examples", "ionoscloud", "tests"]
+    modules = ["examples", "ionosenterprise", "tests"]
     py_files = ["setup.py"]
 
     files = []

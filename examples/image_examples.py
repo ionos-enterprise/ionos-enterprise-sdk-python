@@ -18,9 +18,9 @@
 
 """List Images
 """
-from ionoscloud.client import IonosCloudService
+from ionosenterprise.client import IonosEnterpriseService
 
-client = IonosCloudService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 images = client.list_images()
@@ -45,9 +45,9 @@ Valid image parameters are:
 * disc_scsi_hot_unplug (bool)
 
 """
-from ionoscloud.client import IonosCloudService  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
 
-client = IonosCloudService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 image_id = '7df81087-5835-41c6-a10b-3e098593bbd2'
@@ -65,9 +65,9 @@ image = client.update_image(
 
 """Delete Image
 """
-from ionoscloud.client import IonosCloudService  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
 
-client = IonosCloudService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 image_id = '7df81087-5835-41c6-a10b-3e098593bbd2'

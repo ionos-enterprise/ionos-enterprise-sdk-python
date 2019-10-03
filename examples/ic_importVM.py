@@ -47,9 +47,9 @@ from base64 import b64decode, b64encode
 
 import xml.etree.ElementTree as ET
 
-from ionoscloud.client import IonosCloudService
-from ionoscloud.client import Datacenter, Volume, Server
-from ionoscloud.client import NIC
+from ionosenterprise.client import IonosEnterpriseService
+from ionosenterprise.client import Datacenter, Volume, Server
+from ionosenterprise.client import NIC
 
 __all__ = []
 __version__ = 0.1
@@ -606,7 +606,7 @@ USAGE
         (user, password) = getLogin(args.loginfile, args.user, args.password)
         if user is None or password is None:
             raise ValueError("user or password resolved to None")
-        pbclient = IonosCloudService(user, password)
+        pbclient = IonosEnterpriseService(user, password)
 
         if args.metatype == 'OVF':
             metadata = OFVData(args.metafile)
