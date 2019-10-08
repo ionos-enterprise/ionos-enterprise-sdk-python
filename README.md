@@ -1,7 +1,7 @@
 
 # Python SDK
 
-Version: ionosenterprise-sdk-python **5.0.0**
+Version: ionosenterprise-sdk-python **5.1.0**
 
 ## Table of Contents
 
