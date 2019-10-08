@@ -67,6 +67,7 @@ setup(
     version=find_version('ionosenterprise', '__init__.py'),
     description='IonosEnterprise API Client Library for Python',
     long_description=long_desc,
+    long_description_content_type='text/markdown',
     author='Ionos Enterprise',
     author_email='sdk@cloud.ionos.com',
     url='https://github.com/ionos-enterprise/ionos-enterprise-sdk-python',
