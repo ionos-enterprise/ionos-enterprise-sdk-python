@@ -1,4 +1,4 @@
-# Copyright 2015-2017 ProfitBricks GmbH
+# Copyright 2015-2017 IONOS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@ import unittest
 
 from six import assertRegex
 
-from profitbricks.client import Datacenter, Volume, Snapshot, ProfitBricksService
-from profitbricks.errors import PBNotFoundError
+from ionosenterprise.client import Datacenter, Volume, Snapshot, IonosEnterpriseService
+from ionosenterprise.errors import ICNotFoundError
 
-from .helpers import configuration
-from .helpers.resources import resource
+from helpers import configuration
+from helpers.resources import resource
 
 
 class TestSnapshot(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.resource = resource()
-        cls.client = ProfitBricksService(
+        cls.client = IonosEnterpriseService(
             username=configuration.USERNAME,
             password=configuration.PASSWORD,
             headers=configuration.HEADERS)
@@ -148,7 +148,7 @@ class TestSnapshot(unittest.TestCase):
     def test_get_failure(self):
         try:
             self.client.get_snapshot('00000000-0000-0000-0000-000000000000')
-        except PBNotFoundError as e:
+        except ICNotFoundError as e:
             self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
 
     def test_create_failure(self):
@@ -157,7 +157,7 @@ class TestSnapshot(unittest.TestCase):
                 datacenter_id='00000000-0000-0000-0000-000000000000',
                 volume_id=self.volume['id'],
                 name=self.resource['snapshot']['name'])
-        except PBNotFoundError as e:
+        except ICNotFoundError as e:
             self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
 
 

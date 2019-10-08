@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-# Copyright 2015-2017 ProfitBricks GmbH
+# Copyright 2015-2017 IONOS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,10 +19,10 @@
 import os
 """List Datacenters
 """
-from profitbricks.client import ProfitBricksService
+from ionosenterprise.client import IonosEnterpriseService
 
-client = ProfitBricksService(
-    username=os.getenv('PROFITBRICKS_USERNAME'), password=os.getenv('PROFITBRICKS_PASSWORD'))
+client = IonosEnterpriseService(
+    username=os.getenv('IONOS_USERNAME'), password=os.getenv('IONOS_PASSWORD'))
 
 datacenters = client.list_datacenters()
 
@@ -34,11 +34,11 @@ for d in datacenters['items']:
 
 """Get Datacenter
 """
-from profitbricks.client import ProfitBricksService  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 
-client = ProfitBricksService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 datacenter = client.get_datacenter(
@@ -46,8 +46,8 @@ datacenter = client.get_datacenter(
 
 """Create Simple Datacenter
 """
-from profitbricks.client import ProfitBricksService  # noqa
-from profitbricks.client import Datacenter, Volume, Server  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
+from ionosenterprise.client import Datacenter, Volume, Server  # noqa
 
 i = Datacenter(
     name='dc1',
@@ -60,8 +60,8 @@ response = client.create_datacenter(datacenter=i)
 """Create Complex Datacenter
 """
 
-from profitbricks.client import ProfitBricksService  # noqa
-from profitbricks.client import Datacenter, LAN, NIC, LoadBalancer, FirewallRule  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
+from ionosenterprise.client import Datacenter, LAN, NIC, LoadBalancer, FirewallRule  # noqa
 
 image_id = 'df8382a1-0f40-11e6-ab6b-52540005ab80'
 

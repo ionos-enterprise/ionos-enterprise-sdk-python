@@ -1,4 +1,4 @@
-# Copyright 2015-2017 ProfitBricks GmbH
+# Copyright 2015-2017 IONOS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,18 +14,18 @@
 
 import unittest
 
-from profitbricks.client import ProfitBricksService
-from profitbricks.errors import PBNotFoundError
+from ionosenterprise.client import IonosEnterpriseService
+from ionosenterprise.errors import ICNotFoundError
 
-from .helpers import configuration
-from .helpers.resources import resource
+from helpers import configuration
+from helpers.resources import resource
 
 
 class TestRequest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.resource = resource()
-        cls.client = ProfitBricksService(
+        cls.client = IonosEnterpriseService(
             username=configuration.USERNAME,
             password=configuration.PASSWORD,
             headers=configuration.HEADERS)
@@ -57,7 +57,7 @@ class TestRequest(unittest.TestCase):
         try:
             self.client.get_request(request_id='00000000-0000-0000-0000-000000000000',
                                     status=False)
-        except PBNotFoundError as e:
+        except ICNotFoundError as e:
             self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
 
 

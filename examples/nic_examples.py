@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-# Copyright 2015-2017 ProfitBricks GmbH
+# Copyright 2015-2017 IONOS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,12 +18,12 @@
 
 """List NICs
 """
-from profitbricks.client import ProfitBricksService
+from ionosenterprise.client import IonosEnterpriseService
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 server_id = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
 
-client = ProfitBricksService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 nics = client.list_nics(
@@ -35,12 +35,12 @@ for n in nics['items']:
 
 """Create NIC
 """
-from profitbricks.client import ProfitBricksService, NIC  # noqa
+from ionosenterprise.client import IonosEnterpriseService, NIC  # noqa
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 server_id = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
 
-client = ProfitBricksService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 i = NIC(
@@ -58,13 +58,13 @@ response = client.create_nic(
 
 """Create NIC with FirewallRules
 """
-from profitbricks.client import ProfitBricksService, FirewallRule, NIC  # noqa
+from ionosenterprise.client import IonosEnterpriseService, FirewallRule, NIC  # noqa
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 server_id = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
 nic_id = '<NIC-ID>'
 
-client = ProfitBricksService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 fwrule1 = FirewallRule(

@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-# Copyright 2015-2017 ProfitBricks GmbH
+# Copyright 2015-2017 IONOS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,10 +19,10 @@
 import os
 """List IPBlocks
 """
-from profitbricks.client import ProfitBricksService
+from ionosenterprise.client import IonosEnterpriseService
 
-client = ProfitBricksService(
-    username=os.getenv('PROFITBRICKS_USERNAME'), password=os.getenv('PROFITBRICKS_PASSWORD'))
+client = IonosEnterpriseService(
+    username=os.getenv('IONOS_USERNAME'), password=os.getenv('IONOS_PASSWORD'))
 
 ipblocks = client.list_ipblocks()
 
@@ -30,7 +30,7 @@ print(ipblocks)
 
 """Reserve IPBlock
 """
-from profitbricks.client import ProfitBricksService, IPBlock  # noqa
+from ionosenterprise.client import IonosEnterpriseService, IPBlock  # noqa
 
 i = IPBlock(name='py-test', location='de/fra', size=1)
 
@@ -38,7 +38,7 @@ ipblock = client.reserve_ipblock(i)
 
 """Release IPBlock
 """
-from profitbricks.client import ProfitBricksService  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
 
 ipblock_id = ipblock['id']
 

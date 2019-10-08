@@ -1,4 +1,4 @@
-# Copyright 2015-2017 ProfitBricks GmbH
+# Copyright 2015-2017 IONOS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-class PBError(Exception):
+class ICError(Exception):
     """Base error for this module."""
     def __init__(self, resp, content, uri=None):  # pylint: disable=super-init-not-called
         self.resp = resp
@@ -21,32 +21,32 @@ class PBError(Exception):
         self.uri = uri
 
 
-class PBNotAuthorizedError(PBError):
+class ICNotAuthorizedError(ICError):
     """The authorization information provided is not correct"""
 
 
-class PBNotFoundError(PBError):
-    """The ProfitBricks entity was not found"""
+class ICNotFoundError(ICError):
+    """The IonosEnterprise entity was not found"""
 
 
-class PBValidationError(PBError):
+class ICValidationError(ICError):
     """The HTTP data provided is not valid"""
 
 
-class PBRateLimitExceededError(PBError):
+class ICRateLimitExceededError(ICError):
     """The number of requests sent have exceeded the allowed API rate limit"""
 
 
-class PBRequestError(Exception):
+class ICRequestError(Exception):
     """Base error for request failures"""
     def __init__(self, msg, request_id):  # pylint: disable=super-init-not-called
         self.msg = msg
         self.request_id = request_id
 
 
-class PBFailedRequest(PBRequestError):
+class ICFailedRequest(ICRequestError):
     """Raised when a provisioning request failed."""
 
 
-class PBTimeoutError(PBRequestError):
+class ICTimeoutError(ICRequestError):
     """Raised when a request does not finish in the given time span."""

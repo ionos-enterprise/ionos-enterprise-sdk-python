@@ -1,4 +1,4 @@
-# Copyright 2015-2017 ProfitBricks GmbH
+# Copyright 2015-2017 IONOS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@ import unittest
 
 from six import assertRegex
 
-from profitbricks.client import Datacenter, Server, LAN, NIC, ProfitBricksService
-from profitbricks.errors import PBError, PBNotFoundError
+from ionosenterprise.client import Datacenter, Server, LAN, NIC, IonosEnterpriseService
+from ionosenterprise.errors import ICError, ICNotFoundError
 
-from .helpers import configuration
-from .helpers.resources import resource
+from helpers import configuration
+from helpers.resources import resource
 
 
 class TestNic(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.resource = resource()
-        cls.client = ProfitBricksService(
+        cls.client = IonosEnterpriseService(
             username=configuration.USERNAME,
             password=configuration.PASSWORD,
             headers=configuration.HEADERS)
@@ -133,7 +133,7 @@ class TestNic(unittest.TestCase):
                 datacenter_id=self.datacenter['id'],
                 server_id=self.server['id'],
                 nic_id='00000000-0000-0000-0000-000000000000')
-        except PBNotFoundError as e:
+        except ICNotFoundError as e:
             self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
 
     def test_create_failure(self):
@@ -143,7 +143,7 @@ class TestNic(unittest.TestCase):
                 datacenter_id=self.datacenter['id'],
                 server_id=self.server['id'],
                 nic=nic)
-        except PBError as e:
+        except ICError as e:
             self.assertIn(self.resource['missing_attribute_error'] % 'lan',
                           e.content[0]['message'])
 

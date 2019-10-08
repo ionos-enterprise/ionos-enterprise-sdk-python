@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # encoding: utf-8
 
-# Copyright 2016-2017 ProfitBricks GmbH
+# Copyright 2016-2017 IONOS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,11 +26,10 @@ and attached volumes.
 
 @author:     Jürgen Buchhammer
 
-@copyright:  2016 ProfitBricks GmbH. All rights reserved.
+@copyright:  2016 IONOS. All rights reserved.
 
 @license:    Apache License 2.0
 
-@contact:    juergen.buchhammer@profitbricks.com
 @deffield    updated: Updated
 '''
 
@@ -44,7 +43,7 @@ from argparse import RawDescriptionHelpFormatter
 from base64 import b64encode, b64decode
 from subprocess import call
 
-from profitbricks.client import ProfitBricksService
+from ionosenterprise.client import IonosEnterpriseService
 
 
 __all__ = []
@@ -246,7 +245,7 @@ def main(argv=None):
     program_license = '''%s
 
   Created by J. Buchhammer on %s.
-  Copyright 2016 ProfitBricks GmbH. All rights reserved.
+  Copyright 2016 IONOS. All rights reserved.
 
   Licensed under the Apache License 2.0
   http://www.apache.org/licenses/LICENSE-2.0
@@ -295,7 +294,7 @@ USAGE
         (user, password) = getLogin(args.loginfile, args.user, args.password)
         if user is None or password is None:
             raise ValueError("user or password resolved to None")
-        pbclient = ProfitBricksService(user, password)
+        pbclient = IonosEnterpriseService(user, password)
 
         server = getServerStates(pbclient, dc_id, args.serverid,
                                  args.servername)

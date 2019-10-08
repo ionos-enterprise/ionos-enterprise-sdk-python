@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-# Copyright 2015-2017 ProfitBricks GmbH
+# Copyright 2015-2017 IONOS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,9 +21,9 @@
 
 from __future__ import print_function
 
-from profitbricks.client import ProfitBricksService
+from ionosenterprise.client import IonosEnterpriseService
 
-client = ProfitBricksService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 snapshots = client.list_snapshots()
@@ -33,11 +33,11 @@ for s in snapshots['items']:
 
 """Get Snapshot
 """
-from profitbricks.client import ProfitBricksService  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
 
 snapshot_id = '7df81087-5835-41c6-a10b-3e098593bba4'
 
-client = ProfitBricksService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 snapshot = client.get_snapshot(
@@ -61,9 +61,9 @@ Valid snapshot parameters are:
 * disc_scsi_hot_unplug (bool)
 
 """
-from profitbricks.client import ProfitBricksService  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
 
-client = ProfitBricksService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 snapshot_id = 'd084aa0a-f9ab-41d5-9316-18163bc416ef'
@@ -82,11 +82,11 @@ image = client.update_snapshot(
 """Remove Snapshot
 """
 
-from profitbricks.client import ProfitBricksService  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
 
 snapshot_id = '7df81087-5835-41c6-a10b-3e098593bba4'
 
-client = ProfitBricksService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 snapshot = client.delete_snapshot(

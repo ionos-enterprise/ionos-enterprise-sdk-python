@@ -1,4 +1,4 @@
-# Copyright 2015-2017 ProfitBricks GmbH
+# Copyright 2015-2017 IONOS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ from . import configuration
 
 def resource():
     return {
-        'locations': ['us/las', 'us/ewr', 'de/fra', 'de/fkb'],
+        'locations': ['us/las', 'us/ewr', 'de/fra', 'de/fkb', 'de/txl', 'gb/lhr'],
         'licence_type': ['LINUX', 'WINDOWS', 'WINDOWS2016', 'OTHER', 'UNKNOWN'],
         'vm_states': ['RUNNING', 'SHUTOFF'],
         'uuid_match':
@@ -30,6 +30,27 @@ def resource():
             'name': 'Python SDK Test',
             'description': 'Python SDK test datacenter',
             'location': configuration.LOCATION
+        },
+
+        'k8s_datacenter': {
+            'name': 'MySDKDemoK8SDatacenter',
+            'description': 'SDK demo datacenter for K8S',
+            'location': configuration.LOCATION
+        },
+
+        'k8s_cluster': {
+            'name': 'MySDKDemoK8SCluster'
+        },
+
+        'k8s_nodepool': {
+            'name': 'MySDKDemoK8SPool',
+            'node_count': 4,
+            'cpu_family': 'AMD_OPTERON',
+            'cores_count': 2,
+            'ram_size': 4096,
+            'availability_zone': 'AUTO',
+            'storage_type': 'SSD',
+            'storage_size': 100
         },
 
         'datacenter_composite': {

@@ -21,7 +21,7 @@ import subprocess
 import sys
 import unittest
 
-from . import get_source_files, unittest_verbosity
+from utils import get_source_files, unittest_verbosity
 
 CONFIG = os.path.join(os.path.dirname(__file__), "pylint.conf")
 

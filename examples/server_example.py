@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-# Copyright 2015-2017 ProfitBricks GmbH
+# Copyright 2015-2017 IONOS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,13 +19,13 @@
 """Create Simple Server
 """
 
-from profitbricks.client import ProfitBricksService
-from profitbricks.client import Server
+from ionosenterprise.client import IonosEnterpriseService
+from ionosenterprise.client import Server
 
 server_id = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 
-client = ProfitBricksService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 i = Server(
@@ -41,14 +41,14 @@ response = client.create_server(
 """Create Complex Server
 """
 
-from profitbricks.client import ProfitBricksService  # noqa
-from profitbricks.client import Server, NIC, Volume  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
+from ionosenterprise.client import Server, NIC, Volume  # noqa
 
 server_id = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 image_id = '226ed8c0-a2fe-11e4-b187-5f1f641608c8'
 
-client = ProfitBricksService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 nic1 = NIC(
@@ -98,14 +98,14 @@ response = client.create_server(
 """Create Server with Existing Volume
 """
 
-from profitbricks.client import ProfitBricksService  # noqa
-from profitbricks.client import Server  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
+from ionosenterprise.client import Server  # noqa
 
 server_id = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 volume_id = '700e1cab-99b2-4c30-ba8c-1d273ddba044'
 
-client = ProfitBricksService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 attach_volumes = [volume_id]
@@ -123,8 +123,8 @@ response = client.create_server(
 """Create Server with New Volumes
 """
 
-from profitbricks.client import ProfitBricksService  # noqa
-from profitbricks.client import Server, Volume  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
+from ionosenterprise.client import Server, Volume  # noqa
 
 server_id = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
 volume_id = '700e1cab-99b2-4c30-ba8c-1d273ddba044'
@@ -132,7 +132,7 @@ volume_id = '700e1cab-99b2-4c30-ba8c-1d273ddba044'
 datacenter_id = 'c4fd1f8a-65e0-42cb-b8fa-ff7e87c3071b'
 image_id = '27500669-d81b-11e4-aea4-52540066fee9'
 
-client = ProfitBricksService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 volume1 = Volume(
@@ -164,12 +164,12 @@ response = client.create_server(
 """Create Server with NICs Only
 """
 
-from profitbricks.client import ProfitBricksService  # noqa
-from profitbricks.client import Server, NIC  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
+from ionosenterprise.client import Server, NIC  # noqa
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 
-client = ProfitBricksService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 nic1 = NIC(
@@ -202,14 +202,14 @@ response = client.create_server(
 
 """Create Server with Two Existing Volumes
 """
-from profitbricks.client import ProfitBricksService  # noqa
-from profitbricks.client import Server  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
+from ionosenterprise.client import Server  # noqa
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 volume_id1 = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
 volume_id2 = '800e1cab-99b2-4c30-ba8c-1d273ddba024'
 
-client = ProfitBricksService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 attach_volumes = [volume_id1, volume_id2]
@@ -228,15 +228,15 @@ response = client.create_server(
 """Create Server with Boot Volume
 """
 
-from profitbricks.client import ProfitBricksService  # noqa
-from profitbricks.client import Server  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
+from ionosenterprise.client import Server  # noqa
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 volume_id1 = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
 volume_id2 = '800e1cab-99b2-4c30-ba8c-1d273ddba024'
 boot_volume_id = '800e1cab-99b2-4c30-ba8c-1d273ddba024'
 
-client = ProfitBricksService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 i = Server(
@@ -253,15 +253,15 @@ response = client.create_server(
 """Create Server with Existing Volumes and NICs
 """
 
-from profitbricks.client import ProfitBricksService  # noqa
-from profitbricks.client import Server, NIC  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
+from ionosenterprise.client import Server, NIC  # noqa
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 volume_id1 = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
 volume_id2 = '800e1cab-99b2-4c30-ba8c-1d273ddba024'
 boot_volume_id = '800e1cab-99b2-4c30-ba8c-1d273ddba024'
 
-client = ProfitBricksService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 attach_volumes = [volume_id1, volume_id2]
@@ -299,12 +299,12 @@ response = client.create_server(
 
 """Start Server
 """
-from profitbricks.client import ProfitBricksService  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 server_id = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
 
-client = ProfitBricksService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 server = client.start_server(
@@ -313,12 +313,12 @@ server = client.start_server(
 
 """Stop Server
 """
-from profitbricks.client import ProfitBricksService  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 server_id = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
 
-client = ProfitBricksService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 server = client.stop_server(
@@ -327,12 +327,12 @@ server = client.stop_server(
 
 """Reboot Server
 """
-from profitbricks.client import ProfitBricksService  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 server_id = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
 
-client = ProfitBricksService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 server = client.reboot_server(
@@ -341,23 +341,23 @@ server = client.reboot_server(
 
 """List Servers
 """
-from profitbricks.client import ProfitBricksService  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 
-client = ProfitBricksService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 servers = client.list_servers(datacenter_id=datacenter_id)
 
 """Delete Server
 """
-from profitbricks.client import ProfitBricksService  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 server_id = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
 
-client = ProfitBricksService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 server = client.delete_server(
@@ -366,12 +366,12 @@ server = client.delete_server(
 
 """Update Server
 """
-from profitbricks.client import ProfitBricksService  # noqa
+from ionosenterprise.client import IonosEnterpriseService  # noqa
 
 datacenter_id = '700e1cab-99b2-4c30-ba8c-1d273ddba022'
 server_id = '700e1cab-99b2-4c30-ba8c-1d273ddba023'
 
-client = ProfitBricksService(
+client = IonosEnterpriseService(
     username='username', password='password')
 
 server = client.update_server(

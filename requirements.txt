@@ -1,5 +1,6 @@
 requests>=2.0.0
 six>=1.10.0
+appdirs>=1.4.3
 
 # Testing requirements
 pytest

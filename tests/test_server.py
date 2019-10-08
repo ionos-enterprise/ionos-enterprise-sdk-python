@@ -1,4 +1,4 @@
-# Copyright 2015-2017 ProfitBricks GmbH
+# Copyright 2015-2017 IONOS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,18 +17,18 @@ import time
 
 from six import assertRegex
 
-from profitbricks.client import Datacenter, Server, Volume, NIC, FirewallRule, ProfitBricksService
-from profitbricks.errors import PBError, PBNotFoundError
+from ionosenterprise.client import Datacenter, Server, Volume, NIC, FirewallRule, IonosEnterpriseService
+from ionosenterprise.errors import ICError, ICNotFoundError
 
-from .helpers import configuration
-from .helpers.resources import resource, check_detached_cdrom_gone
+from helpers import configuration
+from helpers.resources import resource, check_detached_cdrom_gone
 
 
 class TestServer(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.resource = resource()
-        cls.client = ProfitBricksService(
+        cls.client = IonosEnterpriseService(
             username=configuration.USERNAME,
             password=configuration.PASSWORD,
             headers=configuration.HEADERS)
@@ -125,7 +125,7 @@ class TestServer(unittest.TestCase):
             self.client.get_server(
                 datacenter_id=self.datacenter['id'],
                 server_id='00000000-0000-0000-0000-000000000000')
-        except PBNotFoundError as e:
+        except ICNotFoundError as e:
             self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
 
     def test_delete_server(self):
@@ -181,7 +181,7 @@ class TestServer(unittest.TestCase):
                 ram=self.resource['server']['ram']
             )
             self.client.create_server(datacenter_id=self.datacenter['id'], server=server)
-        except PBError as e:
+        except ICError as e:
             self.assertIn(self.resource['missing_attribute_error'] % 'cores',
                           e.content[0]['message'])
 
@@ -377,7 +377,7 @@ class TestServer(unittest.TestCase):
 
         try:
             check_detached_cdrom_gone(self)
-        except PBNotFoundError as e:
+        except ICNotFoundError as e:
             self.assertIn(self.resource['not_found_error'], e.content[0]['message'])
 
 

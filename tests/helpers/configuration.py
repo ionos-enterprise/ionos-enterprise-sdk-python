@@ -1,4 +1,4 @@
-# Copyright 2015-2017 ProfitBricks GmbH
+# Copyright 2015-2017 IONOS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 import os
 
 # Default settings for testing.
-LOCATION = os.getenv('PROFITBRICKS_LOCATION', 'us/las')
+LOCATION = os.getenv('IONOS_LOCATION', 'us/las')
 IMAGE_NAME = 'Ubuntu-16'  # Note: Partial image name and case sensitive
 
 # Custom HTTP headers
@@ -24,11 +24,11 @@ HEADERS = {'Connection': 'close'}
 
 # Import environment variables for credentials.
 try:
-    USERNAME = os.environ['PROFITBRICKS_USERNAME']
+    USERNAME = os.environ['IONOS_USERNAME']
 except KeyError:
-    raise Exception('Please set the environment variable PROFITBRICKS_USERNAME')
+    raise Exception('Please set the environment variable IONOS_USERNAME')
 
 try:
-    PASSWORD = os.environ['PROFITBRICKS_PASSWORD']
+    PASSWORD = os.environ['IONOS_PASSWORD']
 except KeyError:
-    raise Exception('Please set the environment variable PROFITBRICKS_PASSWORD')
+    raise Exception('Please set the environment variable IONOS_PASSWORD')

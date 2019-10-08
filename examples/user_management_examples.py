@@ -1,4 +1,4 @@
-# Copyright 2015-2017 ProfitBricks GmbH
+# Copyright 2015-2017 IONOS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@
 
 import os
 
-from profitbricks.client import ProfitBricksService, Group, User
+from ionosenterprise.client import IonosEnterpriseService, Group, User
 
-# Instantiate ProfitBricks connection
-client = ProfitBricksService(
-    username=os.getenv('PROFITBRICKS_USERNAME'),
-    password=os.getenv('PROFITBRICKS_PASSWORD'))
+# Instantiate IonosEnterprise connection
+client = IonosEnterpriseService(
+    username=os.getenv('IONOS_USERNAME'),
+    password=os.getenv('IONOS_PASSWORD'))
 
 """Create a group
 """

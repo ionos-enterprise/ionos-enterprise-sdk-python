@@ -1,4 +1,4 @@
-# Copyright 2015-2017 ProfitBricks GmbH
+# Copyright 2015-2019 IONOS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""ProfitBricks API Client Library for Python"""
-__version__ = '4.2.0'
+"""Ionos Enterprise API Client Library for Python"""
+__version__ = '5.0.0'
 
-API_HOST = 'https://api.profitbricks.com/cloudapi/v4'
-API_VERSION = '4.0'
+API_HOST = 'https://api.ionos.com/cloudapi/v5'
+API_VERSION = '5.0'

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # encoding: utf-8
 
-# Copyright 2016-2017 ProfitBricks GmbH
+# Copyright 2016-2017 IONOS
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,11 +23,10 @@ pb_createDatacenter is a sample script to create a complex datacenter.
 
 @author:     Jürgen Buchhammer
 
-@copyright:  2016 ProfitBricks GmbH. All rights reserved.
+@copyright:  2016 IONOS. All rights reserved.
 
 @license:    Apache License 2.0
 
-@contact:    juergen.buchhammer@profitbricks.com
 @deffield    updated: Updated
 '''
 
@@ -41,9 +40,9 @@ from time import sleep
 import json
 from base64 import b64decode, b64encode
 
-from profitbricks.client import ProfitBricksService
-from profitbricks.client import Datacenter, Volume, Server
-from profitbricks.client import LAN, NIC, FirewallRule
+from ionosenterprise.client import IonosEnterpriseService
+from ionosenterprise.client import Datacenter, Volume, Server
+from ionosenterprise.client import LAN, NIC, FirewallRule
 
 
 __version__ = 0.2
@@ -457,7 +456,7 @@ def main(argv=None):
     program_license = '''%s
 
   Created by J. Buchhammer on %s.
-  Copyright 2016 ProfitBricks GmbH. All rights reserved.
+  Copyright 2016 IONOS. All rights reserved.
 
   Licensed under the Apache License 2.0
   http://www.apache.org/licenses/LICENSE-2.0
@@ -499,7 +498,7 @@ USAGE
     (user, password) = getLogin(args.loginfile, args.user, args.password)
     if user is None or password is None:
         raise ValueError("user or password resolved to None")
-    pbclient = ProfitBricksService(user, password)
+    pbclient = IonosEnterpriseService(user, password)
 
     usefile = args.infile
     print("read dc from {}".format(usefile))
