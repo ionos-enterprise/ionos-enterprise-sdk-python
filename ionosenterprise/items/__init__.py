@@ -9,6 +9,8 @@ from .nic import NIC
 from .snapshot import Snapshot
 from .user import User
 from .volume import Volume
+from .maintenancewindow import MaintenanceWindow
+from .autoscaling import AutoScaling
 
 __all__ = [
     'Datacenter',
@@ -21,5 +23,7 @@ __all__ = [
     'NIC',
     'Snapshot',
     'User',
-    'Volume'
+    'Volume',
+    'MaintenanceWindow',
+    'AutoScaling'
 ]

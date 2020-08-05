@@ -47,7 +47,9 @@ class k8s_nodepools:
                                     node_count, cpu_family,
                                     cores_count, ram_size,
                                     availability_zone,
-                                    storage_type, storage_size):
+                                    storage_type, storage_size,
+                                    k8s_version=None, maintenance_window=None, auto_scaling=None,
+                                    lan_ids=None, labels=None, annotations=None):
         """
         This will modify the Kubernetes Node Pool.
 
@@ -90,20 +92,54 @@ class k8s_nodepools:
                                   should be greater than 10GB
         :type       storage_size: ``int``
 
+        :param      k8s_version: Kubernetes version
+        :type       k8s_version: ``str``
+
+        :param      maintenance_window: MaintenanceWindow object
+        :type       maintenance_window: ``MaintenanceWindow``
+
+        :param      auto_scaling: AutoScaling object
+        :type       auto_scaling: ``AutoScaling``
+
+        :param      lan_ids: array of additional LANs attached to worker nodes
+        :type       lan_ids: ``list of ints``
+
+        :param      labels: map of labels attached to node pool
+        :type       labels: ``dict``
+
+        :param      annotations: map of annotations attached to node pool
+        :type       annotations: ``dict``
         """
 
+        # mandatory fields
+        properties = {
+            'name': name,
+            'datacenterId': datacenter_id,
+            'nodeCount': node_count,
+            'cpuFamily': cpu_family,
+            'coresCount': cores_count,
+            'ramSize': ram_size,
+            'availabilityZone': availability_zone,
+            'storageType': storage_type,
+            'storageSize': storage_size
+        }
+
+        # optional fields
+        if k8s_version is not None:
+            properties['k8sVersion'] = k8s_version
+        if maintenance_window is not None:
+            properties['maintenanceWindow'] = self._create_maintenancewindow_dict(maintenance_window)['properties']
+        if auto_scaling is not None:
+            properties['autoScaling'] = self._create_autoscaling_dict(auto_scaling)['properties']
+        if lan_ids is not None:
+            properties['lans'] = [{'id': lan_id} for lan_id in lan_ids]
+        if labels is not None:
+            properties['labels'] = labels
+        if annotations is not None:
+            properties['annotations'] = annotations
+
         data = {
-            'properties': {
-                'name': name,
-                'datacenterId': datacenter_id,
-                'nodeCount': node_count,
-                'cpuFamily': cpu_family,
-                'coresCount': cores_count,
-                'ramSize': ram_size,
-                'availabilityZone': availability_zone,
-                'storageType': storage_type,
-                'storageSize': storage_size
-            }
+            'properties': properties
         }
 
         response = self._perform_request(
@@ -138,7 +174,9 @@ class k8s_nodepools:
                                     node_count, cpu_family,
                                     cores_count, ram_size,
                                     availability_zone,
-                                    storage_type, storage_size):
+                                    storage_type, storage_size,
+                                    k8s_version=None, maintenance_window=None, auto_scaling=None,
+                                    lan_ids=None, labels=None, annotations=None):
         """
         This will create a new Kubernetes Node Pool inside a Kubernetes Cluster.
 
@@ -181,20 +219,54 @@ class k8s_nodepools:
                                   should be greater than 10GB
         :type       storage_size: ``int``
 
+        :param      k8s_version: Kubernetes version
+        :type       k8s_version: ``str``
+
+        :param      maintenance_window: MaintenanceWindow object
+        :type       maintenance_window: ``MaintenanceWindow``
+
+        :param      auto_scaling: AutoScaling object
+        :type       auto_scaling: ``AutoScaling``
+
+        :param      lan_ids: array of additional LANs attached to worker nodes
+        :type       lan_ids: ``list of ints``
+
+        :param      labels: map of labels attached to node pool
+        :type       labels: ``dict``
+
+        :param      annotations: map of annotations attached to node pool
+        :type       annotations: ``dict``
         """
 
+        # mandatory fields
+        properties = {
+            'name': name,
+            'datacenterId': datacenter_id,
+            'nodeCount': node_count,
+            'cpuFamily': cpu_family,
+            'coresCount': cores_count,
+            'ramSize': ram_size,
+            'availabilityZone': availability_zone,
+            'storageType': storage_type,
+            'storageSize': storage_size
+        }
+
+        # optional fields
+        if k8s_version is not None:
+            properties['k8sVersion'] = k8s_version
+        if maintenance_window is not None:
+            properties['maintenanceWindow'] = self._create_maintenancewindow_dict(maintenance_window)['properties']
+        if auto_scaling is not None:
+            properties['autoScaling'] = self._create_autoscaling_dict(auto_scaling)['properties']
+        if lan_ids is not None:
+            properties['lans'] = [{'id':lan_id} for lan_id in lan_ids]
+        if labels is not None:
+            properties['labels'] = labels
+        if annotations is not None:
+            properties['annotations'] = annotations
+
         data = {
-            'properties': {
-                'name': name,
-                'datacenterId': datacenter_id,
-                'nodeCount': node_count,
-                'cpuFamily': cpu_family,
-                'coresCount': cores_count,
-                'ramSize': ram_size,
-                'availabilityZone': availability_zone,
-                'storageType': storage_type,
-                'storageSize': storage_size
-            }
+            'properties': properties
         }
 
         response = self._perform_request(
