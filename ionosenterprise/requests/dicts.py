@@ -404,3 +404,25 @@ class dicts:
         }
 
         return raw
+
+    @staticmethod
+    def _create_privatecrossconnect_dict(privatecrossconnect):
+        properties = {}
+
+        if privatecrossconnect.name:
+            properties['name'] = privatecrossconnect.name
+
+        if privatecrossconnect.description:
+            properties['description'] = privatecrossconnect.description
+
+        if privatecrossconnect.peers:
+            properties['peers'] = privatecrossconnect.peers
+
+        if privatecrossconnect.connectableDatacenters:
+            properties['connectableDatacenters'] = privatecrossconnect.connectableDatacenters
+
+        raw = {
+            "properties": properties
+        }
+
+        return raw

@@ -113,15 +113,15 @@ class k8s_nodepools:
 
         # mandatory fields
         properties = {
-            'name': name,
-            'datacenterId': datacenter_id,
+            # 'name': name,
+            # 'datacenterId': datacenter_id,
             'nodeCount': node_count,
-            'cpuFamily': cpu_family,
-            'coresCount': cores_count,
-            'ramSize': ram_size,
-            'availabilityZone': availability_zone,
-            'storageType': storage_type,
-            'storageSize': storage_size
+            # 'cpuFamily': cpu_family,
+            # 'coresCount': cores_count,
+            # 'ramSize': ram_size,
+            # 'availabilityZone': availability_zone,
+            # 'storageType': storage_type,
+            # 'storageSize': storage_size
         }
 
         # optional fields
