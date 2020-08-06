@@ -12,6 +12,7 @@ from .volume import Volume
 from .maintenancewindow import MaintenanceWindow
 from .autoscaling import AutoScaling
 from .privatecrossconnect import PrivateCrossConnect
+from .backupunit import BackupUnit
 
 __all__ = [
     'Datacenter',
@@ -27,5 +28,6 @@ __all__ = [
     'Volume',
     'MaintenanceWindow',
     'AutoScaling',
-    'PrivateCrossConnect'
+    'PrivateCrossConnect',
+    'BackupUnit'
 ]

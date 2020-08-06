@@ -21,6 +21,7 @@ from .k8s import k8s
 from .k8s_config import k8s_config
 from .k8s_nodepools import k8s_nodepools
 from .pccs import pccs
+from .backupunit import backupunit
 
 
 class IonosEnterpriseRequests(
@@ -47,7 +48,8 @@ class IonosEnterpriseRequests(
     k8s,
     k8s_config,
     k8s_nodepools,
-    pccs
+    pccs,
+    backupunit
 ):
     pass
 
