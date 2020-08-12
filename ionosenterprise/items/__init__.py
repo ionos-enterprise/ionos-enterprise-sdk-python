@@ -9,8 +9,6 @@ from .nic import NIC
 from .snapshot import Snapshot
 from .user import User
 from .volume import Volume
-from .maintenancewindow import MaintenanceWindow
-from .autoscaling import AutoScaling
 from .privatecrossconnect import PrivateCrossConnect
 from .backupunit import BackupUnit
 
@@ -26,8 +24,6 @@ __all__ = [
     'Snapshot',
     'User',
     'Volume',
-    'MaintenanceWindow',
-    'AutoScaling',
     'PrivateCrossConnect',
     'BackupUnit'
 ]

@@ -374,38 +374,6 @@ class dicts:
         return raw
 
     @staticmethod
-    def _create_maintenancewindow_dict(maintenancewindow):
-        properties = {}
-
-        if maintenancewindow.dayOfTheWeek:
-            properties['dayOfTheWeek'] = maintenancewindow.dayOfTheWeek
-
-        if maintenancewindow.time:
-            properties['time'] = maintenancewindow.time
-
-        raw = {
-            "properties": properties
-        }
-
-        return raw
-
-    @staticmethod
-    def _create_autoscaling_dict(autoscaling):
-        properties = {}
-
-        if autoscaling.minNodeCount:
-            properties['minNodeCount'] = autoscaling.minNodeCount
-
-        if autoscaling.maxNodeCount:
-            properties['maxNodeCount'] = autoscaling.maxNodeCount
-
-        raw = {
-            "properties": properties
-        }
-
-        return raw
-
-    @staticmethod
     def _create_privatecrossconnect_dict(privatecrossconnect):
         properties = {}
 

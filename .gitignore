@@ -64,3 +64,4 @@ examples/live_test.py
 /.pydevproject
 main.py
 credentials.json
+venv

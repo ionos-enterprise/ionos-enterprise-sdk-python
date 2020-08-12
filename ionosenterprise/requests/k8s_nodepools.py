@@ -42,12 +42,7 @@ class k8s_nodepools:
         return response
 
     def update_k8s_cluster_nodepool(self,
-                                    k8s_cluster_id, nodepool_id,
-                                    name, datacenter_id,
-                                    node_count, cpu_family,
-                                    cores_count, ram_size,
-                                    availability_zone,
-                                    storage_type, storage_size,
+                                    k8s_cluster_id, nodepool_id, node_count,
                                     k8s_version=None, maintenance_window=None, auto_scaling=None,
                                     lan_ids=None, labels=None, annotations=None):
         """
@@ -95,11 +90,32 @@ class k8s_nodepools:
         :param      k8s_version: Kubernetes version
         :type       k8s_version: ``str``
 
-        :param      maintenance_window: MaintenanceWindow object
-        :type       maintenance_window: ``MaintenanceWindow``
+        :param      maintenance_window: MaintenanceWindow
+        :type       maintenance_window: ``dict, e.g. {'dayOfTheWeek':'', 'time':''}``
+                        dayOfTheWeek: The day of the week for a maintenance window.
+                        dayOfTheWeek: ``str`` ["Monday",
+                                            "Tuesday",
+                                            "Wednesday",
+                                            "Thursday",
+                                            "Friday",
+                                            "Saturday",
+                                            "Sunday"]
+                        time: The time to use for a maintenance window. Accepted formats are: HH:mm:ss; HH:mm:ss"Z";
+                            HH:mm:ssZ. This time may varies by 15 minutes.
+                        time: ``string``
+
 
         :param      auto_scaling: AutoScaling object
-        :type       auto_scaling: ``AutoScaling``
+        :type       auto_scaling: ``dict`` {'minNodeCount': 2, 'maxNodeCount': 3}
+                        minNodeCount": The minimum number of worker nodes that the managed node group can scale in.
+                            Should be set together with 'maxNodeCount'.
+                            Value for this attribute must be greater than equal to 1 and less than equal to maxNodeCount.
+                        minNodeCount" : ``integer``
+
+                        maxNodeCount: The maximum number of worker nodes that the managed node pool can scale-out.
+                                Should be set together with 'minNodeCount'.
+                                Value for this attribute must be greater than equal to 1 and minNodeCount.
+                        maxNodeCount: ``integer``
 
         :param      lan_ids: array of additional LANs attached to worker nodes
         :type       lan_ids: ``list of ints``
@@ -113,24 +129,16 @@ class k8s_nodepools:
 
         # mandatory fields
         properties = {
-            'name': name,
-            'datacenterId': datacenter_id,
-            'nodeCount': node_count,
-            'cpuFamily': cpu_family,
-            'coresCount': cores_count,
-            'ramSize': ram_size,
-            'availabilityZone': availability_zone,
-            'storageType': storage_type,
-            'storageSize': storage_size
+            'nodeCount': node_count
         }
 
         # optional fields
         if k8s_version is not None:
             properties['k8sVersion'] = k8s_version
         if maintenance_window is not None:
-            properties['maintenanceWindow'] = self._create_maintenancewindow_dict(maintenance_window)['properties']
+            properties['maintenanceWindow'] = maintenance_window
         if auto_scaling is not None:
-            properties['autoScaling'] = self._create_autoscaling_dict(auto_scaling)['properties']
+            properties['autoScaling'] = auto_scaling
         if lan_ids is not None:
             properties['lans'] = [{'id': lan_id} for lan_id in lan_ids]
         if labels is not None:
@@ -222,11 +230,33 @@ class k8s_nodepools:
         :param      k8s_version: Kubernetes version
         :type       k8s_version: ``str``
 
-        :param      maintenance_window: MaintenanceWindow object
-        :type       maintenance_window: ``MaintenanceWindow``
+        :param      maintenance_window: MaintenanceWindow
+        :type       maintenance_window: ``dict, e.g. {'dayOfTheWeek':'', 'time':''}``
+                        dayOfTheWeek: The day of the week for a maintenance window.
+                        dayOfTheWeek: ``str`` ["Monday",
+                                            "Tuesday",
+                                            "Wednesday",
+                                            "Thursday",
+                                            "Friday",
+                                            "Saturday",
+                                            "Sunday"]
+                        time: The time to use for a maintenance window. Accepted formats are: HH:mm:ss; HH:mm:ss"Z";
+                            HH:mm:ssZ. This time may varies by 15 minutes.
+                        time: ``string``
+
 
         :param      auto_scaling: AutoScaling object
-        :type       auto_scaling: ``AutoScaling``
+        :type       auto_scaling: ``dict`` {'minNodeCount': 2, 'maxNodeCount': 3}
+                        minNodeCount": The minimum number of worker nodes that the managed node group can scale in.
+                            Should be set together with 'maxNodeCount'.
+                            Value for this attribute must be greater than equal to 1 and less than equal to maxNodeCount.
+                        minNodeCount" : ``integer``
+
+                        maxNodeCount: The maximum number of worker nodes that the managed node pool can scale-out.
+                                Should be set together with 'minNodeCount'.
+                                Value for this attribute must be greater than equal to 1 and minNodeCount.
+                        maxNodeCount: ``integer``
+
 
         :param      lan_ids: array of additional LANs attached to worker nodes
         :type       lan_ids: ``list of ints``
@@ -255,9 +285,9 @@ class k8s_nodepools:
         if k8s_version is not None:
             properties['k8sVersion'] = k8s_version
         if maintenance_window is not None:
-            properties['maintenanceWindow'] = self._create_maintenancewindow_dict(maintenance_window)['properties']
+            properties['maintenanceWindow'] = maintenance_window
         if auto_scaling is not None:
-            properties['autoScaling'] = self._create_autoscaling_dict(auto_scaling)['properties']
+            properties['autoScaling'] = auto_scaling
         if lan_ids is not None:
             properties['lans'] = [{'id':lan_id} for lan_id in lan_ids]
         if labels is not None:

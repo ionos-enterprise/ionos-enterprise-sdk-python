@@ -25,9 +25,6 @@ class s3key:
         :param      user_id: The unique ID of the user.
         :type       user_id: ``str``
 
-        :param      depth: The depth of the response data.
-        :type       depth: ``int``
-
         """
         response = self._perform_request(
             url='/um/users/%s/s3keys' % user_id,
