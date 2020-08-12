@@ -415,12 +415,6 @@ class dicts:
         if privatecrossconnect.description:
             properties['description'] = privatecrossconnect.description
 
-        if privatecrossconnect.peers:
-            properties['peers'] = privatecrossconnect.peers
-
-        if privatecrossconnect.connectableDatacenters:
-            properties['connectableDatacenters'] = privatecrossconnect.connectableDatacenters
-
         raw = {
             "properties": properties
         }

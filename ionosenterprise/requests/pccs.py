@@ -1,6 +1,4 @@
-from ..utils import find_item_by_name
 import json
-
 
 class pccs:
     def list_pccs(self, depth=1):
@@ -15,6 +13,9 @@ class pccs:
     def create_pcc(self, pcc):
         """
         Create a Private Cross-Connect.
+
+        :param      pcc: PrivateCrossConnect object: name, description.
+        :type       pcc: ``PrivateCrossConnect instance``
         """
         pcc_dict = self._create_privatecrossconnect_dict(pcc)
         response = self._perform_request(
@@ -54,7 +55,7 @@ class pccs:
 
         return response
 
-    def update_pcc(self, pcc_id, pcc):
+    def update_pcc(self, pcc_id, **kwargs):
         """
         Removes the pcc.
 
@@ -63,11 +64,18 @@ class pccs:
 
         """
 
-        data = self._create_privatecrossconnect_dict(pcc)
+        data = {}
+
+        if 'connectableDatacenters' in kwargs:
+            data['connectableDatacenters'] = kwargs['connectableDatacenters']
+        if 'name' in kwargs:
+            data['name'] = kwargs['name']
+        if 'description' in kwargs:
+            data['description'] = kwargs['description']
 
         response = self._perform_request(
             url='/pccs/%s' % (pcc_id),
-            method='DELETE',
+            method='PATCH',
             data=json.dumps(data))
 
         return response
