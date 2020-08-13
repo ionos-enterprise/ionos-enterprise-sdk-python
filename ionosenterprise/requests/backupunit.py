@@ -50,9 +50,7 @@ class backupunit:
         for attr, value in kwargs.items():
             data[attr] = value
 
-        request_data = json.dumps(
-            {'properties': data}
-        )
+        request_data = json.dumps(data)
 
         response = self._perform_request(
             url='/backupunits/%s' % backupunit_id,
