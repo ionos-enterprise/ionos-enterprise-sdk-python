@@ -77,9 +77,9 @@ class TestK8S(unittest.TestCase):
     def test_get_k8s_cluster_nodepool(self):
         lan = self.client.get_k8s_cluster_nodepool(self.k8s_cluster['id'], self.k8s_nodepool['id'])
 
-        a=self.assertEqual(lan['type'], 'nodepool')
-        b=self.assertEqual(lan['id'], self.k8s_cluster['id'])
-        c=self.assertEqual(lan['properties']['name'], self.resource['k8s_nodepool']['name'])
+        self.assertEqual(lan['type'], 'nodepool')
+        self.assertEqual(lan['id'], self.k8s_cluster['id'])
+        self.assertEqual(lan['properties']['name'], self.resource['k8s_nodepool']['name'])
 
     @classmethod
     def tearDownClass(cls):
