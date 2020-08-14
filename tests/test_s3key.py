@@ -69,3 +69,8 @@ class TestS3key(unittest.TestCase):
             active = False
         )
         self.assertFalse(s3key['properties']['active'])
+
+    def test_get_s3ssourl(self):
+        ssoUrl = self.client.get_s3ssourl(self.user['id'])
+        self.assertTrue('ssoUrl' in ssoUrl)
+
