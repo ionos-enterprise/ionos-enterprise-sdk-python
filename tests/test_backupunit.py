@@ -21,7 +21,7 @@ from helpers import configuration
 from helpers.resources import resource
 
 
-class Testbackupunit(unittest.TestCase):
+class TestBackupunit(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.resource = resource()

@@ -57,7 +57,7 @@ class pccs:
 
     def update_pcc(self, pcc_id, **kwargs):
         """
-        Removes the pcc.
+        Update private cross connect.
 
         :param      pcc_id: The unique ID of the pcc.
         :type       pcc_id: ``str``
@@ -72,6 +72,8 @@ class pccs:
             data['name'] = kwargs['name']
         if 'description' in kwargs:
             data['description'] = kwargs['description']
+        if 'peers' in kwargs:
+            data['peers'] = kwargs['peers']
 
         response = self._perform_request(
             url='/pccs/%s' % (pcc_id),
