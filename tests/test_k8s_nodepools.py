@@ -34,43 +34,13 @@ class TestK8sNodepools(unittest.TestCase):
 
         cls.k8s_cluster_nodepool1 = cls.client.create_k8s_cluster_nodepool(
             cls.k8s_cluster['id'],
-            'k8s_cluster_nodepool1',
-            cls.datacenter['id'],
-            2,
-            'INTEL_XEON',
-            1,
-            2048,
-            'AUTO',
-            'HDD',
-            11,
-            k8s_version='1.17.8',
-            maintenance_window={
-                'dayOfTheWeek': "Monday",
-                'time': '17:00:00'},
-            auto_scaling={'minNodeCount': 2, 'maxNodeCount': 3},
-            lan_ids=[],
-            labels={'l1': 'v1', 'l2': 'v2'},
-            annotations={'au': 'va1', 'a2': 'va2'}
+            datacenter_id=cls.datacenter['id'],
+            **cls.resource['k8s_nodepool']
         )
         cls.k8s_cluster_nodepool2 = cls.client.create_k8s_cluster_nodepool(
             cls.k8s_cluster['id'],
-            'k8s_cluster_nodepool2',
-            cls.datacenter['id'],
-            2,
-            'INTEL_XEON',
-            1,
-            2048,
-            'AUTO',
-            'HDD',
-            11,
-            k8s_version='1.17.8',
-            maintenance_window={
-                'dayOfTheWeek': "Monday",
-                'time': '17:00:00'},
-            auto_scaling={'minNodeCount': 2, 'maxNodeCount': 3},
-            lan_ids=[],
-            labels={'l1': 'v1', 'l2': 'v2'},
-            annotations={'au': 'va1', 'a2': 'va2'}
+            datacenter_id=cls.datacenter['id'],
+            **cls.resource['k8s_nodepool']
         )
 
     @classmethod
