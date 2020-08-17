@@ -14,7 +14,7 @@
 
 import unittest
 from ionosenterprise.client import IonosEnterpriseService
-
+from ionosenterprise.items import Datacenter
 from helpers import configuration
 from helpers.resources import resource
 
@@ -29,7 +29,7 @@ class TestK8sNodepools(unittest.TestCase):
             headers=configuration.HEADERS)
 
         # Create test k8s cluster
-        cls.datacenter = cls.client.create_datacenter(**cls.resource['datacenter'])
+        cls.datacenter = cls.client.create_datacenter(datacenter=Datacenter(**cls.resource['datacenter']))
         cls.k8s_cluster = cls.client.create_k8s_cluster(**cls.resource['k8s_cluster'])
 
         cls.k8s_cluster_nodepool1 = cls.client.create_k8s_cluster_nodepool(
@@ -105,5 +105,3 @@ class TestK8sNodepools(unittest.TestCase):
         self.assertEqual(response['maintenance_window']['dayOfTheWeek'], 'Monday')
         self.assertEqual(response['node_count'], 2)
         self.assertEqual(response['auto_scaling']['maxNodeCount'], 3)
-
-
