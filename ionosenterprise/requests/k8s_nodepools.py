@@ -43,8 +43,7 @@ class k8s_nodepools:
 
     def update_k8s_cluster_nodepool(self,
                                     k8s_cluster_id, nodepool_id, node_count,
-                                    k8s_version=None, maintenance_window=None, auto_scaling=None,
-                                    lan_ids=None, labels=None, annotations=None):
+                                    maintenance_window=None, auto_scaling=None):
         """
         This will modify the Kubernetes Node Pool.
 
@@ -117,14 +116,6 @@ class k8s_nodepools:
                                 Value for this attribute must be greater than equal to 1 and minNodeCount.
                         maxNodeCount: ``integer``
 
-        :param      lan_ids: array of additional LANs attached to worker nodes
-        :type       lan_ids: ``list of ints``
-
-        :param      labels: map of labels attached to node pool
-        :type       labels: ``dict``
-
-        :param      annotations: map of annotations attached to node pool
-        :type       annotations: ``dict``
         """
 
         # mandatory fields
@@ -133,18 +124,10 @@ class k8s_nodepools:
         }
 
         # optional fields
-        if k8s_version is not None:
-            properties['k8sVersion'] = k8s_version
         if maintenance_window is not None:
             properties['maintenanceWindow'] = maintenance_window
         if auto_scaling is not None:
             properties['autoScaling'] = auto_scaling
-        if lan_ids is not None:
-            properties['lans'] = [{'id': lan_id} for lan_id in lan_ids]
-        if labels is not None:
-            properties['labels'] = labels
-        if annotations is not None:
-            properties['annotations'] = annotations
 
         data = {
             'properties': properties

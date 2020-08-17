@@ -97,17 +97,13 @@ class TestK8sNodepools(unittest.TestCase):
     def test_update_k8s_nodepool(self):
         response = self.client.update_k8s_cluster_nodepool(
             self.k8s_cluster['id'], self.k8s_cluster_nodepool1['id'], 2,
-            k8s_version='1.17.8',
             maintenance_window={
                 'dayOfTheWeek': "Monday",
                 'time': '17:00:00'},
-            auto_scaling={'minNodeCount': 2, 'maxNodeCount': 3},
-            lan_ids=[],
-            labels={'l1-updated': 'v1-updated', 'l2-updated': 'v2-updated'},
-            annotations={'au-updated': 'va1-updated', 'a2-updated': 'va2-updated'}
+            auto_scaling={'minNodeCount': 2, 'maxNodeCount': 3}
         )
         self.assertEqual(response['maintenance_window']['dayOfTheWeek'], 'Monday')
-        self.assertEqual(response['k8s_version'], '1.17.8')
-        self.assertEqual(response['annotations']['au-updated'], 'va1-updated')
+        self.assertEqual(response['node_count'], 2)
+        self.assertEqual(response['auto_scaling']['maxNodeCount'], 3)
 
 

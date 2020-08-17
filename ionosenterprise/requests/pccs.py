@@ -66,14 +66,8 @@ class pccs:
 
         data = {}
 
-        if 'connectableDatacenters' in kwargs:
-            data['connectableDatacenters'] = kwargs['connectableDatacenters']
-        if 'name' in kwargs:
-            data['name'] = kwargs['name']
-        if 'description' in kwargs:
-            data['description'] = kwargs['description']
-        if 'peers' in kwargs:
-            data['peers'] = kwargs['peers']
+        for attr, value in kwargs.items():
+            data[attr] = value
 
         response = self._perform_request(
             url='/pccs/%s' % (pcc_id),
