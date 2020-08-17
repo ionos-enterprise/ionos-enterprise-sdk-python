@@ -75,7 +75,7 @@ class TestK8sNodepools(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        cls.client.delete_datacenter(cls.k8s_nodepool1['id'])
+        cls.client.delete_datacenter(cls.datacenter['id'])
         cls.client.delete_k8s_cluster_nodepool(cls.k8s_cluster['id'], cls.k8s_nodepool1['id'])
         cls.client.delete_k8s_cluster(cls.k8s_cluster['id'])
 
