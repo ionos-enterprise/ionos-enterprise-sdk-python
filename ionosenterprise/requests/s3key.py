@@ -1,6 +1,4 @@
-from ..utils import find_item_by_name
 import json
-
 
 class s3key:
     def list_s3keys(self, user_id, depth=1):
@@ -89,9 +87,6 @@ class s3key:
         :param      key_id: The unique ID of the key.
         :type       key_id: ``str``
 
-        :param      kwargs: arguments secretKey, active.
-        :type       kwargs: ``dict``
-
         """
 
         response = self._perform_request(
@@ -106,9 +101,6 @@ class s3key:
 
         :param      user_id: The unique ID of the user.
         :type       user_id: ``str``
-
-        :param      key_id: The unique ID of the key.
-        :type       key_id: ``str``
 
         :param      depth: The depth of the response data.
         :type       depth: ``int``

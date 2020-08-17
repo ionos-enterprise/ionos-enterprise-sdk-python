@@ -53,41 +53,8 @@ class k8s_nodepools:
         :param      nodepool_id: The unique ID of the Kubernetes Node Pool
         :type       nodepool_id: ``str``
 
-        :param      name: A Kubernetes Node Pool Name. Valid Kubernetes
-                          Node Pool name must be 63 characters or less
-                          and must be empty or begin and end with an
-                          alphanumeric character ([a-z0-9A-Z]) with
-                          dashes (-), underscores (_), dots (.), and
-                          alphanumerics between.
-        :type       name: ``str``
-
-        :param      datacenter_id: A valid uuid of the datacenter on which user has access
-        :type       datacenter_id: ``str``
-
         :param      node_count: Number of nodes part of the Node Pool
         :type       node_count: ``int``
-
-        :param      cpu_family: A valid cpu family name
-        :type       cpu_family: ``str``
-
-        :param      cores_count: Number of cores for node
-        :type       cores_count: ``int``
-
-        :param      ram_size: RAM size for node, minimum size 2048MB is recommended
-        :type       ram_size: ``int``
-
-        :param      availability_zone: The availability zone in which the server should exist
-        :type       availability_zone: ``str``
-
-        :param      storage_type: Hardware type of the volume
-        :type       storage_type: ``str``
-
-        :param      storage_size: The size of the volume in GB. The size
-                                  should be greater than 10GB
-        :type       storage_size: ``int``
-
-        :param      k8s_version: Kubernetes version
-        :type       k8s_version: ``str``
 
         :param      maintenance_window: MaintenanceWindow
         :type       maintenance_window: ``dict, e.g. {'dayOfTheWeek':'', 'time':''}``

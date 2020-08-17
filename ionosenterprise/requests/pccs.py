@@ -5,6 +5,9 @@ class pccs:
         """
         List Private Cross-Connects.
 
+        :param      depth: The depth of the response data.
+        :type       depth: ``int``
+
         """
         response = self._perform_request('/pccs?depth=' + str(depth))
 
@@ -61,6 +64,9 @@ class pccs:
 
         :param      pcc_id: The unique ID of the pcc.
         :type       pcc_id: ``str``
+
+        :param      kwargs: Fields to edit pcc.
+        :type       kwargs: ``dict``
 
         """
 
