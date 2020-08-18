@@ -59,7 +59,7 @@ class s3key:
         :param      key_id: The unique ID of the key.
         :type       key_id: ``str``
 
-        :param      kwargs: arguments secretKey, active.
+        :param      kwargs: arguments active.
         :type       kwargs: ``dict``
 
         """
