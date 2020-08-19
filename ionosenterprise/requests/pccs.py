@@ -70,15 +70,10 @@ class pccs:
 
         """
 
-        data = {}
-
-        for attr, value in kwargs.items():
-            data[attr] = value
-
         response = self._perform_request(
             url='/pccs/%s' % (pcc_id),
             method='PATCH',
-            data=json.dumps(data))
+            data=json.dumps(kwargs))
 
         return response
 
