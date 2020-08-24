@@ -2668,7 +2668,7 @@ The following table describes the request arguments:
 | Name | Required | Type | Description |
 |---|:-:|---|---|
 | user_id | **yes** | string | The unique ID of the user |
-| key_id | **yes** | string | The ID of the Kubernetes Cluster. |
+| key_id | **yes** | string | The ID of the key. |
 | active | no | boolean | State of the Key. |
 
 Update S3 key:
