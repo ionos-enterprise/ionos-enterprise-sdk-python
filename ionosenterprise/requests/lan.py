@@ -80,7 +80,7 @@ class lan:
         return response
 
     def update_lan(self, datacenter_id, lan_id, name=None,
-                   public=None, ip_failover=None):
+                   public=None, ip_failover=None, pcc=None):
         """
         Updates a LAN
 
@@ -110,6 +110,9 @@ class lan:
 
         if ip_failover:
             data['ipFailover'] = ip_failover
+
+        if pcc:
+            data['pcc'] = pcc
 
         response = self._perform_request(
             url='/datacenters/%s/lans/%s' % (datacenter_id, lan_id),

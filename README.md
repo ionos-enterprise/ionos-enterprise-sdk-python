@@ -1,7 +1,7 @@
 
 # Python SDK
 
-Version: ionosenterprise-sdk-python **5.1.0**
+Version: ionosenterprise-sdk-python **5.2.0**
 
 ## Table of Contents
 
@@ -125,6 +125,27 @@ Version: ionosenterprise-sdk-python **5.1.0**
         * [Create a NodePool for a Kubernetes Cluster](#create-a-nodepool-for-a-kubernetes-cluster)
         * [Retrieve a NodePool](#retrieve-a-nodepool)
         * [Delete a NodePool](#delete-a-nodepool)
+        * [Update a NodePool](#update-a-nodepool)
+    * [Private Cross Connects](#private-cross-connect)
+        * [List Private Cross-Connects](#list-private-cross-connect)
+        * [Create a Private Cross-Connect](#create-private-cross-connect)
+        * [Retrieve a private cross-connect](#get-a-private-cross-connect)
+        * [Delete a private cross-connect](#delete-a-private-cross-connect)
+        * [Update a private cross-connect](#update-a-private-cross-connect)
+    * [S3 Keys](#s3-keys)
+        * [List S3 Keys](#list-s3-keys)
+        * [Create a S3 key](#create-a-s3-key)
+        * [Get S3 key](#get-s3-key)
+        * [Update a S3 key](#update-s3-key)
+        * [Delete a S3 key](#delete-s3-key)
+        * [Get S3 sso url](#get-s3-sso-url)
+    * [Backup Units](#backup-units)
+        * [List backup units](#list-backup-units)
+        * [Create a backup unit](#create-a-backup-unit)
+        * [Get a backup unit](#get-a-backup-unit)
+        * [Update a Backup Unit](#update-a-backup-unit)
+        * [Delete a Backup Unit](#delete-a-backup-unit)
+        * [Get SSO Url](#get-sso-url)
 * [Examples](#examples)
     * [List All Data Centers](#list-all-data-centers)
     * [Search for Images](#search-for-images)
@@ -2349,21 +2370,49 @@ The following table describes the request arguments:
 | availability_zone | **yes** | string | The availability zone in which the server should exist |
 | storage_type | **yes** | string | Hardware type of the volume |
 | storage_size | **yes** | int | The size of the volume in GB. The size should be greater than 10GB |
+| k8s_version | no | string | The kubernetes version in which a cluster is running. This imposes restrictions on what kubernetes versions can be run in a cluster's nodepools |
+| maintenance_window | no | object | The time to use for a maintenance window. Accepted formats are: HH:mm:ss; HH:mm:ss"Z"; HH:mm:ssZ. This time may varies by 15 minutes. |
+| auto_scaling | no | object | The minimum number of worker nodes that the managed node group can scale in. |
+| lan_ids | no | List of ints | Array of additional LANs attached to worker nodes |
+| labels | no | dict | Map of labels attached to node pool |
+| annotations | dict | int | Map of annotations attached to node pool |
+
+Method signature:
+
+```python
+def create_k8s_cluster_nodepool(self,
+    k8s_cluster_id,
+    name, datacenter_id,
+    node_count, cpu_family,
+    cores_count, ram_size,
+    availability_zone,
+    storage_type, storage_size,
+    k8s_version=None, maintenance_window=None, auto_scaling=None,
+    lan_ids=None, labels=None, annotations=None):
+```
 
 Create the NodePool:
 
 ```python
 my_nodepool = client.create_k8s_cluster_nodepool(
-  my_cluster['id'],
-  name='my_demo_pool_name',
-  datacenter_id=datacenter_id,
-  node_count=4,
-  cpu_family='AMD_OPTERON',
-  cores_count=2,
-  ram_size=4096,
-  availability_zone='AUTO',
-  storage_type='SSD',
-  storage_size=100
+    '6840d5d8-9c97-4236-9957-eacf8c197db8',
+    'NEW_1_INTEL_XEON_123',
+    '6887cc8b-2c17-49cf-bd7f-db831b74f1d5',
+    2,
+    'INTEL_XEON',
+    1,
+    2048,
+    'AUTO',
+    'HDD',
+    11,
+    k8s_version = '1.17.8',
+    maintenance_window={
+        'dayOfTheWeek':"Monday",
+        'time':'17:00:00'},
+    auto_scaling={'minNodeCount': 2, 'maxNodeCount': 3},
+    lan_ids=[],
+    labels={'lu1':'vu1', 'lu2':'vu2'},
+    annotations={'au1':'vau1', 'au2':'vau2'}
 )
 ```
 
@@ -2420,6 +2469,373 @@ client.delete_k8s_cluster_nodepool(my_cluster['id'], my_nodepool['id'])
 ```
 
 ---
+
+#### Update a NodePool
+This will update a nodepool.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| k8s_cluster_id | **yes** | string | The unique ID of the Kubernetes Cluster |
+| nodepool_id | **yes** | string | The unique ID of the Kubernetes Node Pool |
+| node_count | **yes** | int | Number of nodes part of the Node Pool |
+| maintenance_window | no | dict | The time to use for a maintenance window. Accepted formats are: HH:mm:ss; HH:mm:ss"Z"; HH:mm:ssZ. This time may varies by 15 minutes. |
+| auto_scaling | no | dict | The minimum number of worker nodes that the managed node group can scale in. |
+
+Method signature:
+
+```python
+def update_k8s_cluster_nodepool(self,
+                                    k8s_cluster_id, nodepool_id, node_count,
+                                    maintenance_window=None, auto_scaling=None):
+```
+
+Update a nodepool:
+
+```python
+client.update_k8s_cluster_nodepool(
+    '6840d5d8-9c97-4236-9957-eacf8c197db8',
+    '8fce6f2c-8fed-4fa2-b577-4ee6ab7e8359',
+    2,
+    maintenance_window={
+        'dayOfTheWeek': "Monday",
+        'time': '17:00:00'},
+    auto_scaling={'minNodeCount': 2, 'maxNodeCount': 3}
+)
+```
+---
+
+## Private Cross Connects
+
+#### List Private Cross-Connects
+
+Retrieve the list of Private Cross-Connects.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| depth | no | int | An integer value of 0 - 5 that affects the amount of detail returned.  See the [Depth](#depth) section. |
+
+```python
+response = client.list_pccs()
+```
+
+---
+
+#### Create a Private Cross-Connect
+
+This will create a new Private Cross-Connect.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| pcc | **yes** | string | The Private Cross-Connect object. |
+
+Create the Private Cross-Connect:
+
+```python
+pcc = PCC(
+    name="PCC NAME",
+    description="PCC DESCRIPTION"
+)
+
+my_cluster = client.create_pcc(pcc)
+```
+
+---
+
+#### Retrieve a private cross-connect
+
+This will retrieve a private cross-connect.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| pcc_id | **yes** | string | The ID of the pcc. |
+| depth | no | int | An integer value of 0 - 5 that affects the amount of detail returned. |
+
+Retrieve the private cross-connect:
+
+```python
+client.get_pcc(my_pcc['id'])
+```
+
+---
+
+#### Delete a private cross-connect
+
+This will delete a private cross-connect.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| pcc_id | **yes** | string | The ID of the private cross-connect. |
+
+Delete the private cross-connect:
+
+```python
+client.delete_pcc(my_pcc['id'])
+```
+
+---
+
+#### Update a private cross-connect
+
+This will update a private cross-connect.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| pcc_id | **yes** | string | The ID of the Kubernetes Cluster |
+| name | no | string | The name of the private cross-connect |
+| description | no | string | The description of the private cross-connect |
+
+Update a private cross-connect:
+
+```python
+client.update_pcc(my_pcc['id'], name='new name', description='new description')
+```
+
+---
+
+## S3 Keys
+
+#### List S3 Keys
+
+Retrieve the list of S3 Keys.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| user_id | **yes** | string |  |
+| depth | no | int | An integer value of 0 - 5 that affects the amount of detail returned.  See the [Depth](#depth) section. |
+```python
+s3keys = client.list_s3keys('user_id')
+```
+---
+
+#### Create a S3 Key
+
+Create a S3 key for the given user.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| user_id | **yes** | string | user id. |
+
+Create the S3 key:
+
+```python
+my_s3key = client.create_s3key('user_id')
+```
+
+---
+
+#### Get S3 key
+
+Retrieve given S3 key belonging to the given User.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| user_id | **yes** | string | The user ID. |
+| key_id | **yes** | string | The key ID. |
+| depth | no | integer | An integer value of 0 - 5 that affects the amount of detail returned.  See the [Depth](#depth) section. |
+
+Retrieve the S3 key:
+
+```python
+s3key = client.get_s3key('user_id', 'key_id')
+```
+
+---
+
+#### Update a S3 key
+
+Modify a S3 key having the given key id.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| user_id | **yes** | string | The unique ID of the user |
+| key_id | **yes** | string | The ID of the key. |
+| active | no | boolean | State of the Key. |
+
+Update S3 key:
+
+```python
+update_s3key(user_id, key_id, active=False)
+```
+
+---
+
+#### Delete a S3 key
+
+This will delete a S3 Key.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| user_id  | **yes** | integer | The ID of the user. |
+| key_id | **yes** | integer | The ID of the key. |
+
+Delete S3 key:
+
+```python
+client.delete_s3key('user_id', 'key_id')
+```
+
+---
+
+#### Get S3 sso url
+
+This will retrieve the sso url.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| user_id | **yes** | string | The unique ID of the user. |
+| depth | no | integer | An integer value of 0 - 5 that affects the amount of detail returned.  See the [Depth](#depth) section. |
+
+Retrieve the sso url:
+
+```python
+s3ssourl = client.get_s3ssourl('user_id')
+```
+
+---
+
+## Backup Units
+
+#### List backup units
+
+Retrieve the list of Backup Units.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| depth | no | int | An integer value of 0 - 5 that affects the amount of detail returned.  See the [Depth](#depth) section. |
+
+```python
+response = client.list_backupunits()
+```
+---
+
+#### Create a Backup Unit
+
+This will create a new Backup Unit.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| backupunit | **yes** | Backupunit | The backupunit object. |
+
+Create the backupunit:
+
+The following table describes Backup unit arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| name | **yes** | string | A name of that resource (only alphanumeric characters are acceptable) |
+| password | **yes** | string | The password associated to that resource. |
+| email | **yes** | string | The email associated with the backup unit. Bear in mind that this email does not be the same email as of the user. |
+
+```python
+backupunit = Backupunit(name='bkp_name', password='bkp_pass', email='test@email.com')
+
+backupunit = client.create_backupunit(backupunit)
+```
+
+---
+
+#### Get a backup unit
+
+This will retrieve a backup unit.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| backupunit_id | **yes** | string | Id of the backup unit. |
+
+Retrieve the backup unit:
+
+```python
+backupunit = client.get_backupunit(my_backupunit['id'])
+```
+
+---
+
+#### Update a Backup Unit
+
+Modify a Backup Unit
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| backupunit_id | **yes** | string | The ID of the backupunit. |
+| name | no | string | A name of that resource (only alphanumeric characters are acceptable). |
+| password | no | string | The password associated to that resource |
+| email | no | string | The email associated with the backup unit. Bear in mind that this email does not be the same email as of the user. |
+
+Update a Backup Unit.
+
+```python
+client.update_backupunit(backupunit_id, name='new name', password='new password', email='test@email.com')
+```
+
+---
+
+#### Delete a Backup Unit
+
+This will delete a Backup Unit.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| backupunit_id | **yes** | string | The ID of the Backupunit. |
+
+Delete the Backup Unit:
+
+```python
+client.delete_backupunit(my_backupunit['id'])
+```
+
+#### Get SSO Url
+
+This will get SSO Url.
+
+The following table describes the request arguments:
+
+| Name | Required | Type | Description |
+|---|:-:|---|---|
+| backupunit_id | **yes** | string | The ID of the backupunit. |
+| depth | no | integer | An integer value of 0 - 5 that affects the amount of detail returned.  See the [Depth](#depth) section. |
+
+Get SSO Url:
+
+```python
+ssourl = client.get_ssourl(my_backupunit['id'])
+```
+
+---
+
 
 ## Examples
 

@@ -372,3 +372,38 @@ class dicts:
         }
 
         return raw
+
+    @staticmethod
+    def _create_privatecrossconnect_dict(privatecrossconnect):
+        properties = {}
+
+        if privatecrossconnect.name:
+            properties['name'] = privatecrossconnect.name
+
+        if privatecrossconnect.description:
+            properties['description'] = privatecrossconnect.description
+
+        raw = {
+            "properties": properties
+        }
+
+        return raw
+
+    @staticmethod
+    def _create_backupunit_dict(backupunit):
+        properties = {}
+
+        if backupunit.name:
+            properties['name'] = backupunit.name
+
+        if backupunit.password:
+            properties['password'] = backupunit.password
+
+        if backupunit.email:
+            properties['email'] = backupunit.email
+
+        raw = {
+            "properties": properties
+        }
+
+        return raw

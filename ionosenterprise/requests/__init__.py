@@ -20,6 +20,9 @@ from .volume import volume
 from .k8s import k8s
 from .k8s_config import k8s_config
 from .k8s_nodepools import k8s_nodepools
+from .pccs import pccs
+from .backupunit import backupunit
+from .s3key import s3key
 
 
 class IonosEnterpriseRequests(
@@ -45,7 +48,10 @@ class IonosEnterpriseRequests(
     volume,
     k8s,
     k8s_config,
-    k8s_nodepools
+    k8s_nodepools,
+    pccs,
+    backupunit,
+    s3key
 ):
     pass
 
