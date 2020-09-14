@@ -1,7 +1,9 @@
-import json
+import ionos_cloud_sdk
+from coreadaptor.IonosCoreProxy import IonosCoreProxy
 
 
 class loadbalancer:
+    @IonosCoreProxy.process_response
     def get_loadbalancer(self, datacenter_id, loadbalancer_id):
         """
         Retrieves a single load balancer by ID.
@@ -13,12 +15,10 @@ class loadbalancer:
         :type       loadbalancer_id: ``str``
 
         """
-        response = self._perform_request(
-            '/datacenters/%s/loadbalancers/%s' % (
-                datacenter_id, loadbalancer_id))
+        return self.get_api_instance(ionos_cloud_sdk.LoadBalancerApi).datacenters_loadbalancers_find_by_id_with_http_info(
+            datacenter_id, loadbalancer_id, response_type='object')
 
-        return response
-
+    @IonosCoreProxy.process_response
     def list_loadbalancers(self, datacenter_id, depth=1):
         """
         Retrieves a list of load balancers in the data center.
@@ -30,12 +30,10 @@ class loadbalancer:
         :type       depth: ``int``
 
         """
-        response = self._perform_request(
-            '/datacenters/%s/loadbalancers?depth=%s' % (
-                datacenter_id, str(depth)))
+        return self.get_api_instance(ionos_cloud_sdk.LoadBalancerApi).datacenters_loadbalancers_get_with_http_info(
+            datacenter_id, depth=depth, response_type='object')
 
-        return response
-
+    @IonosCoreProxy.process_response
     def delete_loadbalancer(self, datacenter_id, loadbalancer_id):
         """
         Removes the load balancer from the data center.
@@ -47,12 +45,11 @@ class loadbalancer:
         :type       loadbalancer_id: ``str``
 
         """
-        response = self._perform_request(
-            url='/datacenters/%s/loadbalancers/%s' % (
-                datacenter_id, loadbalancer_id), method='DELETE')
 
-        return response
+        return self.get_api_instance(ionos_cloud_sdk.LoadBalancerApi).datacenters_loadbalancers_delete_with_http_info(
+            datacenter_id, loadbalancer_id)
 
+    @IonosCoreProxy.process_response
     def create_loadbalancer(self, datacenter_id, loadbalancer):
         """
         Creates a load balancer within the specified data center.
@@ -64,15 +61,13 @@ class loadbalancer:
         :type       loadbalancer: ``dict``
 
         """
-        data = json.dumps(self._create_loadbalancer_dict(loadbalancer))
 
-        response = self._perform_request(
-            url='/datacenters/%s/loadbalancers' % datacenter_id,
-            method='POST',
-            data=data)
+        loadbalancer = ionos_cloud_sdk.models.Loadbalancer(
+            **self._create_loadbalancer_dict(loadbalancer)
+        )
+        return self.get_api_instance(ionos_cloud_sdk.LoadBalancerApi).datacenters_loadbalancers_post_with_http_info(datacenter_id, loadbalancer)
 
-        return response
-
+    @IonosCoreProxy.process_response
     def update_loadbalancer(self, datacenter_id,
                             loadbalancer_id, **kwargs):
         """
@@ -90,14 +85,13 @@ class loadbalancer:
         for attr, value in kwargs.items():
             data[self._underscore_to_camelcase(attr)] = value
 
-        response = self._perform_request(
-            url='/datacenters/%s/loadbalancers/%s' % (datacenter_id,
-                                                      loadbalancer_id),
-            method='PATCH',
-            data=json.dumps(data))
+        loadbalancer = ionos_cloud_sdk.models.LoadbalancerProperties(
+            **kwargs
+        )
+        return self.get_api_instance(ionos_cloud_sdk.LoadBalancerApi).datacenters_loadbalancers_patch_with_http_info(
+            datacenter_id, loadbalancer_id, loadbalancer)
 
-        return response
-
+    @IonosCoreProxy.process_response
     def get_loadbalancer_members(self, datacenter_id, loadbalancer_id,
                                  depth=1):
         """
@@ -113,12 +107,11 @@ class loadbalancer:
         :type       depth: ``int``
 
         """
-        response = self._perform_request(
-            '/datacenters/%s/loadbalancers/%s/balancednics?depth=%s' % (
-                datacenter_id, loadbalancer_id, str(depth)))
 
-        return response
+        return self.get_api_instance(ionos_cloud_sdk.LoadBalancerApi).datacenters_loadbalancers_balancednics_get_with_http_info(
+            datacenter_id, loadbalancer_id, depth=depth)
 
+    @IonosCoreProxy.process_response
     def add_loadbalanced_nics(self, datacenter_id,
                               loadbalancer_id, nic_id):
         """
@@ -134,17 +127,14 @@ class loadbalancer:
         :type       nic_id: ``str``
 
         """
-        data = '{ "id": "' + nic_id + '" }'
 
-        response = self._perform_request(
-            url='/datacenters/%s/loadbalancers/%s/balancednics' % (
-                datacenter_id,
-                loadbalancer_id),
-            method='POST',
-            data=data)
+        nic = ionos_cloud_sdk.models.Nic(
+            id = nic_id
+        )
+        return self.get_api_instance(ionos_cloud_sdk.LoadBalancerApi).datacenters_loadbalancers_balancednics_post_with_http_info(
+            datacenter_id, loadbalancer_id, nic)
 
-        return response
-
+    @IonosCoreProxy.process_response
     def get_loadbalanced_nic(self, datacenter_id,
                              loadbalancer_id, nic_id, depth=1):
         """
@@ -163,15 +153,11 @@ class loadbalancer:
         :type       depth: ``int``
 
         """
-        response = self._perform_request(
-            '/datacenters/%s/loadbalancers/%s/balancednics/%s?depth=%s' % (
-                datacenter_id,
-                loadbalancer_id,
-                nic_id,
-                str(depth)))
 
-        return response
+        return self.get_api_instance(ionos_cloud_sdk.LoadBalancerApi).datacenters_loadbalancers_balancednics_find_by_nic_with_http_info(
+            datacenter_id, loadbalancer_id, nic_id, depth=depth, response_type='object')
 
+    @IonosCoreProxy.process_response
     def remove_loadbalanced_nic(self, datacenter_id,
                                 loadbalancer_id, nic_id):
         """
@@ -187,11 +173,7 @@ class loadbalancer:
         :type       nic_id: ``str``
 
         """
-        response = self._perform_request(
-            url='/datacenters/%s/loadbalancers/%s/balancednics/%s' % (
-                datacenter_id,
-                loadbalancer_id,
-                nic_id),
-            method='DELETE')
 
-        return response
+        return self.get_api_instance(
+            ionos_cloud_sdk.LoadBalancerApi).datacenters_loadbalancers_balancednics_delete_with_http_info(
+            datacenter_id, loadbalancer_id, nic_id)

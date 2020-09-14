@@ -1,7 +1,9 @@
-import json
-
+import ionos_cloud_sdk
+from coreadaptor.IonosCoreProxy import IonosCoreProxy
 
 class group:
+
+    @IonosCoreProxy.process_response
     def list_groups(self, depth=1):
         """
         Retrieves a list of all groups.
@@ -10,10 +12,9 @@ class group:
         :type       depth: ``int``
 
         """
-        response = self._perform_request('/um/groups?depth=' + str(depth))
+        return self.get_api_instance(ionos_cloud_sdk.UserManagementApi).um_groups_get_with_http_info(depth=depth, response_type='object')
 
-        return response
-
+    @IonosCoreProxy.process_response
     def get_group(self, group_id, depth=1):
         """
         Retrieves a single group by ID.
@@ -25,11 +26,10 @@ class group:
         :type       depth: ``int``
 
         """
-        response = self._perform_request(
-            '/um/groups/%s?depth=%s' % (group_id, str(depth)))
 
-        return response
+        return self.get_api_instance(ionos_cloud_sdk.UserManagementApi).um_groups_find_by_id_with_http_info(group_id, depth=depth, response_type='object')
 
+    @IonosCoreProxy.process_response
     def create_group(self, group):
         """
         Creates a new group and set group privileges.
@@ -38,15 +38,13 @@ class group:
         :type       group: ``dict``
 
         """
-        data = json.dumps(self._create_group_dict(group))
 
-        response = self._perform_request(
-            url='/um/groups',
-            method='POST',
-            data=data)
+        group = ionos_cloud_sdk.models.Group(
+            properties=self._create_group_dict(group)['properties']
+        )
+        return self.get_api_instance(ionos_cloud_sdk.UserManagementApi).um_groups_post_with_http_info(group, response_type='object')
 
-        return response
-
+    @IonosCoreProxy.process_response
     def update_group(self, group_id, **kwargs):
         """
         Updates a group.
@@ -64,17 +62,12 @@ class group:
         for attr, value in kwargs.items():
             properties[self._underscore_to_camelcase(attr)] = value
 
-        data = {
-            "properties": properties
-        }
+        group = ionos_cloud_sdk.models.Group(
+            properties=properties
+        )
+        return self.get_api_instance(ionos_cloud_sdk.UserManagementApi).um_groups_put_with_http_info(group_id, group, response_type='object')
 
-        response = self._perform_request(
-            url='/um/groups/%s' % group_id,
-            method='PUT',
-            data=json.dumps(data))
-
-        return response
-
+    @IonosCoreProxy.process_response
     def delete_group(self, group_id):
         """
         Removes a group.
@@ -83,8 +76,4 @@ class group:
         :type       group_id: ``str``
 
         """
-        response = self._perform_request(
-            url='/um/groups/%s' % group_id,
-            method='DELETE')
-
-        return response
+        return self.get_api_instance(ionos_cloud_sdk.UserManagementApi).um_groups_delete_with_http_info(group_id)

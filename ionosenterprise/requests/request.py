@@ -1,4 +1,8 @@
+import ionos_cloud_sdk
+from coreadaptor.IonosCoreProxy import IonosCoreProxy
+
 class request:
+    @IonosCoreProxy.process_response
     def get_request(self, request_id, status=False):
         """
         Retrieves a single request by ID.
@@ -10,21 +14,17 @@ class request:
         :type       status: ``bool``
 
         """
+
         if status:
-            response = self._perform_request(
-                '/requests/' + request_id + '/status')
+            return self.get_api_instance(ionos_cloud_sdk.RequestApi).requests_status_get_with_http_info(request_id, response_type='object')
         else:
-            response = self._perform_request(
-                '/requests/%s' % request_id)
+            return self.get_api_instance(ionos_cloud_sdk.RequestApi).requests_find_by_id_with_http_info(request_id, response_type='object')
 
-        return response
-
+    @IonosCoreProxy.process_response
     def list_requests(self, depth=1):
         """
         Retrieves a list of requests available in the account.
 
         """
-        response = self._perform_request(
-            '/requests?depth=%s' % str(depth))
 
-        return response
+        return self.get_api_instance(ionos_cloud_sdk.RequestApi).requests_get_with_http_info(depth=depth, response_type='object')

@@ -1,7 +1,8 @@
-import json
-
+import ionos_cloud_sdk
+from coreadaptor.IonosCoreProxy import IonosCoreProxy
 
 class firewall:
+    @IonosCoreProxy.process_response
     def get_firewall_rule(self, datacenter_id,
                           server_id, nic_id, firewall_rule_id):
         """
@@ -20,15 +21,11 @@ class firewall:
         :type       firewall_rule_id: ``str``
 
         """
-        response = self._perform_request(
-            '/datacenters/%s/servers/%s/nics/%s/firewallrules/%s' % (
-                datacenter_id,
-                server_id,
-                nic_id,
-                firewall_rule_id))
 
-        return response
+        return self.get_api_instance(ionos_cloud_sdk.NicApi).datacenters_servers_nics_firewallrules_find_by_id_with_http_info(datacenter_id, server_id,
+                                                                                                  nic_id, firewall_rule_id, response_type='object')
 
+    @IonosCoreProxy.process_response
     def get_firewall_rules(self, datacenter_id, server_id, nic_id, depth=1):
         """
         Retrieves a list of firewall rules available in the account.
@@ -46,15 +43,12 @@ class firewall:
         :type       depth: ``int``
 
         """
-        response = self._perform_request(
-            '/datacenters/%s/servers/%s/nics/%s/firewallrules?depth=%s' % (
-                datacenter_id,
-                server_id,
-                nic_id,
-                str(depth)))
 
-        return response
+        return self.get_api_instance(
+            ionos_cloud_sdk.NicApi).datacenters_servers_nics_firewallrules_get_with_http_info(datacenter_id, server_id,
+                                                                                                 nic_id, depth=depth, response_type='object')
 
+    @IonosCoreProxy.process_response
     def delete_firewall_rule(self, datacenter_id, server_id,
                              nic_id, firewall_rule_id):
         """
@@ -73,18 +67,13 @@ class firewall:
         :type       firewall_rule_id: ``str``
 
         """
-        response = self._perform_request(
-            url='/datacenters/%s/servers/%s/nics/%s/firewallrules/%s' % (
-                datacenter_id,
-                server_id,
-                nic_id,
-                firewall_rule_id),
-            method='DELETE')
 
-        return response
+        return self.get_api_instance(
+            ionos_cloud_sdk.NicApi).datacenters_servers_nics_firewallrules_delete_with_http_info(datacenter_id, server_id,
+                                                                          nic_id, firewall_rule_id)
 
-    def create_firewall_rule(self, datacenter_id, server_id,
-                             nic_id, firewall_rule):
+    @IonosCoreProxy.process_response
+    def create_firewall_rule(self, datacenter_id, server_id, nic_id, firewall_rule):
         """
         Creates a firewall rule on the specified NIC and server.
 
@@ -130,20 +119,15 @@ class firewall:
         if firewall_rule.icmp_code:
             properties['icmpCode'] = firewall_rule.icmp_code
 
-        data = {
-            "properties": properties
-        }
+        firewallRule = ionos_cloud_sdk.models.FirewallRule(
+            properties=properties
+        )
+        return self.get_api_instance(
+            ionos_cloud_sdk.NicApi).datacenters_servers_nics_firewallrules_post_with_http_info(datacenter_id, server_id,
+                                                                                                nic_id, firewallRule,
+                                                                                                response_type='object')
 
-        response = self._perform_request(
-            url='/datacenters/%s/servers/%s/nics/%s/firewallrules' % (
-                datacenter_id,
-                server_id,
-                nic_id),
-            method='POST',
-            data=json.dumps(data))
-
-        return response
-
+    @IonosCoreProxy.process_response
     def update_firewall_rule(self, datacenter_id, server_id,
                              nic_id, firewall_rule_id, **kwargs):
         """
@@ -184,13 +168,8 @@ class firewall:
             else:
                 data[self._underscore_to_camelcase(attr)] = value
 
-        response = self._perform_request(
-            url='/datacenters/%s/servers/%s/nics/%s/firewallrules/%s' % (
-                datacenter_id,
-                server_id,
-                nic_id,
-                firewall_rule_id),
-            method='PATCH',
-            data=json.dumps(data))
 
-        return response
+        return self.get_api_instance(
+            ionos_cloud_sdk.NicApi).datacenters_servers_nics_firewallrules_patch_with_http_info(datacenter_id, server_id,
+                             nic_id, firewall_rule_id, data,
+                                                                                                response_type='object')

@@ -1,7 +1,9 @@
-import json
+import ionos_cloud_sdk
+from coreadaptor.IonosCoreProxy import IonosCoreProxy
 
 
 class ipblock:
+    @IonosCoreProxy.process_response
     def get_ipblock(self, ipblock_id):
         """
         Retrieves a single IP block by ID.
@@ -10,17 +12,17 @@ class ipblock:
         :type       ipblock_id: ``str``
 
         """
-        response = self._perform_request('/ipblocks/%s' % ipblock_id)
-        return response
+        return self.get_api_instance(ionos_cloud_sdk.IPBlocksApi).ipblocks_find_by_id_with_http_info(ipblock_id, response_type='object')
 
+    @IonosCoreProxy.process_response
     def list_ipblocks(self, depth=1):
         """
         Retrieves a list of IP blocks available in the account.
 
         """
-        response = self._perform_request('/ipblocks?depth=%s' % str(depth))
-        return response
+        return self.get_api_instance(ionos_cloud_sdk.IPBlocksApi).ipblocks_get_with_http_info(depth=depth, response_type='object')
 
+    @IonosCoreProxy.process_response
     def delete_ipblock(self, ipblock_id):
         """
         Removes a single IP block from your account.
@@ -29,11 +31,9 @@ class ipblock:
         :type       ipblock_id: ``str``
 
         """
-        response = self._perform_request(
-            url='/ipblocks/' + ipblock_id, method='DELETE')
+        return self.get_api_instance(ionos_cloud_sdk.IPBlocksApi).ipblocks_delete_with_http_info(ipblock_id)
 
-        return response
-
+    @IonosCoreProxy.process_response
     def reserve_ipblock(self, ipblock):
         """
         Reserves an IP block within your account.
@@ -53,7 +53,8 @@ class ipblock:
             "properties": properties,
         }
 
-        response = self._perform_request(
-            url='/ipblocks', method='POST', data=json.dumps(raw))
+        ipblock = ionos_cloud_sdk.models.IpBlock(
+            properties=properties
+        )
 
-        return response
+        return self.get_api_instance(ionos_cloud_sdk.IPBlocksApi).ipblocks_post_with_http_info(ipblock, response_type='object')

@@ -20,6 +20,8 @@ import re
 import time
 import requests
 import six
+import ionos_cloud_sdk
+from coreadaptor.IonosCoreProxy import IonosCoreProxy
 
 try:
     import configparser
@@ -203,6 +205,7 @@ class IonosEnterpriseService(IonosEnterpriseRequests):
 
         return password
 
+    @IonosCoreProxy.cast_exceptions
     def wait_for(
         self, fn_check, fn_request, timeout=3600, initial_wait=5,
         scaleup=10, console_print=None
@@ -226,40 +229,9 @@ class IonosEnterpriseService(IonosEnterpriseRequests):
         :type       scaleup: ``int``
 
         """
-        logger = logging.getLogger(__name__)
-        wait_period = initial_wait
-        next_increase = time.time() + wait_period * scaleup
-        if timeout:
-            timeout = time.time() + timeout
-        while True:
-            if console_print is not None:
-                sys.stdout.write(console_print)
-                sys.stdout.flush()
+        ionos_cloud_sdk.api_client.ApiClient.wait_for(fn_check, fn_request, timeout, initial_wait, scaleup, console_print)
 
-            resp = fn_request()
-            check_response = fn_check(resp)
-
-            if check_response:
-                break
-
-            current_time = time.time()
-            if timeout and current_time > timeout:
-                raise ICTimeoutError('Timed out waiting for request {0}.'.format(
-                    resp['requestId']), resp['requestId'])
-
-            if current_time > next_increase:
-                wait_period *= 2
-                next_increase = time.time() + wait_period * scaleup
-                scaleup *= 2
-
-            logger.info("Sleeping for %i seconds...", wait_period)
-            time.sleep(wait_period)
-
-        if console_print is not None:
-            print('')
-
-        return resp
-
+    @IonosCoreProxy.cast_exceptions
     def wait_for_completion(self, response, timeout=3600, initial_wait=5, scaleup=10):
         """
         Poll resource request status until resource is provisioned.
@@ -277,38 +249,8 @@ class IonosEnterpriseService(IonosEnterpriseRequests):
         :type       scaleup: ``int``
 
         """
-        if not response:
-            return
-        logger = logging.getLogger(__name__)
-        wait_period = initial_wait
-        next_increase = time.time() + wait_period * scaleup
-        if timeout:
-            timeout = time.time() + timeout
-        while True:
-            request = self.get_request(request_id=response['requestId'], status=True)
-
-            if request['metadata']['status'] == 'DONE':
-                break
-            elif request['metadata']['status'] == 'FAILED':
-                raise ICFailedRequest(
-                    'Request {0} failed to complete: {1}'.format(
-                        response['requestId'], request['metadata']['message']),
-                    response['requestId']
-                )
-
-            current_time = time.time()
-            if timeout and current_time > timeout:
-                raise ICTimeoutError('Timed out waiting for request {0}.'.format(
-                    response['requestId']), response['requestId'])
-
-            if current_time > next_increase:
-                wait_period *= 2
-                next_increase = time.time() + wait_period * scaleup
-                scaleup *= 2
-
-            logger.info("Request %s is in state '%s'. Sleeping for %i seconds...",
-                        response['requestId'], request['metadata']['status'], wait_period)
-            time.sleep(wait_period)
+        if 'requestId' in response:
+            self.get_api_client().wait_for_completion(response['requestId'], timeout, initial_wait, scaleup)
 
     def _wrapped_request(self, method, url,
                          params=None,

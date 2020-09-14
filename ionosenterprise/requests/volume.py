@@ -1,7 +1,9 @@
-import json
-
+import ionos_cloud_sdk
+from coreadaptor.IonosCoreProxy import IonosCoreProxy
 
 class volume:
+
+    @IonosCoreProxy.process_response
     def get_volume(self, datacenter_id, volume_id):
         """
         Retrieves a single volume by ID.
@@ -13,11 +15,9 @@ class volume:
         :type       volume_id: ``str``
 
         """
-        response = self._perform_request(
-            '/datacenters/%s/volumes/%s' % (datacenter_id, volume_id))
+        return self.get_api_instance(ionos_cloud_sdk.VolumeApi).datacenters_volumes_find_by_id_with_http_info(datacenter_id, volume_id, response_type='object')
 
-        return response
-
+    @IonosCoreProxy.process_response
     def list_volumes(self, datacenter_id, depth=1):
         """
         Retrieves a list of volumes in the data center.
@@ -29,11 +29,9 @@ class volume:
         :type       depth: ``int``
 
         """
-        response = self._perform_request(
-            '/datacenters/%s/volumes?depth=%s' % (datacenter_id, str(depth)))
+        return self.get_api_instance(ionos_cloud_sdk.VolumeApi).datacenters_volumes_get_with_http_info(datacenter_id, depth=depth, response_type='object')
 
-        return response
-
+    @IonosCoreProxy.process_response
     def delete_volume(self, datacenter_id, volume_id):
         """
         Removes a volume from the data center.
@@ -45,12 +43,10 @@ class volume:
         :type       volume_id: ``str``
 
         """
-        response = self._perform_request(
-            url='/datacenters/%s/volumes/%s' % (
-                datacenter_id, volume_id), method='DELETE')
+        return self.get_api_instance(ionos_cloud_sdk.VolumeApi).datacenters_volumes_delete_with_http_info(datacenter_id, volume_id)
 
-        return response
 
+    @IonosCoreProxy.process_response
     def create_volume(self, datacenter_id, volume):
         """
         Creates a volume within the specified data center.
@@ -63,15 +59,13 @@ class volume:
 
         """
 
-        data = (json.dumps(self._create_volume_dict(volume)))
+        ionos_cloud_sdk.models.VolumeProperties
+        volume = ionos_cloud_sdk.models.Volume(
+            **self._create_volume_dict(volume)
+        )
+        return self.get_api_instance(ionos_cloud_sdk.VolumeApi).datacenters_volumes_post_with_http_info(datacenter_id, volume)
 
-        response = self._perform_request(
-            url='/datacenters/%s/volumes' % datacenter_id,
-            method='POST',
-            data=data)
-
-        return response
-
+    @IonosCoreProxy.process_response
     def update_volume(self, datacenter_id, volume_id, **kwargs):
         """
         Updates a volume
@@ -88,15 +82,10 @@ class volume:
         for attr, value in kwargs.items():
             data[self._underscore_to_camelcase(attr)] = value
 
-        response = self._perform_request(
-            url='/datacenters/%s/volumes/%s' % (
-                datacenter_id,
-                volume_id),
-            method='PATCH',
-            data=json.dumps(data))
+        volume = ionos_cloud_sdk.models.VolumeProperties(**data)
+        return self.get_api_instance(ionos_cloud_sdk.VolumeApi).datacenters_volumes_patch_with_http_info(datacenter_id, volume_id, volume)
 
-        return response
-
+    @IonosCoreProxy.process_response
     def get_attached_volumes(self, datacenter_id, server_id, depth=1):
         """
         Retrieves a list of volumes attached to the server.
@@ -111,14 +100,9 @@ class volume:
         :type       depth: ``int``
 
         """
-        response = self._perform_request(
-            '/datacenters/%s/servers/%s/volumes?depth=%s' % (
-                datacenter_id,
-                server_id,
-                str(depth)))
+        return self.get_api_instance(ionos_cloud_sdk.ServerApi).datacenters_servers_volumes_get_with_http_info(datacenter_id, server_id, depth=depth)
 
-        return response
-
+    @IonosCoreProxy.process_response
     def get_attached_volume(self, datacenter_id, server_id, volume_id):
         """
         Retrieves volume information.
@@ -133,14 +117,9 @@ class volume:
         :type       volume_id: ``str``
 
         """
-        response = self._perform_request(
-            '/datacenters/%s/servers/%s/volumes/%s' % (
-                datacenter_id,
-                server_id,
-                volume_id))
+        return self.get_api_instance(ionos_cloud_sdk.ServerApi).datacenters_servers_volumes_find_by_id_with_http_info(datacenter_id, server_id, volume_id)
 
-        return response
-
+    @IonosCoreProxy.process_response
     def attach_volume(self, datacenter_id, server_id, volume_id):
         """
         Attaches a volume to a server.
@@ -155,17 +134,13 @@ class volume:
         :type       volume_id: ``str``
 
         """
-        data = '{ "id": "' + volume_id + '" }'
+        volume = ionos_cloud_sdk.models.Volume(
+            id=volume_id
+        )
+        return self.get_api_instance(ionos_cloud_sdk.ServerApi).datacenters_servers_volumes_post_with_http_info(datacenter_id, server_id,
+                                                                                         volume)
 
-        response = self._perform_request(
-            url='/datacenters/%s/servers/%s/volumes' % (
-                datacenter_id,
-                server_id),
-            method='POST',
-            data=data)
-
-        return response
-
+    @IonosCoreProxy.process_response
     def detach_volume(self, datacenter_id, server_id, volume_id):
         """
         Detaches a volume from a server.
@@ -180,11 +155,4 @@ class volume:
         :type       volume_id: ``str``
 
         """
-        response = self._perform_request(
-            url='/datacenters/%s/servers/%s/volumes/%s' % (
-                datacenter_id,
-                server_id,
-                volume_id),
-            method='DELETE')
-
-        return response
+        return self.get_api_instance(ionos_cloud_sdk.ServerApi).datacenters_servers_volumes_delete_with_http_info(datacenter_id, server_id, volume_id)

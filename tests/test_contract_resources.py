@@ -17,11 +17,12 @@ import unittest
 from ionosenterprise.client import IonosEnterpriseService
 
 from helpers import configuration
-
+import warnings
 
 class TestContractResources(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        warnings.filterwarnings("ignore", category=ResourceWarning, message="unclosed.*<ssl.SSLSocket.*>")
         cls.client = IonosEnterpriseService(
             username=configuration.USERNAME,
             password=configuration.PASSWORD,

@@ -23,11 +23,11 @@ from .k8s_nodepools import k8s_nodepools
 from .pccs import pccs
 from .backupunit import backupunit
 from .s3key import s3key
+from coreadaptor.AuthAdaptor import AuthAdaptor
 
 
 class IonosEnterpriseRequests(
     dicts,
-
     datacenter,
     server,
     cdrom,
@@ -53,7 +53,11 @@ class IonosEnterpriseRequests(
     backupunit,
     s3key
 ):
-    pass
+    def get_api_client(self):
+        return AuthAdaptor(self.username, self.password).get_api_client()
+
+    def get_api_instance(self, apiClass):
+        return apiClass(self.get_api_client())
 
 
 __all__ = ['IonosEnterpriseRequests']

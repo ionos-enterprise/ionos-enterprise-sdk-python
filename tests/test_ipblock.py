@@ -21,11 +21,12 @@ from ionosenterprise.errors import ICError, ICNotFoundError
 
 from helpers import configuration
 from helpers.resources import resource
-
+import warnings
 
 class TestIPBlock(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        warnings.filterwarnings("ignore", category=ResourceWarning, message="unclosed.*<ssl.SSLSocket.*>")
         cls.resource = resource()
         cls.client = IonosEnterpriseService(
             username=configuration.USERNAME,
