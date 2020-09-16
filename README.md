@@ -3,6 +3,8 @@
 
 Version: ionosenterprise-sdk-python **5.2.0**
 
+## Notice - this fork of Python SDK is highly EXPERIMENTAL and should be used only for testing purposes not on production environments. A production ready version can be found at https://github.com/ionos-enterprise/ionos-enterprise-sdk-python. 
+
 ## Table of Contents
 
 * [Description](#description)
