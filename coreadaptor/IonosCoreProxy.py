@@ -111,7 +111,6 @@ class IonosCoreProxy:
 
     @staticmethod
     def handle_response_operations(func, response):
-
         return_data = response[0]
         status_code = response[1]
         response_headers = response[2]

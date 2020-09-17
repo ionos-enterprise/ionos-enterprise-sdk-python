@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import unittest
-import uuid
+import warnings
 
 from ionosenterprise.client import IonosEnterpriseService, BackupUnit
 
@@ -24,6 +24,7 @@ from helpers.resources import resource
 class TestBackupunit(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        warnings.filterwarnings("ignore", category=ResourceWarning, message="unclosed.*<ssl.SSLSocket.*>")
         cls.resource = resource()
         cls.client = IonosEnterpriseService(
             username=configuration.USERNAME,
@@ -32,6 +33,7 @@ class TestBackupunit(unittest.TestCase):
 
         backupunitModel1 = BackupUnit("TEST 1", password="TEST PASSWORD 1", email="TEST@TEST-EMAIL1.COM")
         cls.backupunit1 = cls.client.create_backupunit(backupunitModel1)
+
         backupunitModel2 = BackupUnit("TEST 2", password="TEST PASSWORD 2", email="TEST@TEST-EMAIL2.COM")
         cls.backupunit2 = cls.client.create_backupunit(backupunitModel2)
 
@@ -42,7 +44,7 @@ class TestBackupunit(unittest.TestCase):
     def test_list_backupunits(self):
         backupunits = self.client.list_backupunits()
         self.assertGreater(len(backupunits), 0)
-        self.assertGreater(len(backupunits['items']), 1)
+        self.assertGreater(len(backupunits['items']), 0)
 
     def test_get_backupunit(self):
         backupunit = self.client.get_backupunit(self.backupunit1['id'])

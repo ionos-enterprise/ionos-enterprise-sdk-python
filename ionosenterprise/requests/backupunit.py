@@ -1,7 +1,13 @@
 import json
+import ionos_cloud_sdk
+from coreadaptor.IonosCoreProxy import IonosCoreProxy
+from ionos_cloud_sdk.models.backup_unit import BackupUnit
+from ionos_cloud_sdk.models.backup_unit_properties import BackupUnitProperties
+
 
 class backupunit:
 
+    @IonosCoreProxy.process_response
     def list_backupunits(self, depth=1):
         """
         You can retrieve a complete list of backup Units that you have access to.
@@ -10,10 +16,9 @@ class backupunit:
         :type       depth: ``int``
 
         """
-        response = self._perform_request('/backupunits?depth=' + str(depth))
+        return self.get_api_instance(ionos_cloud_sdk.BackupUnitApi).backupunits_get_with_http_info(depth=depth, response_type='object')
 
-        return response
-
+    @IonosCoreProxy.process_response
     def create_backupunit(self, backupunit):
         """
         Create a Backup Unit. A Backup Unit is considered a resource like a virtual datacenter, IP Block, snapshot, etc.
@@ -23,15 +28,13 @@ class backupunit:
         :type       backupunit: ``dict``
 
         """
-        data = json.dumps(self._create_backupunit_dict(backupunit))
+        data = self._create_backupunit_dict(backupunit)
 
-        response = self._perform_request(
-            url='/backupunits',
-            method='POST',
-            data=data)
+        backupUnit = BackupUnit(**data)
 
-        return response
+        return self.get_api_instance(ionos_cloud_sdk.BackupUnitApi).backupunits_post_with_http_info(backupUnit, response_type='object')
 
+    @IonosCoreProxy.process_response
     def get_backupunit(self, backupunit_id, depth=1):
         """
         Retrieve the details of an specific backup unit.
@@ -43,12 +46,11 @@ class backupunit:
         :type       depth: ``int``
 
         """
-        response = self._perform_request(
-            '/backupunits/%s?depth=%s' % (backupunit_id, str(depth))
-        )
+        return self.get_api_instance(ionos_cloud_sdk.BackupUnitApi).backupunits_find_by_id_with_http_info(backupunit_id,
+                                                                                                          depth=depth,
+                                                                                                    response_type='object')
 
-        return response
-
+    @IonosCoreProxy.process_response
     def update_backupunit(self, backupunit_id, **kwargs):
         """
         Partially modify a Backup Unit
@@ -65,15 +67,11 @@ class backupunit:
         for attr, value in kwargs.items():
             data[attr] = value
 
-        request_data = json.dumps(data)
+        backupUnitProperties = BackupUnitProperties(**data)
 
-        response = self._perform_request(
-            url='/backupunits/%s' % backupunit_id,
-            method='PATCH',
-            data=request_data)
+        return self.get_api_instance(ionos_cloud_sdk.BackupUnitApi).backupunits_patch_with_http_info(backupunit_id, backupUnitProperties, response_type='object')
 
-        return response
-
+    @IonosCoreProxy.process_response
     def update_backupunit_put(self, backupunit_id, **kwargs):
         """
         Modify a Backup Unit.
@@ -90,17 +88,14 @@ class backupunit:
         for attr, value in kwargs.items():
             data[attr] = value
 
-        request_data = json.dumps(
-            {'properties': data}
-        )
+        backupUnitProperties = BackupUnit(properties = BackupUnitProperties(**data))
 
-        response = self._perform_request(
-            url='/backupunits/%s' % backupunit_id,
-            method='PUT',
-            data=request_data)
+        return self.get_api_instance(ionos_cloud_sdk.BackupUnitApi).backupunits_put_with_http_info(backupunit_id,
+                                                                                                     backupUnitProperties,
+                                                                                                     response_type='object')
 
-        return response
 
+    @IonosCoreProxy.process_response
     def delete_backupunit(self, backupunit_id):
         """
         Delete a Backup Unit.
@@ -110,13 +105,11 @@ class backupunit:
 
         """
 
-        response = self._perform_request(
-            url='/backupunits/%s' % backupunit_id,
-            method='DELETE')
+        return self.get_api_instance(ionos_cloud_sdk.BackupUnitApi).backupunits_delete_with_http_info(backupunit_id)
 
-        return response
 
-    def get_ssourl(self, backupunit_id, depth=1):
+    @IonosCoreProxy.process_response
+    def get_ssourl(self, backupunit_id):
         """
         Returns a single signon URL for the specified backup Unit.
 
@@ -127,8 +120,5 @@ class backupunit:
         :type       depth: ``int``
 
         """
-        response = self._perform_request(
-            '/backupunits/%s/ssourl?depth=%s' % (backupunit_id, str(depth))
-        )
 
-        return response
+        return self.get_api_instance(ionos_cloud_sdk.BackupUnitApi).backupunits_ssourl_get_with_http_info(backupunit_id, response_type='object')
