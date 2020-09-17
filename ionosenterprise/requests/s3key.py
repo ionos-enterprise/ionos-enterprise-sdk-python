@@ -1,6 +1,11 @@
-import json
+import ionos_cloud_sdk
+from coreadaptor.IonosCoreProxy import IonosCoreProxy
+from ionos_cloud_sdk.models.s3_key_properties import S3KeyProperties
+from ionos_cloud_sdk.models.s3_key import S3Key
 
 class s3key:
+
+    @IonosCoreProxy.process_response
     def list_s3keys(self, user_id, depth=1):
         """
         Retrieve a User's S3 keys
@@ -12,10 +17,10 @@ class s3key:
         :type       depth: ``int``
 
         """
-        response = self._perform_request('/um/users/%s/s3keys?depth=%s' % (user_id, str(depth)))
+        return self.get_api_instance(ionos_cloud_sdk.UserManagementApi).um_users_s3keys_get_with_http_info(user_id, depth=depth,
+                                                                                                     response_type='object')
 
-        return response
-
+    @IonosCoreProxy.process_response
     def create_s3key(self, user_id):
         """
         Create a S3 key for the given user.
@@ -24,13 +29,10 @@ class s3key:
         :type       user_id: ``str``
 
         """
-        response = self._perform_request(
-            url='/um/users/%s/s3keys' % user_id,
-            method='POST')
+        return self.get_api_instance(ionos_cloud_sdk.UserManagementApi).um_users_s3keys_post_with_http_info(user_id,
+                                                                                                      response_type='object')
 
-        return response
-
-
+    @IonosCoreProxy.process_response
     def get_s3key(self, user_id, key_id, depth=1):
         """
         Retrieve given S3 key belonging to the given User
@@ -45,10 +47,12 @@ class s3key:
         :type       depth: ``int``
 
         """
-        response = self._perform_request('/um/users/%s/s3keys/%s?depth=%s' % (user_id, key_id, str(depth)))
+        return self.get_api_instance(ionos_cloud_sdk.UserManagementApi).um_users_s3keys_find_by_key_with_http_info(user_id,
+                                                                                                           key_id,
+                                                                                                           depth=depth,
+                                                                                                           response_type='object')
 
-        return response
-
+    @IonosCoreProxy.process_response
     def update_s3key(self, user_id, key_id, **kwargs):
         """
         Modify a S3 key having the given key id
@@ -67,16 +71,16 @@ class s3key:
         data = {}
 
         for attr, value in kwargs.items():
-            data[self._underscore_to_camelcase(attr)] = value
+            data[attr] = value
 
-        response = self._perform_request(
-            url = '/um/users/%s/s3keys/%s' % (user_id, key_id),
-            method='PUT',
-            data=json.dumps({'properties':data})
-        )
+        s3keyProperties = S3Key(properties = S3KeyProperties(**data))
 
-        return response
+        return self.get_api_instance(ionos_cloud_sdk.UserManagementApi).um_users_s3keys_put_with_http_info(user_id,
+                                                                                                           key_id,
+                                                                                                       s3keyProperties,
+                                                                                                       response_type='object')
 
+    @IonosCoreProxy.process_response
     def delete_s3key(self, user_id, key_id):
         """
         Delete a S3 key
@@ -88,14 +92,11 @@ class s3key:
         :type       key_id: ``str``
 
         """
+        return self.get_api_instance(ionos_cloud_sdk.UserManagementApi).um_users_s3keys_delete_with_http_info(user_id,
+                                                                                                           key_id)
 
-        response = self._perform_request(
-            url='/um/users/%s/s3keys/%s' % (user_id, key_id),
-            method='DELETE')
-
-        return response
-
-    def get_s3ssourl(self, user_id, depth=1):
+    @IonosCoreProxy.process_response
+    def get_s3ssourl(self, user_id):
         """
         Retrieve given S3 key belonging to the given User
 
@@ -106,5 +107,4 @@ class s3key:
         :type       depth: ``int``
 
         """
-        response = self._perform_request('/um/users/%s/s3ssourl?depth=%s' % (user_id, str(depth)))
-        return response
+        return self.get_api_instance(ionos_cloud_sdk.UserManagementApi).um_users_s3ssourl_get_with_http_info(user_id, response_type='object')

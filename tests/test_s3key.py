@@ -14,6 +14,7 @@
 
 import unittest
 import uuid
+import warnings
 
 from ionosenterprise.client import IonosEnterpriseService, User
 
@@ -24,6 +25,7 @@ from helpers.resources import resource
 class TestS3key(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        warnings.filterwarnings("ignore", category=ResourceWarning, message="unclosed.*<ssl.SSLSocket.*>")
         cls.resource = resource()
         cls.client = IonosEnterpriseService(
             username=configuration.USERNAME,

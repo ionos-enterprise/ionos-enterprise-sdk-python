@@ -2,7 +2,6 @@ import ionos_cloud_sdk
 from coreadaptor.IonosCoreProxy import IonosCoreProxy
 from ionos_cloud_sdk.models.private_cross_connect import PrivateCrossConnect
 from ionos_cloud_sdk.models.private_cross_connect_properties import PrivateCrossConnectProperties
-import json
 
 class pccs:
     @IonosCoreProxy.process_response
@@ -82,7 +81,3 @@ class pccs:
         return self.get_api_instance(ionos_cloud_sdk.PrivateCrossConnectApi).pccs_patch_with_http_info(pcc_id,
                                                                                                      pccProperties,
                                                                                                      response_type='object')
-
-
-
-
