@@ -17,11 +17,13 @@ from ionosenterprise.client import IonosEnterpriseService
 from ionosenterprise.items import Datacenter
 from helpers import configuration
 from helpers.resources import resource
+import warnings
 
 
 class TestK8sNodepools(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        warnings.filterwarnings("ignore", category=ResourceWarning, message="unclosed.*<ssl.SSLSocket.*>")
         cls.resource = resource()
         cls.client = IonosEnterpriseService(
             username=configuration.USERNAME,
