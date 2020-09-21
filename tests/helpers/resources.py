@@ -119,7 +119,7 @@ def resource():
         'lan': {
             # REST API converts names to lowercase.
             'name': 'python sdk test',
-            'public': True,
+            'public': False
         },
         'ipblock': {
             # REST API converts names to lowercase.
