@@ -75,7 +75,7 @@ class lan:
 
     @IonosCoreProxy.process_response
     def update_lan(self, datacenter_id, lan_id, name=None,
-                   public=None, ip_failover=None):
+                   public=None, ip_failover=None, pcc=None):
         """
         Updates a LAN
 
@@ -94,6 +94,9 @@ class lan:
         :param      ip_failover: A list of IP fail-over dicts.
         :type       ip_failover: ``list``
 
+        :param      pcc: Unique identifier of the private cross connect the given LAN is connected to if any
+        :type       pcc: ``str``
+
         """
         data = {}
 
@@ -105,6 +108,9 @@ class lan:
 
         if ip_failover:
             data['ipFailover'] = ip_failover
+
+        if pcc:
+            data['pcc'] = pcc
 
         lan = ionos_cloud_sdk.models.LanProperties(
             **data
