@@ -34,11 +34,22 @@ class TestK8sNodepools(unittest.TestCase):
         cls.datacenter = cls.client.create_datacenter(datacenter=Datacenter(**cls.resource['datacenter']))
         cls.k8s_cluster = cls.client.create_k8s_cluster(**cls.resource['k8s_cluster'])
 
+        # Wait for k8s cluster to be active
+        cls.client.wait_for(
+            fn_request=lambda: cls.client.list_k8s_clusters(),
+            fn_check=lambda r: list(filter(
+                lambda e: e['properties']['name'] == cls.resource['k8s_cluster']['name'],
+                r['items']
+            ))[0]['metadata']['state'] == 'ACTIVE',
+            scaleup=10000
+        )
+
         cls.k8s_cluster_nodepool1 = cls.client.create_k8s_cluster_nodepool(
             cls.k8s_cluster['id'],
             datacenter_id=cls.datacenter['id'],
             **cls.resource['k8s_nodepool']
         )
+
         cls.k8s_cluster_nodepool2 = cls.client.create_k8s_cluster_nodepool(
             cls.k8s_cluster['id'],
             datacenter_id=cls.datacenter['id'],
@@ -47,9 +58,9 @@ class TestK8sNodepools(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        cls.client.delete_datacenter(cls.datacenter['id'])
-        cls.client.delete_k8s_cluster_nodepool(cls.k8s_cluster['id'], cls.k8s_nodepool1['id'])
+        cls.client.delete_k8s_cluster_nodepool(cls.k8s_cluster['id'], cls.k8s_cluster_nodepool1['id'])
         cls.client.delete_k8s_cluster(cls.k8s_cluster['id'])
+        cls.client.delete_datacenter(cls.datacenter['id'])
 
     def test_list_k8s_nodepools(self):
         k8s_nodepools = self.client.list_k8s_cluster_nodepools(self.k8s_cluster['id'])

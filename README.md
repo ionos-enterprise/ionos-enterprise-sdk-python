@@ -2491,7 +2491,7 @@ Method signature:
 ```python
 def update_k8s_cluster_nodepool(self,
                                     k8s_cluster_id, nodepool_id, node_count,
-                                    maintenance_window=None, auto_scaling=None):
+                                    maintenance_window=None, auto_scaling=None, lan_ids=None):
 ```
 
 Update a nodepool:
@@ -2504,7 +2504,8 @@ client.update_k8s_cluster_nodepool(
     maintenance_window={
         'dayOfTheWeek': "Monday",
         'time': '17:00:00'},
-    auto_scaling={'minNodeCount': 2, 'maxNodeCount': 3}
+    auto_scaling={'minNodeCount': 2, 'maxNodeCount': 3},
+    lan_ids=[2,3]
 )
 ```
 ---

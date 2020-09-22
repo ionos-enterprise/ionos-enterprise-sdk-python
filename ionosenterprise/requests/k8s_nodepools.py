@@ -78,9 +78,9 @@ class k8s_nodepools:
         properties = {node_count: node_count}
 
         if maintenance_window is not None:
-            properties['maintenanceWindow'] = maintenance_window
+            properties['maintenance_window'] = maintenance_window
         if auto_scaling is not None:
-            properties['autoScaling'] = auto_scaling
+            properties['auto_scaling'] = auto_scaling
         if lan_ids is not None:
             properties['lans'] = [{'id': lan_id} for lan_id in lan_ids]
 
@@ -182,23 +182,23 @@ class k8s_nodepools:
         # mandatory fields
         properties = {
             'name': name,
-            'datacenterId': datacenter_id,
-            'nodeCount': node_count,
-            'cpuFamily': cpu_family,
-            'coresCount': cores_count,
-            'ramSize': ram_size,
-            'availabilityZone': availability_zone,
-            'storageType': storage_type,
-            'storageSize': storage_size
+            'datacenter_id': datacenter_id,
+            'node_count': node_count,
+            'cpu_family': cpu_family,
+            'cores_count': cores_count,
+            'ram_size': ram_size,
+            'availability_zone': availability_zone,
+            'storage_type': storage_type,
+            'storage_size': storage_size
         }
 
         # optional fields
         if k8s_version is not None:
-            properties['k8sVersion'] = k8s_version
+            properties['k8s_version'] = k8s_version
         if maintenance_window is not None:
-            properties['maintenanceWindow'] = maintenance_window
+            properties['maintenance_window'] = maintenance_window
         if auto_scaling is not None:
-            properties['autoScaling'] = auto_scaling
+            properties['auto_scaling'] = auto_scaling
         if lan_ids is not None:
             properties['lans'] = [{'id': lan_id} for lan_id in lan_ids]
         if labels is not None:
