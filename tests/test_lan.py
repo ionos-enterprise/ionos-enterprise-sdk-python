@@ -16,11 +16,13 @@ import unittest
 
 from six import assertRegex
 
-from ionosenterprise.client import Datacenter, Server, LAN, NIC, IonosEnterpriseService
+from ionosenterprise.client import Datacenter, Server, LAN, NIC, IonosEnterpriseService, PrivateCrossConnect
 from ionosenterprise.errors import ICNotFoundError
 
 from helpers import configuration
 from helpers.resources import resource
+
+import uuid
 
 
 class TestLan(unittest.TestCase):
@@ -37,10 +39,18 @@ class TestLan(unittest.TestCase):
             datacenter=Datacenter(**cls.resource['datacenter']))
         cls.client.wait_for_completion(cls.datacenter)
 
+        # Create pcc.
+        pcc = PrivateCrossConnect(name="TEST NAME - %s" % uuid.uuid1(), description="TEST DESCRIPTION 1")
+
+        cls.pcc = cls.client.create_pcc(pcc)
+        cls.client.wait_for_completion(cls.pcc)
+
         # Create test LAN.
+        lan_properties = cls.resource['lan']
+        lan_properties['pcc'] = cls.pcc['id']
         cls.lan = cls.client.create_lan(
             datacenter_id=cls.datacenter['id'],
-            lan=LAN(**cls.resource['lan']))
+            lan=LAN(**lan_properties))
         cls.client.wait_for_completion(cls.lan)
 
         # Create test server.
@@ -69,6 +79,8 @@ class TestLan(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
+        cls.client.delete_nic(cls.datacenter['id'], cls.server['id'], cls.nic1['id'])
+        cls.client.delete_nic(cls.datacenter['id'], cls.server['id'], cls.nic2['id'])
         cls.client.delete_datacenter(datacenter_id=cls.datacenter['id'])
 
     def test_list_lans(self):

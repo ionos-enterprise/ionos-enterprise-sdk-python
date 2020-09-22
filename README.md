@@ -1241,6 +1241,7 @@ Pass the object and arguments to `create_lan`:
 | name | no | string | The name of your LAN. |
 | public | **Yes** | bool | Boolean indicating if the LAN faces the public Internet or not. |
 | nics | no | list | One or more NIC IDs attached to the LAN. |
+| pcc | no | string | Unique identifier of the private cross connect the given LAN is connected to if any. |
 
 ---
 
