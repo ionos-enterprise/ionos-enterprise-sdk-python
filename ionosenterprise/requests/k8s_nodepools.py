@@ -99,7 +99,7 @@ class k8s_nodepools:
         if auto_scaling is not None:
             properties['autoScaling'] = auto_scaling
         if lan_ids is not None:
-            properties['lans'] = [{'id': lan_id} for lan_id in lan_ids]
+            properties['lans'] = [{'id': int(lan_id)} for lan_id in lan_ids]
 
         data = {
             'properties': properties
@@ -244,7 +244,7 @@ class k8s_nodepools:
         if auto_scaling is not None:
             properties['autoScaling'] = auto_scaling
         if lan_ids is not None:
-            properties['lans'] = [{'id':lan_id} for lan_id in lan_ids]
+            properties['lans'] = [{'id':int(lan_id)} for lan_id in lan_ids]
         if labels is not None:
             properties['labels'] = labels
         if annotations is not None:
