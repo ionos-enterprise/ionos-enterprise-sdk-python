@@ -250,7 +250,6 @@ class IonosEnterpriseService(IonosEnterpriseRequests):
 
         """
         if 'requestId' in response:
-            print("WAAAAAAAAAAAAAA")
             self.get_api_client().wait_for_completion(response['requestId'], timeout, initial_wait, scaleup)
 
     def _wrapped_request(self, method, url,
