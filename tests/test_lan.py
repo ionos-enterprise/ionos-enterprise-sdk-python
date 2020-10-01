@@ -90,7 +90,7 @@ class TestLan(unittest.TestCase):
         self.assertEqual(lans['items'][0]['type'], 'lan')
         self.assertIn(lans['items'][0]['id'], ('1', '2', '3'))
         self.assertEqual(lans['items'][0]['properties']['name'], self.resource['lan']['name'])
-        self.assertTrue(lans['items'][0]['properties']['public'], self.resource['lan']['public'])
+        self.assertEqual(lans['items'][0]['properties']['public'], self.resource['lan']['public'])
 
     def test_get_lan(self):
         lan = self.client.get_lan(datacenter_id=self.datacenter['id'], lan_id=self.lan['id'])
@@ -98,7 +98,7 @@ class TestLan(unittest.TestCase):
         self.assertEqual(lan['type'], 'lan')
         self.assertEqual(lan['id'], self.lan['id'])
         self.assertEqual(lan['properties']['name'], self.resource['lan']['name'])
-        self.assertTrue(lan['properties']['public'], self.resource['lan']['public'])
+        self.assertEqual(lan['properties']['public'], self.resource['lan']['public'])
 
     def test_remove_lan(self):
         lan = self.client.create_lan(
@@ -153,7 +153,7 @@ class TestLan(unittest.TestCase):
 
         self.assertEqual(response['type'], 'lan')
         self.assertEqual(response['properties']['name'], self.resource['lan']['name'])
-        self.assertTrue(response['properties']['public'])
+        self.assertFalse(response['properties']['public'])
 
     def test_get_lan_members(self):
         members = self.client.get_lan_members(

@@ -2504,7 +2504,7 @@ client.update_k8s_cluster_nodepool(
         'dayOfTheWeek': "Monday",
         'time': '17:00:00'},
     auto_scaling={'minNodeCount': 2, 'maxNodeCount': 3},
-    lan_ids=[2,3]
+    lan_ids=[2, 3]
 )
 ```
 ---
