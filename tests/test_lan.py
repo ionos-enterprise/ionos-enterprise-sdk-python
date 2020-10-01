@@ -47,7 +47,7 @@ class TestLan(unittest.TestCase):
 
         # Create test LAN.
         lan_properties = cls.resource['lan']
-        lan_properties['pcc'] = cls.pcc['id']
+        lan_properties['pcc_id'] = cls.pcc['id']
         cls.lan = cls.client.create_lan(
             datacenter_id=cls.datacenter['id'],
             lan=LAN(**lan_properties))
