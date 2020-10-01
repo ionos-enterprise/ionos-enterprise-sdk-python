@@ -12,6 +12,9 @@ class dicts:
         if lan.public is not None:
             properties['public'] = str(lan.public).lower()
 
+        if lan.pcc is not None:
+            properties['pcc'] = lan.pcc
+
         if lan.nics:
             for nic in lan.nics:
                 nics_properties = {

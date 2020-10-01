@@ -16,11 +16,13 @@ import unittest
 
 from six import assertRegex
 
-from ionosenterprise.client import Datacenter, Server, LAN, NIC, IonosEnterpriseService
+from ionosenterprise.client import Datacenter, Server, LAN, NIC, IonosEnterpriseService, PrivateCrossConnect
 from ionosenterprise.errors import ICNotFoundError
 
 from helpers import configuration
 from helpers.resources import resource
+
+import uuid
 
 
 class TestLan(unittest.TestCase):
@@ -37,10 +39,18 @@ class TestLan(unittest.TestCase):
             datacenter=Datacenter(**cls.resource['datacenter']))
         cls.client.wait_for_completion(cls.datacenter)
 
+        # Create pcc.
+        pcc = PrivateCrossConnect(name="TEST NAME - %s" % uuid.uuid1(), description="TEST DESCRIPTION 1")
+
+        cls.pcc = cls.client.create_pcc(pcc)
+        cls.client.wait_for_completion(cls.pcc)
+
         # Create test LAN.
+        lan_properties = cls.resource['lan']
+        lan_properties['pcc_id'] = cls.pcc['id']
         cls.lan = cls.client.create_lan(
             datacenter_id=cls.datacenter['id'],
-            lan=LAN(**cls.resource['lan']))
+            lan=LAN(**lan_properties))
         cls.client.wait_for_completion(cls.lan)
 
         # Create test server.
@@ -69,6 +79,8 @@ class TestLan(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
+        cls.client.delete_nic(cls.datacenter['id'], cls.server['id'], cls.nic1['id'])
+        cls.client.delete_nic(cls.datacenter['id'], cls.server['id'], cls.nic2['id'])
         cls.client.delete_datacenter(datacenter_id=cls.datacenter['id'])
 
     def test_list_lans(self):
@@ -78,7 +90,7 @@ class TestLan(unittest.TestCase):
         self.assertEqual(lans['items'][0]['type'], 'lan')
         self.assertIn(lans['items'][0]['id'], ('1', '2', '3'))
         self.assertEqual(lans['items'][0]['properties']['name'], self.resource['lan']['name'])
-        self.assertTrue(lans['items'][0]['properties']['public'], self.resource['lan']['public'])
+        self.assertEqual(lans['items'][0]['properties']['public'], self.resource['lan']['public'])
 
     def test_get_lan(self):
         lan = self.client.get_lan(datacenter_id=self.datacenter['id'], lan_id=self.lan['id'])
@@ -86,7 +98,7 @@ class TestLan(unittest.TestCase):
         self.assertEqual(lan['type'], 'lan')
         self.assertEqual(lan['id'], self.lan['id'])
         self.assertEqual(lan['properties']['name'], self.resource['lan']['name'])
-        self.assertTrue(lan['properties']['public'], self.resource['lan']['public'])
+        self.assertEqual(lan['properties']['public'], self.resource['lan']['public'])
 
     def test_remove_lan(self):
         lan = self.client.create_lan(
@@ -141,7 +153,7 @@ class TestLan(unittest.TestCase):
 
         self.assertEqual(response['type'], 'lan')
         self.assertEqual(response['properties']['name'], self.resource['lan']['name'])
-        self.assertTrue(response['properties']['public'])
+        self.assertFalse(response['properties']['public'])
 
     def test_get_lan_members(self):
         members = self.client.get_lan_members(

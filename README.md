@@ -1,7 +1,7 @@
 
 # Python SDK
 
-Version: ionosenterprise-sdk-python **5.2.0**
+Version: ionosenterprise-sdk-python **5.3.0**
 
 ## Table of Contents
 
@@ -1241,6 +1241,7 @@ Pass the object and arguments to `create_lan`:
 | name | no | string | The name of your LAN. |
 | public | **Yes** | bool | Boolean indicating if the LAN faces the public Internet or not. |
 | nics | no | list | One or more NIC IDs attached to the LAN. |
+| pcc | no | string | Unique identifier of the private cross connect the given LAN is connected to if any. |
 
 ---
 
@@ -2482,6 +2483,7 @@ The following table describes the request arguments:
 | node_count | **yes** | int | Number of nodes part of the Node Pool |
 | maintenance_window | no | dict | The time to use for a maintenance window. Accepted formats are: HH:mm:ss; HH:mm:ss"Z"; HH:mm:ssZ. This time may varies by 15 minutes. |
 | auto_scaling | no | dict | The minimum number of worker nodes that the managed node group can scale in. |
+| lan_ids | no | List of ints | Array of additional LANs attached to worker nodes |
 
 Method signature:
 
@@ -2501,7 +2503,8 @@ client.update_k8s_cluster_nodepool(
     maintenance_window={
         'dayOfTheWeek': "Monday",
         'time': '17:00:00'},
-    auto_scaling={'minNodeCount': 2, 'maxNodeCount': 3}
+    auto_scaling={'minNodeCount': 2, 'maxNodeCount': 3},
+    lan_ids=[2, 3]
 )
 ```
 ---
