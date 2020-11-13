@@ -2378,7 +2378,9 @@ The following table describes the request arguments:
 | auto_scaling | no | object | The minimum number of worker nodes that the managed node group can scale in. |
 | lan_ids | no | List of ints | Array of additional LANs attached to worker nodes |
 | labels | no | dict | Map of labels attached to node pool |
-| annotations | dict | int | Map of annotations attached to node pool |
+| annotations | no | dict | Map of annotations attached to node pool |
+| public_ips | no | list | List of IP addresses to be used by nodes |
+
 
 Method signature:
 
@@ -2486,6 +2488,7 @@ The following table describes the request arguments:
 | maintenance_window | no | dict | The time to use for a maintenance window. Accepted formats are: HH:mm:ss; HH:mm:ss"Z"; HH:mm:ssZ. This time may varies by 15 minutes. |
 | auto_scaling | no | dict | The minimum number of worker nodes that the managed node group can scale in. |
 | lan_ids | no | List of ints | Array of additional LANs attached to worker nodes |
+| public_ips | no | list | List of IP addresses to be used by nodes |
 Method signature:
 
 ```python
