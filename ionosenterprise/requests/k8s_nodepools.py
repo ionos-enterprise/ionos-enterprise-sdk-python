@@ -43,7 +43,8 @@ class k8s_nodepools:
 
     def update_k8s_cluster_nodepool(self,
                                     k8s_cluster_id, nodepool_id, node_count,
-                                    maintenance_window=None, auto_scaling=None, lan_ids=None):
+                                    maintenance_window=None, auto_scaling=None, lan_ids=None, public_ips=None):
+
         """
         This will modify the Kubernetes Node Pool.
 
@@ -86,6 +87,12 @@ class k8s_nodepools:
         :param      lan_ids: array of additional LANs attached to worker nodes
         :type       lan_ids: ``list of ints``
 
+        :param      public_ips: Optional array of reserved public IP addresses to be used by the nodes.
+                        IPs must be from same location as the data center used for the node pool.
+                        The array must contain one extra IP than maximum number of nodes could be.
+                        (nodeCount+1 if fixed node amount or maxNodeCount+1 if auto scaling is used).
+                        The extra provided IP Will be used during rebuilding of nodes.
+        :type       public_ips: ``list``
         """
 
         # mandatory fields
@@ -100,6 +107,8 @@ class k8s_nodepools:
             properties['autoScaling'] = auto_scaling
         if lan_ids is not None:
             properties['lans'] = [{'id': int(lan_id)} for lan_id in lan_ids]
+        if public_ips is not None:
+            properties['publicIps'] = public_ips
 
         data = {
             'properties': properties
@@ -139,7 +148,7 @@ class k8s_nodepools:
                                     availability_zone,
                                     storage_type, storage_size,
                                     k8s_version=None, maintenance_window=None, auto_scaling=None,
-                                    lan_ids=None, labels=None, annotations=None):
+                                    lan_ids=None, labels=None, annotations=None, public_ips=None):
         """
         This will create a new Kubernetes Node Pool inside a Kubernetes Cluster.
 
@@ -221,6 +230,12 @@ class k8s_nodepools:
 
         :param      annotations: map of annotations attached to node pool
         :type       annotations: ``dict``
+        :param      public_ips: Optional array of reserved public IP addresses to be used by the nodes.
+                        IPs must be from same location as the data center used for the node pool.
+                        The array must contain one extra IP than maximum number of nodes could be.
+                        (nodeCount+1 if fixed node amount or maxNodeCount+1 if auto scaling is used).
+                        The extra provided IP Will be used during rebuilding of nodes.
+        :type       public_ips: ``list``
         """
 
         # mandatory fields
@@ -249,6 +264,8 @@ class k8s_nodepools:
             properties['labels'] = labels
         if annotations is not None:
             properties['annotations'] = annotations
+        if public_ips is not None:
+            properties['publicIps'] = public_ips
 
         data = {
             'properties': properties
