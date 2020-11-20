@@ -44,6 +44,7 @@ class k8s_nodepools:
     def update_k8s_cluster_nodepool(self,
                                     k8s_cluster_id, nodepool_id, node_count,
                                     maintenance_window=None, auto_scaling=None, lan_ids=None, public_ips=None):
+
         """
         This will modify the Kubernetes Node Pool.
 
