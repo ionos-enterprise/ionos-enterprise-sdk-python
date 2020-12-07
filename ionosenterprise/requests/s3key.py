@@ -1,7 +1,7 @@
-import ionos_cloud_sdk
+import ionossdk
 from coreadaptor.IonosCoreProxy import IonosCoreProxy
-from ionos_cloud_sdk.models.s3_key_properties import S3KeyProperties
-from ionos_cloud_sdk.models.s3_key import S3Key
+from ionossdk.models.s3_key_properties import S3KeyProperties
+from ionossdk.models.s3_key import S3Key
 
 class s3key:
 
@@ -17,7 +17,7 @@ class s3key:
         :type       depth: ``int``
 
         """
-        return self.get_api_instance(ionos_cloud_sdk.UserManagementApi).um_users_s3keys_get_with_http_info(user_id, depth=depth,
+        return self.get_api_instance(ionossdk.UserManagementApi).um_users_s3keys_get_with_http_info(user_id, depth=depth,
                                                                                                      response_type='object')
 
     @IonosCoreProxy.process_response
@@ -29,7 +29,7 @@ class s3key:
         :type       user_id: ``str``
 
         """
-        return self.get_api_instance(ionos_cloud_sdk.UserManagementApi).um_users_s3keys_post_with_http_info(user_id,
+        return self.get_api_instance(ionossdk.UserManagementApi).um_users_s3keys_post_with_http_info(user_id,
                                                                                                       response_type='object')
 
     @IonosCoreProxy.process_response
@@ -47,7 +47,7 @@ class s3key:
         :type       depth: ``int``
 
         """
-        return self.get_api_instance(ionos_cloud_sdk.UserManagementApi).um_users_s3keys_find_by_key_with_http_info(user_id,
+        return self.get_api_instance(ionossdk.UserManagementApi).um_users_s3keys_find_by_key_with_http_info(user_id,
                                                                                                            key_id,
                                                                                                            depth=depth,
                                                                                                            response_type='object')
@@ -75,7 +75,7 @@ class s3key:
 
         s3keyProperties = S3Key(properties = S3KeyProperties(**data))
 
-        return self.get_api_instance(ionos_cloud_sdk.UserManagementApi).um_users_s3keys_put_with_http_info(user_id,
+        return self.get_api_instance(ionossdk.UserManagementApi).um_users_s3keys_put_with_http_info(user_id,
                                                                                                            key_id,
                                                                                                        s3keyProperties,
                                                                                                        response_type='object')
@@ -92,7 +92,7 @@ class s3key:
         :type       key_id: ``str``
 
         """
-        return self.get_api_instance(ionos_cloud_sdk.UserManagementApi).um_users_s3keys_delete_with_http_info(user_id,
+        return self.get_api_instance(ionossdk.UserManagementApi).um_users_s3keys_delete_with_http_info(user_id,
                                                                                                            key_id)
 
     @IonosCoreProxy.process_response
@@ -107,4 +107,4 @@ class s3key:
         :type       depth: ``int``
 
         """
-        return self.get_api_instance(ionos_cloud_sdk.UserManagementApi).um_users_s3ssourl_get_with_http_info(user_id, response_type='object')
+        return self.get_api_instance(ionossdk.UserManagementApi).um_users_s3ssourl_get_with_http_info(user_id, response_type='object')

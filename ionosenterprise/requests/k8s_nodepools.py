@@ -1,4 +1,4 @@
-import ionos_cloud_sdk
+import ionossdk
 from coreadaptor.IonosCoreProxy import IonosCoreProxy
 
 
@@ -16,7 +16,7 @@ class k8s_nodepools:
         :type       nodepool_id: ``str``
 
         """
-        return self.get_api_instance(ionos_cloud_sdk.KubernetesApi).k8s_nodepools_find_by_id_with_http_info(k8s_cluster_id,
+        return self.get_api_instance(ionossdk.KubernetesApi).k8s_nodepools_find_by_id_with_http_info(k8s_cluster_id,
                                                                                                        nodepool_id, response_type='object')
 
     @IonosCoreProxy.process_response
@@ -32,7 +32,7 @@ class k8s_nodepools:
 
         """
 
-        return self.get_api_instance(ionos_cloud_sdk.KubernetesApi).k8s_nodepools_delete_with_http_info(k8s_cluster_id,
+        return self.get_api_instance(ionossdk.KubernetesApi).k8s_nodepools_delete_with_http_info(k8s_cluster_id,
                                                                                                     nodepool_id)
 
     @IonosCoreProxy.process_response
@@ -93,12 +93,12 @@ class k8s_nodepools:
         if public_ips is not None:
             properties['public_ips'] = public_ips
 
-        kubernetesNodePool = ionos_cloud_sdk.models.KubernetesNodePool(
-            properties=ionos_cloud_sdk.models.KubernetesNodePoolProperties(
+        kubernetesNodePool = ionossdk.models.KubernetesNodePool(
+            properties=ionossdk.models.KubernetesNodePoolProperties(
                 **properties
             )
         )
-        return self.get_api_instance(ionos_cloud_sdk.KubernetesApi).k8s_nodepools_put_with_http_info(k8s_cluster_id, nodepool_id, kubernetesNodePool, response_type='object')
+        return self.get_api_instance(ionossdk.KubernetesApi).k8s_nodepools_put_with_http_info(k8s_cluster_id, nodepool_id, kubernetesNodePool, response_type='object')
 
     @IonosCoreProxy.process_response
     def list_k8s_cluster_nodepools(self, k8s_cluster_id, depth=1):
@@ -113,7 +113,7 @@ class k8s_nodepools:
 
         """
 
-        return self.get_api_instance(ionos_cloud_sdk.KubernetesApi).k8s_nodepools_get_with_http_info(k8s_cluster_id, depth=depth, response_type='object')
+        return self.get_api_instance(ionossdk.KubernetesApi).k8s_nodepools_get_with_http_info(k8s_cluster_id, depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
     def create_k8s_cluster_nodepool(self,
@@ -186,12 +186,12 @@ class k8s_nodepools:
         :type       labels: ``dict``
         :param      annotations: map of annotations attached to node pool
         :type       annotations: ``dict``
-        :param      publicIps: Optional array of reserved public IP addresses to be used by the nodes.
+        :param      public_ips: Optional array of reserved public IP addresses to be used by the nodes.
                         IPs must be from same location as the data center used for the node pool.
                         The array must contain one extra IP than maximum number of nodes could be.
                         (nodeCount+1 if fixed node amount or maxNodeCount+1 if auto scaling is used).
                         The extra provided IP Will be used during rebuilding of nodes.
-        :type       publicIps: ``list``
+        :type       public_ips: ``list``
         """
 
         # mandatory fields
@@ -223,10 +223,10 @@ class k8s_nodepools:
         if public_ips is not None:
             properties['public_ips'] = public_ips
 
-        kubernetes_node_pool = ionos_cloud_sdk.models.KubernetesNodePool(
-            properties=ionos_cloud_sdk.models.KubernetesNodePoolProperties(
+        kubernetes_node_pool = ionossdk.models.KubernetesNodePool(
+            properties=ionossdk.models.KubernetesNodePoolProperties(
                 **properties
             )
         )
 
-        return self.get_api_instance(ionos_cloud_sdk.KubernetesApi).k8s_nodepools_post_with_http_info(k8s_cluster_id, kubernetes_node_pool, response_type='object')
+        return self.get_api_instance(ionossdk.KubernetesApi).k8s_nodepools_post_with_http_info(k8s_cluster_id, kubernetes_node_pool, response_type='object')
