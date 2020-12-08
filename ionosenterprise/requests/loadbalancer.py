@@ -109,7 +109,7 @@ class loadbalancer:
         """
 
         return self.get_api_instance(ionossdk.LoadBalancerApi).datacenters_loadbalancers_balancednics_get_with_http_info(
-            datacenter_id, loadbalancer_id, depth=depth)
+            datacenter_id, loadbalancer_id, depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
     def add_loadbalanced_nics(self, datacenter_id,

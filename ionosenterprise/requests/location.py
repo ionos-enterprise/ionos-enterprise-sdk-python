@@ -12,7 +12,7 @@ class location:
         :type       location_id: ``str``
 
         """
-        return self.get_api_instance(ionossdk.LocationApi).locations_find_by_region_with_http_info(location_id, depth=depth, response_type='object')
+        return self.get_api_instance(ionossdk.LocationApi).locations_find_by_region_id_with_http_info(location_id, depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
     def list_locations(self, depth=0):
