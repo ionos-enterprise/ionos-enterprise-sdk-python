@@ -43,7 +43,6 @@ class TestPcc(unittest.TestCase):
 
     def test_list_pccs(self):
         pccs = self.client.list_pccs()
-        print([p['id'] for p in pccs['items']])
         self.assertGreater(len(pccs), 0)
         self.assertGreater(len(pccs['items']), 1)
 

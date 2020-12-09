@@ -100,7 +100,7 @@ class volume:
         :type       depth: ``int``
 
         """
-        return self.get_api_instance(ionossdk.ServerApi).datacenters_servers_volumes_get_with_http_info(datacenter_id, server_id, depth=depth)
+        return self.get_api_instance(ionossdk.ServerApi).datacenters_servers_volumes_get_with_http_info(datacenter_id, server_id, depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
     def get_attached_volume(self, datacenter_id, server_id, volume_id):
@@ -117,7 +117,7 @@ class volume:
         :type       volume_id: ``str``
 
         """
-        return self.get_api_instance(ionossdk.ServerApi).datacenters_servers_volumes_find_by_id_with_http_info(datacenter_id, server_id, volume_id)
+        return self.get_api_instance(ionossdk.ServerApi).datacenters_servers_volumes_find_by_id_with_http_info(datacenter_id, server_id, volume_id, response_type='object')
 
     @IonosCoreProxy.process_response
     def attach_volume(self, datacenter_id, server_id, volume_id):

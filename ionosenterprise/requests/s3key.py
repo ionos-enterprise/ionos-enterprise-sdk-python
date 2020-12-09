@@ -47,7 +47,7 @@ class s3key:
         :type       depth: ``int``
 
         """
-        return self.get_api_instance(ionossdk.UserManagementApi).um_users_s3keys_find_by_key_with_http_info(user_id,
+        return self.get_api_instance(ionossdk.UserManagementApi).um_users_s3keys_find_by_key_id_with_http_info(user_id,
                                                                                                            key_id,
                                                                                                            depth=depth,
                                                                                                            response_type='object')
