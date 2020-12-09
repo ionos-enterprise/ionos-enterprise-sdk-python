@@ -46,9 +46,6 @@ class TestShare(unittest.TestCase):
         cls.share_1 = cls.client.add_share(cls.group['id'], cls.datacenter['id'])
         cls.client.wait_for_completion(cls.share_1)
 
-        cls.share_2 = cls.client.add_share(cls.group['id'], cls.datacenter['id'])
-        cls.client.wait_for_completion(cls.share_2)
-
     @classmethod
     def tearDownClass(cls):
         cls.client.delete_datacenter(cls.datacenter['id'])

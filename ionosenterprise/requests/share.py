@@ -35,7 +35,7 @@ class share:
 
         """
 
-        return self.get_api_instance(ionossdk.UserManagementApi).um_groups_shares_find_by_resource_with_http_info(
+        return self.get_api_instance(ionossdk.UserManagementApi).um_groups_shares_find_by_resource_id_with_http_info(
             group_id, resource_id, depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
