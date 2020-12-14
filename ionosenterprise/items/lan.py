@@ -3,7 +3,7 @@ class LAN(object):
     This is the main class for managing LAN resources.
     """
 
-    def __init__(self, name=None, public=None, nics=None, pcc=None):
+    def __init__(self, name=None, public=None, nics=None, pcc_id=None):
         """
         LAN class initializer.
 
@@ -16,8 +16,8 @@ class LAN(object):
         :param      nics: A list of NICs
         :type       nics: ``list``
 
-        :param      pcc: Unique identifier of the private cross connect the given LAN is connected to if any
-        :type       pcc: ``str``
+        :param      pcc_id: Unique identifier of the private cross connect the given LAN is connected to if any
+        :type       pcc_id: ``str``
 
         """
         if nics is None:
@@ -25,8 +25,8 @@ class LAN(object):
         self.name = name
         self.public = public
         self.nics = nics
-        self.pcc = pcc
+        self.pcc = pcc_id
 
     def __repr__(self):
-        return (('<LAN: name=%s, public=%s, nics=%s, pcc=%s> ...>')
+        return (('<LAN: name=%s, public=%s, nics=%s, pcc_id=%s> ...>')
                 % (self.name, str(self.public), str(self.nics), str(self.pcc)))

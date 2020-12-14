@@ -1,7 +1,7 @@
 
 # Python SDK
 
-Version: ionosenterprise-sdk-python **5.2.0**
+Version: ionosenterprise-sdk-python **5.4.0**
 
 ## Notice - this fork of Python SDK is highly EXPERIMENTAL and should be used only for testing purposes not on production environments. A production ready version can be found at https://github.com/ionos-enterprise/ionos-enterprise-sdk-python. 
 
@@ -2489,6 +2489,7 @@ The following table describes the request arguments:
 | auto_scaling | no | dict | The minimum number of worker nodes that the managed node group can scale in. |
 | lan_ids | no | List of ints | Array of additional LANs attached to worker nodes |
 | public_ips | no | list | List of IP addresses to be used by nodes |
+
 Method signature:
 
 ```python
@@ -2508,7 +2509,7 @@ client.update_k8s_cluster_nodepool(
         'dayOfTheWeek': "Monday",
         'time': '17:00:00'},
     auto_scaling={'minNodeCount': 2, 'maxNodeCount': 3},
-    lan_ids=[2,3]
+    lan_ids=[2, 3]
 )
 ```
 ---

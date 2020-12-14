@@ -21,6 +21,7 @@ from ionosenterprise.errors import ICNotFoundError
 
 from helpers import configuration
 from helpers.resources import resource
+
 import warnings
 import uuid
 
@@ -47,7 +48,7 @@ class TestLan(unittest.TestCase):
 
         # Create test LAN.
         lan_properties = cls.resource['lan']
-        lan_properties['pcc'] = cls.pcc['id']
+        lan_properties['pcc_id'] = cls.pcc['id']
         cls.lan = cls.client.create_lan(
             datacenter_id=cls.datacenter['id'],
             lan=LAN(**lan_properties))
@@ -81,7 +82,7 @@ class TestLan(unittest.TestCase):
     def tearDownClass(cls):
         cls.client.delete_nic(cls.datacenter['id'], cls.server['id'], cls.nic1['id'])
         cls.client.delete_nic(cls.datacenter['id'], cls.server['id'], cls.nic2['id'])
-        cls.client.delete_datacenter(cls.datacenter['id'])
+        cls.client.delete_datacenter(datacenter_id=cls.datacenter['id'])
 
     def test_list_lans(self):
         lans = self.client.list_lans(datacenter_id=self.datacenter['id'])
@@ -90,7 +91,7 @@ class TestLan(unittest.TestCase):
         self.assertEqual(lans['items'][0]['type'], 'lan')
         self.assertIn(lans['items'][0]['id'], ('1', '2', '3'))
         self.assertEqual(lans['items'][0]['properties']['name'], self.resource['lan']['name'])
-        self.assertFalse(lans['items'][0]['properties']['public'], self.resource['lan']['public'])
+        self.assertEqual(lans['items'][0]['properties']['public'], self.resource['lan']['public'])
 
     def test_get_lan(self):
         lan = self.client.get_lan(datacenter_id=self.datacenter['id'], lan_id=self.lan['id'])
@@ -98,7 +99,7 @@ class TestLan(unittest.TestCase):
         self.assertEqual(lan['type'], 'lan')
         self.assertEqual(lan['id'], self.lan['id'])
         self.assertEqual(lan['properties']['name'], self.resource['lan']['name'])
-        self.assertFalse(lan['properties']['public'], self.resource['lan']['public'])
+        self.assertEqual(lan['properties']['public'], self.resource['lan']['public'])
 
     def test_remove_lan(self):
         lan = self.client.create_lan(

@@ -56,6 +56,23 @@ class TestK8sNodepools(unittest.TestCase):
             **cls.resource['k8s_nodepool']
         )
 
+        # Wait for k8s cluster nodepool 1 to be active
+        cls.client.wait_for(
+            fn_request=lambda: cls.client.get_k8s_cluster_nodepool(cls.k8s_cluster['id'], cls.k8s_cluster_nodepool1['id']),
+            fn_check=lambda r: r['metadata']['state'] == 'ACTIVE',
+            scaleup=10000
+        )
+
+        # Wait for k8s cluster nodepool 2 to be active
+        cls.client.wait_for(
+            fn_request=lambda: cls.client.get_k8s_cluster_nodepool(cls.k8s_cluster['id'], cls.k8s_cluster_nodepool2['id']),
+            fn_check=lambda r: r['metadata']['state'] == 'ACTIVE',
+            scaleup=10000
+        )
+
+
+
+
     @classmethod
     def tearDownClass(cls):
         cls.client.delete_k8s_cluster_nodepool(cls.k8s_cluster['id'], cls.k8s_cluster_nodepool1['id'])
