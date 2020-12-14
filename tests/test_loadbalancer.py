@@ -109,10 +109,6 @@ class TestLoadBalancer(unittest.TestCase):
             datacenter_id=self.datacenter['id'])
 
         self.assertGreater(len(loadbalancers), 0)
-        self.assertIn(loadbalancers['items'][0]['id'],
-                      (self.loadbalancer['id'],
-                       self.loadbalancer2['id'],
-                       self.loadbalancer3['id']))
         self.assertEqual(loadbalancers['items'][0]['type'], 'loadbalancer')
 
     def test_get_loadbalancer(self):
@@ -180,7 +176,6 @@ class TestLoadBalancer(unittest.TestCase):
             datacenter_id=self.datacenter['id'],
             loadbalancer_id=self.loadbalancer['id']
         )
-
         self.assertGreater(len(balanced_nics['items']), 0)
         self.assertEqual(balanced_nics['items'][0]['id'], self.nic1['id'])
         self.assertEqual(balanced_nics['items'][0]['type'], 'nic')

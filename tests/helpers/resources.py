@@ -75,7 +75,7 @@ def resource():
         },
         'volume': {
             'name': 'Python SDK Test',
-            'size': 2,
+            'size': 3,
             'bus': 'VIRTIO',
             'disk_type': 'HDD',
             'licence_type': 'UNKNOWN',
@@ -83,7 +83,7 @@ def resource():
         },
         'volume2': {
             'name': 'Python SDK Test',
-            'size': 2,
+            'size': 3,
             'bus': 'VIRTIO',
             'disk_type': 'HDD',
             'availability_zone': 'ZONE_3',

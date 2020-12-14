@@ -1,4 +1,4 @@
-import ionos_cloud_sdk
+import ionossdk
 from coreadaptor.IonosCoreProxy import IonosCoreProxy
 
 class volume:
@@ -15,7 +15,7 @@ class volume:
         :type       volume_id: ``str``
 
         """
-        return self.get_api_instance(ionos_cloud_sdk.VolumeApi).datacenters_volumes_find_by_id_with_http_info(datacenter_id, volume_id, response_type='object')
+        return self.get_api_instance(ionossdk.VolumeApi).datacenters_volumes_find_by_id_with_http_info(datacenter_id, volume_id, response_type='object')
 
     @IonosCoreProxy.process_response
     def list_volumes(self, datacenter_id, depth=1):
@@ -29,7 +29,7 @@ class volume:
         :type       depth: ``int``
 
         """
-        return self.get_api_instance(ionos_cloud_sdk.VolumeApi).datacenters_volumes_get_with_http_info(datacenter_id, depth=depth, response_type='object')
+        return self.get_api_instance(ionossdk.VolumeApi).datacenters_volumes_get_with_http_info(datacenter_id, depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
     def delete_volume(self, datacenter_id, volume_id):
@@ -43,7 +43,7 @@ class volume:
         :type       volume_id: ``str``
 
         """
-        return self.get_api_instance(ionos_cloud_sdk.VolumeApi).datacenters_volumes_delete_with_http_info(datacenter_id, volume_id)
+        return self.get_api_instance(ionossdk.VolumeApi).datacenters_volumes_delete_with_http_info(datacenter_id, volume_id)
 
 
     @IonosCoreProxy.process_response
@@ -59,11 +59,11 @@ class volume:
 
         """
 
-        ionos_cloud_sdk.models.VolumeProperties
-        volume = ionos_cloud_sdk.models.Volume(
+        ionossdk.models.VolumeProperties
+        volume = ionossdk.models.Volume(
             **self._create_volume_dict(volume)
         )
-        return self.get_api_instance(ionos_cloud_sdk.VolumeApi).datacenters_volumes_post_with_http_info(datacenter_id, volume)
+        return self.get_api_instance(ionossdk.VolumeApi).datacenters_volumes_post_with_http_info(datacenter_id, volume)
 
     @IonosCoreProxy.process_response
     def update_volume(self, datacenter_id, volume_id, **kwargs):
@@ -82,8 +82,8 @@ class volume:
         for attr, value in kwargs.items():
             data[self._underscore_to_camelcase(attr)] = value
 
-        volume = ionos_cloud_sdk.models.VolumeProperties(**data)
-        return self.get_api_instance(ionos_cloud_sdk.VolumeApi).datacenters_volumes_patch_with_http_info(datacenter_id, volume_id, volume)
+        volume = ionossdk.models.VolumeProperties(**data)
+        return self.get_api_instance(ionossdk.VolumeApi).datacenters_volumes_patch_with_http_info(datacenter_id, volume_id, volume)
 
     @IonosCoreProxy.process_response
     def get_attached_volumes(self, datacenter_id, server_id, depth=1):
@@ -100,7 +100,7 @@ class volume:
         :type       depth: ``int``
 
         """
-        return self.get_api_instance(ionos_cloud_sdk.ServerApi).datacenters_servers_volumes_get_with_http_info(datacenter_id, server_id, depth=depth)
+        return self.get_api_instance(ionossdk.ServerApi).datacenters_servers_volumes_get_with_http_info(datacenter_id, server_id, depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
     def get_attached_volume(self, datacenter_id, server_id, volume_id):
@@ -117,7 +117,7 @@ class volume:
         :type       volume_id: ``str``
 
         """
-        return self.get_api_instance(ionos_cloud_sdk.ServerApi).datacenters_servers_volumes_find_by_id_with_http_info(datacenter_id, server_id, volume_id)
+        return self.get_api_instance(ionossdk.ServerApi).datacenters_servers_volumes_find_by_id_with_http_info(datacenter_id, server_id, volume_id, response_type='object')
 
     @IonosCoreProxy.process_response
     def attach_volume(self, datacenter_id, server_id, volume_id):
@@ -134,10 +134,10 @@ class volume:
         :type       volume_id: ``str``
 
         """
-        volume = ionos_cloud_sdk.models.Volume(
+        volume = ionossdk.models.Volume(
             id=volume_id
         )
-        return self.get_api_instance(ionos_cloud_sdk.ServerApi).datacenters_servers_volumes_post_with_http_info(datacenter_id, server_id,
+        return self.get_api_instance(ionossdk.ServerApi).datacenters_servers_volumes_post_with_http_info(datacenter_id, server_id,
                                                                                          volume)
 
     @IonosCoreProxy.process_response
@@ -155,4 +155,4 @@ class volume:
         :type       volume_id: ``str``
 
         """
-        return self.get_api_instance(ionos_cloud_sdk.ServerApi).datacenters_servers_volumes_delete_with_http_info(datacenter_id, server_id, volume_id)
+        return self.get_api_instance(ionossdk.ServerApi).datacenters_servers_volumes_delete_with_http_info(datacenter_id, server_id, volume_id)

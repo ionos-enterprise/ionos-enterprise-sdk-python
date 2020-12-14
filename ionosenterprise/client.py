@@ -20,7 +20,7 @@ import re
 import time
 import requests
 import six
-import ionos_cloud_sdk
+import ionossdk
 from coreadaptor.IonosCoreProxy import IonosCoreProxy
 
 try:
@@ -229,7 +229,7 @@ class IonosEnterpriseService(IonosEnterpriseRequests):
         :type       scaleup: ``int``
 
         """
-        ionos_cloud_sdk.api_client.ApiClient.wait_for(fn_check, fn_request, timeout, initial_wait, scaleup, console_print)
+        ionossdk.api_client.ApiClient.wait_for(fn_check, fn_request, timeout, initial_wait, scaleup, console_print)
 
     @IonosCoreProxy.cast_exceptions
     def wait_for_completion(self, response, timeout=3600, initial_wait=5, scaleup=10):
@@ -250,7 +250,6 @@ class IonosEnterpriseService(IonosEnterpriseRequests):
 
         """
         if 'requestId' in response:
-            print("WAAAAAAAAAAAAAA")
             self.get_api_client().wait_for_completion(response['requestId'], timeout, initial_wait, scaleup)
 
     def _wrapped_request(self, method, url,

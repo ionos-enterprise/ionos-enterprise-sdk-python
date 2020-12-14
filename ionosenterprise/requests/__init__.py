@@ -24,7 +24,7 @@ from .pccs import pccs
 from .backupunit import backupunit
 from .s3key import s3key
 from coreadaptor.AuthAdaptor import AuthAdaptor
-
+from ionosenterprise import __version__
 
 class IonosEnterpriseRequests(
     dicts,
@@ -54,7 +54,9 @@ class IonosEnterpriseRequests(
     s3key
 ):
     def get_api_client(self):
-        return AuthAdaptor(self.username, self.password).get_api_client()
+        auth_adaptor = AuthAdaptor(self.username, self.password).get_api_client()
+        auth_adaptor.user_agent = "ionos-cloud-sdk-python-compat/%s" % __version__
+        return auth_adaptor
 
     def get_api_instance(self, apiClass):
         return apiClass(self.get_api_client())

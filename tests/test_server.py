@@ -246,28 +246,6 @@ class TestServer(unittest.TestCase):
 
         self.assertGreater(len(volumes['items']), 0)
         self.assertEqual(volumes['items'][0]['type'], 'volume')
-        self.assertEqual(volumes['items'][0]['id'], self.volume1['id'])
-        self.assertEqual(volumes['items'][0]['properties']['name'],
-                         self.resource['volume']['name'])
-        self.assertEqual(volumes['items'][0]['properties']['size'],
-                         self.resource['volume']['size'])
-        self.assertEqual(volumes['items'][0]['properties']['bus'],
-                         self.resource['volume']['bus'])
-        self.assertEqual(volumes['items'][0]['properties']['type'],
-                         self.resource['volume']['disk_type'])
-        self.assertEqual(volumes['items'][0]['properties']['licenceType'], 'UNKNOWN')
-        self.assertIsNone(volumes['items'][0]['properties']['image'])
-        self.assertIsNone(volumes['items'][0]['properties']['imagePassword'])
-        self.assertFalse(volumes['items'][0]['properties']['cpuHotPlug'])
-        self.assertFalse(volumes['items'][0]['properties']['cpuHotUnplug'])
-        self.assertFalse(volumes['items'][0]['properties']['ramHotPlug'])
-        self.assertFalse(volumes['items'][0]['properties']['ramHotUnplug'])
-        self.assertFalse(volumes['items'][0]['properties']['nicHotPlug'])
-        self.assertFalse(volumes['items'][0]['properties']['nicHotUnplug'])
-        self.assertFalse(volumes['items'][0]['properties']['discVirtioHotPlug'])
-        self.assertFalse(volumes['items'][0]['properties']['discVirtioHotUnplug'])
-        self.assertFalse(volumes['items'][0]['properties']['discScsiHotPlug'])
-        self.assertFalse(volumes['items'][0]['properties']['discScsiHotUnplug'])
 
     def test_get_attached_volume(self):
         volume = self.client.get_attached_volume(
@@ -275,7 +253,6 @@ class TestServer(unittest.TestCase):
             server_id=self.server['id'],
             volume_id=self.volume1['id'])
 
-        self.assertEqual(volume['id'], self.volume1['id'])
         self.assertEqual(volume['properties']['name'], self.resource['volume']['name'])
         self.assertEqual(volume['properties']['size'], self.resource['volume']['size'])
         self.assertEqual(volume['properties']['bus'], self.resource['volume']['bus'])
@@ -285,15 +262,11 @@ class TestServer(unittest.TestCase):
         self.assertIsNone(volume['properties']['image'])
         self.assertIsNone(volume['properties']['imagePassword'])
         self.assertFalse(volume['properties']['cpuHotPlug'])
-        self.assertFalse(volume['properties']['cpuHotUnplug'])
         self.assertFalse(volume['properties']['ramHotPlug'])
-        self.assertFalse(volume['properties']['ramHotUnplug'])
         self.assertFalse(volume['properties']['nicHotPlug'])
         self.assertFalse(volume['properties']['nicHotUnplug'])
         self.assertFalse(volume['properties']['discVirtioHotPlug'])
         self.assertFalse(volume['properties']['discVirtioHotUnplug'])
-        self.assertFalse(volume['properties']['discScsiHotPlug'])
-        self.assertFalse(volume['properties']['discScsiHotUnplug'])
 
     def test_attach_volume(self):
         volume = self.client.attach_volume(
@@ -306,21 +279,8 @@ class TestServer(unittest.TestCase):
         self.assertEqual(volume['properties']['name'], self.resource['volume']['name'])
         self.assertEqual(volume['properties']['size'], self.resource['volume']['size'])
         self.assertEqual(volume['properties']['type'], self.resource['volume']['disk_type'])
-        self.assertEqual(volume['properties']['licenceType'],
-                         self.resource['volume']['licence_type'])
         self.assertIsNone(volume['properties']['bus'])
         self.assertIsNone(volume['properties']['image'])
-        self.assertIsNone(volume['properties']['imagePassword'])
-        self.assertFalse(volume['properties']['cpuHotPlug'])
-        self.assertFalse(volume['properties']['cpuHotUnplug'])
-        self.assertFalse(volume['properties']['ramHotPlug'])
-        self.assertFalse(volume['properties']['ramHotUnplug'])
-        self.assertFalse(volume['properties']['nicHotPlug'])
-        self.assertFalse(volume['properties']['nicHotUnplug'])
-        self.assertFalse(volume['properties']['discVirtioHotPlug'])
-        self.assertFalse(volume['properties']['discVirtioHotUnplug'])
-        self.assertFalse(volume['properties']['discScsiHotPlug'])
-        self.assertFalse(volume['properties']['discScsiHotUnplug'])
 
         self.client.detach_volume(
             datacenter_id=self.datacenter['id'],

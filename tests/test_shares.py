@@ -40,15 +40,11 @@ class TestShare(unittest.TestCase):
         cls.client.wait_for_completion(cls.datacenter)
 
         # Create test group.
-        cls.group = cls.client.create_group(
-            datacenter=Group(**cls.resource['datacenter']))
+        cls.group = cls.client.create_group(Group(**cls.resource['group']))
         cls.client.wait_for_completion(cls.group)
 
         cls.share_1 = cls.client.add_share(cls.group['id'], cls.datacenter['id'])
         cls.client.wait_for_completion(cls.share_1)
-
-        cls.share_2 = cls.client.add_share(cls.group['id'], cls.datacenter['id'])
-        cls.client.wait_for_completion(cls.share_2)
 
     @classmethod
     def tearDownClass(cls):

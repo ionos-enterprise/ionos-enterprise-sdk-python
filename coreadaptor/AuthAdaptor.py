@@ -1,4 +1,4 @@
-import ionos_cloud_sdk
+import ionossdk
 
 class AuthAdaptor:
     def __init__(self, username, password):
@@ -6,7 +6,7 @@ class AuthAdaptor:
         self.password = password
 
     def get_api_client(self):
-        return ionos_cloud_sdk.ApiClient(ionos_cloud_sdk.Configuration(
+        return ionossdk.ApiClient(ionossdk.Configuration(
             username = self.username,
             password = self.password
         ))

@@ -1,4 +1,4 @@
-import ionos_cloud_sdk
+import ionossdk
 from coreadaptor.IonosCoreProxy import IonosCoreProxy
 
 
@@ -13,7 +13,7 @@ class k8s:
 
         """
 
-        return self.get_api_instance(ionos_cloud_sdk.KubernetesApi).k8s_find_by_clusterid_with_http_info(k8s_cluster_id, response_type='object')
+        return self.get_api_instance(ionossdk.KubernetesApi).k8s_find_by_clusterid_with_http_info(k8s_cluster_id, response_type='object')
 
     @IonosCoreProxy.process_response
     def list_k8s_clusters(self, depth=1):
@@ -24,7 +24,7 @@ class k8s:
         :type       depth: ``int``
 
         """
-        return self.get_api_instance(ionos_cloud_sdk.KubernetesApi).k8s_get_with_http_info(depth=depth, response_type='object')
+        return self.get_api_instance(ionossdk.KubernetesApi).k8s_get_with_http_info(depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
     def create_k8s_cluster(self, name):
@@ -41,12 +41,12 @@ class k8s:
 
         """
 
-        kubernetesCluster = ionos_cloud_sdk.models.KubernetesCluster(
+        kubernetesCluster = ionossdk.models.KubernetesCluster(
             properties={
                 'name': name
             }
         )
-        return self.get_api_instance(ionos_cloud_sdk.KubernetesApi).k8s_post_with_http_info(kubernetesCluster, response_type='object')
+        return self.get_api_instance(ionossdk.KubernetesApi).k8s_post_with_http_info(kubernetesCluster, response_type='object')
 
     @IonosCoreProxy.process_response
     def delete_k8s_cluster(self, k8s_cluster_id):
@@ -58,7 +58,7 @@ class k8s:
 
         """
 
-        return self.get_api_instance(ionos_cloud_sdk.KubernetesApi).k8s_delete_with_http_info(k8s_cluster_id)
+        return self.get_api_instance(ionossdk.KubernetesApi).k8s_delete_with_http_info(k8s_cluster_id)
 
     @IonosCoreProxy.process_response
     def update_k8s_cluster(self, k8s_cluster_id, **kwargs):
@@ -75,7 +75,7 @@ class k8s:
         for attr, value in kwargs.items():
             data[self._underscore_to_camelcase(attr)] = value
 
-        kubernetesCluster = ionos_cloud_sdk.models.KubernetesCluster(
+        kubernetesCluster = ionossdk.models.KubernetesCluster(
             properties=data
         )
-        return self.get_api_instance(ionos_cloud_sdk.KubernetesApi).k8s_put_with_http_info(k8s_cluster_id, kubernetesCluster, response_type='object')
+        return self.get_api_instance(ionossdk.KubernetesApi).k8s_put_with_http_info(k8s_cluster_id, kubernetesCluster, response_type='object')
