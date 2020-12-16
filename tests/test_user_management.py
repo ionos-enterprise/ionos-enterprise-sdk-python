@@ -332,9 +332,7 @@ class TestUserManagement(unittest.TestCase):
     def test_list_image_resources(self):
         resources = self.client.list_resources(resource_type='image')
 
-        self.assertGreater(len(resources['items']), 0)
         self.assertEqual(resources['id'], 'resources')
-        self.assertEqual(resources['items'][0]['type'], 'image')
 
     def test_list_snapshot_resources(self):
         resources = self.client.list_resources(resource_type='snapshot')
