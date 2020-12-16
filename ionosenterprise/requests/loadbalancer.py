@@ -1,4 +1,4 @@
-import ionossdk
+import ionoscloud
 from coreadaptor.IonosCoreProxy import IonosCoreProxy
 
 
@@ -15,7 +15,7 @@ class loadbalancer:
         :type       loadbalancer_id: ``str``
 
         """
-        return self.get_api_instance(ionossdk.LoadBalancerApi).datacenters_loadbalancers_find_by_id_with_http_info(
+        return self.get_api_instance(ionoscloud.LoadBalancerApi).datacenters_loadbalancers_find_by_id_with_http_info(
             datacenter_id, loadbalancer_id, response_type='object')
 
     @IonosCoreProxy.process_response
@@ -30,7 +30,7 @@ class loadbalancer:
         :type       depth: ``int``
 
         """
-        return self.get_api_instance(ionossdk.LoadBalancerApi).datacenters_loadbalancers_get_with_http_info(
+        return self.get_api_instance(ionoscloud.LoadBalancerApi).datacenters_loadbalancers_get_with_http_info(
             datacenter_id, depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
@@ -46,7 +46,7 @@ class loadbalancer:
 
         """
 
-        return self.get_api_instance(ionossdk.LoadBalancerApi).datacenters_loadbalancers_delete_with_http_info(
+        return self.get_api_instance(ionoscloud.LoadBalancerApi).datacenters_loadbalancers_delete_with_http_info(
             datacenter_id, loadbalancer_id)
 
     @IonosCoreProxy.process_response
@@ -62,10 +62,10 @@ class loadbalancer:
 
         """
 
-        loadbalancer = ionossdk.models.Loadbalancer(
+        loadbalancer = ionoscloud.models.Loadbalancer(
             **self._create_loadbalancer_dict(loadbalancer)
         )
-        return self.get_api_instance(ionossdk.LoadBalancerApi).datacenters_loadbalancers_post_with_http_info(datacenter_id, loadbalancer)
+        return self.get_api_instance(ionoscloud.LoadBalancerApi).datacenters_loadbalancers_post_with_http_info(datacenter_id, loadbalancer)
 
     @IonosCoreProxy.process_response
     def update_loadbalancer(self, datacenter_id,
@@ -85,10 +85,10 @@ class loadbalancer:
         for attr, value in kwargs.items():
             data[self._underscore_to_camelcase(attr)] = value
 
-        loadbalancer = ionossdk.models.LoadbalancerProperties(
+        loadbalancer = ionoscloud.models.LoadbalancerProperties(
             **kwargs
         )
-        return self.get_api_instance(ionossdk.LoadBalancerApi).datacenters_loadbalancers_patch_with_http_info(
+        return self.get_api_instance(ionoscloud.LoadBalancerApi).datacenters_loadbalancers_patch_with_http_info(
             datacenter_id, loadbalancer_id, loadbalancer)
 
     @IonosCoreProxy.process_response
@@ -108,7 +108,7 @@ class loadbalancer:
 
         """
 
-        return self.get_api_instance(ionossdk.LoadBalancerApi).datacenters_loadbalancers_balancednics_get_with_http_info(
+        return self.get_api_instance(ionoscloud.LoadBalancerApi).datacenters_loadbalancers_balancednics_get_with_http_info(
             datacenter_id, loadbalancer_id, depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
@@ -128,10 +128,10 @@ class loadbalancer:
 
         """
 
-        nic = ionossdk.models.Nic(
+        nic = ionoscloud.models.Nic(
             id = nic_id
         )
-        return self.get_api_instance(ionossdk.LoadBalancerApi).datacenters_loadbalancers_balancednics_post_with_http_info(
+        return self.get_api_instance(ionoscloud.LoadBalancerApi).datacenters_loadbalancers_balancednics_post_with_http_info(
             datacenter_id, loadbalancer_id, nic)
 
     @IonosCoreProxy.process_response
@@ -154,7 +154,7 @@ class loadbalancer:
 
         """
 
-        return self.get_api_instance(ionossdk.LoadBalancerApi).datacenters_loadbalancers_balancednics_find_by_nic_id_with_http_info(
+        return self.get_api_instance(ionoscloud.LoadBalancerApi).datacenters_loadbalancers_balancednics_find_by_nic_id_with_http_info(
             datacenter_id, loadbalancer_id, nic_id, depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
@@ -175,5 +175,5 @@ class loadbalancer:
         """
 
         return self.get_api_instance(
-            ionossdk.LoadBalancerApi).datacenters_loadbalancers_balancednics_delete_with_http_info(
+            ionoscloud.LoadBalancerApi).datacenters_loadbalancers_balancednics_delete_with_http_info(
             datacenter_id, loadbalancer_id, nic_id)

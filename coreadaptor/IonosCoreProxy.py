@@ -1,4 +1,4 @@
-from ionossdk.exceptions import ApiException, ApiTimeout, ApiFailedRequest
+from ionoscloud.exceptions import ApiException, ApiTimeout, ApiFailedRequest
 from ionosenterprise.errors import (
     ICNotAuthorizedError,
     ICNotFoundError,

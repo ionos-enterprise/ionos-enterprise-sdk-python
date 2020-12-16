@@ -1,4 +1,4 @@
-import ionossdk
+import ionoscloud
 from coreadaptor.IonosCoreProxy import IonosCoreProxy
 
 class snapshot:
@@ -13,7 +13,7 @@ class snapshot:
 
         """
 
-        return self.get_api_instance(ionossdk.SnapshotApi).snapshots_find_by_id_with_http_info(snapshot_id, response_type='object')
+        return self.get_api_instance(ionoscloud.SnapshotApi).snapshots_find_by_id_with_http_info(snapshot_id, response_type='object')
 
     @IonosCoreProxy.process_response
     def list_snapshots(self, depth=1):
@@ -22,7 +22,7 @@ class snapshot:
 
         """
 
-        return self.get_api_instance(ionossdk.SnapshotApi).snapshots_get_with_http_info(depth=depth, response_type='object')
+        return self.get_api_instance(ionoscloud.SnapshotApi).snapshots_get_with_http_info(depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
     def delete_snapshot(self, snapshot_id):
@@ -34,7 +34,7 @@ class snapshot:
 
         """
 
-        return self.get_api_instance(ionossdk.SnapshotApi).snapshots_delete_with_http_info(snapshot_id)
+        return self.get_api_instance(ionoscloud.SnapshotApi).snapshots_delete_with_http_info(snapshot_id)
 
     @IonosCoreProxy.process_response
     def update_snapshot(self, snapshot_id, **kwargs):
@@ -45,8 +45,8 @@ class snapshot:
         :type       snapshot_id: ``str``
         """
 
-        snapshot = ionossdk.models.SnapshotProperties(**kwargs)
-        return self.get_api_instance(ionossdk.SnapshotApi).snapshots_patch_with_http_info(snapshot_id, snapshot, response_type='object')
+        snapshot = ionoscloud.models.SnapshotProperties(**kwargs)
+        return self.get_api_instance(ionoscloud.SnapshotApi).snapshots_patch_with_http_info(snapshot_id, snapshot, response_type='object')
 
     @IonosCoreProxy.process_response
     def create_snapshot(self, datacenter_id, volume_id,
@@ -68,7 +68,7 @@ class snapshot:
 
         """
 
-        return self.get_api_instance(ionossdk.VolumeApi)\
+        return self.get_api_instance(ionoscloud.VolumeApi)\
             .datacenters_volumes_create_snapshot_post_with_http_info(
             datacenter_id, volume_id, name=name, description=description, response_type='object')
 
@@ -88,7 +88,7 @@ class snapshot:
 
         """
 
-        return self.get_api_instance(ionossdk.VolumeApi).datacenters_volumes_restore_snapshot_post_with_http_info(
+        return self.get_api_instance(ionoscloud.VolumeApi).datacenters_volumes_restore_snapshot_post_with_http_info(
             datacenter_id, volume_id, snapshot_id = snapshot_id)
 
     @IonosCoreProxy.process_response
@@ -102,4 +102,4 @@ class snapshot:
 
         """
 
-        return self.get_api_instance(ionossdk.SnapshotApi).snapshots_delete_with_http_info(snapshot_id)
+        return self.get_api_instance(ionoscloud.SnapshotApi).snapshots_delete_with_http_info(snapshot_id)

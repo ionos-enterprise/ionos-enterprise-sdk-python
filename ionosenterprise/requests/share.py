@@ -1,4 +1,4 @@
-import ionossdk
+import ionoscloud
 from coreadaptor.IonosCoreProxy import IonosCoreProxy
 
 
@@ -16,7 +16,7 @@ class share:
 
         """
 
-        return self.get_api_instance(ionossdk.UserManagementApi).um_groups_shares_get_with_http_info(
+        return self.get_api_instance(ionoscloud.UserManagementApi).um_groups_shares_get_with_http_info(
             group_id, depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
@@ -35,7 +35,7 @@ class share:
 
         """
 
-        return self.get_api_instance(ionossdk.UserManagementApi).um_groups_shares_find_by_resource_id_with_http_info(
+        return self.get_api_instance(ionoscloud.UserManagementApi).um_groups_shares_find_by_resource_id_with_http_info(
             group_id, resource_id, depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
@@ -55,11 +55,11 @@ class share:
         for attr, value in kwargs.items():
             properties[self._underscore_to_camelcase(attr)] = value
 
-        resource = ionossdk.models.GroupShare(
+        resource = ionoscloud.models.GroupShare(
             properties=properties
         )
 
-        return self.get_api_instance(ionossdk.UserManagementApi).um_groups_shares_post_with_http_info(
+        return self.get_api_instance(ionoscloud.UserManagementApi).um_groups_shares_post_with_http_info(
             group_id, resource_id, resource, response_type='object')
 
     @IonosCoreProxy.process_response
@@ -79,10 +79,10 @@ class share:
         for attr, value in kwargs.items():
             properties[self._underscore_to_camelcase(attr)] = value
 
-        group_share = ionossdk.models.GroupShare(
+        group_share = ionoscloud.models.GroupShare(
             properties=properties
         )
-        return self.get_api_instance(ionossdk.UserManagementApi).um_groups_shares_put_with_http_info(
+        return self.get_api_instance(ionoscloud.UserManagementApi).um_groups_shares_put_with_http_info(
             group_id, resource_id, group_share, response_type='object')
 
     @IonosCoreProxy.process_response
@@ -98,5 +98,5 @@ class share:
 
         """
 
-        return self.get_api_instance(ionossdk.UserManagementApi).um_groups_shares_delete_with_http_info(
+        return self.get_api_instance(ionoscloud.UserManagementApi).um_groups_shares_delete_with_http_info(
             group_id, resource_id)

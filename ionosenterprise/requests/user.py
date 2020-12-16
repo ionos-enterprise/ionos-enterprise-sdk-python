@@ -1,4 +1,4 @@
-import ionossdk
+import ionoscloud
 from coreadaptor.IonosCoreProxy import IonosCoreProxy
 
 
@@ -14,7 +14,7 @@ class user:
 
         """
 
-        return self.get_api_instance(ionossdk.UserManagementApi).um_users_get_with_http_info(depth=depth, response_type='object')
+        return self.get_api_instance(ionoscloud.UserManagementApi).um_users_get_with_http_info(depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
     def get_user(self, user_id, depth=1):
@@ -29,7 +29,7 @@ class user:
 
         """
 
-        return self.get_api_instance(ionossdk.UserManagementApi).um_users_find_by_id_with_http_info(user_id, depth=depth, response_type='object')
+        return self.get_api_instance(ionoscloud.UserManagementApi).um_users_find_by_id_with_http_info(user_id, depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
     def create_user(self, user):
@@ -42,10 +42,10 @@ class user:
         """
         data = self._create_user_dict(user=user)
 
-        user = ionossdk.models.User(
+        user = ionoscloud.models.User(
             **data
         )
-        return self.get_api_instance(ionossdk.UserManagementApi).um_users_post_with_http_info(user, response_type='object')
+        return self.get_api_instance(ionoscloud.UserManagementApi).um_users_post_with_http_info(user, response_type='object')
 
     @IonosCoreProxy.process_response
     def update_user(self, user_id, **kwargs):
@@ -61,8 +61,8 @@ class user:
         for attr, value in kwargs.items():
             properties[self._underscore_to_camelcase(attr)] = value
 
-        user = ionossdk.models.User(properties=properties)
-        return self.get_api_instance(ionossdk.UserManagementApi).um_users_put_with_http_info(user_id, user, response_type='object')
+        user = ionoscloud.models.User(properties=properties)
+        return self.get_api_instance(ionoscloud.UserManagementApi).um_users_put_with_http_info(user_id, user, response_type='object')
 
     @IonosCoreProxy.process_response
     def delete_user(self, user_id):
@@ -74,7 +74,7 @@ class user:
 
         """
 
-        return self.get_api_instance(ionossdk.UserManagementApi).um_users_delete_with_http_info(user_id)
+        return self.get_api_instance(ionoscloud.UserManagementApi).um_users_delete_with_http_info(user_id)
 
     @IonosCoreProxy.process_response
     def list_group_users(self, group_id, depth=1):
@@ -89,7 +89,7 @@ class user:
 
         """
 
-        return self.get_api_instance(ionossdk.UserManagementApi).um_groups_users_get_with_http_info(group_id, depth=depth, response_type='object')
+        return self.get_api_instance(ionoscloud.UserManagementApi).um_groups_users_get_with_http_info(group_id, depth=depth, response_type='object')
 
 
     @IonosCoreProxy.process_response
@@ -105,8 +105,8 @@ class user:
 
         """
 
-        user = ionossdk.models.User(id = user_id)
-        return self.get_api_instance(ionossdk.UserManagementApi).um_groups_users_post_with_http_info(group_id, user, response_type='object')
+        user = ionoscloud.models.User(id = user_id)
+        return self.get_api_instance(ionoscloud.UserManagementApi).um_groups_users_post_with_http_info(group_id, user, response_type='object')
 
     @IonosCoreProxy.process_response
     def remove_group_user(self, group_id, user_id):
@@ -121,4 +121,4 @@ class user:
 
         """
 
-        return self.get_api_instance(ionossdk.UserManagementApi).um_groups_users_delete_with_http_info(group_id, user_id)
+        return self.get_api_instance(ionoscloud.UserManagementApi).um_groups_users_delete_with_http_info(group_id, user_id)

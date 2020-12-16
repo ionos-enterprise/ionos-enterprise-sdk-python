@@ -1,4 +1,4 @@
-import ionossdk
+import ionoscloud
 from coreadaptor.IonosCoreProxy import IonosCoreProxy
 
 class firewall:
@@ -22,7 +22,7 @@ class firewall:
 
         """
 
-        return self.get_api_instance(ionossdk.NicApi).datacenters_servers_nics_firewallrules_find_by_id_with_http_info(datacenter_id, server_id,
+        return self.get_api_instance(ionoscloud.NicApi).datacenters_servers_nics_firewallrules_find_by_id_with_http_info(datacenter_id, server_id,
                                                                                                   nic_id, firewall_rule_id, response_type='object')
 
     @IonosCoreProxy.process_response
@@ -45,7 +45,7 @@ class firewall:
         """
 
         return self.get_api_instance(
-            ionossdk.NicApi).datacenters_servers_nics_firewallrules_get_with_http_info(datacenter_id, server_id,
+            ionoscloud.NicApi).datacenters_servers_nics_firewallrules_get_with_http_info(datacenter_id, server_id,
                                                                                                  nic_id, depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
@@ -69,7 +69,7 @@ class firewall:
         """
 
         return self.get_api_instance(
-            ionossdk.NicApi).datacenters_servers_nics_firewallrules_delete_with_http_info(datacenter_id, server_id,
+            ionoscloud.NicApi).datacenters_servers_nics_firewallrules_delete_with_http_info(datacenter_id, server_id,
                                                                           nic_id, firewall_rule_id)
 
     @IonosCoreProxy.process_response
@@ -119,11 +119,11 @@ class firewall:
         if firewall_rule.icmp_code:
             properties['icmpCode'] = firewall_rule.icmp_code
 
-        firewallRule = ionossdk.models.FirewallRule(
+        firewallRule = ionoscloud.models.FirewallRule(
             properties=properties
         )
         return self.get_api_instance(
-            ionossdk.NicApi).datacenters_servers_nics_firewallrules_post_with_http_info(datacenter_id, server_id,
+            ionoscloud.NicApi).datacenters_servers_nics_firewallrules_post_with_http_info(datacenter_id, server_id,
                                                                                                 nic_id, firewallRule,
                                                                                                 response_type='object')
 
@@ -170,6 +170,6 @@ class firewall:
 
 
         return self.get_api_instance(
-            ionossdk.NicApi).datacenters_servers_nics_firewallrules_patch_with_http_info(datacenter_id, server_id,
+            ionoscloud.NicApi).datacenters_servers_nics_firewallrules_patch_with_http_info(datacenter_id, server_id,
                              nic_id, firewall_rule_id, data,
                                                                                                 response_type='object')

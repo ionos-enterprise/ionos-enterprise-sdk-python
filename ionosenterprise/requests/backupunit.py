@@ -1,8 +1,8 @@
 import json
-import ionossdk
+import ionoscloud
 from coreadaptor.IonosCoreProxy import IonosCoreProxy
-from ionossdk.models.backup_unit import BackupUnit
-from ionossdk.models.backup_unit_properties import BackupUnitProperties
+from ionoscloud.models.backup_unit import BackupUnit
+from ionoscloud.models.backup_unit_properties import BackupUnitProperties
 
 
 class backupunit:
@@ -16,7 +16,7 @@ class backupunit:
         :type       depth: ``int``
 
         """
-        return self.get_api_instance(ionossdk.BackupUnitApi).backupunits_get_with_http_info(depth=depth, response_type='object')
+        return self.get_api_instance(ionoscloud.BackupUnitApi).backupunits_get_with_http_info(depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
     def create_backupunit(self, backupunit):
@@ -32,7 +32,7 @@ class backupunit:
 
         backupUnit = BackupUnit(**data)
 
-        return self.get_api_instance(ionossdk.BackupUnitApi).backupunits_post_with_http_info(backupUnit, response_type='object')
+        return self.get_api_instance(ionoscloud.BackupUnitApi).backupunits_post_with_http_info(backupUnit, response_type='object')
 
     @IonosCoreProxy.process_response
     def get_backupunit(self, backupunit_id, depth=1):
@@ -46,7 +46,7 @@ class backupunit:
         :type       depth: ``int``
 
         """
-        return self.get_api_instance(ionossdk.BackupUnitApi).backupunits_find_by_id_with_http_info(backupunit_id,
+        return self.get_api_instance(ionoscloud.BackupUnitApi).backupunits_find_by_id_with_http_info(backupunit_id,
                                                                                                           depth=depth,
                                                                                                     response_type='object')
 
@@ -69,7 +69,7 @@ class backupunit:
 
         backupUnitProperties = BackupUnitProperties(**data)
 
-        return self.get_api_instance(ionossdk.BackupUnitApi).backupunits_patch_with_http_info(backupunit_id, backupUnitProperties, response_type='object')
+        return self.get_api_instance(ionoscloud.BackupUnitApi).backupunits_patch_with_http_info(backupunit_id, backupUnitProperties, response_type='object')
 
     @IonosCoreProxy.process_response
     def update_backupunit_put(self, backupunit_id, **kwargs):
@@ -90,7 +90,7 @@ class backupunit:
 
         backupUnitProperties = BackupUnit(properties = BackupUnitProperties(**data))
 
-        return self.get_api_instance(ionossdk.BackupUnitApi).backupunits_put_with_http_info(backupunit_id,
+        return self.get_api_instance(ionoscloud.BackupUnitApi).backupunits_put_with_http_info(backupunit_id,
                                                                                                      backupUnitProperties,
                                                                                                      response_type='object')
 
@@ -105,7 +105,7 @@ class backupunit:
 
         """
 
-        return self.get_api_instance(ionossdk.BackupUnitApi).backupunits_delete_with_http_info(backupunit_id)
+        return self.get_api_instance(ionoscloud.BackupUnitApi).backupunits_delete_with_http_info(backupunit_id)
 
 
     @IonosCoreProxy.process_response
@@ -121,4 +121,4 @@ class backupunit:
 
         """
 
-        return self.get_api_instance(ionossdk.BackupUnitApi).backupunits_ssourl_get_with_http_info(backupunit_id, response_type='object')
+        return self.get_api_instance(ionoscloud.BackupUnitApi).backupunits_ssourl_get_with_http_info(backupunit_id, response_type='object')

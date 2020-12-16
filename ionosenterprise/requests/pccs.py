@@ -1,7 +1,7 @@
-import ionossdk
+import ionoscloud
 from coreadaptor.IonosCoreProxy import IonosCoreProxy
-from ionossdk.models.private_cross_connect import PrivateCrossConnect
-from ionossdk.models.private_cross_connect_properties import PrivateCrossConnectProperties
+from ionoscloud.models.private_cross_connect import PrivateCrossConnect
+from ionoscloud.models.private_cross_connect_properties import PrivateCrossConnectProperties
 
 class pccs:
     @IonosCoreProxy.process_response
@@ -13,7 +13,7 @@ class pccs:
         :type       depth: ``int``
 
         """
-        return self.get_api_instance(ionossdk.PrivateCrossConnectApi).pccs_get_with_http_info(depth=depth,
+        return self.get_api_instance(ionoscloud.PrivateCrossConnectApi).pccs_get_with_http_info(depth=depth,
                                                                                                    response_type='object')
 
     @IonosCoreProxy.process_response
@@ -28,7 +28,7 @@ class pccs:
 
         pcc = PrivateCrossConnect(**pcc_dict)
 
-        return self.get_api_instance(ionossdk.PrivateCrossConnectApi).pccs_post_with_http_info(pcc,
+        return self.get_api_instance(ionoscloud.PrivateCrossConnectApi).pccs_post_with_http_info(pcc,
                                                                                                 response_type='object')
 
     @IonosCoreProxy.process_response
@@ -43,7 +43,7 @@ class pccs:
         :type       depth: ``int``
 
         """
-        return self.get_api_instance(ionossdk.PrivateCrossConnectApi).pccs_find_by_id_with_http_info(pcc_id,
+        return self.get_api_instance(ionoscloud.PrivateCrossConnectApi).pccs_find_by_id_with_http_info(pcc_id,
                                                                                                           depth=depth,
                                                                                                           response_type='object')
 
@@ -56,7 +56,7 @@ class pccs:
         :type       pcc_id: ``str``
 
         """
-        return self.get_api_instance(ionossdk.PrivateCrossConnectApi).pccs_delete_with_http_info(pcc_id)
+        return self.get_api_instance(ionoscloud.PrivateCrossConnectApi).pccs_delete_with_http_info(pcc_id)
 
     @IonosCoreProxy.process_response
     def update_pcc(self, pcc_id, **kwargs):
@@ -78,6 +78,6 @@ class pccs:
 
         pccProperties = PrivateCrossConnectProperties(**data)
 
-        return self.get_api_instance(ionossdk.PrivateCrossConnectApi).pccs_patch_with_http_info(pcc_id,
+        return self.get_api_instance(ionoscloud.PrivateCrossConnectApi).pccs_patch_with_http_info(pcc_id,
                                                                                                      pccProperties,
                                                                                                      response_type='object')
