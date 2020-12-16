@@ -39,9 +39,11 @@ class TestCdrom(unittest.TestCase):
         cls.client.wait_for_completion(cls.server)
 
         # Use an image ID for CDROM
-        image = cls.client.list_images()
-        cls.image_id = image['items'][0]['id']
-
+        images = cls.client.list_images()['items']
+        images = list(filter(lambda v: v['properties']['location'] == cls.resource['datacenter']['location']
+                             and v['properties']['imageType'] != 'HDD',
+                             images))
+        cls.image_id = images[0]['id']
         cls.attached_cdrom = cls.client.attach_cdrom(cls.datacenter['id'], cls.server['id'], cls.image_id)
         cls.client.wait_for_completion(cls.attached_cdrom)
 
