@@ -12,12 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import warnings
 import unittest
+
 from ionosenterprise.client import IonosEnterpriseService
 from ionosenterprise.items import Datacenter
+
 from helpers import configuration
 from helpers.resources import resource
-import warnings
 
 
 class TestK8sNodepools(unittest.TestCase):
@@ -69,9 +71,6 @@ class TestK8sNodepools(unittest.TestCase):
             fn_check=lambda r: r['metadata']['state'] == 'ACTIVE',
             scaleup=10000
         )
-
-
-
 
     @classmethod
     def tearDownClass(cls):

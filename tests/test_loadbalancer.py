@@ -14,15 +14,13 @@
 
 from time import sleep
 import unittest
-
+import warnings
 from six import assertRegex
-
+from helpers.resources import resource
 from ionosenterprise.client import Datacenter, LoadBalancer, LAN, NIC, Server, IonosEnterpriseService
 from ionosenterprise.errors import ICError, ICNotFoundError
-
 from helpers import configuration
-from helpers.resources import resource
-import warnings
+
 
 class TestLoadBalancer(unittest.TestCase):
     @classmethod

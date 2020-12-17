@@ -15,9 +15,7 @@
 import getpass
 import logging
 import os
-import sys
 import re
-import time
 import requests
 import six
 import ionoscloud
@@ -43,9 +41,7 @@ from ionosenterprise.errors import (
     ICNotFoundError,
     ICValidationError,
     ICRateLimitExceededError,
-    ICError,
-    ICFailedRequest,
-    ICTimeoutError,
+    ICError
 )
 
 from .utils import ask

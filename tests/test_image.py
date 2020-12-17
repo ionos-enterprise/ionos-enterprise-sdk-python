@@ -13,15 +13,15 @@
 # limitations under the License.
 
 import unittest
+import warnings
 
 from six import assertRegex
 
-from ionosenterprise.client import IonosEnterpriseService
-from ionosenterprise.errors import ICNotFoundError
-
 from helpers import configuration
 from helpers.resources import resource
-import warnings
+
+from ionosenterprise.client import IonosEnterpriseService
+from ionosenterprise.errors import ICNotFoundError
 
 
 class TestImage(unittest.TestCase):

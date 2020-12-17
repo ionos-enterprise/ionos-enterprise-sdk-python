@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import warnings
 import unittest
 import time
 
@@ -22,7 +23,6 @@ from ionosenterprise.errors import ICError, ICNotFoundError
 
 from helpers import configuration
 from helpers.resources import resource, check_detached_cdrom_gone
-import warnings
 
 class TestServer(unittest.TestCase):
     @classmethod

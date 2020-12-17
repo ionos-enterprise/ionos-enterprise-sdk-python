@@ -12,17 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import warnings
 import unittest
-import time
-
-from six import assertRegex
 
 from ionosenterprise.client import Datacenter, Group, IonosEnterpriseService
-from ionosenterprise.errors import ICError, ICNotFoundError
 
 from helpers import configuration
-from helpers.resources import resource, check_detached_cdrom_gone
-import warnings
+from helpers.resources import resource
 
 class TestShare(unittest.TestCase):
     @classmethod

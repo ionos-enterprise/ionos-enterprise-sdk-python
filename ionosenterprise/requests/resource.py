@@ -43,3 +43,8 @@ class resource:
         """
         return self.get_api_instance(ionoscloud.UserManagementApi).um_resources_find_by_type_and_id_with_http_info(resource_type, resource_id, depth=depth, response_type='object')
 
+# check
+# test-volume
+# test-k8s
+# test k8s-nodepool
+# test shares

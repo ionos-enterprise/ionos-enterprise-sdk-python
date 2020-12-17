@@ -13,13 +13,13 @@
 # limitations under the License.
 
 import unittest
+import warnings
 
 from ionosenterprise.client import IonosEnterpriseService, Datacenter, Volume
 from ionosenterprise.errors import ICError, ICNotAuthorizedError, ICNotFoundError, ICValidationError
 
 from helpers import configuration
 from helpers.resources import resource
-import warnings
 
 class TestErrors(unittest.TestCase):
     @classmethod

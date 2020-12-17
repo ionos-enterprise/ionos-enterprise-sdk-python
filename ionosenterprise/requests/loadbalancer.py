@@ -85,9 +85,8 @@ class loadbalancer:
         for attr, value in kwargs.items():
             data[self._underscore_to_camelcase(attr)] = value
 
-        loadbalancer = ionoscloud.models.LoadbalancerProperties(
-            **kwargs
-        )
+        loadbalancer = ionoscloud.models.LoadbalancerProperties(**kwargs)
+
         return self.get_api_instance(ionoscloud.LoadBalancerApi).datacenters_loadbalancers_patch_with_http_info(
             datacenter_id, loadbalancer_id, loadbalancer)
 

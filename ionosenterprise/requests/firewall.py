@@ -3,8 +3,8 @@ from coreadaptor.IonosCoreProxy import IonosCoreProxy
 
 class firewall:
     @IonosCoreProxy.process_response
-    def get_firewall_rule(self, datacenter_id,
-                          server_id, nic_id, firewall_rule_id):
+    def get_firewall_rule(self, datacenter_id, server_id, nic_id, firewall_rule_id):
+
         """
         Retrieves a single firewall rule by ID.
 

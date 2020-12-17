@@ -24,6 +24,7 @@ import codecs
 import os
 import re
 import sys
+import pytest
 from setuptools import setup
 from setuptools.command.test import test as TestCommand
 
@@ -57,7 +58,6 @@ class PyTest(TestCommand):
         self.test_suite = True  # pylint: disable=attribute-defined-outside-init
 
     def run_tests(self):
-        import pytest
         errno = pytest.main(self.test_args)
         sys.exit(errno)
 

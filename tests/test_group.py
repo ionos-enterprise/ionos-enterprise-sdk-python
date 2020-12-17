@@ -12,17 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import warnings
 import unittest
-import time
-from ionosenterprise.items import Group
-from six import assertRegex
 
-from ionosenterprise.client import Datacenter, IonosEnterpriseService, Server, Volume
-from ionosenterprise.errors import ICError, ICNotFoundError
+from ionosenterprise.items import Group
+from ionosenterprise.client import IonosEnterpriseService
 
 from helpers import configuration
 from helpers.resources import resource
-import warnings
 
 class TestGroup(unittest.TestCase):
     @classmethod
