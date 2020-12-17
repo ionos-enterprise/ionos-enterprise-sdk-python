@@ -15,11 +15,11 @@
 import unittest
 import warnings
 
-from ionosenterprise.client import IonosEnterpriseService, Datacenter, Volume
-from ionosenterprise.errors import ICError, ICNotAuthorizedError, ICNotFoundError, ICValidationError
-
 from helpers import configuration
 from helpers.resources import resource
+
+from ionosenterprise.client import IonosEnterpriseService, Datacenter, Volume
+from ionosenterprise.errors import ICError, ICNotAuthorizedError, ICNotFoundError, ICValidationError
 
 class TestErrors(unittest.TestCase):
     @classmethod

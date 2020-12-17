@@ -15,11 +15,12 @@
 import warnings
 import unittest
 
+from helpers import configuration
+from helpers.resources import resource
+
 from ionosenterprise.items import Group
 from ionosenterprise.client import IonosEnterpriseService
 
-from helpers import configuration
-from helpers.resources import resource
 
 class TestGroup(unittest.TestCase):
     @classmethod

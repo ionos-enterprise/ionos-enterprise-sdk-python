@@ -20,7 +20,6 @@ from ionosenterprise.client import IonosEnterpriseService, PrivateCrossConnect
 from helpers import configuration
 from helpers.resources import resource
 
-
 class TestPcc(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

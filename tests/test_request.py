@@ -12,14 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import warnings
 import unittest
+
+from helpers import configuration
+from helpers.resources import resource
 
 from ionosenterprise.client import IonosEnterpriseService
 from ionosenterprise.errors import ICNotFoundError
 
-from helpers import configuration
-from helpers.resources import resource
-import warnings
 
 class TestRequest(unittest.TestCase):
     @classmethod

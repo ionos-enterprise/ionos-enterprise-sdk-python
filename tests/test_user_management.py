@@ -18,11 +18,11 @@ import warnings
 from random import randint
 from six import assertRegex
 
-from ionosenterprise.client import Datacenter, IPBlock, User, Group, Volume, IonosEnterpriseService
-from ionosenterprise.errors import ICError, ICNotFoundError
-
 from helpers import configuration
 from helpers.resources import resource, find_image
+
+from ionosenterprise.client import Datacenter, IPBlock, User, Group, Volume, IonosEnterpriseService
+from ionosenterprise.errors import ICError, ICNotFoundError
 
 class TestUserManagement(unittest.TestCase):
     @classmethod

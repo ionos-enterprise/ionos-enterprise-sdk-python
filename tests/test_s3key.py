@@ -16,10 +16,10 @@ import unittest
 import uuid
 import warnings
 
-from ionosenterprise.client import IonosEnterpriseService, User
-
 from helpers import configuration
 from helpers.resources import resource
+
+from ionosenterprise.client import IonosEnterpriseService, User
 
 
 class TestS3key(unittest.TestCase):
@@ -75,4 +75,3 @@ class TestS3key(unittest.TestCase):
     def test_get_s3ssourl(self):
         ssoUrl = self.client.get_s3ssourl(self.user['id'])
         self.assertTrue('ssoUrl' in ssoUrl)
-

@@ -3,7 +3,7 @@ class FirewallRule(object):
                  source_mac=None, source_ip=None,
                  target_ip=None, port_range_start=None,
                  port_range_end=None, icmp_type=None,
-                 icmp_code=None, **kwargs):
+                 icmp_code=None):
         """
         FirewallRule class initializer.
 

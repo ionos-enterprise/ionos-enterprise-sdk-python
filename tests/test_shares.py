@@ -15,10 +15,10 @@
 import warnings
 import unittest
 
-from ionosenterprise.client import Datacenter, Group, IonosEnterpriseService
-
 from helpers import configuration
 from helpers.resources import resource
+
+from ionosenterprise.client import Datacenter, Group, IonosEnterpriseService
 
 class TestShare(unittest.TestCase):
     @classmethod

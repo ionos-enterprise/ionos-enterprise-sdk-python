@@ -15,9 +15,10 @@
 import unittest
 import warnings
 
-from ionosenterprise.client import Datacenter, IonosEnterpriseService, Server
 from helpers import configuration
 from helpers.resources import resource
+
+from ionosenterprise.client import Datacenter, IonosEnterpriseService, Server
 
 
 class TestCdrom(unittest.TestCase):

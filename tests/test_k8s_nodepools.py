@@ -15,11 +15,11 @@
 import warnings
 import unittest
 
-from ionosenterprise.client import IonosEnterpriseService
-from ionosenterprise.items import Datacenter
-
 from helpers import configuration
 from helpers.resources import resource
+
+from ionosenterprise.client import IonosEnterpriseService
+from ionosenterprise.items import Datacenter
 
 
 class TestK8sNodepools(unittest.TestCase):

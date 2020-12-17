@@ -18,11 +18,12 @@ import time
 
 from six import assertRegex
 
+from helpers import configuration
+from helpers.resources import resource
+
 from ionosenterprise.client import Datacenter, IonosEnterpriseService, Server, Volume
 from ionosenterprise.errors import ICError, ICNotFoundError
 
-from helpers import configuration
-from helpers.resources import resource
 
 class TestDatacenter(unittest.TestCase):
     @classmethod

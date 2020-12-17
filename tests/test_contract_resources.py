@@ -12,12 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import warnings
 import unittest
+
+from helpers import configuration
 
 from ionosenterprise.client import IonosEnterpriseService
 
-from helpers import configuration
-import warnings
 
 class TestContractResources(unittest.TestCase):
     @classmethod

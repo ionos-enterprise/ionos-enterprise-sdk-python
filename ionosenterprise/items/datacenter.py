@@ -1,7 +1,6 @@
 class Datacenter(object):
     def __init__(self, name=None, location=None,  # pylint: disable=unused-argument
-                 description=None, volumes=None, servers=None, lans=None, loadbalancers=None,
-                 **kwargs):
+                 description=None, volumes=None, servers=None, lans=None, loadbalancers=None):
         """
         The Datacenter class initializer.
 

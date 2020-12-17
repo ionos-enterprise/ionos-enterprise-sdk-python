@@ -12,14 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from time import sleep
 import unittest
 import warnings
+
+from time import sleep
 from six import assertRegex
+
 from helpers.resources import resource
+from helpers import configuration
+
 from ionosenterprise.client import Datacenter, LoadBalancer, LAN, NIC, Server, IonosEnterpriseService
 from ionosenterprise.errors import ICError, ICNotFoundError
-from helpers import configuration
 
 
 class TestLoadBalancer(unittest.TestCase):

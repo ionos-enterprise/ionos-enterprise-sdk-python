@@ -1,3 +1,5 @@
+from coreadaptor.AuthAdaptor import AuthAdaptor
+from ionosenterprise import __version__
 from .dicts import dicts
 from .datacenter import datacenter
 from .server import server
@@ -23,8 +25,7 @@ from .k8s_nodepools import k8s_nodepools
 from .pccs import pccs
 from .backupunit import backupunit
 from .s3key import s3key
-from coreadaptor.AuthAdaptor import AuthAdaptor
-from ionosenterprise import __version__
+
 
 class IonosEnterpriseRequests(
     dicts,

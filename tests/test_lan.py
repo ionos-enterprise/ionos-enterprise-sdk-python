@@ -12,18 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import warnings
+import uuid
 import unittest
 
 from six import assertRegex
 
-from ionosenterprise.client import Datacenter, Server, LAN, NIC, IonosEnterpriseService, PrivateCrossConnect
-from ionosenterprise.errors import ICNotFoundError
-
 from helpers import configuration
 from helpers.resources import resource
 
-import warnings
-import uuid
+from ionosenterprise.client import Datacenter, Server, LAN, NIC, IonosEnterpriseService, PrivateCrossConnect
+from ionosenterprise.errors import ICNotFoundError
+
 
 class TestLan(unittest.TestCase):
     @classmethod

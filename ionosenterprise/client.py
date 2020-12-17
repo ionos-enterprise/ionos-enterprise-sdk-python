@@ -48,8 +48,6 @@ from .utils import ask
 
 from .requests import IonosEnterpriseRequests
 
-from .items import * # NOQA
-
 _LIBRARY_NAME = "ionosenterprise-sdk-python"
 
 

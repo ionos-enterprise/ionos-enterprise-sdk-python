@@ -1,8 +1,9 @@
-import json
 import ionoscloud
-from coreadaptor.IonosCoreProxy import IonosCoreProxy
+
 from ionoscloud.models.backup_unit import BackupUnit
 from ionoscloud.models.backup_unit_properties import BackupUnitProperties
+
+from coreadaptor.IonosCoreProxy import IonosCoreProxy
 
 
 class backupunit:

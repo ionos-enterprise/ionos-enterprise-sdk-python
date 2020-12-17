@@ -1,6 +1,6 @@
 class Snapshot(object):
     def __init__(self, name=None, description=None,  # pylint: disable=unused-argument
-                 licence_type='UNKNOWN', size=None, location=None, **kwargs):
+                 licence_type='UNKNOWN', size=None, location=None):
         """
         Snapshot class initializer.
 

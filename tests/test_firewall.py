@@ -12,16 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import warnings
 import unittest
 
 from six import assertRegex
 
+from helpers import configuration
+from helpers.resources import resource
+
 from ionosenterprise.client import Datacenter, IonosEnterpriseService, Server, LAN, NIC, FirewallRule
 from ionosenterprise.errors import ICError, ICNotFoundError
 
-from helpers import configuration
-from helpers.resources import resource
-import warnings
 
 class TestFirewall(unittest.TestCase):
     @classmethod

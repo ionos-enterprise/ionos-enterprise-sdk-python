@@ -15,10 +15,10 @@
 import unittest
 import warnings
 
-from ionosenterprise.client import IonosEnterpriseService, BackupUnit
-
 from helpers import configuration
 from helpers.resources import resource
+
+from ionosenterprise.client import IonosEnterpriseService, BackupUnit
 
 
 class TestBackupunit(unittest.TestCase):

@@ -1,7 +1,9 @@
 import ionoscloud
-from coreadaptor.IonosCoreProxy import IonosCoreProxy
 from ionoscloud.models.s3_key_properties import S3KeyProperties
 from ionoscloud.models.s3_key import S3Key
+
+from coreadaptor.IonosCoreProxy import IonosCoreProxy
+
 
 class s3key:
 

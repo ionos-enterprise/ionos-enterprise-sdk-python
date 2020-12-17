@@ -1,6 +1,8 @@
-from ..utils import find_item_by_name
 import ionoscloud
 from coreadaptor.IonosCoreProxy import IonosCoreProxy
+from ..utils import find_item_by_name
+
+
 
 class datacenter:
 
@@ -9,7 +11,7 @@ class datacenter:
         """
         Retrieves a list of all data centers.
         """
-        return self.get_api_instance(ionoscloud.DataCenterApi).datacenters_get_with_http_info(depth = depth, response_type='object')
+        return self.get_api_instance(ionoscloud.DataCenterApi).datacenters_get_with_http_info(depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
     def get_datacenter(self, datacenter_id, depth=1):
