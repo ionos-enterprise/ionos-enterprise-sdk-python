@@ -20,8 +20,9 @@ class lan:
 
         """
 
-        return self.get_api_instance(ionoscloud.LanApi).datacenters_lans_find_by_id_with_http_info(datacenter_id, lan_id,
-                                                                                                depth=depth, response_type='object')
+        return self.get_api_instance(ionoscloud.LanApi)\
+            .datacenters_lans_find_by_id_with_http_info(
+            datacenter_id, lan_id, depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
     def list_lans(self, datacenter_id, depth=1):
@@ -36,7 +37,9 @@ class lan:
 
         """
 
-        return self.get_api_instance(ionoscloud.LanApi).datacenters_lans_get_with_http_info(datacenter_id, depth=depth, response_type='object')
+        return self.get_api_instance(ionoscloud.LanApi)\
+            .datacenters_lans_get_with_http_info(
+            datacenter_id, depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
     def delete_lan(self, datacenter_id, lan_id):
@@ -51,7 +54,8 @@ class lan:
 
         """
 
-        return self.get_api_instance(ionoscloud.LanApi).datacenters_lans_delete_with_http_info(datacenter_id, lan_id)
+        return self.get_api_instance(ionoscloud.LanApi)\
+            .datacenters_lans_delete_with_http_info(datacenter_id, lan_id)
 
     @IonosCoreProxy.process_response
     def create_lan(self, datacenter_id, lan):
@@ -71,7 +75,8 @@ class lan:
         lan = ionoscloud.models.Lan(
             properties=lan_properties
         )
-        return self.get_api_instance(ionoscloud.LanApi).datacenters_lans_post_with_http_info(datacenter_id, lan, response_type='object')
+        return self.get_api_instance(ionoscloud.LanApi)\
+            .datacenters_lans_post_with_http_info(datacenter_id, lan, response_type='object')
 
     @IonosCoreProxy.process_response
     def update_lan(self, datacenter_id, lan_id, name=None,
@@ -94,7 +99,8 @@ class lan:
         :param      ip_failover: A list of IP fail-over dicts.
         :type       ip_failover: ``list``
 
-        :param      pcc: Unique identifier of the private cross connect the given LAN is connected to if any
+        :param      pcc: Unique identifier of the private cross connect the given LAN is
+                        connected to if any
         :type       pcc: ``str``
 
         """
@@ -115,7 +121,9 @@ class lan:
         lan = ionoscloud.models.LanProperties(
             **data
         )
-        return self.get_api_instance(ionoscloud.LanApi).datacenters_lans_patch_with_http_info(datacenter_id, lan_id, lan, response_type='object')
+        return self.get_api_instance(ionoscloud.LanApi)\
+            .datacenters_lans_patch_with_http_info(datacenter_id, lan_id, lan,
+                                                   response_type='object')
 
     @IonosCoreProxy.process_response
     def get_lan_members(self, datacenter_id, lan_id, depth=1):
@@ -130,5 +138,6 @@ class lan:
 
         """
 
-        return self.get_api_instance(ionoscloud.LanApi).datacenters_lans_nics_get_with_http_info(datacenter_id, lan_id,
-                                                                                                  depth=depth, response_type='object')
+        return self.get_api_instance(ionoscloud.LanApi)\
+            .datacenters_lans_nics_get_with_http_info(
+            datacenter_id, lan_id, depth=depth, response_type='object')

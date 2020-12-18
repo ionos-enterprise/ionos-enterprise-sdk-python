@@ -1,6 +1,7 @@
 import ionoscloud
 from coreadaptor.IonosCoreProxy import IonosCoreProxy
 
+
 class cdrom:
     @IonosCoreProxy.process_response
     def get_attached_cdroms(self, datacenter_id, server_id, depth=1):
@@ -18,7 +19,10 @@ class cdrom:
 
         """
 
-        return self.get_api_instance(ionoscloud.ServerApi).datacenters_servers_cdroms_get_with_http_info(datacenter_id, server_id, depth=depth, response_type='object')
+        return self.get_api_instance(ionoscloud.ServerApi)\
+            .datacenters_servers_cdroms_get_with_http_info(
+                datacenter_id, server_id, depth=depth, response_type='object'
+            )
 
     @IonosCoreProxy.process_response
     def get_attached_cdrom(self, datacenter_id, server_id, cdrom_id):
@@ -35,8 +39,9 @@ class cdrom:
         :type       cdrom_id: ``str``
 
         """
-        return self.get_api_instance(ionoscloud.ServerApi).datacenters_servers_cdroms_find_by_id_with_http_info(datacenter_id, server_id, cdrom_id, response_type='object')
-
+        return self.get_api_instance(ionoscloud.ServerApi)\
+            .datacenters_servers_cdroms_find_by_id_with_http_info(datacenter_id, server_id,
+                                                                  cdrom_id, response_type='object')
 
     @IonosCoreProxy.process_response
     def attach_cdrom(self, datacenter_id, server_id, cdrom_id):
@@ -54,7 +59,9 @@ class cdrom:
 
         """
         image = ionoscloud.Image(id=cdrom_id)
-        return self.get_api_instance(ionoscloud.ServerApi).datacenters_servers_cdroms_post_with_http_info(datacenter_id, server_id, image, response_type='object')
+        return self.get_api_instance(ionoscloud.ServerApi)\
+            .datacenters_servers_cdroms_post_with_http_info(datacenter_id, server_id,
+                                                            image, response_type='object')
 
     @IonosCoreProxy.process_response
     def detach_cdrom(self, datacenter_id, server_id, cdrom_id):
@@ -71,6 +78,7 @@ class cdrom:
         :type       cdrom_id: ``str``
 
         """
-        return self.get_api_instance(ionoscloud.ServerApi).datacenters_servers_cdroms_delete_with_http_info(datacenter_id, server_id,
-                                                                                               cdrom_id,
-                                                                                               response_type='object')
+        return self.get_api_instance(ionoscloud.ServerApi) \
+            .datacenters_servers_cdroms_delete_with_http_info(datacenter_id, server_id,
+                                                              cdrom_id,
+                                                              response_type='object')

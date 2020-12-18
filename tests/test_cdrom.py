@@ -24,7 +24,9 @@ from ionosenterprise.client import Datacenter, IonosEnterpriseService, Server
 class TestCdrom(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        warnings.filterwarnings("ignore", category=ResourceWarning, message="unclosed.*<ssl.SSLSocket.*>")
+        warnings\
+            .filterwarnings("ignore", category=ResourceWarning,
+                            message="unclosed.*<ssl.SSLSocket.*>")
         cls.resource = resource()
         cls.client = IonosEnterpriseService(
             username=configuration.USERNAME,
@@ -36,16 +38,19 @@ class TestCdrom(unittest.TestCase):
         cls.client.wait_for_completion(cls.datacenter)
 
         # Create test server.
-        cls.server = cls.client.create_server(cls.datacenter['id'], Server(**cls.resource['server']))
+        cls.server = cls.client.create_server(cls.datacenter['id'],
+                                              Server(**cls.resource['server']))
         cls.client.wait_for_completion(cls.server)
 
         # Use an image ID for CDROM
         images = cls.client.list_images()['items']
-        images = list(filter(lambda v: v['properties']['location'] == cls.resource['datacenter']['location']
+        images = list(filter(lambda v:
+                             v['properties']['location'] == cls.resource['datacenter']['location']
                              and v['properties']['imageType'] != 'HDD',
                              images))
         cls.image_id = images[0]['id']
-        cls.attached_cdrom = cls.client.attach_cdrom(cls.datacenter['id'], cls.server['id'], cls.image_id)
+        cls.attached_cdrom = cls.client.attach_cdrom(cls.datacenter['id'],
+                                                     cls.server['id'], cls.image_id)
         cls.client.wait_for_completion(cls.attached_cdrom)
 
     @classmethod
@@ -59,5 +64,6 @@ class TestCdrom(unittest.TestCase):
         self.assertGreater(len(response['items']), 0)
 
     def test_get_attached_cdrom(self):
-        response = self.client.get_attached_cdrom(self.datacenter['id'], self.server['id'], self.image_id)
+        response = self.client.get_attached_cdrom(self.datacenter['id'],
+                                                  self.server['id'], self.image_id)
         self.assertEqual(response['id'], self.image_id)

@@ -1,6 +1,7 @@
 import ionoscloud
 from coreadaptor.IonosCoreProxy import IonosCoreProxy
 
+
 class resource:
     @IonosCoreProxy.process_response
     def list_resources(self, resource_type=None, depth=1):
@@ -18,9 +19,12 @@ class resource:
 
         """
         if resource_type is not None:
-            return self.get_api_instance(ionoscloud.UserManagementApi).um_resources_find_by_type_with_http_info(resource_type, depth=depth, response_type='object')
+            return self.get_api_instance(ionoscloud.UserManagementApi)\
+                .um_resources_find_by_type_with_http_info(resource_type, depth=depth,
+                                                          response_type='object')
         else:
-            return self.get_api_instance(ionoscloud.UserManagementApi).um_resources_get_with_http_info(depth=depth, response_type='object')
+            return self.get_api_instance(ionoscloud.UserManagementApi)\
+                .um_resources_get_with_http_info(depth=depth, response_type='object')
 
         # return response
 
@@ -41,10 +45,6 @@ class resource:
         :type       depth: ``int``
 
         """
-        return self.get_api_instance(ionoscloud.UserManagementApi).um_resources_find_by_type_and_id_with_http_info(resource_type, resource_id, depth=depth, response_type='object')
-
-# check
-# test-volume
-# test-k8s
-# test k8s-nodepool
-# test shares
+        return self.get_api_instance(ionoscloud.UserManagementApi)\
+            .um_resources_find_by_type_and_id_with_http_info(resource_type, resource_id,
+                                                             depth=depth, response_type='object')

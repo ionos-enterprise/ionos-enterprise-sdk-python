@@ -1,6 +1,7 @@
 import ionoscloud
 from coreadaptor.IonosCoreProxy import IonosCoreProxy
 
+
 class contract:
     @IonosCoreProxy.process_response
     def list_contracts(self, depth=1):
@@ -9,4 +10,5 @@ class contract:
         for a particular contract and the current resource usage.
 
         """
-        return self.get_api_instance(ionoscloud.ContractApi).contracts_get_with_http_info(depth=depth, response_type='object')
+        return self.get_api_instance(ionoscloud.ContractApi)\
+            .contracts_get_with_http_info(depth=depth, response_type='object')

@@ -25,7 +25,8 @@ from ionosenterprise.client import IonosEnterpriseService, User
 class TestS3key(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        warnings.filterwarnings("ignore", category=ResourceWarning, message="unclosed.*<ssl.SSLSocket.*>")
+        warnings.filterwarnings("ignore", category=ResourceWarning,
+                                message="unclosed.*<ssl.SSLSocket.*>")
         cls.resource = resource()
         cls.client = IonosEnterpriseService(
             username=configuration.USERNAME,
@@ -45,7 +46,6 @@ class TestS3key(unittest.TestCase):
         cls.s3key1 = cls.client.create_s3key(cls.user['id'])
         cls.s3key2 = cls.client.create_s3key(cls.user['id'])
 
-
     @classmethod
     def tearDownClass(cls):
         cls.client.delete_s3key(cls.user['id'], cls.s3key1['id'])
@@ -54,7 +54,8 @@ class TestS3key(unittest.TestCase):
     def test_list_s3keys(self):
         s3keys = self.client.list_s3keys(self.user['id'])
         self.assertGreater(len(s3keys), 0)
-        self.assertEqual(len(s3keys['items']), 2) # one inactive key is created when user is created
+        # one inactive key is created when user is created
+        self.assertEqual(len(s3keys['items']), 2)
 
     def test_get_s3key(self):
         s3key = self.client.get_s3key(self.user['id'], self.s3key1['id'])
@@ -68,7 +69,7 @@ class TestS3key(unittest.TestCase):
     def test_update_s3key(self):
         s3key = self.client.update_s3key(
             self.user['id'], self.s3key1['id'],
-            active = False
+            active=False
         )
         self.assertFalse(s3key['properties']['active'])
 

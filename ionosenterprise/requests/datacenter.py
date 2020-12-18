@@ -3,7 +3,6 @@ from coreadaptor.IonosCoreProxy import IonosCoreProxy
 from ..utils import find_item_by_name
 
 
-
 class datacenter:
 
     @IonosCoreProxy.process_response
@@ -11,7 +10,8 @@ class datacenter:
         """
         Retrieves a list of all data centers.
         """
-        return self.get_api_instance(ionoscloud.DataCenterApi).datacenters_get_with_http_info(depth=depth, response_type='object')
+        return self.get_api_instance(ionoscloud.DataCenterApi)\
+            .datacenters_get_with_http_info(depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
     def get_datacenter(self, datacenter_id, depth=1):
@@ -25,7 +25,10 @@ class datacenter:
         :type       depth: ``int``
 
         """
-        return self.get_api_instance(ionoscloud.DataCenterApi).datacenters_find_by_id_with_http_info(datacenter_id, depth=depth, response_type='object')
+        return self.get_api_instance(ionoscloud.DataCenterApi)\
+            .datacenters_find_by_id_with_http_info(
+                datacenter_id, depth=depth, response_type='object'
+            )
 
     @IonosCoreProxy.process_response
     def get_datacenter_by_name(self, name, depth=1):
@@ -72,7 +75,8 @@ class datacenter:
         :type       datacenter_id: ``str``
 
         """
-        return self.get_api_instance(ionoscloud.DataCenterApi).datacenters_delete_with_http_info(datacenter_id)
+        return self.get_api_instance(ionoscloud.DataCenterApi)\
+            .datacenters_delete_with_http_info(datacenter_id)
 
     @IonosCoreProxy.process_response
     def create_datacenter(self, datacenter):
@@ -179,9 +183,11 @@ class datacenter:
         if 'entities' not in raw:
             datacenter = ionoscloud.models.Datacenter(properties=raw['properties'])
         else:
-            datacenter = ionoscloud.models.Datacenter(properties=raw['properties'], entities=raw['entities'])
+            datacenter = ionoscloud.models.Datacenter(
+                properties=raw['properties'], entities=raw['entities'])
 
-        return self.get_api_instance(ionoscloud.DataCenterApi).datacenters_post_with_http_info(datacenter, response_type='object')
+        return self.get_api_instance(ionoscloud.DataCenterApi)\
+            .datacenters_post_with_http_info(datacenter, response_type='object')
 
     @IonosCoreProxy.process_response
     def update_datacenter(self, datacenter_id, **kwargs):
@@ -200,4 +206,5 @@ class datacenter:
         datacenter = ionoscloud.models.Datacenter(
             properties=data
         )
-        return self.get_api_instance(ionoscloud.DataCenterApi).datacenters_put_with_http_info(datacenter_id, datacenter)
+        return self.get_api_instance(ionoscloud.DataCenterApi) \
+            .datacenters_put_with_http_info(datacenter_id, datacenter)

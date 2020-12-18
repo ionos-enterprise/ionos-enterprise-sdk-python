@@ -15,7 +15,8 @@ class loadbalancer:
         :type       loadbalancer_id: ``str``
 
         """
-        return self.get_api_instance(ionoscloud.LoadBalancerApi).datacenters_loadbalancers_find_by_id_with_http_info(
+        return self.get_api_instance(ionoscloud.LoadBalancerApi)\
+            .datacenters_loadbalancers_find_by_id_with_http_info(
             datacenter_id, loadbalancer_id, response_type='object')
 
     @IonosCoreProxy.process_response
@@ -30,7 +31,8 @@ class loadbalancer:
         :type       depth: ``int``
 
         """
-        return self.get_api_instance(ionoscloud.LoadBalancerApi).datacenters_loadbalancers_get_with_http_info(
+        return self.get_api_instance(ionoscloud.LoadBalancerApi)\
+            .datacenters_loadbalancers_get_with_http_info(
             datacenter_id, depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
@@ -46,7 +48,8 @@ class loadbalancer:
 
         """
 
-        return self.get_api_instance(ionoscloud.LoadBalancerApi).datacenters_loadbalancers_delete_with_http_info(
+        return self.get_api_instance(ionoscloud.LoadBalancerApi)\
+            .datacenters_loadbalancers_delete_with_http_info(
             datacenter_id, loadbalancer_id)
 
     @IonosCoreProxy.process_response
@@ -65,7 +68,8 @@ class loadbalancer:
         loadbalancer = ionoscloud.models.Loadbalancer(
             **self._create_loadbalancer_dict(loadbalancer)
         )
-        return self.get_api_instance(ionoscloud.LoadBalancerApi).datacenters_loadbalancers_post_with_http_info(datacenter_id, loadbalancer)
+        return self.get_api_instance(ionoscloud.LoadBalancerApi)\
+            .datacenters_loadbalancers_post_with_http_info(datacenter_id, loadbalancer)
 
     @IonosCoreProxy.process_response
     def update_loadbalancer(self, datacenter_id,
@@ -87,7 +91,8 @@ class loadbalancer:
 
         loadbalancer = ionoscloud.models.LoadbalancerProperties(**kwargs)
 
-        return self.get_api_instance(ionoscloud.LoadBalancerApi).datacenters_loadbalancers_patch_with_http_info(
+        return self.get_api_instance(ionoscloud.LoadBalancerApi)\
+            .datacenters_loadbalancers_patch_with_http_info(
             datacenter_id, loadbalancer_id, loadbalancer)
 
     @IonosCoreProxy.process_response
@@ -107,7 +112,8 @@ class loadbalancer:
 
         """
 
-        return self.get_api_instance(ionoscloud.LoadBalancerApi).datacenters_loadbalancers_balancednics_get_with_http_info(
+        return self.get_api_instance(ionoscloud.LoadBalancerApi)\
+            .datacenters_loadbalancers_balancednics_get_with_http_info(
             datacenter_id, loadbalancer_id, depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
@@ -128,9 +134,10 @@ class loadbalancer:
         """
 
         nic = ionoscloud.models.Nic(
-            id = nic_id
+            id=nic_id
         )
-        return self.get_api_instance(ionoscloud.LoadBalancerApi).datacenters_loadbalancers_balancednics_post_with_http_info(
+        return self.get_api_instance(ionoscloud.LoadBalancerApi)\
+            .datacenters_loadbalancers_balancednics_post_with_http_info(
             datacenter_id, loadbalancer_id, nic)
 
     @IonosCoreProxy.process_response
@@ -153,7 +160,8 @@ class loadbalancer:
 
         """
 
-        return self.get_api_instance(ionoscloud.LoadBalancerApi).datacenters_loadbalancers_balancednics_find_by_nic_id_with_http_info(
+        return self.get_api_instance(ionoscloud.LoadBalancerApi)\
+            .datacenters_loadbalancers_balancednics_find_by_nic_id_with_http_info(
             datacenter_id, loadbalancer_id, nic_id, depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
@@ -173,6 +181,9 @@ class loadbalancer:
 
         """
 
-        return self.get_api_instance(
-            ionoscloud.LoadBalancerApi).datacenters_loadbalancers_balancednics_delete_with_http_info(
-            datacenter_id, loadbalancer_id, nic_id)
+        return self.get_api_instance(ionoscloud.LoadBalancerApi)\
+            .datacenters_loadbalancers_balancednics_delete_with_http_info(
+                datacenter_id,
+                loadbalancer_id,
+                nic_id
+            )

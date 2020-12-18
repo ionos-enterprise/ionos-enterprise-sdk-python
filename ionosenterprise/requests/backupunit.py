@@ -17,12 +17,14 @@ class backupunit:
         :type       depth: ``int``
 
         """
-        return self.get_api_instance(ionoscloud.BackupUnitApi).backupunits_get_with_http_info(depth=depth, response_type='object')
+        return self.get_api_instance(ionoscloud.BackupUnitApi)\
+            .backupunits_get_with_http_info(depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
     def create_backupunit(self, backupunit):
         """
-        Create a Backup Unit. A Backup Unit is considered a resource like a virtual datacenter, IP Block, snapshot, etc.
+        Create a Backup Unit. A Backup Unit is considered a resource like a virtual
+        datacenter, IP Block, snapshot, etc.
         It shall be shareable via groups inside our User Management Feature
 
         :param      backupunit: The backupunit object.
@@ -33,7 +35,8 @@ class backupunit:
 
         backupUnit = BackupUnit(**data)
 
-        return self.get_api_instance(ionoscloud.BackupUnitApi).backupunits_post_with_http_info(backupUnit, response_type='object')
+        return self.get_api_instance(ionoscloud.BackupUnitApi)\
+            .backupunits_post_with_http_info(backupUnit, response_type='object')
 
     @IonosCoreProxy.process_response
     def get_backupunit(self, backupunit_id, depth=1):
@@ -47,9 +50,10 @@ class backupunit:
         :type       depth: ``int``
 
         """
-        return self.get_api_instance(ionoscloud.BackupUnitApi).backupunits_find_by_id_with_http_info(backupunit_id,
-                                                                                                          depth=depth,
-                                                                                                    response_type='object')
+        return self.get_api_instance(ionoscloud.BackupUnitApi)\
+            .backupunits_find_by_id_with_http_info(backupunit_id,
+                                                   depth=depth,
+                                                   response_type='object')
 
     @IonosCoreProxy.process_response
     def update_backupunit(self, backupunit_id, **kwargs):
@@ -70,7 +74,10 @@ class backupunit:
 
         backupUnitProperties = BackupUnitProperties(**data)
 
-        return self.get_api_instance(ionoscloud.BackupUnitApi).backupunits_patch_with_http_info(backupunit_id, backupUnitProperties, response_type='object')
+        return self.get_api_instance(ionoscloud.BackupUnitApi)\
+            .backupunits_patch_with_http_info(
+                backupunit_id, backupUnitProperties, response_type='object'
+            )
 
     @IonosCoreProxy.process_response
     def update_backupunit_put(self, backupunit_id, **kwargs):
@@ -89,12 +96,12 @@ class backupunit:
         for attr, value in kwargs.items():
             data[attr] = value
 
-        backupUnitProperties = BackupUnit(properties = BackupUnitProperties(**data))
+        backupUnitProperties = BackupUnit(properties=BackupUnitProperties(**data))
 
-        return self.get_api_instance(ionoscloud.BackupUnitApi).backupunits_put_with_http_info(backupunit_id,
-                                                                                                     backupUnitProperties,
-                                                                                                     response_type='object')
-
+        return self.get_api_instance(ionoscloud.BackupUnitApi)\
+            .backupunits_put_with_http_info(backupunit_id,
+                                            backupUnitProperties,
+                                            response_type='object')
 
     @IonosCoreProxy.process_response
     def delete_backupunit(self, backupunit_id):
@@ -106,8 +113,8 @@ class backupunit:
 
         """
 
-        return self.get_api_instance(ionoscloud.BackupUnitApi).backupunits_delete_with_http_info(backupunit_id)
-
+        return self.get_api_instance(ionoscloud.BackupUnitApi)\
+            .backupunits_delete_with_http_info(backupunit_id)
 
     @IonosCoreProxy.process_response
     def get_ssourl(self, backupunit_id):
@@ -122,4 +129,5 @@ class backupunit:
 
         """
 
-        return self.get_api_instance(ionoscloud.BackupUnitApi).backupunits_ssourl_get_with_http_info(backupunit_id, response_type='object')
+        return self.get_api_instance(ionoscloud.BackupUnitApi)\
+            .backupunits_ssourl_get_with_http_info(backupunit_id, response_type='object')

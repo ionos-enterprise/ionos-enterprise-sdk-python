@@ -12,7 +12,8 @@ class ipblock:
         :type       ipblock_id: ``str``
 
         """
-        return self.get_api_instance(ionoscloud.IPBlocksApi).ipblocks_find_by_id_with_http_info(ipblock_id, response_type='object')
+        return self.get_api_instance(ionoscloud.IPBlocksApi)\
+            .ipblocks_find_by_id_with_http_info(ipblock_id, response_type='object')
 
     @IonosCoreProxy.process_response
     def list_ipblocks(self, depth=1):
@@ -20,7 +21,8 @@ class ipblock:
         Retrieves a list of IP blocks available in the account.
 
         """
-        return self.get_api_instance(ionoscloud.IPBlocksApi).ipblocks_get_with_http_info(depth=depth, response_type='object')
+        return self.get_api_instance(ionoscloud.IPBlocksApi)\
+            .ipblocks_get_with_http_info(depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
     def delete_ipblock(self, ipblock_id):
@@ -31,7 +33,8 @@ class ipblock:
         :type       ipblock_id: ``str``
 
         """
-        return self.get_api_instance(ionoscloud.IPBlocksApi).ipblocks_delete_with_http_info(ipblock_id)
+        return self.get_api_instance(ionoscloud.IPBlocksApi)\
+            .ipblocks_delete_with_http_info(ipblock_id)
 
     @IonosCoreProxy.process_response
     def reserve_ipblock(self, ipblock):
@@ -49,12 +52,9 @@ class ipblock:
         if ipblock.size:
             properties['size'] = str(ipblock.size)
 
-        raw = {
-            "properties": properties,
-        }
-
         ipblock = ionoscloud.models.IpBlock(
             properties=properties
         )
 
-        return self.get_api_instance(ionoscloud.IPBlocksApi).ipblocks_post_with_http_info(ipblock, response_type='object')
+        return self.get_api_instance(ionoscloud.IPBlocksApi)\
+            .ipblocks_post_with_http_info(ipblock, response_type='object')

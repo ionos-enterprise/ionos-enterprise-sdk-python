@@ -89,7 +89,9 @@ class IonosEnterpriseService(IonosEnterpriseRequests):
             except ImportError:
                 raise Exception("Missing dependency for determining config path. Please install "
                                 "the 'appdirs' Python module.")
-            self._config_filename = appdirs.user_config_dir(_LIBRARY_NAME, "IonosEnterprise") + ".ini"
+            self._config_filename = appdirs.user_config_dir(
+                _LIBRARY_NAME,
+                "IonosEnterprise") + ".ini"
         if not self._config:
             self._config = configparser.ConfigParser()
             self._config.optionxform = str
@@ -225,7 +227,13 @@ class IonosEnterpriseService(IonosEnterpriseRequests):
         :type       scaleup: ``int``
 
         """
-        ionoscloud.api_client.ApiClient.wait_for(fn_check, fn_request, timeout, initial_wait, scaleup, console_print)
+        ionoscloud.api_client.ApiClient.wait_for(
+            fn_check,
+            fn_request,
+            timeout,
+            initial_wait,
+            scaleup,
+            console_print)
 
     @IonosCoreProxy.cast_exceptions
     def wait_for_completion(self, response, timeout=3600, initial_wait=5, scaleup=10):
@@ -246,7 +254,8 @@ class IonosEnterpriseService(IonosEnterpriseRequests):
 
         """
         if 'requestId' in response:
-            self.get_api_client().wait_for_completion(response['requestId'], timeout, initial_wait, scaleup)
+            self.get_api_client()\
+                .wait_for_completion(response['requestId'], timeout, initial_wait, scaleup)
 
     def _wrapped_request(self, method, url,
                          params=None,

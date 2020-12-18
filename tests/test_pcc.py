@@ -20,10 +20,12 @@ from ionosenterprise.client import IonosEnterpriseService, PrivateCrossConnect
 from helpers import configuration
 from helpers.resources import resource
 
+
 class TestPcc(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        warnings.filterwarnings("ignore", category=ResourceWarning, message="unclosed.*<ssl.SSLSocket.*>")
+        warnings.filterwarnings("ignore", category=ResourceWarning,
+                                message="unclosed.*<ssl.SSLSocket.*>")
         cls.resource = resource()
         cls.client = IonosEnterpriseService(
             username=configuration.USERNAME,
@@ -54,6 +56,7 @@ class TestPcc(unittest.TestCase):
         self.assertTrue('requestId' in response)
 
     def test_update_pcc(self):
-        pcc = self.client.update_pcc(self.pcc1['id'], name="TEST NAME 1 - UPDATED", description="TEST DESCRIPTION 1 - UPDATED")
+        pcc = self.client.update_pcc(self.pcc1['id'], name="TEST NAME 1 - UPDATED",
+                                     description="TEST DESCRIPTION 1 - UPDATED")
         self.assertEqual(pcc['properties']['name'], "TEST NAME 1 - UPDATED")
         self.assertEqual(pcc['properties']['description'], "TEST DESCRIPTION 1 - UPDATED")

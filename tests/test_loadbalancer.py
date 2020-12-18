@@ -21,14 +21,16 @@ from six import assertRegex
 from helpers.resources import resource
 from helpers import configuration
 
-from ionosenterprise.client import Datacenter, LoadBalancer, LAN, NIC, Server, IonosEnterpriseService
+from ionosenterprise.client import Datacenter, LoadBalancer,\
+    LAN, NIC, Server, IonosEnterpriseService
 from ionosenterprise.errors import ICError, ICNotFoundError
 
 
 class TestLoadBalancer(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        warnings.filterwarnings("ignore", category=ResourceWarning, message="unclosed.*<ssl.SSLSocket.*>")
+        warnings.filterwarnings("ignore", category=ResourceWarning,
+                                message="unclosed.*<ssl.SSLSocket.*>")
         cls.resource = resource()
         cls.client = IonosEnterpriseService(
             username=configuration.USERNAME,

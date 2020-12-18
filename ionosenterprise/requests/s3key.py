@@ -19,8 +19,9 @@ class s3key:
         :type       depth: ``int``
 
         """
-        return self.get_api_instance(ionoscloud.UserManagementApi).um_users_s3keys_get_with_http_info(user_id, depth=depth,
-                                                                                                     response_type='object')
+        return self.get_api_instance(ionoscloud.UserManagementApi) \
+            .um_users_s3keys_get_with_http_info(user_id, depth=depth,
+                                                response_type='object')
 
     @IonosCoreProxy.process_response
     def create_s3key(self, user_id):
@@ -31,8 +32,8 @@ class s3key:
         :type       user_id: ``str``
 
         """
-        return self.get_api_instance(ionoscloud.UserManagementApi).um_users_s3keys_post_with_http_info(user_id,
-                                                                                                      response_type='object')
+        return self.get_api_instance(ionoscloud.UserManagementApi)\
+            .um_users_s3keys_post_with_http_info(user_id, response_type='object')
 
     @IonosCoreProxy.process_response
     def get_s3key(self, user_id, key_id, depth=1):
@@ -49,10 +50,11 @@ class s3key:
         :type       depth: ``int``
 
         """
-        return self.get_api_instance(ionoscloud.UserManagementApi).um_users_s3keys_find_by_key_id_with_http_info(user_id,
-                                                                                                           key_id,
-                                                                                                           depth=depth,
-                                                                                                           response_type='object')
+        return self.get_api_instance(ionoscloud.UserManagementApi)\
+            .um_users_s3keys_find_by_key_id_with_http_info(user_id,
+                                                           key_id,
+                                                           depth=depth,
+                                                           response_type='object')
 
     @IonosCoreProxy.process_response
     def update_s3key(self, user_id, key_id, **kwargs):
@@ -75,12 +77,15 @@ class s3key:
         for attr, value in kwargs.items():
             data[attr] = value
 
-        s3keyProperties = S3Key(properties = S3KeyProperties(**data))
+        s3keyProperties = S3Key(properties=S3KeyProperties(**data))
 
-        return self.get_api_instance(ionoscloud.UserManagementApi).um_users_s3keys_put_with_http_info(user_id,
-                                                                                                           key_id,
-                                                                                                       s3keyProperties,
-                                                                                                       response_type='object')
+        return self.get_api_instance(ionoscloud.UserManagementApi)\
+            .um_users_s3keys_put_with_http_info(
+            user_id,
+            key_id,
+            s3keyProperties,
+            response_type='object'
+        )
 
     @IonosCoreProxy.process_response
     def delete_s3key(self, user_id, key_id):
@@ -94,8 +99,8 @@ class s3key:
         :type       key_id: ``str``
 
         """
-        return self.get_api_instance(ionoscloud.UserManagementApi).um_users_s3keys_delete_with_http_info(user_id,
-                                                                                                           key_id)
+        return self.get_api_instance(ionoscloud.UserManagementApi)\
+            .um_users_s3keys_delete_with_http_info(user_id, key_id)
 
     @IonosCoreProxy.process_response
     def get_s3ssourl(self, user_id):
@@ -109,4 +114,5 @@ class s3key:
         :type       depth: ``int``
 
         """
-        return self.get_api_instance(ionoscloud.UserManagementApi).um_users_s3ssourl_get_with_http_info(user_id, response_type='object')
+        return self.get_api_instance(ionoscloud.UserManagementApi)\
+            .um_users_s3ssourl_get_with_http_info(user_id, response_type='object')

@@ -20,10 +20,12 @@ from helpers.resources import resource
 
 from ionosenterprise.client import Datacenter, Group, IonosEnterpriseService
 
+
 class TestShare(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        warnings.filterwarnings("ignore", category=ResourceWarning, message="unclosed.*<ssl.SSLSocket.*>")
+        warnings.filterwarnings("ignore", category=ResourceWarning,
+                                message="unclosed.*<ssl.SSLSocket.*>")
         cls.resource = resource()
         cls.client = IonosEnterpriseService(
             username=configuration.USERNAME,
@@ -57,14 +59,15 @@ class TestShare(unittest.TestCase):
         self.assertEqual(response['type'], 'share')
 
     def test_update_share(self):
-        response = self.client.update_share(self.group['id'], self.datacenter['id'], edit_privilege=True,
-    share_privilege=True)
+        response = self.client.update_share(self.group['id'], self.datacenter['id'],
+                                            edit_privilege=True, share_privilege=True)
         self.assertEqual(response['properties']['edit_privilege'], True)
         self.assertEqual(response['properties']['share_privilege'], True)
 
     def test_delete_share(self):
         response = self.client.delete_share(self.group['id'], self.datacenter['id'])
         self.assertIn('request_id', response)
+
 
 if __name__ == '__main__':
     unittest.main()

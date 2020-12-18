@@ -1,6 +1,7 @@
 import ionoscloud
 from coreadaptor.IonosCoreProxy import IonosCoreProxy
 
+
 class image:
 
     @IonosCoreProxy.process_response
@@ -12,7 +13,8 @@ class image:
         :type       image_id: ``str``
 
         """
-        return self.get_api_instance(ionoscloud.ImageApi).images_find_by_id_with_http_info(image_id, response_type='object')
+        return self.get_api_instance(ionoscloud.ImageApi)\
+            .images_find_by_id_with_http_info(image_id, response_type='object')
 
     @IonosCoreProxy.process_response
     def list_images(self, depth=1):
@@ -22,7 +24,8 @@ class image:
         :param      depth: The depth of the response data.
         :type       depth: ``int``
         """
-        return self.get_api_instance(ionoscloud.ImageApi).images_get_with_http_info(depth=depth, response_type='object')
+        return self.get_api_instance(ionoscloud.ImageApi)\
+            .images_get_with_http_info(depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
     def delete_image(self, image_id):
@@ -50,4 +53,5 @@ class image:
             properties=data
         )
 
-        return self.get_api_instance(ionoscloud.ImageApi).images_patch_with_http_info(image_id, image, response_type='object')
+        return self.get_api_instance(ionoscloud.ImageApi)\
+            .images_patch_with_http_info(image_id, image, response_type='object')

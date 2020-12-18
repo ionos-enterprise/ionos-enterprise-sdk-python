@@ -21,14 +21,16 @@ from six import assertRegex
 from helpers import configuration
 from helpers.resources import resource
 
-from ionosenterprise.client import Datacenter, Server, LAN, NIC, IonosEnterpriseService, PrivateCrossConnect
+from ionosenterprise.client import Datacenter, Server, LAN, NIC, \
+    IonosEnterpriseService, PrivateCrossConnect
 from ionosenterprise.errors import ICNotFoundError
 
 
 class TestLan(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        warnings.filterwarnings("ignore", category=ResourceWarning, message="unclosed.*<ssl.SSLSocket.*>")
+        warnings.filterwarnings("ignore", category=ResourceWarning,
+                                message="unclosed.*<ssl.SSLSocket.*>")
         cls.resource = resource()
         cls.client = IonosEnterpriseService(
             username=configuration.USERNAME,
@@ -41,7 +43,8 @@ class TestLan(unittest.TestCase):
         cls.client.wait_for_completion(cls.datacenter)
 
         # Create pcc.
-        pcc = PrivateCrossConnect(name="TEST NAME - %s" % uuid.uuid1(), description="TEST DESCRIPTION 1")
+        pcc = PrivateCrossConnect(name="TEST NAME - %s" % uuid.uuid1(),
+                                  description="TEST DESCRIPTION 1")
 
         cls.pcc = cls.client.create_pcc(pcc)
         cls.client.wait_for_completion(cls.pcc)

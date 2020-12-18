@@ -21,14 +21,16 @@ from six import assertRegex
 from helpers import configuration
 from helpers.resources import resource, check_detached_cdrom_gone
 
-from ionosenterprise.client import Datacenter, Server, Volume, NIC, FirewallRule, IonosEnterpriseService
+from ionosenterprise.client import Datacenter, Server, Volume, \
+    NIC, FirewallRule, IonosEnterpriseService
 from ionosenterprise.errors import ICError, ICNotFoundError
 
 
 class TestServer(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        warnings.filterwarnings("ignore", category=ResourceWarning, message="unclosed.*<ssl.SSLSocket.*>")
+        warnings.filterwarnings("ignore", category=ResourceWarning,
+                                message="unclosed.*<ssl.SSLSocket.*>")
         cls.resource = resource()
         cls.client = IonosEnterpriseService(
             username=configuration.USERNAME,

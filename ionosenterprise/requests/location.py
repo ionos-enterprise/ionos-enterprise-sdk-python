@@ -1,6 +1,7 @@
 import ionoscloud
 from coreadaptor.IonosCoreProxy import IonosCoreProxy
 
+
 class location:
 
     @IonosCoreProxy.process_response
@@ -12,7 +13,9 @@ class location:
         :type       location_id: ``str``
 
         """
-        return self.get_api_instance(ionoscloud.LocationApi).locations_find_by_region_id_with_http_info(location_id, depth=depth, response_type='object')
+        return self.get_api_instance(ionoscloud.LocationApi)\
+            .locations_find_by_region_id_with_http_info(location_id, depth=depth,
+                                                        response_type='object')
 
     @IonosCoreProxy.process_response
     def list_locations(self, depth=0):
@@ -20,5 +23,5 @@ class location:
         Retrieves a list of locations available in the account.
 
         """
-        return self.get_api_instance(ionoscloud.LocationApi).locations_get_with_http_info(depth=depth, response_type='object')
-
+        return self.get_api_instance(ionoscloud.LocationApi)\
+            .locations_get_with_http_info(depth=depth, response_type='object')

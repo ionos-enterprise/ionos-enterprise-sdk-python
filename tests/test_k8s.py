@@ -24,7 +24,8 @@ from ionosenterprise.client import Datacenter, IonosEnterpriseService
 class TestK8S(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        warnings.filterwarnings("ignore", category=ResourceWarning, message="unclosed.*<ssl.SSLSocket.*>")
+        warnings.filterwarnings("ignore", category=ResourceWarning,
+                                message="unclosed.*<ssl.SSLSocket.*>")
         cls.resource = resource()
         cls.client = IonosEnterpriseService(
             username=configuration.USERNAME,
@@ -43,7 +44,8 @@ class TestK8S(unittest.TestCase):
         cls.k8s_cluster = cls.client.create_k8s_cluster(**cls.resource['k8s_cluster'])
 
         # Create test k8s cluster for delete test
-        cls.k8s_cluster_for_delete_test = cls.client.create_k8s_cluster(**cls.resource['k8s_cluster'])
+        cls.k8s_cluster_for_delete_test = cls.client.create_k8s_cluster(
+            **cls.resource['k8s_cluster'])
 
         # Wait for k8s cluster to be active
         cls.client.wait_for(
@@ -74,8 +76,6 @@ class TestK8S(unittest.TestCase):
 
         # get cluster config
         cls.k8s_config = cls.client.get_k8s_config(cls.k8s_cluster['id'])
-
-
 
     @classmethod
     def tearDownClass(cls):
@@ -128,6 +128,7 @@ class TestK8S(unittest.TestCase):
         name = "UPDATED_NAME"
         k8s_cluster = self.client.update_k8s_cluster(self.k8s_cluster['id'], name=name)
         self.assertEqual(k8s_cluster['name'], name)
+
 
 if __name__ == '__main__':
     unittest.main()

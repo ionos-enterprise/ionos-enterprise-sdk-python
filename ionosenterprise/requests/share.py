@@ -16,8 +16,8 @@ class share:
 
         """
 
-        return self.get_api_instance(ionoscloud.UserManagementApi).um_groups_shares_get_with_http_info(
-            group_id, depth=depth, response_type='object')
+        return self.get_api_instance(ionoscloud.UserManagementApi)\
+            .um_groups_shares_get_with_http_info(group_id, depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
     def get_share(self, group_id, resource_id, depth=1):
@@ -35,7 +35,8 @@ class share:
 
         """
 
-        return self.get_api_instance(ionoscloud.UserManagementApi).um_groups_shares_find_by_resource_id_with_http_info(
+        return self.get_api_instance(ionoscloud.UserManagementApi)\
+            .um_groups_shares_find_by_resource_id_with_http_info(
             group_id, resource_id, depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
@@ -59,8 +60,9 @@ class share:
             properties=properties
         )
 
-        return self.get_api_instance(ionoscloud.UserManagementApi).um_groups_shares_post_with_http_info(
-            group_id, resource_id, resource, response_type='object')
+        return self.get_api_instance(ionoscloud.UserManagementApi)\
+            .um_groups_shares_post_with_http_info(group_id, resource_id, resource,
+                                                  response_type='object')
 
     @IonosCoreProxy.process_response
     def update_share(self, group_id, resource_id, **kwargs):
@@ -82,7 +84,8 @@ class share:
         group_share = ionoscloud.models.GroupShare(
             properties=properties
         )
-        return self.get_api_instance(ionoscloud.UserManagementApi).um_groups_shares_put_with_http_info(
+        return self.get_api_instance(ionoscloud.UserManagementApi)\
+            .um_groups_shares_put_with_http_info(
             group_id, resource_id, group_share, response_type='object')
 
     @IonosCoreProxy.process_response
@@ -98,5 +101,5 @@ class share:
 
         """
 
-        return self.get_api_instance(ionoscloud.UserManagementApi).um_groups_shares_delete_with_http_info(
-            group_id, resource_id)
+        return self.get_api_instance(ionoscloud.UserManagementApi)\
+            .um_groups_shares_delete_with_http_info(group_id, resource_id)

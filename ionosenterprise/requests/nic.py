@@ -1,6 +1,7 @@
 import ionoscloud
 from coreadaptor.IonosCoreProxy import IonosCoreProxy
 
+
 class nic:
 
     @IonosCoreProxy.process_response
@@ -21,8 +22,14 @@ class nic:
         :type       depth: ``int``
 
         """
-        return self.get_api_instance(ionoscloud.NicApi).datacenters_servers_nics_find_by_id_with_http_info(datacenter_id, server_id, nic_id,
-                                                                                    depth=depth, response_type='object')
+        return self.get_api_instance(ionoscloud.NicApi)\
+            .datacenters_servers_nics_find_by_id_with_http_info(
+                datacenter_id,
+                server_id,
+                nic_id,
+                depth=depth,
+                response_type='object'
+            )
 
     @IonosCoreProxy.process_response
     def list_nics(self, datacenter_id, server_id, depth=1):
@@ -39,7 +46,9 @@ class nic:
         :type       depth: ``int``
 
         """
-        return self.get_api_instance(ionoscloud.NicApi).datacenters_servers_nics_get_with_http_info(datacenter_id, server_id, depth=depth, response_type='object')
+        return self.get_api_instance(ionoscloud.NicApi)\
+            .datacenters_servers_nics_get_with_http_info(datacenter_id, server_id,
+                                                         depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
     def delete_nic(self, datacenter_id, server_id, nic_id):
@@ -57,7 +66,8 @@ class nic:
 
         """
 
-        return self.get_api_instance(ionoscloud.NicApi).datacenters_servers_nics_delete_with_http_info(datacenter_id, server_id, nic_id)
+        return self.get_api_instance(ionoscloud.NicApi)\
+            .datacenters_servers_nics_delete_with_http_info(datacenter_id, server_id, nic_id)
 
     @IonosCoreProxy.process_response
     def create_nic(self, datacenter_id, server_id, nic):
@@ -78,7 +88,9 @@ class nic:
         nic = ionoscloud.models.Nic(
             **self._create_nic_dict(nic)
         )
-        return self.get_api_instance(ionoscloud.NicApi).datacenters_servers_nics_post_with_http_info(datacenter_id, server_id, nic, response_type='object')
+        return self.get_api_instance(ionoscloud.NicApi)\
+            .datacenters_servers_nics_post_with_http_info(datacenter_id,
+                                                          server_id, nic, response_type='object')
 
     @IonosCoreProxy.process_response
     def update_nic(self, datacenter_id, server_id, nic_id, **kwargs):
@@ -100,4 +112,6 @@ class nic:
         for attr, value in kwargs.items():
             data[self._underscore_to_camelcase(attr)] = value
 
-        return self.get_api_instance(ionoscloud.NicApi).datacenters_servers_nics_patch_with_http_info(datacenter_id, server_id, nic_id, data, response_type='object')
+        return self.get_api_instance(ionoscloud.NicApi)\
+            .datacenters_servers_nics_patch_with_http_info(datacenter_id, server_id, nic_id,
+                                                           data, response_type='object')

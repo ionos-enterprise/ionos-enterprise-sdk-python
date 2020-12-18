@@ -1,6 +1,7 @@
 import ionoscloud
 from coreadaptor.IonosCoreProxy import IonosCoreProxy
 
+
 class group:
 
     @IonosCoreProxy.process_response
@@ -12,7 +13,8 @@ class group:
         :type       depth: ``int``
 
         """
-        return self.get_api_instance(ionoscloud.UserManagementApi).um_groups_get_with_http_info(depth=depth, response_type='object')
+        return self.get_api_instance(ionoscloud.UserManagementApi)\
+            .um_groups_get_with_http_info(depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
     def get_group(self, group_id, depth=1):
@@ -27,7 +29,8 @@ class group:
 
         """
 
-        return self.get_api_instance(ionoscloud.UserManagementApi).um_groups_find_by_id_with_http_info(group_id, depth=depth, response_type='object')
+        return self.get_api_instance(ionoscloud.UserManagementApi)\
+            .um_groups_find_by_id_with_http_info(group_id, depth=depth, response_type='object')
 
     @IonosCoreProxy.process_response
     def create_group(self, group):
@@ -42,7 +45,8 @@ class group:
         group = ionoscloud.models.Group(
             properties=self._create_group_dict(group)['properties']
         )
-        return self.get_api_instance(ionoscloud.UserManagementApi).um_groups_post_with_http_info(group, response_type='object')
+        return self.get_api_instance(ionoscloud.UserManagementApi)\
+            .um_groups_post_with_http_info(group, response_type='object')
 
     @IonosCoreProxy.process_response
     def update_group(self, group_id, **kwargs):
@@ -65,7 +69,8 @@ class group:
         group = ionoscloud.models.Group(
             properties=properties
         )
-        return self.get_api_instance(ionoscloud.UserManagementApi).um_groups_put_with_http_info(group_id, group, response_type='object')
+        return self.get_api_instance(ionoscloud.UserManagementApi)\
+            .um_groups_put_with_http_info(group_id, group, response_type='object')
 
     @IonosCoreProxy.process_response
     def delete_group(self, group_id):
@@ -76,4 +81,5 @@ class group:
         :type       group_id: ``str``
 
         """
-        return self.get_api_instance(ionoscloud.UserManagementApi).um_groups_delete_with_http_info(group_id)
+        return self.get_api_instance(ionoscloud.UserManagementApi)\
+            .um_groups_delete_with_http_info(group_id)

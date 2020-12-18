@@ -19,12 +19,15 @@ from helpers import configuration
 from helpers.resources import resource
 
 from ionosenterprise.client import IonosEnterpriseService, Datacenter, Volume
-from ionosenterprise.errors import ICError, ICNotAuthorizedError, ICNotFoundError, ICValidationError
+from ionosenterprise.errors import ICError, ICNotAuthorizedError,\
+    ICNotFoundError, ICValidationError
+
 
 class TestErrors(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        warnings.filterwarnings("ignore", category=ResourceWarning, message="unclosed.*<ssl.SSLSocket.*>")
+        warnings.filterwarnings("ignore", category=ResourceWarning,
+                                message="unclosed.*<ssl.SSLSocket.*>")
         cls.resource = resource()
         cls.client = IonosEnterpriseService(
             username=configuration.USERNAME,

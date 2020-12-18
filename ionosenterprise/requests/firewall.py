@@ -1,6 +1,7 @@
 import ionoscloud
 from coreadaptor.IonosCoreProxy import IonosCoreProxy
 
+
 class firewall:
     @IonosCoreProxy.process_response
     def get_firewall_rule(self, datacenter_id, server_id, nic_id, firewall_rule_id):
@@ -22,8 +23,13 @@ class firewall:
 
         """
 
-        return self.get_api_instance(ionoscloud.NicApi).datacenters_servers_nics_firewallrules_find_by_id_with_http_info(datacenter_id, server_id,
-                                                                                                  nic_id, firewall_rule_id, response_type='object')
+        return self.get_api_instance(ionoscloud.NicApi) \
+            .datacenters_servers_nics_firewallrules_find_by_id_with_http_info(
+                datacenter_id,
+                server_id,
+                nic_id,
+                firewall_rule_id,
+                response_type='object')
 
     @IonosCoreProxy.process_response
     def get_firewall_rules(self, datacenter_id, server_id, nic_id, depth=1):
@@ -44,9 +50,10 @@ class firewall:
 
         """
 
-        return self.get_api_instance(
-            ionoscloud.NicApi).datacenters_servers_nics_firewallrules_get_with_http_info(datacenter_id, server_id,
-                                                                                                 nic_id, depth=depth, response_type='object')
+        return self.get_api_instance(ionoscloud.NicApi) \
+            .datacenters_servers_nics_firewallrules_get_with_http_info(
+            datacenter_id, server_id, nic_id, depth=depth, response_type='object'
+        )
 
     @IonosCoreProxy.process_response
     def delete_firewall_rule(self, datacenter_id, server_id,
@@ -68,9 +75,9 @@ class firewall:
 
         """
 
-        return self.get_api_instance(
-            ionoscloud.NicApi).datacenters_servers_nics_firewallrules_delete_with_http_info(datacenter_id, server_id,
-                                                                          nic_id, firewall_rule_id)
+        return self.get_api_instance(ionoscloud.NicApi) \
+            .datacenters_servers_nics_firewallrules_delete_with_http_info(
+            datacenter_id, server_id, nic_id, firewall_rule_id)
 
     @IonosCoreProxy.process_response
     def create_firewall_rule(self, datacenter_id, server_id, nic_id, firewall_rule):
@@ -122,10 +129,9 @@ class firewall:
         firewallRule = ionoscloud.models.FirewallRule(
             properties=properties
         )
-        return self.get_api_instance(
-            ionoscloud.NicApi).datacenters_servers_nics_firewallrules_post_with_http_info(datacenter_id, server_id,
-                                                                                                nic_id, firewallRule,
-                                                                                                response_type='object')
+        return self.get_api_instance(ionoscloud.NicApi) \
+            .datacenters_servers_nics_firewallrules_post_with_http_info(
+            datacenter_id, server_id, nic_id, firewallRule, response_type='object')
 
     @IonosCoreProxy.process_response
     def update_firewall_rule(self, datacenter_id, server_id,
@@ -168,8 +174,6 @@ class firewall:
             else:
                 data[self._underscore_to_camelcase(attr)] = value
 
-
-        return self.get_api_instance(
-            ionoscloud.NicApi).datacenters_servers_nics_firewallrules_patch_with_http_info(datacenter_id, server_id,
-                             nic_id, firewall_rule_id, data,
-                                                                                                response_type='object')
+        return self.get_api_instance(ionoscloud.NicApi) \
+            .datacenters_servers_nics_firewallrules_patch_with_http_info(
+            datacenter_id, server_id, nic_id, firewall_rule_id, data, response_type='object')

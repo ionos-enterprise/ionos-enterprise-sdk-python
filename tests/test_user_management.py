@@ -24,10 +24,12 @@ from helpers.resources import resource, find_image
 from ionosenterprise.client import Datacenter, IPBlock, User, Group, Volume, IonosEnterpriseService
 from ionosenterprise.errors import ICError, ICNotFoundError
 
+
 class TestUserManagement(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        warnings.filterwarnings("ignore", category=ResourceWarning, message="unclosed.*<ssl.SSLSocket.*>")
+        warnings.filterwarnings("ignore", category=ResourceWarning,
+                                message="unclosed.*<ssl.SSLSocket.*>")
         cls.resource = resource()
         cls.client = IonosEnterpriseService(
             username=configuration.USERNAME,

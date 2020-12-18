@@ -25,7 +25,8 @@ from ionosenterprise.items import Datacenter
 class TestK8sNodepools(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        warnings.filterwarnings("ignore", category=ResourceWarning, message="unclosed.*<ssl.SSLSocket.*>")
+        warnings.filterwarnings("ignore", category=ResourceWarning,
+                                message="unclosed.*<ssl.SSLSocket.*>")
         cls.resource = resource()
         cls.client = IonosEnterpriseService(
             username=configuration.USERNAME,
@@ -33,7 +34,8 @@ class TestK8sNodepools(unittest.TestCase):
             headers=configuration.HEADERS)
 
         # Create test k8s cluster
-        cls.datacenter = cls.client.create_datacenter(datacenter=Datacenter(**cls.resource['datacenter']))
+        cls.datacenter = cls.client.create_datacenter(
+            datacenter=Datacenter(**cls.resource['datacenter']))
         cls.k8s_cluster = cls.client.create_k8s_cluster(**cls.resource['k8s_cluster'])
 
         # Wait for k8s cluster to be active
@@ -60,21 +62,26 @@ class TestK8sNodepools(unittest.TestCase):
 
         # Wait for k8s cluster nodepool 1 to be active
         cls.client.wait_for(
-            fn_request=lambda: cls.client.get_k8s_cluster_nodepool(cls.k8s_cluster['id'], cls.k8s_cluster_nodepool1['id']),
+            fn_request=lambda: cls.client.get_k8s_cluster_nodepool(
+                cls.k8s_cluster['id'],
+                cls.k8s_cluster_nodepool1['id']),
             fn_check=lambda r: r['metadata']['state'] == 'ACTIVE',
             scaleup=10000
         )
 
         # Wait for k8s cluster nodepool 2 to be active
         cls.client.wait_for(
-            fn_request=lambda: cls.client.get_k8s_cluster_nodepool(cls.k8s_cluster['id'], cls.k8s_cluster_nodepool2['id']),
+            fn_request=lambda: cls.client.get_k8s_cluster_nodepool(
+                cls.k8s_cluster['id'],
+                cls.k8s_cluster_nodepool2['id']),
             fn_check=lambda r: r['metadata']['state'] == 'ACTIVE',
             scaleup=10000
         )
 
     @classmethod
     def tearDownClass(cls):
-        cls.client.delete_k8s_cluster_nodepool(cls.k8s_cluster['id'], cls.k8s_cluster_nodepool1['id'])
+        cls.client.delete_k8s_cluster_nodepool(cls.k8s_cluster['id'],
+                                               cls.k8s_cluster_nodepool1['id'])
         cls.client.delete_k8s_cluster(cls.k8s_cluster['id'])
         cls.client.delete_datacenter(cls.datacenter['id'])
 
@@ -84,13 +91,15 @@ class TestK8sNodepools(unittest.TestCase):
         self.assertGreater(len(k8s_nodepools['items']), 0)
 
     def test_get_k8s_nodepool(self):
-        k8s_nodepool = self.client.get_k8s_cluster_nodepool(self.k8s_cluster['id'], self.k8s_cluster_nodepool1['id'])
+        k8s_nodepool = self.client.get_k8s_cluster_nodepool(self.k8s_cluster['id'],
+                                                            self.k8s_cluster_nodepool1['id'])
         self.assertEqual(k8s_nodepool['type'], 'nodepool')
         self.assertEqual(k8s_nodepool['id'], self.k8s_cluster_nodepool1['id'])
         self.assertEqual(k8s_nodepool['properties']['name'], self.k8s_cluster_nodepool1['name'])
 
     def test_delete_k8s_nodepool(self):
-        response = self.client.delete_k8s_cluster_nodepool(self.k8s_cluster['id'], self.k8s_cluster_nodepool2['id'])
+        response = self.client.delete_k8s_cluster_nodepool(self.k8s_cluster['id'],
+                                                           self.k8s_cluster_nodepool2['id'])
         self.assertTrue('requestId' in response)
 
     def test_update_k8s_nodepool(self):
