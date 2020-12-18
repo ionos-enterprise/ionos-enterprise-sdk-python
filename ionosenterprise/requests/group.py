@@ -66,11 +66,13 @@ class group:
         for attr, value in kwargs.items():
             properties[self._underscore_to_camelcase(attr)] = value
 
-        group = ionoscloud.models.Group(
-            properties=properties
-        )
         return self.get_api_instance(ionoscloud.UserManagementApi)\
-            .um_groups_put_with_http_info(group_id, group, response_type='object')
+            .um_groups_put_with_http_info(
+                group_id,
+                ionoscloud.models.Group(
+                    properties=properties
+                ),
+                response_type='object')
 
     @IonosCoreProxy.process_response
     def delete_group(self, group_id):

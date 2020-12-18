@@ -49,9 +49,10 @@ class snapshot:
         :type       snapshot_id: ``str``
         """
 
-        snapshot = ionoscloud.models.SnapshotProperties(**kwargs)
         return self.get_api_instance(ionoscloud.SnapshotApi)\
-            .snapshots_patch_with_http_info(snapshot_id, snapshot, response_type='object')
+            .snapshots_patch_with_http_info(snapshot_id,
+                                            ionoscloud.models.SnapshotProperties(**kwargs),
+                                            response_type='object')
 
     @IonosCoreProxy.process_response
     def create_snapshot(self, datacenter_id, volume_id, name=None, description=None):

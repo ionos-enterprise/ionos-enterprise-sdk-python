@@ -77,7 +77,7 @@ print('Request completed!')
 
 print('Waiting for the datacenter to be active!')
 datacenters = client.wait_for(
-  fn_request=lambda: client.list_datacenters(),
+  fn_request=client.list_datacenters(),
   fn_check=lambda r: list(filter(
       lambda e: e['properties']['name'] == datacenter_name,
       r['items']
@@ -97,7 +97,7 @@ print('Request completed!')
 
 print('Waiting for the cluster to be active!')
 clusters = client.wait_for(
-  fn_request=lambda: client.list_k8s_clusters(),
+  fn_request=client.list_k8s_clusters(),
   fn_check=lambda r: list(filter(
       lambda e: e['properties']['name'] == cluster_name,
       r['items']
@@ -162,7 +162,7 @@ print('Request completed!')
 
 print('Waiting for the cluster to be deleted!')
 clusters = client.wait_for(
-  fn_request=lambda: client.list_k8s_clusters(),
+  fn_request=client.list_k8s_clusters(),
   fn_check=lambda r: len(list(filter(
       lambda e: e['properties']['name'] == cluster_name,
       r['items']
@@ -178,7 +178,7 @@ print('Request completed!')
 
 print('Waiting for the datacenter to be deleted!')
 clusters = client.wait_for(
-  fn_request=lambda: client.list_datacenters(),
+  fn_request=client.list_datacenters(),
   fn_check=lambda r: len(list(filter(
       lambda e: e['properties']['name'] == datacenter_name,
       r['items']

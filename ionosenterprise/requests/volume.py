@@ -87,9 +87,9 @@ class volume:
         for attr, value in kwargs.items():
             data[self._underscore_to_camelcase(attr)] = value
 
-        volume = ionoscloud.models.VolumeProperties(**data)
         return self.get_api_instance(ionoscloud.VolumeApi)\
-            .datacenters_volumes_patch_with_http_info(datacenter_id, volume_id, volume)
+            .datacenters_volumes_patch_with_http_info(datacenter_id, volume_id,
+                                                      ionoscloud.models.VolumeProperties(**data))
 
     @IonosCoreProxy.process_response
     def get_attached_volumes(self, datacenter_id, server_id, depth=1):
@@ -147,12 +147,11 @@ class volume:
         :type       volume_id: ``str``
 
         """
-        volume = ionoscloud.models.Volume(
-            id=volume_id
-        )
 
         return self.get_api_instance(ionoscloud.ServerApi)\
-            .datacenters_servers_volumes_post_with_http_info(datacenter_id, server_id, volume)
+            .datacenters_servers_volumes_post_with_http_info(datacenter_id, server_id,
+                                                             ionoscloud.models.Volume(id=volume_id)
+                                                             )
 
     @IonosCoreProxy.process_response
     def detach_volume(self, datacenter_id, server_id, volume_id):

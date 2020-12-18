@@ -19,9 +19,9 @@ class request:
         if status:
             return self.get_api_instance(ionoscloud.RequestApi)\
                 .requests_status_get_with_http_info(request_id, response_type='object')
-        else:
-            return self.get_api_instance(ionoscloud.RequestApi)\
-                .requests_find_by_id_with_http_info(request_id, response_type='object')
+
+        return self.get_api_instance(ionoscloud.RequestApi)\
+            .requests_find_by_id_with_http_info(request_id, response_type='object')
 
     @IonosCoreProxy.process_response
     def list_requests(self, depth=1):

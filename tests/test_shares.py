@@ -46,9 +46,9 @@ class TestShare(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        cls.client.delete_datacenter(cls.datacenter['id'])
+        cls.client.delete_share(cls.share_1['id'], cls.datacenter['id'])
         cls.client.delete_group(cls.group['id'])
-        cls.client.delete_share(cls.share_1['id'])
+        cls.client.delete_datacenter(cls.datacenter['id'])
 
     def test_list_shares(self):
         response = self.client.list_shares(self.group['id'])

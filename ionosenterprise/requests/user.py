@@ -44,11 +44,8 @@ class user:
         """
         data = self._create_user_dict(user=user)
 
-        user = ionoscloud.models.User(
-            **data
-        )
         return self.get_api_instance(ionoscloud.UserManagementApi)\
-            .um_users_post_with_http_info(user, response_type='object')
+            .um_users_post_with_http_info(ionoscloud.models.User(**data), response_type='object')
 
     @IonosCoreProxy.process_response
     def update_user(self, user_id, **kwargs):

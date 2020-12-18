@@ -49,9 +49,6 @@ class image:
         for attr, value in kwargs.items():
             data[self._underscore_to_camelcase(attr)] = value
 
-        image = ionoscloud.models.Image(
-            properties=data
-        )
-
         return self.get_api_instance(ionoscloud.ImageApi)\
-            .images_patch_with_http_info(image_id, image, response_type='object')
+            .images_patch_with_http_info(image_id, ionoscloud.models.Image( properties=data),
+                                         response_type='object')

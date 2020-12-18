@@ -65,11 +65,13 @@ class loadbalancer:
 
         """
 
-        loadbalancer = ionoscloud.models.Loadbalancer(
-            **self._create_loadbalancer_dict(loadbalancer)
-        )
         return self.get_api_instance(ionoscloud.LoadBalancerApi)\
-            .datacenters_loadbalancers_post_with_http_info(datacenter_id, loadbalancer)
+            .datacenters_loadbalancers_post_with_http_info(datacenter_id,
+                                                           ionoscloud.models.Loadbalancer(
+                                                                **self._create_loadbalancer_dict(
+                                                                    loadbalancer
+                                                                )
+                                                           ))
 
     @IonosCoreProxy.process_response
     def update_loadbalancer(self, datacenter_id,

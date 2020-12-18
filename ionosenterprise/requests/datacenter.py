@@ -203,8 +203,10 @@ class datacenter:
         for attr, value in kwargs.items():
             data[self._underscore_to_camelcase(attr)] = value
 
-        datacenter = ionoscloud.models.Datacenter(
-            properties=data
-        )
         return self.get_api_instance(ionoscloud.DataCenterApi) \
-            .datacenters_put_with_http_info(datacenter_id, datacenter)
+            .datacenters_put_with_http_info(
+            datacenter_id,
+                ionoscloud.models.Datacenter(
+                    properties=data
+                )
+            )

@@ -85,12 +85,13 @@ class nic:
 
         """
 
-        nic = ionoscloud.models.Nic(
-            **self._create_nic_dict(nic)
-        )
         return self.get_api_instance(ionoscloud.NicApi)\
             .datacenters_servers_nics_post_with_http_info(datacenter_id,
-                                                          server_id, nic, response_type='object')
+                                                          server_id,
+                                                          ionoscloud.models.Nic(
+                                                              **self._create_nic_dict(nic)
+                                                          ),
+                                                          response_type='object')
 
     @IonosCoreProxy.process_response
     def update_nic(self, datacenter_id, server_id, nic_id, **kwargs):

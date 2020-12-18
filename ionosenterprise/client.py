@@ -203,9 +203,10 @@ class IonosEnterpriseService(IonosEnterpriseRequests):
 
         return password
 
+    @staticmethod
     @IonosCoreProxy.cast_exceptions
     def wait_for(
-        self, fn_check, fn_request, timeout=3600, initial_wait=5,
+        fn_check, fn_request, timeout=3600, initial_wait=5,
         scaleup=10, console_print=None
     ):
         """
@@ -284,11 +285,11 @@ class IonosEnterpriseService(IonosEnterpriseRequests):
 
         url = self._build_url(url)
         headers.update({'User-Agent': self.user_agent})
-        if method == 'POST' or method == 'PUT':
+        if method in ['POST', 'PUT']:
             response = self._wrapped_request(method, url, auth=auth, data=data,
                                              headers=headers)
             headers.update({'Content-Type': 'application/json'})
-        elif method == 'POST-ACTION-JSON' or method == 'POST-ACTION':
+        elif method in ['POST-ACTION-JSON', 'POST-ACTION']:
             headers.update({'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'})
             response = self._wrapped_request('POST', url, auth=auth, data=data,
                                              headers=headers)
@@ -318,8 +319,7 @@ class IonosEnterpriseService(IonosEnterpriseRequests):
                     raise ICValidationError(code, msg, url)
                 if response.status_code == 429:
                     raise ICRateLimitExceededError(code, msg, url)
-                else:
-                    raise ICError(code, msg, url)
+                raise ICError(code, msg, url)
 
         except ValueError:
             raise Exception('Failed to parse the response', response.text)
@@ -344,9 +344,9 @@ class IonosEnterpriseService(IonosEnterpriseRequests):
         match = re.search('/requests/([-A-Fa-f0-9]+)/', headers['location'])
         if match:
             return match.group(1)
-        else:
-            raise Exception("Failed to extract request ID from response "
-                            "header 'location': '{location}'".format(location=headers['location']))
+
+        raise Exception("Failed to extract request ID from response "
+                        "header 'location': '{location}'".format(location=headers['location']))
 
     def _build_url(self, uri):
         url = self.host_base + uri
@@ -365,12 +365,12 @@ class IonosEnterpriseService(IonosEnterpriseRequests):
                 return s
             elif isinstance(s, unicode):  # noqa, pylint: disable=undefined-variable
                 return s.encode(encoding)
-        else:
-            # And this is Python3
-            if isinstance(s, bytes):
-                return s
-            elif isinstance(s, str):
-                return s.encode(encoding)
+
+        # And this is Python3
+        if isinstance(s, bytes):
+            return s
+        elif isinstance(s, str):
+            return s.encode(encoding)
 
         raise TypeError("Invalid argument %r for _b()" % (s,))
 

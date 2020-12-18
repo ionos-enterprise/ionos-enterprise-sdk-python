@@ -72,11 +72,12 @@ class lan:
 
         lan_properties = lan.__dict__
         del lan_properties['nics']
-        lan = ionoscloud.models.Lan(
-            properties=lan_properties
-        )
         return self.get_api_instance(ionoscloud.LanApi)\
-            .datacenters_lans_post_with_http_info(datacenter_id, lan, response_type='object')
+            .datacenters_lans_post_with_http_info(datacenter_id,
+                                                  ionoscloud.models.Lan(
+                                                      properties=lan_properties
+                                                  ),
+                                                  response_type='object')
 
     @IonosCoreProxy.process_response
     def update_lan(self, datacenter_id, lan_id, name=None,
@@ -118,11 +119,9 @@ class lan:
         if pcc:
             data['pcc'] = pcc
 
-        lan = ionoscloud.models.LanProperties(
-            **data
-        )
         return self.get_api_instance(ionoscloud.LanApi)\
-            .datacenters_lans_patch_with_http_info(datacenter_id, lan_id, lan,
+            .datacenters_lans_patch_with_http_info(datacenter_id, lan_id,
+                                                   ionoscloud.models.LanProperties(**data),
                                                    response_type='object')
 
     @IonosCoreProxy.process_response

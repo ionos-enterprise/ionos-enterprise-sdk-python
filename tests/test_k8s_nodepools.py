@@ -40,7 +40,7 @@ class TestK8sNodepools(unittest.TestCase):
 
         # Wait for k8s cluster to be active
         cls.client.wait_for(
-            fn_request=lambda: cls.client.list_k8s_clusters(),
+            fn_request=cls.client.list_k8s_clusters(),
             fn_check=lambda r: list(filter(
                 lambda e: e['properties']['name'] == cls.resource['k8s_cluster']['name'],
                 r['items']

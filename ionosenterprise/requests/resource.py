@@ -22,9 +22,9 @@ class resource:
             return self.get_api_instance(ionoscloud.UserManagementApi)\
                 .um_resources_find_by_type_with_http_info(resource_type, depth=depth,
                                                           response_type='object')
-        else:
-            return self.get_api_instance(ionoscloud.UserManagementApi)\
-                .um_resources_get_with_http_info(depth=depth, response_type='object')
+
+        return self.get_api_instance(ionoscloud.UserManagementApi)\
+            .um_resources_get_with_http_info(depth=depth, response_type='object')
 
         # return response
 

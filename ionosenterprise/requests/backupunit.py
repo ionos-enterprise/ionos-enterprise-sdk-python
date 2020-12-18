@@ -33,10 +33,8 @@ class backupunit:
         """
         data = self._create_backupunit_dict(backupunit)
 
-        backupUnit = BackupUnit(**data)
-
         return self.get_api_instance(ionoscloud.BackupUnitApi)\
-            .backupunits_post_with_http_info(backupUnit, response_type='object')
+            .backupunits_post_with_http_info(BackupUnit(**data), response_type='object')
 
     @IonosCoreProxy.process_response
     def get_backupunit(self, backupunit_id, depth=1):
