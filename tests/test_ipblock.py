@@ -17,11 +17,11 @@ import unittest
 
 from six import assertRegex
 
-from ionosenterprise.client import IPBlock, IonosEnterpriseService
-from ionosenterprise.errors import ICError, ICNotFoundError
-
 from helpers import configuration
 from helpers.resources import resource
+
+from ionosenterprise.client import IPBlock, IonosEnterpriseService
+from ionosenterprise.errors import ICError, ICNotFoundError
 
 
 class TestIPBlock(unittest.TestCase):

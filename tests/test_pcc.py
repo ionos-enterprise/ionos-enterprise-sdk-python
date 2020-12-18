@@ -15,10 +15,10 @@
 import warnings
 import unittest
 
-from ionosenterprise.client import IonosEnterpriseService, PrivateCrossConnect
-
 from helpers import configuration
 from helpers.resources import resource
+
+from ionosenterprise.client import IonosEnterpriseService, PrivateCrossConnect
 
 
 class TestPcc(unittest.TestCase):
