@@ -50,5 +50,5 @@ class image:
             data[self._underscore_to_camelcase(attr)] = value
 
         return self.get_api_instance(ionoscloud.ImageApi)\
-            .images_patch_with_http_info(image_id, ionoscloud.models.Image( properties=data),
+            .images_patch_with_http_info(image_id, ionoscloud.models.Image(properties=data),
                                          response_type='object')
