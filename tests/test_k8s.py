@@ -49,61 +49,34 @@ class TestK8S(unittest.TestCase):
 
         # Wait for k8s cluster to be active
         cls.client.wait_for(
-            fn_request=cls.client.list_k8s_clusters(),
+            fn_request=lambda: cls.client.list_k8s_clusters(),
             fn_check=lambda r: list(filter(
-                lambda e: e['properties']['name'] == cls.resource['k8s_cluster']['name'],
+                lambda e: e['id'] == cls.k8s_cluster['id'],
                 r['items']
               ))[0]['metadata']['state'] == 'ACTIVE',
             scaleup=10000
         )
 
-        # Create test k8s nodepool
-        cls.k8s_nodepool = cls.client.create_k8s_cluster_nodepool(
-            cls.k8s_cluster['id'],
-            datacenter_id=cls.datacenter['id'],
-            **cls.resource['k8s_nodepool']
-        )
-
-        # Wait for k8s nodepool to be active
-        cls.client.wait_for(
-            fn_request=lambda: cls.client.list_k8s_cluster_nodepools(cls.k8s_cluster['id']),
-            fn_check=lambda r: list(filter(
-                lambda e: e['properties']['name'] == cls.resource['k8s_nodepool']['name'],
-                r['items']
-              ))[0]['metadata']['state'] == 'ACTIVE',
-            scaleup=10000
-        )
 
         # get cluster config
         cls.k8s_config = cls.client.get_k8s_config(cls.k8s_cluster['id'])
 
     @classmethod
     def tearDownClass(cls):
-        cls.client.delete_k8s_cluster_nodepool(cls.k8s_cluster['id'], cls.k8s_nodepool['id'])
-        cls.client.wait_for(
-            fn_request=lambda: cls.client.list_k8s_cluster_nodepools(cls.k8s_cluster['id']),
-            fn_check=lambda r: len(list(filter(
-                lambda e: e['properties']['name'] == cls.resource['k8s_nodepool']['name'],
-                r['items']
-              ))) == 0,
-            scaleup=10000
-        )
-
         cls.client.delete_k8s_cluster(cls.k8s_cluster['id'])
         cls.client.wait_for(
-            fn_request=cls.client.list_k8s_clusters(),
+            fn_request=lambda: cls.client.list_k8s_clusters(),
             fn_check=lambda r: len(list(filter(
-                lambda e: e['properties']['name'] == cls.resource['k8s_cluster']['name'],
+                lambda e: e['id'] == cls.k8s_cluster['id'],
                 r['items']
               ))) == 0,
             scaleup=10000
         )
-
         cls.client.delete_datacenter(datacenter_id=cls.datacenter['id'])
         cls.client.wait_for(
-            fn_request=cls.client.list_datacenters(),
+            fn_request=lambda: cls.client.list_datacenters(),
             fn_check=lambda r: len(list(filter(
-                lambda e: e['properties']['name'] == cls.resource['k8s_datacenter']['name'],
+                lambda e: e['id'] == cls.datacenter['id'],
                 r['items']
               ))) == 0,
             scaleup=10000
@@ -127,7 +100,17 @@ class TestK8S(unittest.TestCase):
     def test_update_k8s_cluster(self):
         name = "UPDATED_NAME"
         k8s_cluster = self.client.update_k8s_cluster(self.k8s_cluster['id'], name=name)
-        self.assertEqual(k8s_cluster['name'], name)
+        # Wait for k8s cluster to be active
+        self.client.wait_for(
+            fn_request=lambda: self.client.list_k8s_clusters(),
+            fn_check=lambda r: list(filter(
+                lambda e: e['id'] == self.k8s_cluster['id'],
+                r['items']
+            ))[0]['metadata']['state'] == 'ACTIVE',
+            scaleup=10000
+        )
+        self.assertEqual(k8s_cluster['properties']['name'], name)
+
 
 
 if __name__ == '__main__':
