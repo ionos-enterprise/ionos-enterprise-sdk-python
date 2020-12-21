@@ -85,7 +85,6 @@ class IonosCoreProxy:
 
     @staticmethod
     def _underscore_to_camelcase(f):
-
         def underscore_to_camelcase(value):
             def camelcase():
                 yield str.lower
