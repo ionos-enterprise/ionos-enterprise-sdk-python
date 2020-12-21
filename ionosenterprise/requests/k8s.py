@@ -14,7 +14,7 @@ class k8s:
         """
 
         return self.get_api_instance(ionoscloud.KubernetesApi)\
-            .k8s_find_by_clusterid_with_http_info(k8s_cluster_id, response_type='object')
+            .k8s_find_by_cluster_id_with_http_info(k8s_cluster_id, response_type='object')
 
     @IonosCoreProxy.process_response
     def list_k8s_clusters(self, depth=1):

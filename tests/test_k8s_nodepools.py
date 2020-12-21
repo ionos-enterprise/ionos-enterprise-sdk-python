@@ -40,9 +40,9 @@ class TestK8sNodepools(unittest.TestCase):
 
         # Wait for k8s cluster to be active
         cls.client.wait_for(
-            fn_request=cls.client.list_k8s_clusters(),
+            fn_request=lambda: cls.client.list_k8s_clusters(),
             fn_check=lambda r: list(filter(
-                lambda e: e['properties']['name'] == cls.resource['k8s_cluster']['name'],
+                lambda e: e['id'] == cls.k8s_cluster['id'],
                 r['items']
             ))[0]['metadata']['state'] == 'ACTIVE',
             scaleup=10000
@@ -82,6 +82,15 @@ class TestK8sNodepools(unittest.TestCase):
     def tearDownClass(cls):
         cls.client.delete_k8s_cluster_nodepool(cls.k8s_cluster['id'],
                                                cls.k8s_cluster_nodepool1['id'])
+        # Wait for k8s cluster nodepool to be deleted
+        cls.client.wait_for(
+            fn_request=lambda: cls.client.self.client.list_k8s_cluster_nodepools(cls.k8s_cluster['id']),
+            fn_check=lambda r: len(list(filter(
+                lambda e: e['id'] == cls.k8s_cluster_nodepool1['id'],
+                r['items']
+            ))) == 0,
+            scaleup=10000
+        )
         cls.client.delete_k8s_cluster(cls.k8s_cluster['id'])
         cls.client.delete_datacenter(cls.datacenter['id'])
 
@@ -95,11 +104,12 @@ class TestK8sNodepools(unittest.TestCase):
                                                             self.k8s_cluster_nodepool1['id'])
         self.assertEqual(k8s_nodepool['type'], 'nodepool')
         self.assertEqual(k8s_nodepool['id'], self.k8s_cluster_nodepool1['id'])
-        self.assertEqual(k8s_nodepool['properties']['name'], self.k8s_cluster_nodepool1['name'])
+        self.assertEqual(k8s_nodepool['properties']['name'], self.k8s_cluster_nodepool1['properties']['name'])
 
     def test_delete_k8s_nodepool(self):
         response = self.client.delete_k8s_cluster_nodepool(self.k8s_cluster['id'],
                                                            self.k8s_cluster_nodepool2['id'])
+        print(response)
         self.assertTrue('requestId' in response)
 
     def test_update_k8s_nodepool(self):
@@ -108,7 +118,15 @@ class TestK8sNodepools(unittest.TestCase):
             maintenance_window={
                 'dayOfTheWeek': "Monday",
                 'time': '17:00:00'},
-            auto_scaling={'minNodeCount': 2, 'maxNodeCount': 3}
+            auto_scaling={'minNodeCount': '2', 'maxNodeCount': '3'}
+        )
+        # Wait for k8s cluster nodepool 1 to be active
+        self.client.wait_for(
+            fn_request=lambda: self.client.get_k8s_cluster_nodepool(
+                self.k8s_cluster['id'],
+                self.k8s_cluster_nodepool1['id']),
+            fn_check=lambda r: r['metadata']['state'] == 'ACTIVE',
+            scaleup=10000
         )
         self.assertEqual(response['maintenance_window']['dayOfTheWeek'], 'Monday')
         self.assertEqual(response['node_count'], 2)
