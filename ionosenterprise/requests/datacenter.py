@@ -1,17 +1,19 @@
+import ionoscloud
+from coreadaptor.IonosCoreProxy import IonosCoreProxy
 from ..utils import find_item_by_name
-import json
 
 
 class datacenter:
+
+    @IonosCoreProxy.process_response
     def list_datacenters(self, depth=1):
         """
         Retrieves a list of all data centers.
-
         """
-        response = self._perform_request('/datacenters?depth=' + str(depth))
+        return self.get_api_instance(ionoscloud.DataCenterApi)\
+            .datacenters_get_with_http_info(depth=depth, response_type='object')
 
-        return response
-
+    @IonosCoreProxy.process_response
     def get_datacenter(self, datacenter_id, depth=1):
         """
         Retrieves a data center by its ID.
@@ -23,11 +25,12 @@ class datacenter:
         :type       depth: ``int``
 
         """
-        response = self._perform_request(
-            '/datacenters/%s?depth=%s' % (datacenter_id, str(depth)))
+        return self.get_api_instance(ionoscloud.DataCenterApi)\
+            .datacenters_find_by_id_with_http_info(
+                datacenter_id, depth=depth, response_type='object'
+            )
 
-        return response
-
+    @IonosCoreProxy.process_response
     def get_datacenter_by_name(self, name, depth=1):
         """
         Retrieves a data center by its name.
@@ -62,6 +65,7 @@ class datacenter:
             ))
         return data_center[0]
 
+    @IonosCoreProxy.process_response
     def delete_datacenter(self, datacenter_id):
         """
         Removes the data center and all its components such as servers, NICs,
@@ -71,12 +75,10 @@ class datacenter:
         :type       datacenter_id: ``str``
 
         """
-        response = self._perform_request(
-            url='/datacenters/%s' % (datacenter_id),
-            method='DELETE')
+        return self.get_api_instance(ionoscloud.DataCenterApi)\
+            .datacenters_delete_with_http_info(datacenter_id)
 
-        return response
-
+    @IonosCoreProxy.process_response
     def create_datacenter(self, datacenter):
         """
         Creates a data center -- both simple and complex are supported.
@@ -178,15 +180,16 @@ class datacenter:
                 "entities": entities
             }
 
-        data = json.dumps(raw)
+        if 'entities' not in raw:
+            datacenter = ionoscloud.models.Datacenter(properties=raw['properties'])
+        else:
+            datacenter = ionoscloud.models.Datacenter(
+                properties=raw['properties'], entities=raw['entities'])
 
-        response = self._perform_request(
-            url='/datacenters',
-            method='POST',
-            data=data)
+        return self.get_api_instance(ionoscloud.DataCenterApi)\
+            .datacenters_post_with_http_info(datacenter, response_type='object')
 
-        return response
-
+    @IonosCoreProxy.process_response
     def update_datacenter(self, datacenter_id, **kwargs):
         """
         Updates a data center with the parameters provided.
@@ -200,10 +203,10 @@ class datacenter:
         for attr, value in kwargs.items():
             data[self._underscore_to_camelcase(attr)] = value
 
-        response = self._perform_request(
-            url='/datacenters/%s' % (
-                datacenter_id),
-            method='PATCH',
-            data=json.dumps(data))
-
-        return response
+        return self.get_api_instance(ionoscloud.DataCenterApi) \
+            .datacenters_put_with_http_info(
+            datacenter_id,
+                ionoscloud.models.Datacenter(
+                    properties=data
+                )
+            )

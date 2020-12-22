@@ -1,8 +1,8 @@
 class Volume(object):
     def __init__(self, name=None, size=None, bus='VIRTIO',  # pylint: disable=unused-argument
                  image=None, image_alias=None, disk_type='HDD', licence_type='UNKNOWN',
-                 image_password=None, ssh_keys=None, availability_zone='AUTO',
-                 **kwargs):
+                 image_password=None, ssh_keys=None, availability_zone='AUTO'):
+
         """
         Volume class initializer.
 

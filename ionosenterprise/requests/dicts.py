@@ -89,7 +89,8 @@ class dicts:
 
         return raw
 
-    def _create_k8s_dict(self, cluster_name):
+    @staticmethod
+    def _create_k8s_dict(cluster_name):
         properties = {
             "name": cluster_name
         }

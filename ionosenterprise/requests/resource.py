@@ -1,4 +1,9 @@
+import ionoscloud
+from coreadaptor.IonosCoreProxy import IonosCoreProxy
+
+
 class resource:
+    @IonosCoreProxy.process_response
     def list_resources(self, resource_type=None, depth=1):
         """
         Retrieves a list of all resources.
@@ -14,14 +19,16 @@ class resource:
 
         """
         if resource_type is not None:
-            response = self._perform_request(
-                '/um/resources/%s?depth=%s' % (resource_type, str(depth)))
-        else:
-            response = self._perform_request(
-                '/um/resources?depth=' + str(depth))
+            return self.get_api_instance(ionoscloud.UserManagementApi)\
+                .um_resources_find_by_type_with_http_info(resource_type, depth=depth,
+                                                          response_type='object')
 
-        return response
+        return self.get_api_instance(ionoscloud.UserManagementApi)\
+            .um_resources_get_with_http_info(depth=depth, response_type='object')
 
+        # return response
+
+    @IonosCoreProxy.process_response
     def get_resource(self, resource_type, resource_id, depth=1):
         """
         Retrieves a single resource of a particular type.
@@ -38,8 +45,6 @@ class resource:
         :type       depth: ``int``
 
         """
-        response = self._perform_request(
-            '/um/resources/%s/%s?depth=%s' % (
-                resource_type, resource_id, str(depth)))
-
-        return response
+        return self.get_api_instance(ionoscloud.UserManagementApi)\
+            .um_resources_find_by_type_and_id_with_http_info(resource_type, resource_id,
+                                                             depth=depth, response_type='object')

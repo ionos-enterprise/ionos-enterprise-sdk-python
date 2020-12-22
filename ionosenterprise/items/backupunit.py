@@ -9,7 +9,8 @@ class BackupUnit(object):
         :param      password: The password associated to that resource.
         :type       password: ``str``
 
-        :param      email: The email associated with the backup unit. Bear in mind that this email does not be the same email as of the user.
+        :param      email: The email associated with the backup unit.
+                    Bear in mind that this email does not be the same email as of the user.
         :type       email: ``str``
 
         """

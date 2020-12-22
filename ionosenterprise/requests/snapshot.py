@@ -1,8 +1,10 @@
-import json
-from six.moves.urllib.parse import urlencode  # false positive, pylint: disable=import-error
+import ionoscloud
+from coreadaptor.IonosCoreProxy import IonosCoreProxy
 
 
 class snapshot:
+
+    @IonosCoreProxy.process_response
     def get_snapshot(self, snapshot_id):
         """
         Retrieves a single snapshot by ID.
@@ -11,19 +13,21 @@ class snapshot:
         :type       snapshot_id: ``str``
 
         """
-        response = self._perform_request('/snapshots/%s' % snapshot_id)
-        return response
 
+        return self.get_api_instance(ionoscloud.SnapshotApi)\
+            .snapshots_find_by_id_with_http_info(snapshot_id, response_type='object')
+
+    @IonosCoreProxy.process_response
     def list_snapshots(self, depth=1):
         """
         Retrieves a list of snapshots available in the account.
 
         """
-        response = self._perform_request(
-            '/snapshots?depth=%s' % str(depth))
 
-        return response
+        return self.get_api_instance(ionoscloud.SnapshotApi)\
+            .snapshots_get_with_http_info(depth=depth, response_type='object')
 
+    @IonosCoreProxy.process_response
     def delete_snapshot(self, snapshot_id):
         """
         Removes a snapshot from your account.
@@ -32,11 +36,11 @@ class snapshot:
         :type       snapshot_id: ``str``
 
         """
-        response = self._perform_request(
-            url='/snapshots/' + snapshot_id, method='DELETE')
 
-        return response
+        return self.get_api_instance(ionoscloud.SnapshotApi)\
+            .snapshots_delete_with_http_info(snapshot_id)
 
+    @IonosCoreProxy.process_response
     def update_snapshot(self, snapshot_id, **kwargs):
         """
         Removes a snapshot from your account.
@@ -44,18 +48,14 @@ class snapshot:
         :param      snapshot_id: The unique ID of the snapshot.
         :type       snapshot_id: ``str``
         """
-        data = {}
 
-        for attr, value in kwargs.items():
-            data[self._underscore_to_camelcase(attr)] = value
+        return self.get_api_instance(ionoscloud.SnapshotApi)\
+            .snapshots_patch_with_http_info(snapshot_id,
+                                            ionoscloud.models.SnapshotProperties(**kwargs),
+                                            response_type='object')
 
-        response = self._perform_request(
-            url='/snapshots/' + snapshot_id, method='PATCH', data=json.dumps(data))
-
-        return response
-
-    def create_snapshot(self, datacenter_id, volume_id,
-                        name=None, description=None):
+    @IonosCoreProxy.process_response
+    def create_snapshot(self, datacenter_id, volume_id, name=None, description=None):
         """
         Creates a snapshot of the specified volume.
 
@@ -73,16 +73,11 @@ class snapshot:
 
         """
 
-        data = {'name': name, 'description': description}
+        return self.get_api_instance(ionoscloud.VolumeApi)\
+            .datacenters_volumes_create_snapshot_post_with_http_info(
+            datacenter_id, volume_id, name=name, description=description, response_type='object')
 
-        response = self._perform_request(
-            '/datacenters/%s/volumes/%s/create-snapshot' % (
-                datacenter_id, volume_id),
-            method='POST-ACTION-JSON',
-            data=urlencode(data))
-
-        return response
-
+    @IonosCoreProxy.process_response
     def restore_snapshot(self, datacenter_id, volume_id, snapshot_id):
         """
         Restores a snapshot to the specified volume.
@@ -97,17 +92,12 @@ class snapshot:
         :type       snapshot_id: ``str``
 
         """
-        data = {'snapshotId': snapshot_id}
 
-        response = self._perform_request(
-            url='/datacenters/%s/volumes/%s/restore-snapshot' % (
-                datacenter_id,
-                volume_id),
-            method='POST-ACTION',
-            data=urlencode(data))
+        return self.get_api_instance(ionoscloud.VolumeApi)\
+            .datacenters_volumes_restore_snapshot_post_with_http_info(
+                datacenter_id, volume_id, snapshot_id=snapshot_id)
 
-        return response
-
+    @IonosCoreProxy.process_response
     def remove_snapshot(self, snapshot_id):
         """
         Removes a snapshot.
@@ -117,7 +107,6 @@ class snapshot:
         :type       snapshot_id: ``str``
 
         """
-        response = self._perform_request(
-            url='/snapshots/' + snapshot_id, method='DELETE')
 
-        return response
+        return self.get_api_instance(ionoscloud.SnapshotApi)\
+            .snapshots_delete_with_http_info(snapshot_id)

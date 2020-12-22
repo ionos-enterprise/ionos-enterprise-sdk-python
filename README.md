@@ -1,7 +1,7 @@
 
 # Python SDK
 
-Version: ionosenterprise-sdk-python **5.4.0**
+Version: ionosenterprise-sdk-python **5.5.0**
 
 ## Table of Contents
 
@@ -2379,6 +2379,7 @@ The following table describes the request arguments:
 | annotations | no | dict | Map of annotations attached to node pool |
 | public_ips | no | list | List of IP addresses to be used by nodes |
 
+
 Method signature:
 
 ```python
@@ -2492,7 +2493,7 @@ Method signature:
 ```python
 def update_k8s_cluster_nodepool(self,
                                     k8s_cluster_id, nodepool_id, node_count,
-                                    maintenance_window=None, auto_scaling=None):
+                                    maintenance_window=None, auto_scaling=None, lan_ids=None):
 ```
 
 Update a nodepool:

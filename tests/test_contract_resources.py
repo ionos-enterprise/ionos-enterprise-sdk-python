@@ -12,16 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import warnings
 import unittest
 
-from ionosenterprise.client import IonosEnterpriseService
-
 from helpers import configuration
+
+from ionosenterprise.client import IonosEnterpriseService
 
 
 class TestContractResources(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        warnings.filterwarnings("ignore", category=ResourceWarning,
+                                message="unclosed.*<ssl.SSLSocket.*>")
         cls.client = IonosEnterpriseService(
             username=configuration.USERNAME,
             password=configuration.PASSWORD,

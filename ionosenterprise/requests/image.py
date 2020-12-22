@@ -1,7 +1,10 @@
-import json
+import ionoscloud
+from coreadaptor.IonosCoreProxy import IonosCoreProxy
 
 
 class image:
+
+    @IonosCoreProxy.process_response
     def get_image(self, image_id):
         """
         Retrieves a single image by ID.
@@ -10,20 +13,21 @@ class image:
         :type       image_id: ``str``
 
         """
-        response = self._perform_request('/images/%s' % image_id)
-        return response
+        return self.get_api_instance(ionoscloud.ImageApi)\
+            .images_find_by_id_with_http_info(image_id, response_type='object')
 
+    @IonosCoreProxy.process_response
     def list_images(self, depth=1):
         """
         Retrieves a list of images available in the data center.
 
         :param      depth: The depth of the response data.
         :type       depth: ``int``
-
         """
-        response = self._perform_request('/images?depth=' + str(depth))
-        return response
+        return self.get_api_instance(ionoscloud.ImageApi)\
+            .images_get_with_http_info(depth=depth, response_type='object')
 
+    @IonosCoreProxy.process_response
     def delete_image(self, image_id):
         """
         Removes only user created images.
@@ -32,10 +36,9 @@ class image:
         :type       image_id: ``str``
 
         """
-        response = self._perform_request(url='/images/' + image_id,
-                                         method='DELETE')
-        return response
+        return self.get_api_instance(ionoscloud.ImageApi).images_delete_with_http_info(image_id)
 
+    @IonosCoreProxy.process_response
     def update_image(self, image_id, **kwargs):
         """
         Replace all properties of an image.
@@ -46,7 +49,6 @@ class image:
         for attr, value in kwargs.items():
             data[self._underscore_to_camelcase(attr)] = value
 
-        response = self._perform_request(url='/images/' + image_id,
-                                         method='PATCH',
-                                         data=json.dumps(data))
-        return response
+        return self.get_api_instance(ionoscloud.ImageApi)\
+            .images_patch_with_http_info(image_id, ionoscloud.models.Image(properties=data),
+                                         response_type='object')

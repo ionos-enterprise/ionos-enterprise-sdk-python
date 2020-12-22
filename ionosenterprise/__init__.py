@@ -13,7 +13,7 @@
 # limitations under the License.
 
 """Ionos Enterprise API Client Library for Python"""
-__version__ = '5.4.0'
+__version__ = '5.5.0'
 
 API_HOST = 'https://api.ionos.com/cloudapi/v5'
 API_VERSION = '5.0'

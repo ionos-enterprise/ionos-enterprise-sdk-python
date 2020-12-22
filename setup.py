@@ -24,6 +24,7 @@ import codecs
 import os
 import re
 import sys
+import pytest
 from setuptools import setup
 from setuptools.command.test import test as TestCommand
 
@@ -57,7 +58,6 @@ class PyTest(TestCommand):
         self.test_suite = True  # pylint: disable=attribute-defined-outside-init
 
     def run_tests(self):
-        import pytest
         errno = pytest.main(self.test_args)
         sys.exit(errno)
 
@@ -71,9 +71,9 @@ setup(
     author='Ionos Enterprise',
     author_email='sdk@cloud.ionos.com',
     url='https://github.com/ionos-enterprise/ionos-enterprise-sdk-python',
-    install_requires=['requests>=2.0.0', 'six>=1.10.0', 'appdirs>=1.4.3'],
+    install_requires=['requests>=2.0.0', 'six>=1.10.0', 'appdirs>=1.4.3', 'ionoscloud>=5.0.3'],
     # include_package_data=True,
-    packages=['ionosenterprise', 'ionosenterprise.requests', 'ionosenterprise.items'],
+    packages=['ionosenterprise', 'ionosenterprise.requests', 'ionosenterprise.items', 'coreadaptor'],
     platforms='any',
     test_suite='ionosenterprise.test.test_ionosenterprise',
     cmdclass={'test': PyTest},

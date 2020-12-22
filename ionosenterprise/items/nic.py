@@ -1,7 +1,7 @@
 class NIC(object):
     def __init__(self, name=None, ips=None,  # pylint: disable=unused-argument
                  dhcp=None, lan=None, firewall_active=None,
-                 firewall_rules=None, nat=None, **kwargs):
+                 firewall_rules=None, nat=None):
         """
         NIC class initializer.
 

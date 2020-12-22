@@ -1,7 +1,9 @@
-import json
+import ionoscloud
+from coreadaptor.IonosCoreProxy import IonosCoreProxy
 
 
 class k8s:
+    @IonosCoreProxy.process_response
     def get_k8s_cluster(self, k8s_cluster_id):
         """
         Retrieves a kubernetes cluster by its ID.
@@ -11,10 +13,10 @@ class k8s:
 
         """
 
-        response = self._perform_request('/k8s/%s' % k8s_cluster_id)
+        return self.get_api_instance(ionoscloud.KubernetesApi)\
+            .k8s_find_by_cluster_id_with_http_info(k8s_cluster_id, response_type='object')
 
-        return response
-
+    @IonosCoreProxy.process_response
     def list_k8s_clusters(self, depth=1):
         """
         Retrieves the list of kubernetes clusters.
@@ -23,11 +25,10 @@ class k8s:
         :type       depth: ``int``
 
         """
+        return self.get_api_instance(ionoscloud.KubernetesApi)\
+            .k8s_get_with_http_info(depth=depth, response_type='object')
 
-        response = self._perform_request('/k8s?depth=' + str(depth))
-
-        return response
-
+    @IonosCoreProxy.process_response
     def create_k8s_cluster(self, name):
         """
         Creates a Kubernets cluster.
@@ -42,16 +43,15 @@ class k8s:
 
         """
 
-        data = json.dumps(self._create_k8s_dict(name))
-
-        response = self._perform_request(
-            url='/k8s',
-            method='POST',
-            data=data
+        kubernetesCluster = ionoscloud.models.KubernetesCluster(
+            properties={
+                'name': name
+            }
         )
+        return self.get_api_instance(ionoscloud.KubernetesApi)\
+            .k8s_post_with_http_info(kubernetesCluster, response_type='object')
 
-        return response
-
+    @IonosCoreProxy.process_response
     def delete_k8s_cluster(self, k8s_cluster_id):
         """
         Removes a kubernetes cluster.
@@ -61,13 +61,10 @@ class k8s:
 
         """
 
-        response = self._perform_request(
-            url='/k8s/%s' % k8s_cluster_id,
-            method='DELETE'
-        )
+        return self.get_api_instance(ionoscloud.KubernetesApi)\
+            .k8s_delete_with_http_info(k8s_cluster_id)
 
-        return response
-
+    @IonosCoreProxy.process_response
     def update_k8s_cluster(self, k8s_cluster_id, **kwargs):
         """
         Replace all properties of a kubernetes cluster.
@@ -82,10 +79,8 @@ class k8s:
         for attr, value in kwargs.items():
             data[self._underscore_to_camelcase(attr)] = value
 
-        response = self._perform_request(
-            url='/k8s/%s' % k8s_cluster_id,
-            method='PUT',
-            data=json.dumps(data)
+        kubernetesCluster = ionoscloud.models.KubernetesCluster(
+            properties=data
         )
-
-        return response
+        return self.get_api_instance(ionoscloud.KubernetesApi)\
+            .k8s_put_with_http_info(k8s_cluster_id, kubernetesCluster, response_type='object')

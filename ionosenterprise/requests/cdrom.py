@@ -1,4 +1,9 @@
+import ionoscloud
+from coreadaptor.IonosCoreProxy import IonosCoreProxy
+
+
 class cdrom:
+    @IonosCoreProxy.process_response
     def get_attached_cdroms(self, datacenter_id, server_id, depth=1):
         """
         Retrieves a list of CDROMs attached to the server.
@@ -13,14 +18,13 @@ class cdrom:
         :type       depth: ``int``
 
         """
-        response = self._perform_request(
-            '/datacenters/%s/servers/%s/cdroms?depth=%s' % (
-                datacenter_id,
-                server_id,
-                str(depth)))
 
-        return response
+        return self.get_api_instance(ionoscloud.ServerApi)\
+            .datacenters_servers_cdroms_get_with_http_info(
+                datacenter_id, server_id, depth=depth, response_type='object'
+            )
 
+    @IonosCoreProxy.process_response
     def get_attached_cdrom(self, datacenter_id, server_id, cdrom_id):
         """
         Retrieves an attached CDROM.
@@ -35,14 +39,11 @@ class cdrom:
         :type       cdrom_id: ``str``
 
         """
-        response = self._perform_request(
-            '/datacenters/%s/servers/%s/cdroms/%s' % (
-                datacenter_id,
-                server_id,
-                cdrom_id))
+        return self.get_api_instance(ionoscloud.ServerApi)\
+            .datacenters_servers_cdroms_find_by_id_with_http_info(datacenter_id, server_id,
+                                                                  cdrom_id, response_type='object')
 
-        return response
-
+    @IonosCoreProxy.process_response
     def attach_cdrom(self, datacenter_id, server_id, cdrom_id):
         """
         Attaches a CDROM to a server.
@@ -57,17 +58,12 @@ class cdrom:
         :type       cdrom_id: ``str``
 
         """
-        data = '{ "id": "' + cdrom_id + '" }'
+        image = ionoscloud.Image(id=cdrom_id)
+        return self.get_api_instance(ionoscloud.ServerApi)\
+            .datacenters_servers_cdroms_post_with_http_info(datacenter_id, server_id,
+                                                            image, response_type='object')
 
-        response = self._perform_request(
-            url='/datacenters/%s/servers/%s/cdroms' % (
-                datacenter_id,
-                server_id),
-            method='POST',
-            data=data)
-
-        return response
-
+    @IonosCoreProxy.process_response
     def detach_cdrom(self, datacenter_id, server_id, cdrom_id):
         """
         Detaches a volume from a server.
@@ -82,11 +78,7 @@ class cdrom:
         :type       cdrom_id: ``str``
 
         """
-        response = self._perform_request(
-            url='/datacenters/%s/servers/%s/cdroms/%s' % (
-                datacenter_id,
-                server_id,
-                cdrom_id),
-            method='DELETE')
-
-        return response
+        return self.get_api_instance(ionoscloud.ServerApi) \
+            .datacenters_servers_cdroms_delete_with_http_info(datacenter_id, server_id,
+                                                              cdrom_id,
+                                                              response_type='object')

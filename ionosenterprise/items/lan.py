@@ -16,7 +16,8 @@ class LAN(object):
         :param      nics: A list of NICs
         :type       nics: ``list``
 
-        :param      pcc_id: Unique identifier of the private cross connect the given LAN is connected to if any
+        :param      pcc_id: Unique identifier of the private cross connect the given
+                    LAN is connected to if any
         :type       pcc_id: ``str``
 
         """

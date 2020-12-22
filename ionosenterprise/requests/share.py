@@ -1,7 +1,9 @@
-import json
+import ionoscloud
+from coreadaptor.IonosCoreProxy import IonosCoreProxy
 
 
 class share:
+    @IonosCoreProxy.process_response
     def list_shares(self, group_id, depth=1):
         """
         Retrieves a list of all shares though a group.
@@ -13,11 +15,11 @@ class share:
         :type       depth: ``int``
 
         """
-        response = self._perform_request(
-            '/um/groups/%s/shares?depth=%s' % (group_id, str(depth)))
 
-        return response
+        return self.get_api_instance(ionoscloud.UserManagementApi)\
+            .um_groups_shares_get_with_http_info(group_id, depth=depth, response_type='object')
 
+    @IonosCoreProxy.process_response
     def get_share(self, group_id, resource_id, depth=1):
         """
         Retrieves a specific resource share available to a group.
@@ -32,12 +34,12 @@ class share:
         :type       depth: ``int``
 
         """
-        response = self._perform_request(
-            '/um/groups/%s/shares/%s?depth=%s'
-            % (group_id, resource_id, str(depth)))
 
-        return response
+        return self.get_api_instance(ionoscloud.UserManagementApi)\
+            .um_groups_shares_find_by_resource_id_with_http_info(
+            group_id, resource_id, depth=depth, response_type='object')
 
+    @IonosCoreProxy.process_response
     def add_share(self, group_id, resource_id, **kwargs):
         """
         Shares a resource through a group.
@@ -54,17 +56,15 @@ class share:
         for attr, value in kwargs.items():
             properties[self._underscore_to_camelcase(attr)] = value
 
-        data = {
-            "properties": properties
-        }
+        resource = ionoscloud.models.GroupShare(
+            properties=properties
+        )
 
-        response = self._perform_request(
-            url='/um/groups/%s/shares/%s' % (group_id, resource_id),
-            method='POST',
-            data=json.dumps(data))
+        return self.get_api_instance(ionoscloud.UserManagementApi)\
+            .um_groups_shares_post_with_http_info(group_id, resource_id, resource,
+                                                  response_type='object')
 
-        return response
-
+    @IonosCoreProxy.process_response
     def update_share(self, group_id, resource_id, **kwargs):
         """
         Updates the permissions of a group for a resource share.
@@ -81,17 +81,14 @@ class share:
         for attr, value in kwargs.items():
             properties[self._underscore_to_camelcase(attr)] = value
 
-        data = {
-            "properties": properties
-        }
+        group_share = ionoscloud.models.GroupShare(
+            properties=properties
+        )
+        return self.get_api_instance(ionoscloud.UserManagementApi)\
+            .um_groups_shares_put_with_http_info(
+            group_id, resource_id, group_share, response_type='object')
 
-        response = self._perform_request(
-            url='/um/groups/%s/shares/%s' % (group_id, resource_id),
-            method='PUT',
-            data=json.dumps(data))
-
-        return response
-
+    @IonosCoreProxy.process_response
     def delete_share(self, group_id, resource_id):
         """
         Removes a resource share from a group.
@@ -103,8 +100,6 @@ class share:
         :type       resource_id: ``str``
 
         """
-        response = self._perform_request(
-            url='/um/groups/%s/shares/%s' % (group_id, resource_id),
-            method='DELETE')
 
-        return response
+        return self.get_api_instance(ionoscloud.UserManagementApi)\
+            .um_groups_shares_delete_with_http_info(group_id, resource_id)

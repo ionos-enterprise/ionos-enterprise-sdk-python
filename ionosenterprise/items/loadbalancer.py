@@ -4,7 +4,7 @@ class LoadBalancer(object):
     """
 
     def __init__(self, name=None, ip=None,  # pylint: disable=unused-argument
-                 dhcp=None, balancednics=None, **kwargs):
+                 dhcp=None, balancednics=None):
         """
         LoadBalancer class initializer.
 
