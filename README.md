@@ -3,6 +3,11 @@
 
 Version: ionosenterprise-sdk-python **5.5.0**
 
+## Deprecated
+
+This library is now deprecated and we will end support on 30th June 2021. Please use https://pypi.org/project/ionoscloud.
+
+
 ## Table of Contents
 
 * [Description](#description)
