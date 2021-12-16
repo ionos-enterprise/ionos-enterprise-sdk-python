@@ -1,3 +1,7 @@
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
+# DEPRECATED
+
+This is no longer supported, please consider using [IONOS Cloud SDK Python](https://github.com/ionos-cloud/sdk-python) instead.
 
 # Python SDK
 
